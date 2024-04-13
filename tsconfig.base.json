@@ -15,9 +15,9 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@front/contracts": ["libs/shared/contracts/src/index.ts"],
-      "@front/ui": ["libs/shared/ui/src/index.ts"],
-      "@front/utils": ["libs/shared/utils/src/index.ts"]
+      "@beep/contracts": ["libs/shared/contracts/src/index.ts"],
+      "@beep/ui": ["libs/shared/ui/src/index.ts"],
+      "@beep/utils": ["libs/shared/utils/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]
