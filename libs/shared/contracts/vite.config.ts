@@ -7,7 +7,7 @@ import { nxViteTsPaths } from '@nx/vite/plugins/nx-tsconfig-paths.plugin';
 
 export default defineConfig({
   root: __dirname,
-  cacheDir: '../../node_modules/.vite/shared/contracts',
+  cacheDir: '../../../node_modules/.vite/shared/contracts',
 
   plugins: [
     react(),
@@ -26,7 +26,7 @@ export default defineConfig({
   // Configuration for building your library.
   // See: https://vitejs.dev/guide/build.html#library-mode
   build: {
-    outDir: '../../dist/shared/contracts',
+    outDir: '../../../dist/shared/contracts',
     reportCompressedSize: true,
     commonjsOptions: {
       transformMixedEsModules: true,
@@ -49,14 +49,14 @@ export default defineConfig({
   test: {
     globals: true,
     cache: {
-      dir: '../../node_modules/.vitest',
+      dir: '../../../node_modules/.vitest',
     },
     environment: 'jsdom',
     include: ['src/**/*.{test,spec}.{js,mjs,cjs,ts,mts,cts,jsx,tsx}'],
 
     reporters: ['default'],
     coverage: {
-      reportsDirectory: '../../coverage/shared/contracts',
+      reportsDirectory: '../../../coverage/shared/contracts',
       provider: 'v8',
     },
   },

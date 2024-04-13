@@ -15,8 +15,8 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@front/contracts": ["shared/contracts/src/index.ts"],
-      "@front/ui": ["shared/ui/src/index.ts"]
+      "@front/contracts": ["libs/shared/contracts/src/index.ts"],
+      "@front/ui": ["libs/shared/ui/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]
