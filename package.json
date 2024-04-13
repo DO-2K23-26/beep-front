@@ -2,7 +2,14 @@
   "name": "@front/source",
   "version": "0.0.0",
   "license": "MIT",
-  "scripts": {},
+  "scripts": {
+    "start": "nx serve client",
+    "build": "nx build client",
+    "test": "nx test",
+    "reset": "nx reset",
+    "build:docker": "docker build . -t beep-front",
+    "start:docker": "docker run -p 8080:8080 beep-front"
+  },
   "private": true,
   "dependencies": {
     "react": "18.2.0",
