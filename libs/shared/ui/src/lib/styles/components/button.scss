@@ -1,0 +1,209 @@
+.btn {
+  @apply h-9 inline-flex items-center justify-center px-4 rounded cursor-pointer bg-brand-500 hover:bg-brand-600 text-white font-medium text-ssm gap-2;
+  transition: 0.25s color $timing-cubic;
+  transition-property: color, background;
+
+  &:not(.btn--tiny, .btn-icon, .btn--no-min-w) {
+    min-width: 6rem;
+  }
+
+  svg {
+    @apply w-4 h-auto;
+  }
+
+  [class^='icon-'] {
+    @apply text-xs;
+  }
+}
+
+// color
+.btn--raised {
+  @apply bg-brand-100 text-brand-300 hover:bg-brand-200;
+}
+
+.btn--none {
+  @apply bg-transparent;
+}
+
+.btn--stroked {
+  @apply bg-neutral-100 hover:bg-neutral-150 border-solid border-x border-y border-neutral-250 text-neutral-400;
+
+  &.btn--active {
+    color: theme('colors.brand.500');
+    border-color: theme('colors.brand.500');
+    background-color: theme('colors.neutral.200');
+  }
+}
+
+.btn--flat {
+  @apply bg-transparent text-brand-500 hover:bg-transparent hover:text-brand-700;
+}
+
+.btn--alt {
+  @apply bg-transparent text-neutral-350 hover:bg-neutral-200 hover:text-brand-500;
+}
+
+.dark {
+  .btn--dark {
+    color: theme('colors.neutral.300');
+
+    &.is-active,
+    &:hover {
+      background-color: theme('colors.brand.500');
+      color: theme('colors.neutral.100');
+    }
+  }
+}
+
+.btn--dark {
+  color: theme('colors.neutral.200');
+  background-color: theme('colors.neutral.500');
+  border: 1px solid theme('colors.neutral.400');
+
+  &.is-active,
+  &:hover {
+    color: theme('colors.neutral.100');
+    background-color: theme('colors.neutral.550');
+  }
+}
+
+.btn--error {
+  color: theme('colors.neutral.100');
+  background-color: theme('colors.red.600');
+  &:hover {
+    background-color: theme('colors.red.700');
+  }
+}
+
+.btn--confirm {
+  color: theme('colors.neutral.100');
+  background-color: theme('colors.green.600');
+  &:hover {
+    background-color: theme('colors.green.700');
+  }
+
+  &.btn--disabled {
+    color: theme('colors.green.400');
+    background-color: theme('colors.green.800');
+  }
+}
+
+// state
+.btn--disabled {
+  @apply cursor-not-allowed pointer-events-none bg-blue-50 text-grey-400 border-0;
+}
+
+// login
+.btn-login {
+  @apply relative h-11 w-full font-medium flex items-center justify-center px-5 rounded-md cursor-pointer text-sm;
+  transition: 0.25s all $timing-cubic;
+}
+
+.btn-login--github {
+  @apply bg-black text-white hover:bg-neutral-650;
+}
+
+.btn-login--default {
+  @apply bg-neutral-150 text-neutral-400 border border-neutral-250 hover:bg-neutral-200;
+}
+
+// icon
+.btn-icon {
+  @apply w-10 h-10 p-0 min-w-0 relative;
+
+  [class^='icon-'] {
+    @apply text-sm;
+  }
+
+  &.btn--xlarge {
+    width: theme('spacing.11');
+
+    [class^='icon-'] {
+      @apply text-base;
+    }
+  }
+  &.btn.is-active,
+  &:hover {
+    @apply bg-neutral-200 text-brand-500 dark:bg-brand-500 dark:text-neutral-50;
+  }
+
+  &.btn-icon--small {
+    height: theme('spacing.7');
+    width: inherit;
+    min-width: theme('spacing.9');
+  }
+
+  &.btn--disabled {
+    color: theme('colors.neutral.250');
+  }
+}
+
+.btn-icon--raised {
+  @apply bg-brand-100 text-brand-300 hover:bg-brand-200;
+}
+
+.btn-icon--stroked {
+  @apply bg-white hover:bg-neutral-200 border-solid border-x border-y border-neutral-250 text-neutral-400 dark:border-0 dark:bg-neutral-550 dark:hover:bg-neutral-650 dark:text-neutral-50;
+
+  &.bg-transparent {
+    background-color: transparent;
+    &:hover {
+      color: theme('colors.neutral.400');
+      background-color: theme('colors.white');
+    }
+  }
+}
+
+.btn-icon--flat {
+  @apply bg-transparent text-brand-500 hover:bg-transparent hover:text-brand-700;
+
+  &.text-neutral-400 {
+    color: theme('colors.neutral.400');
+    &:hover {
+      color: theme('colors.neutral.400');
+    }
+  }
+}
+
+.btn-icon--alt {
+  @apply bg-transparent text-neutral-350 hover:bg-neutral-200 hover:text-brand-500;
+}
+
+.btn-icon--dark {
+  @apply bg-neutral-500 text-neutral-300 hover:text-neutral-50 hover:bg-neutral-550;
+}
+
+// size
+.btn--tiny {
+  height: theme('spacing.7');
+  padding: 0 theme('spacing.2');
+  @apply text-xs;
+}
+
+.btn--small {
+  height: theme('spacing.8');
+  @apply text-xs;
+}
+
+.btn--regular {
+  height: theme('spacing.9');
+  @apply text-ssm;
+}
+
+.btn--large {
+  height: theme('spacing.10');
+  @apply text-sm;
+}
+
+.btn--xlarge {
+  height: theme('spacing.11');
+  @apply text-sm;
+}
+
+.btn-icon--circle {
+  @apply w-6 h-6 rounded-full flex items-center justify-center text-neutral-400 hover:text-neutral-400 hover:bg-neutral-200 dark:hover:bg-neutral-500;
+
+  &.btn.is-active {
+    @apply text-neutral-400 hover:text-neutral-400 hover:bg-neutral-200 dark:bg-neutral-500;
+  }
+}
