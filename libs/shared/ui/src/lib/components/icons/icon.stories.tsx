@@ -1,15 +1,15 @@
-import { Meta, Story } from '@storybook/react'
-import { Icon } from './icon'
+import { StoryFn } from '@storybook/react';
+import { Icon } from './icon';
 
-const meta: Meta<typeof Icon> = {
+export default {
   component: Icon,
   title: 'Icon',
-}
+};
 
-export default meta
+const Template: StoryFn<typeof Icon> = (args) => <Icon {...args} />;
 
-export const Primary: Story = {
-  args: {
-    name: 'logos:adonisjs'
-  }
-}
+export const Primary = Template.bind({});
+
+Primary.args = {
+  name: 'logos:adonisjs',
+};
