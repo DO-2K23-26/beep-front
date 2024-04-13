@@ -5,7 +5,8 @@
   "scripts": {
     "start": "nx serve client",
     "build": "nx build client",
-    "test": "nx test",
+    "lint":"nx run-many -t lint",
+    "test": "nx run-many -t test",
     "reset": "nx reset",
     "build:docker": "docker build . -t beep-front",
     "start:docker": "docker run -p 8080:8080 beep-front"

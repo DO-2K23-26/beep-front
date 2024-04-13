@@ -1,0 +1,17 @@
+stages:
+  - test
+include:
+  - template: Jobs/Code-Quality.gitlab-ci.yml
+
+code_quality:
+  stage: test
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+
+Static Code Analysis:
+  image: node:latest
+  stage: test
+  script:
+    - npm install -g pnpm
+    - pnpm install
+    - pnpm run lint

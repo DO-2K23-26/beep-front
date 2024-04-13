@@ -32,3 +32,15 @@ Run the built image:
 ```sh
 pnpm run start:docker
 ```
+
+## Quality
+
+Testing:
+```bash
+pnpm run lint
+```
+
+Linting:
+```bash
+pnpm run test
+```
