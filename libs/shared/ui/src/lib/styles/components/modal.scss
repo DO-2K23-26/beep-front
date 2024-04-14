@@ -1,0 +1,62 @@
+.modal__overlay[data-state='open'] {
+  animation: fadeIn 300ms cubic-bezier(0.16, 1, 0.3, 1) 0s 1 normal forwards running;
+}
+
+.modal__content {
+  opacity: 0;
+  transform-origin: left;
+  transform: scale(0.95) translateX(-50%);
+}
+
+.modal__content[data-state='open'] {
+  animation: modalDisplay 150ms cubic-bezier(0.16, 1, 0.3, 1) 0s 1 normal forwards running;
+  animation-delay: 100ms;
+}
+
+.modal__overlay[data-state='closed'] {
+  animation: fadeOut 150ms cubic-bezier(0.16, 1, 0.3, 1) 0s 1 normal forwards running;
+}
+
+.modal__content[data-state='closed'] {
+  animation: modalHide 200ms 150ms cubic-bezier(0.16, 1, 0.3, 1) 0s 1 normal forwards running;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes modalDisplay {
+  0% {
+    opacity: 0;
+    transform: scale(0.95) translateX(-50%);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) translateX(-50%);
+  }
+}
+
+@keyframes modalHide {
+  from {
+    opacity: 1;
+    transform: scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+}
