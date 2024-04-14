@@ -1,3 +1,3 @@
- export enum userRole{
+ export enum UserRole{
     USER = "USER"
 }
