@@ -1,1 +1,7 @@
+export * from './avatar/avatar'
+export * from './button/button'
+export * from './icons/icon'
 export * from './loader-spinner/loader-spinner'
+export * from './modal/modal'
+export * from './modal-alert/modal-alert'
+export * from './tooltip/tooltip'
