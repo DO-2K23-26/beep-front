@@ -22,20 +22,25 @@ interface DefaultContextProps {
   setAlertModalChoice: (alertModalChoice: boolean | undefined) => void
 }
 
-const defaultContext = {
+const defaultContext: DefaultContextProps = {
   openModal: false,
   setOpenModal: () => true,
+  // eslint-disable-next-line react/jsx-no-useless-fragment
   setContentModal: () => <></>,
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
   setOptionsModal: () => {},
   optionsModal: {
     width: 488
   },
   alertClickOutside: false,
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
   enableAlertClickOutside: () => {},
   modalAlertOpen: false,
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
   setModalAlertOpen: () => {},
 
   alertModalChoice: undefined,
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
   setAlertModalChoice: () => {},
 }
 

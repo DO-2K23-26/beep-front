@@ -41,14 +41,14 @@ export const Modal = (props: ModalProps) => {
     if (!open)
       // when the modal just open nothing should be dirty in the modal
       enableAlertClickOutside && enableAlertClickOutside(false)
-  }, [open])
+  }, [enableAlertClickOutside, open])
 
   useEffect(() => {
     if (alertModalChoice) {
       setOpen(false)
       setAlertModalChoice && setAlertModalChoice(undefined)
     }
-  }, [alertModalChoice])
+  }, [alertModalChoice, setAlertModalChoice])
 
   useEffect(() => {
     if (alertClickOutside && setAlertModalChoice && alertModalChoice) {
@@ -57,10 +57,7 @@ export const Modal = (props: ModalProps) => {
       setAlertModalChoice(undefined)
       enableAlertClickOutside && enableAlertClickOutside(false)
     }
-  }, [
-    alertModalChoice,
-    alertClickOutside,
-  ])
+  }, [alertModalChoice, alertClickOutside, setAlertModalChoice, setExternalOpen, setModalAlertOpen, enableAlertClickOutside])
 
 
 
