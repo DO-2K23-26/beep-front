@@ -17,7 +17,8 @@
     "paths": {
       "@beep/contracts": ["libs/shared/contracts/src/index.ts"],
       "@beep/ui": ["libs/shared/ui/src/index.ts"],
-      "@beep/utils": ["libs/shared/utils/src/index.ts"]
+      "@beep/utils": ["libs/shared/utils/src/index.ts"],
+      "@beep/layout": ["libs/pages/layout/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]
