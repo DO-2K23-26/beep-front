@@ -5,6 +5,7 @@
   "scripts": {
     "start": "nx serve client",
     "build": "nx build client",
+    "storybook": "nx run ui:storybook",
     "lint":"nx run-many -t lint",
     "test": "nx run-many -t test",
     "reset": "nx reset",

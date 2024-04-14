@@ -1,7 +1,7 @@
-import { ReactNode } from 'react';
-import { Icon } from '../icons/icon';
-import { LoaderSpinner } from '../loader-spinner/loader-spinner';
-import { Link } from 'react-router-dom';
+import { ReactNode } from 'react'
+import { Icon } from '../icons/icon'
+import { LoaderSpinner } from '../loader-spinner/loader-spinner'
+import { Link } from 'react-router-dom'
 
 export enum ButtonSize {
   XLARGE = 'xlarge',
