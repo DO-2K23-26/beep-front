@@ -5,7 +5,7 @@ include:
   - template: Jobs/Dependency-Scanning.gitlab-ci.yml
 
 gemnasium-dependency_scanning:
-  tags: [ saas-linux-large-amd64 ]
+  stage: test
   rules:
     - if: $CI_COMMIT_BRANCH == "main"
     - if: $CI_MERGE_REQUEST_IID
