@@ -1,5 +1,5 @@
 import { type FormEvent, type ReactNode } from 'react'
-import {InputRadio} from './input-radio'
+import { InputRadio } from './input-radio'
 
 export interface InputRadioBoxProps {
   name: string
@@ -18,11 +18,24 @@ export function InputRadioBox(props: InputRadioBoxProps) {
       data-testid="input-radio-box"
       onClick={() => onChange(value)}
       className={`p-4 rounded border mb-2 transition-all ${
-        fieldValue === value ? 'bg-brand-50 border-brand-500' : 'bg-neutral-100 border-neutral-250'
+        fieldValue === value
+          ? 'bg-brand-50 border-brand-500'
+          : 'bg-neutral-100 border-neutral-250'
       }`}
     >
-      <InputRadio big name={name} value={value} label={label} onChange={onChange} formValue={fieldValue} />
-      {description && <div className="ml-[31px] text-neutral-400 text-sm mt-1">{description}</div>}
+      <InputRadio
+        big
+        name={name}
+        value={value}
+        label={label}
+        onChange={onChange}
+        formValue={fieldValue}
+      />
+      {description && (
+        <div className="ml-[31px] text-neutral-400 text-sm mt-1">
+          {description}
+        </div>
+      )}
     </div>
   )
 }

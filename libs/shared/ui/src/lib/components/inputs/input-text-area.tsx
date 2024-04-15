@@ -1,4 +1,4 @@
-import { FormEvent, useEffect, useRef, useState } from "react"
+import { FormEvent, useEffect, useRef, useState } from 'react'
 
 export interface InputTextAreaProps {
   label: string
@@ -11,9 +11,17 @@ export interface InputTextAreaProps {
   dataTestId?: string
 }
 
-export function InputTextArea (props: InputTextAreaProps) {
-  const { label, value = '', name, onChange, className, error, dataTestId = 'input-textarea' } = props
-  
+export function InputTextArea(props: InputTextAreaProps) {
+  const {
+    label,
+    value = '',
+    name,
+    onChange,
+    className,
+    error,
+    dataTestId = 'input-textarea',
+  } = props
+
   const [currentValue, setCurrentValue] = useState(value)
 
   useEffect(() => {
@@ -25,7 +33,8 @@ export function InputTextArea (props: InputTextAreaProps) {
   const inputRef = useRef<HTMLDivElement>(null)
 
   const hasFocus = focused
-  const hasLabelUp = hasFocus || (value && value.length > 0) ? 'input--label-up' : ''
+  const hasLabelUp =
+    hasFocus || (value && value.length > 0) ? 'input--label-up' : ''
   const hasError = error && error.length > 0 ? 'input--error' : ''
   const inputActions = hasFocus ? 'input--focused' : ''
 
@@ -42,7 +51,10 @@ export function InputTextArea (props: InputTextAreaProps) {
         className={`input pb-0 pr-2 ${inputActions} ${hasError} ${isDisabled} ${className} ${hasLabelUp}`}
         ref={inputRef}
       >
-        <label htmlFor={label} className={`${hasFocus ? 'text-xs' : 'text-sm translate-y-2'}`}>
+        <label
+          htmlFor={label}
+          className={`${hasFocus ? 'text-xs' : 'text-sm translate-y-2'}`}
+        >
           {label}
         </label>
         <textarea
@@ -59,7 +71,9 @@ export function InputTextArea (props: InputTextAreaProps) {
           disabled={props.disabled}
         />
       </div>
-      {error && <p className="px-4 mt-1 font-medium text-xs text-red-500">{error}</p>}
+      {error && (
+        <p className="px-4 mt-1 font-medium text-xs text-red-500">{error}</p>
+      )}
     </div>
   )
 }

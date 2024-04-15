@@ -1,11 +1,21 @@
+import { ReactNode, useEffect, useId, useState } from 'react'
+import Select, {
+  GroupBase,
+  MenuListProps,
+  MenuPlacement,
+  MultiValue,
+  MultiValueProps,
+  NoticeProps,
+  OptionProps,
+  SingleValue,
+  SingleValueProps,
+  components,
+} from 'react-select'
+import { Tooltip } from '../tooltip/tooltip'
+import { Value } from '@beep/contracts'
+import { Icon } from '../icons/icon'
 
-import { ReactNode, useEffect, useId, useState } from "react"
-import Select, { GroupBase, MenuListProps, MenuPlacement, MultiValue, MultiValueProps, NoticeProps, OptionProps, SingleValue, SingleValueProps, components } from "react-select"
-import { Tooltip } from "../tooltip/tooltip"
-import { IconAwesomeEnum, Value } from "@beep/contracts"
-import { Icon } from "../icons/icon"
-
-import IconFa from "../icons/icon-fa/icon-fa"
+import IconFa from '../icons/icon-fa/icon-fa'
 
 export interface InputSelectProps {
   className?: string
@@ -51,7 +61,9 @@ export function InputSelect({
   menuPlacement = 'auto',
 }: InputSelectProps) {
   const [focused, setFocused] = useState(false)
-  const [selectedItems, setSelectedItems] = useState<MultiValue<Value> | SingleValue<Value>>([])
+  const [selectedItems, setSelectedItems] = useState<
+    MultiValue<Value> | SingleValue<Value>
+  >([])
   const [selectedValue, setSelectedValue] = useState<string | string[]>([])
 
   const selectedWithIconClassName = 'ml-8'
@@ -109,7 +121,9 @@ export function InputSelect({
             className="input-select__button w-full mt-4 relative before:content-[''] before:w-full before:h-[1px] before:block before:bg-neutral-150 before:absolute before:-top-2 before:left-0"
             onClick={menuListButton.onClick}
           >
-            <div className="w-4 h-full flex items-center justify-center">{menuListButton.icon}</div>
+            <div className="w-4 h-full flex items-center justify-center">
+              {menuListButton.icon}
+            </div>
             <Tooltip content={menuListButton.label}>
               <label className="ml-2 truncate">{menuListButton.label}</label>
             </Tooltip>
@@ -126,14 +140,18 @@ export function InputSelect({
         <components.Option {...props}>
           {isMulti ? (
             <span className="input-select__checkbox">
-              {props.isSelected && <Icon name={IconAwesomeEnum.CHECK} className="text-xs" />}
+              {props.isSelected && (
+                <Icon name={'icon-solid-cloud-check'} className="text-xs" />
+              )}
             </span>
           ) : props.isSelected ? (
-            <Icon name={IconAwesomeEnum.CHECK} className="text-green-500" />
+            <Icon name={'icon-solid-cloud-check'} className="text-green-500" />
           ) : props.data.icon ? (
-            <div className="w-4 h-full flex items-center justify-center">{props.data.icon}</div>
+            <div className="w-4 h-full flex items-center justify-center">
+              {props.data.icon}
+            </div>
           ) : (
-            <Icon name={IconAwesomeEnum.CHECK} className="opacity-0" />
+            <Icon name={'icon-solid-cloud-check'} className="opacity-0" />
           )}
           <label id={id} className="ml-2 truncate">
             {props.label}
@@ -143,7 +161,9 @@ export function InputSelect({
     )
   }
 
-  const MultiValue = (props: MultiValueProps<Value, true, GroupBase<Value>>) => (
+  const MultiValue = (
+    props: MultiValueProps<Value, true, GroupBase<Value>>
+  ) => (
     <span className="text-sm text-neutral-400 mr-1">
       {props.data.label}
       {props.index + 1 !== (selectedItems as MultiValue<Value>).length && ', '}
@@ -158,8 +178,10 @@ export function InputSelect({
     return (
       <components.NoOptionsMessage {...props}>
         <div className="text-center px-3 py-6">
-          <Icon name={IconAwesomeEnum.WAVE_PULSE} className="text-neutral-350" />
-          <p className="text-neutral-350 font-medium text-xs mt-1">No result for this search</p>
+          <Icon name={'icon-solid-wave-pulse'} className="text-neutral-350" />
+          <p className="text-neutral-350 font-medium text-xs mt-1">
+            No result for this search
+          </p>
         </div>{' '}
       </components.NoOptionsMessage>
     )
@@ -177,16 +199,22 @@ export function InputSelect({
       ? 'input--error'
       : ''
 
-  const [hasLabelUp, setHasLabelUp] = useState(value?.length !== 0 ? 'input--label-up' : '')
+  const [hasLabelUp, setHasLabelUp] = useState(
+    value?.length !== 0 ? 'input--label-up' : ''
+  )
 
   useEffect(() => {
-    setHasLabelUp(hasFocus || selectedValue.length !== 0 ? 'input--label-up' : '')
+    setHasLabelUp(
+      hasFocus || selectedValue.length !== 0 ? 'input--label-up' : ''
+    )
   }, [hasFocus, selectedValue, setHasLabelUp])
 
   return (
     <div className={className}>
       <div
-        className={`input input--select ${hasIcon ? 'input--has-icon' : ''} ${inputActions} ${
+        className={`input input--select ${
+          hasIcon ? 'input--has-icon' : ''
+        } ${inputActions} ${
           disabled ? '!bg-neutral-100 !border-neutral-250' : ''
         } ${isFilter ? 'input--filter' : ''}`}
         data-testid={dataTestId || 'select'}
@@ -205,7 +233,11 @@ export function InputSelect({
             className={
               hasIcon
                 ? `!text-xs !translate-y-0 ${selectedWithIconClassName}`
-                : `${hasLabelUp ? '!text-xs !translate-y-0' : 'text-sm translate-y-2 top-1.5'}`
+                : `${
+                    hasLabelUp
+                      ? '!text-xs !translate-y-0'
+                      : 'text-sm translate-y-2 top-1.5'
+                  }`
             }
           >
             {label}
@@ -244,7 +276,11 @@ export function InputSelect({
               pointerEvents: 'auto',
               zIndex: 100,
               // Prevent misplacement with intercom banner
-              marginTop: `-${document.body.style.marginTop ? document.body.style.marginTop : 0}`,
+              marginTop: `-${
+                document.body.style.marginTop
+                  ? document.body.style.marginTop
+                  : 0
+              }`,
             }),
           }}
           menuIsOpen={isFilter ? true : undefined}
@@ -252,7 +288,10 @@ export function InputSelect({
         <input type="hidden" name={label} value={selectedValue} />
         {!isFilter && (
           <div className="absolute top-1/2 -translate-y-1/2 right-4 pointer-events-none">
-            <Icon name="icon-solid-angle-down" className="text-sm text-neutral-400" />
+            <Icon
+              name="icon-solid-angle-down"
+              className="text-sm text-neutral-400"
+            />
           </div>
         )}
         {currentIcon?.onClickEditable && (
@@ -264,11 +303,13 @@ export function InputSelect({
               currentIcon.onClickEditable && currentIcon.onClickEditable()
             }}
           >
-            <IconFa name={IconAwesomeEnum.PEN} />
+            <IconFa name={'icon-solid-pen'} />
           </div>
         )}
       </div>
-      {error && <p className="px-4 mt-1 font-medium text-xs text-red-500">{error}</p>}
+      {error && (
+        <p className="px-4 mt-1 font-medium text-xs text-red-500">{error}</p>
+      )}
     </div>
   )
 }
