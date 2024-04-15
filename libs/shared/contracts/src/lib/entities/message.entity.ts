@@ -5,8 +5,8 @@ export interface MessageEntity {
     ownerId: string
     content: string
     channelId: string
-    attachments: unknown[]
+    attachments?: unknown[]
     owner?: UserEntity
-    createdAt: string
-    updatedAt: string
+    createdAt?: string
+    updatedAt?: string
   }
