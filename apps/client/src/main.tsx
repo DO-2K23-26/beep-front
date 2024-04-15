@@ -21,5 +21,4 @@ root.render(
       </BrowserRouter>
     </Provider>
   </StrictMode>
-
 )
