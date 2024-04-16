@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=GFS+Didot&family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap');
+
 @tailwind components;
 @tailwind base;
 @tailwind utilities;
@@ -10,3 +12,39 @@
 @import 'components/input.scss';
 @import 'components/modal.scss';
 @import 'components/skeleton.scss';
+
+@layer base {
+  * {
+    font-family: 'Inter', sans-serif;
+    @apply text-slate-900;
+  }
+  h1 {
+    @apply text-5xl;
+  }
+  h2 {
+    @apply text-3xl;
+  }
+  h3 {
+    @apply text-2xl;
+  }
+  h4 {
+    @apply text-lg;
+  }
+  h5 {
+    @apply text-base;
+  }
+  p {
+    @apply text-sm;
+  }
+}
+
+@layer utilities {
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+}
