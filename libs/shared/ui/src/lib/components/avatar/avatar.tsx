@@ -25,14 +25,14 @@ export function Avatar(props: AvatarProps) {
     username,
     url,
     style,
-    icon,
-    logoUrl,
-    logoText,
+    // icon,
+    // logoUrl,
+    // logoText,
     className = '',
     alt,
     onClick,
     size = 32,
-    noTooltip = false,
+    // noTooltip = false,
     rounded
   } = props
 
@@ -69,5 +69,5 @@ export function Avatar(props: AvatarProps) {
     </div>
   )
 
-  return <>{avatarContent}</>
+  return <div>{avatarContent}</div>
 }

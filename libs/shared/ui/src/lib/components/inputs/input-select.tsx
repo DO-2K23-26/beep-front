@@ -136,7 +136,7 @@ export function InputSelect({
   const Option = (props: OptionProps<Value, true, GroupBase<Value>>) => {
     const id = useId()
     return (
-      <div role="option" aria-labelledby={id}>
+      <div role="option" aria-selected aria-labelledby={id}>
         <components.Option {...props}>
           {isMulti ? (
             <span className="input-select__checkbox">

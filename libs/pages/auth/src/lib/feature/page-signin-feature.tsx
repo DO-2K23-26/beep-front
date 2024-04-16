@@ -4,7 +4,7 @@ import { PageSignin } from '../ui/page-signin'
 import { useNavigate } from 'react-router-dom'
 
 export function PageSigninFeature() {
-  const [loading, setLoading] = useState(false)
+  const [loading] = useState(false)
   const navigate = useNavigate()
   const [error, setError] = useState('')
 

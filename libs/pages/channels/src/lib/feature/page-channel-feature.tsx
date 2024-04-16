@@ -1,6 +1,5 @@
 import { MessageEntity } from '@beep/contracts'
 // import { channelApi, useGetMessagesByChannelIdQuery } from '@beep/domains/channels';
-import { useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { MessageFormValues, PageChannel } from '../ui/page-channel'
 

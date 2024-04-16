@@ -1,5 +1,5 @@
 import { Button, ButtonStyle, InputText } from '@beep/ui'
-import { Controller, useForm, useFormContext } from 'react-hook-form'
+import { Controller, useFormContext } from 'react-hook-form'
 
 export interface PageSignupProps {
   onSubmit: () => void
