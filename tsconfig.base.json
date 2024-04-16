@@ -26,7 +26,8 @@
       "@beep/ui": ["libs/shared/ui/src/index.ts"],
       "@beep/utils": ["libs/shared/utils/src/index.ts"],
       "@beep/channels": ["libs/pages/channels/src/index.ts"],
-      "@beep/user": ["libs/domains/user/src/index.ts"]
+      "@beep/user": ["libs/domains/user/src/index.ts"],
+      "@front/channel": ["libs/domains/channel/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]

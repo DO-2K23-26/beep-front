@@ -1,0 +1,9 @@
+{
+  "name": "channel",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/domains/channel/src",
+  "projectType": "library",
+  "tags": [],
+  "// targets": "to see all targets run: nx show project channel --web",
+  "targets": {}
+}
