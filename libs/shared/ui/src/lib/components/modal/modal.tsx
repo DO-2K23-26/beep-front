@@ -1,8 +1,15 @@
-import {cloneElement, ReactElement, ReactNode, useContext, useEffect, useState} from "react"
-import useModalAlert from "../modal-alert/use-modal-alert"
-import {ModalContext} from "./modal-root"
+import {
+  cloneElement,
+  ReactElement,
+  ReactNode,
+  useContext,
+  useEffect,
+  useState,
+} from 'react'
+import useModalAlert from '../modal-alert/use-modal-alert'
+import { ModalContext } from './modal-root'
 import * as Dialog from '@radix-ui/react-dialog'
-import { Icon } from "../icons/icon"
+import { Icon } from '../icons/icon'
 
 export interface ModalProps {
   children: ReactElement
@@ -34,10 +41,15 @@ export const Modal = (props: ModalProps) => {
   const [open, setOpen] = useState(defaultOpen)
   const { setModalAlertOpen } = useModalAlert()
 
-  const { setAlertModalChoice, enableAlertClickOutside, alertClickOutside, alertModalChoice } = useContext(ModalContext)
+  const {
+    setAlertModalChoice,
+    enableAlertClickOutside,
+    alertClickOutside,
+    alertModalChoice,
+  } = useContext(ModalContext)
 
   useEffect(() => {
-    console.log(open)
+    // console.log(open)
     if (!open)
       // when the modal just open nothing should be dirty in the modal
       enableAlertClickOutside && enableAlertClickOutside(false)
@@ -57,14 +69,23 @@ export const Modal = (props: ModalProps) => {
       setAlertModalChoice(undefined)
       enableAlertClickOutside && enableAlertClickOutside(false)
     }
-  }, [alertModalChoice, alertClickOutside, setAlertModalChoice, setExternalOpen, setModalAlertOpen, enableAlertClickOutside])
-
-
+  }, [
+    alertModalChoice,
+    alertClickOutside,
+    setAlertModalChoice,
+    setExternalOpen,
+    setModalAlertOpen,
+    enableAlertClickOutside,
+  ])
 
   return (
     <Dialog.Root
       open={externalOpen ? externalOpen : open}
-      onOpenChange={setExternalOpen ? () => setExternalOpen(!externalOpen) : () => setOpen(!open)}
+      onOpenChange={
+        setExternalOpen
+          ? () => setExternalOpen(!externalOpen)
+          : () => setOpen(!open)
+      }
     >
       {trigger && <div onClick={() => setOpen(!open)}>{trigger}</div>}
       <Dialog.Portal>
