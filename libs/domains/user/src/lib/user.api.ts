@@ -1,0 +1,92 @@
+import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
+import { RootState } from '@beep/store'
+import { backendUrl, LoginRequest, LoginResponse, RegisterRequest, RegisterResponse, UserEntity } from '@beep/contracts'
+
+export const userApi = createApi({
+  reducerPath: 'userApi',
+  baseQuery: fetchBaseQuery({
+    baseUrl: backendUrl,
+    credentials: 'include',
+    prepareHeaders: (headers, { getState }) => {
+      const { user } = getState() as RootState;
+      if (user?.tokens?.accessToken) {
+        headers.set('Authorization', `Bearer ${user.tokens.accessToken}`);
+      }
+      return headers;
+    }
+  }),
+  tagTypes: ['users'],
+  endpoints: (builder) => ({
+    login: builder.mutation<LoginResponse, LoginRequest>({
+      query: (credentials) => ({
+        url: '/authentication/login',
+        method: 'POST',
+        body: credentials
+      })
+    }),
+    register: builder.mutation<RegisterResponse, RegisterRequest>({
+      query: (data) => ({
+        url: '/authentication/register',
+        method: 'POST',
+        body: data
+      })
+    }),
+    refresh: builder.mutation<any, string>({
+      query: (refreshToken) => ({
+        url: '/authentication/refresh',
+        method: 'POST',
+        body: { refreshToken }
+      })
+    }),
+    fetchAllUsers: builder.query<UserEntity[], void>({
+      query: () => '/users',
+      providesTags: ['users']
+    }),
+    fetchAllUsersToDisplay: builder.query<UserEntity[], void>({
+      query: () => '/users/display',
+      providesTags: ['users']
+    }),
+    fetchConnectedUsers: builder.query<UserEntity[], void>({
+      query: () => '/users/onlines',
+      providesTags: ['users']
+    }),
+    connect: builder.mutation({
+      query: () => ({
+        url: '/users/connect',
+        method: 'POST',
+      })
+    }),
+    disconnect: builder.mutation<any, void>({
+      query: () => ({
+        url: '/users/disconnect',
+        method: 'POST'
+      })
+    }),
+    sendEmail: builder.mutation<any, void>({
+      query: () => ({
+        url: '/authentication/send-email',
+        method: 'POST'
+      })
+    }),
+    verifyEmail: builder.mutation<any, { token: string }>({
+      query: (data) => ({
+        url: '/authentication/verify',
+        method: 'POST',
+        body: data
+      })
+    })
+  })
+});
+
+export const {
+  useLoginMutation,
+  useRegisterMutation,
+  useRefreshMutation,
+  useFetchAllUsersQuery,
+  useFetchConnectedUsersQuery,
+  useFetchAllUsersToDisplayQuery,
+  useConnectMutation,
+  useDisconnectMutation,
+  useSendEmailMutation,
+  useVerifyEmailMutation,
+} = userApi;
