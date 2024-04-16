@@ -1,9 +1,14 @@
 import { Route } from '@beep/routes'
-import { PageLoginFeature } from './feature/page-signin-feature'
+import { PageSigninFeature } from './feature/page-signin-feature'
+import { PageSignupFeature } from './feature/page-signup-feature'
 
 export const ROUTER_AUTH: Route[] = [
   {
-    path: '/login',
-    component: <PageLoginFeature />,
+    path: '/signin',
+    component: <PageSigninFeature />,
+  },
+  {
+    path: '/signup',
+    component: <PageSignupFeature />,
   },
 ]
