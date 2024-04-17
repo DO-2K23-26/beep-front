@@ -23,7 +23,6 @@ export const userSlice = createSlice({
         refreshToken?: string | null
       }>
     ) {
-      console.log('SLICE', payload.payload)
       if (payload.payload.accessToken) {
         state.payload = JSON.parse(
           atob(payload.payload.accessToken?.split('.')[1])

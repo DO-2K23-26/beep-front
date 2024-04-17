@@ -1,12 +1,21 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
 import { PageSignin } from '../ui/page-signin'
 import { useNavigate } from 'react-router-dom'
+import { LoginRequest } from '@beep/contracts'
+import { AppDispatch } from '@beep/store'
+import { useDispatch, useSelector } from 'react-redux'
+import { getUserState, useLoginMutation, userActions } from '@beep/user'
 
 export function PageSigninFeature() {
-  const [loading] = useState(false)
+  const dispatch = useDispatch<AppDispatch>()
+  const [login, result] = useLoginMutation()
   const navigate = useNavigate()
   const [error, setError] = useState('')
+  const { isAuthenticated } = useSelector(getUserState)
+  const methods = useForm({
+    mode: 'onChange',
+  })
 
   const toForgetPassword = () => {
     navigate('/authentication/forget-password')
@@ -16,21 +25,31 @@ export function PageSigninFeature() {
     navigate('/authentication/signup')
   }
 
-  const methods = useForm({
-    mode: 'onChange',
+  const onSubmit = methods.handleSubmit((data) => {
+    login(data as LoginRequest)
   })
 
-  const onSubmit = methods.handleSubmit((data) => {
-    console.log('ENVOIE DU SIGNIN', data)
-    //TODO: implement login + catch error
-    setError('Email or password incorrect')
-  })
+  useEffect(() => {
+    if (result.isSuccess && result.data !== undefined) {
+      sessionStorage.setItem('accessToken', result.data.tokens.accessToken)
+      sessionStorage.setItem('refreshToken', result.data.tokens.refreshToken)
+      dispatch(userActions.setTokens(result.data.tokens))
+    } else if (result.isError) {
+      setError('Email or password incorrect')
+    }
+  }, [result])
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      navigate('/channels/@me')
+    }
+  }, [isAuthenticated])
 
   return (
     <FormProvider {...methods}>
       <PageSignin
         onSubmit={onSubmit}
-        loading={loading}
+        loading={result.isLoading}
         toSignup={toSignup}
         toForgetPassword={toForgetPassword}
         error={error}
