@@ -1,1 +1,2 @@
-export * from './lib/channel'
+export * from './lib/channel.api'
+export * from './lib/channel.slice'

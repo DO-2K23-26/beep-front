@@ -3,7 +3,6 @@ import { UserEntity } from "../entities"
 export interface UserState {
     user?: UserEntity
     isAuthenticated: boolean
-    isLoading: boolean
     tokens: {
         refreshToken?: string | null
         accessToken?: string | null

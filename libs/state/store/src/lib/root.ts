@@ -1,6 +1,15 @@
+/* eslint-disable @nx/enforce-module-boundaries */
+import { userApi, userReducer } from '@beep/user';
+import { channelApi, channelsReducer } from '@beep/channel';
 import { combineReducers, configureStore } from '@reduxjs/toolkit';
 
-export const rootReducer = combineReducers({})
+export const rootReducer = combineReducers({
+  user: userReducer,
+  channels: channelsReducer,
+  [userApi.reducerPath]: userApi.reducer,
+  [channelApi.reducerPath]: channelApi.reducer
+})
+
 
 export function setupStore(preloadedState?: never) {
   return configureStore({
@@ -10,7 +19,9 @@ export function setupStore(preloadedState?: never) {
       getDefaultMiddleware({
         serializableCheck: false,
         immutableCheck: false,
-      }),
+      })
+        .concat(userApi.middleware)
+        .concat(channelApi.middleware)
   })
 }
 
