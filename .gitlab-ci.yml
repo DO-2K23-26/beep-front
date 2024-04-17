@@ -4,7 +4,7 @@ include:
   - template: Jobs/Code-Quality.gitlab-ci.yml
   - template: Jobs/Dependency-Scanning.gitlab-ci.yml
 
-gemnasium-dependency_scanning:
+gemnasium_dependency_scanning:
   stage: test
   rules:
     - if: $CI_COMMIT_BRANCH == "main"
