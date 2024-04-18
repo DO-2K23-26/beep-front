@@ -1,4 +1,5 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
+// eslint-disable-next-line @nx/enforce-module-boundaries
 import { RootState } from '@beep/store'
 import { backendUrl, LoginRequest, LoginResponse, RegisterRequest, RegisterResponse, UserEntity } from '@beep/contracts'
 
@@ -50,18 +51,6 @@ export const userApi = createApi({
       query: () => '/users/onlines',
       providesTags: ['users']
     }),
-    connect: builder.mutation({
-      query: () => ({
-        url: '/users/connect',
-        method: 'POST',
-      })
-    }),
-    disconnect: builder.mutation<any, void>({
-      query: () => ({
-        url: '/users/disconnect',
-        method: 'POST'
-      })
-    }),
     sendEmail: builder.mutation<any, void>({
       query: () => ({
         url: '/authentication/send-email',
@@ -85,8 +74,7 @@ export const {
   useFetchAllUsersQuery,
   useFetchConnectedUsersQuery,
   useFetchAllUsersToDisplayQuery,
-  useConnectMutation,
-  useDisconnectMutation,
+
   useSendEmailMutation,
   useVerifyEmailMutation,
 } = userApi;

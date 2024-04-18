@@ -1,4 +1,5 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
+// eslint-disable-next-line @nx/enforce-module-boundaries
 import { RootState } from '@beep/store';
 import { UserEntity } from '@beep/contracts';
 

@@ -4,11 +4,14 @@ import {
   createSlice,
 } from '@reduxjs/toolkit'
 import { UserEntity, UserState } from '@beep/contracts'
+// eslint-disable-next-line @nx/enforce-module-boundaries
 import { RootState } from '@beep/store'
 export const USER_KEY = 'user'
 export const userAdapter = createEntityAdapter<UserEntity>()
 export const initialUserState: UserState = {
   isAuthenticated: false,
+  isLoading: true,
+  isConfirmed: false,
   tokens: {},
 }
 export const userSlice = createSlice({
@@ -30,8 +33,12 @@ export const userSlice = createSlice({
       state.tokens = payload.payload
       state.isAuthenticated = !!payload.payload.accessToken
     },
+    updateIsLoading(state, payload: PayloadAction<boolean>) {
+      state.isLoading = payload.payload
+    }
   },
 })
+export const getUserState = (root: RootState) => root[USER_KEY]
 export const userReducer = userSlice.reducer
 export const userActions = userSlice.actions
-export const getUserState = (root: RootState) => root[USER_KEY]
+
