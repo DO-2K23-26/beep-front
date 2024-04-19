@@ -43,14 +43,6 @@ export const userApi = createApi({
       query: () => '/users',
       providesTags: ['users']
     }),
-    fetchAllUsersToDisplay: builder.query<UserEntity[], void>({
-      query: () => '/users/display',
-      providesTags: ['users']
-    }),
-    fetchConnectedUsers: builder.query<UserEntity[], void>({
-      query: () => '/users/onlines',
-      providesTags: ['users']
-    }),
     sendEmail: builder.mutation<any, void>({
       query: () => ({
         url: '/authentication/send-email',
@@ -72,9 +64,6 @@ export const {
   useRegisterMutation,
   useRefreshMutation,
   useFetchAllUsersQuery,
-  useFetchConnectedUsersQuery,
-  useFetchAllUsersToDisplayQuery,
-
   useSendEmailMutation,
   useVerifyEmailMutation,
 } = userApi;
