@@ -6,8 +6,8 @@ export interface UserEntity {
     username: string
     firstname: string
     lastname: string
-    profilePicture: string
-    roles: UserRole[]
-    created_at: string
-    updated_at: string
+    profilePicture?: string
+    roles?: UserRole[]
+    created_at?: string
+    updated_at?: string
 }

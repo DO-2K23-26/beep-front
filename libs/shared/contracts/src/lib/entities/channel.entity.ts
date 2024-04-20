@@ -5,6 +5,6 @@ export interface ChannelEntity {
     name: string
     server_id: string | null
     type: ChannelType
-    created_at: string
-    updated_at: string
+    created_at?: string
+    updated_at?: string
 }
