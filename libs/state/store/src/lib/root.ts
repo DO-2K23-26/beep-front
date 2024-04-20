@@ -2,6 +2,7 @@
 import { userApi, userReducer } from '@beep/user';
 import { channelApi, channelsReducer } from '@beep/channel';
 import { combineReducers, configureStore } from '@reduxjs/toolkit';
+import { responsiveReducer } from '@beep/responsive'
 
 export const rootReducer = combineReducers({
   user: userReducer,
