@@ -7,6 +7,30 @@ import {
 import { FormProvider, useForm } from 'react-hook-form'
 import { PageChannel } from '../ui/page-channel'
 
+const onSend = () => {
+  console.log('Send message')
+}
+
+const onFiles = () => {
+  console.log('Files')
+}
+
+export function PageChannelFeature() {
+  const methods = useForm({
+    mode: 'onChange',
+  })
+  return (
+    <FormProvider {...methods}>
+      <PageChannel
+        messages={messages}
+        channel={channel}
+        onSend={onSend}
+        onFiles={onFiles}
+      />
+    </FormProvider>
+  )
+}
+
 const user: UserEntity = {
   id: '1',
   email: 'rapidement@gmail.com',
@@ -104,29 +128,4 @@ const channel: ChannelEntity = {
   name: '418 I am a teapot',
   server_id: '1',
   type: ChannelType.TEXT,
-}
-
-const onSend = () => {
-  console.log('Send message')
-}
-
-const onFiles = () => {
-  console.log('Send file')
-}
-
-export function PageChannelFeature() {
-  const methods = useForm({
-    mode: 'onChange',
-  })
-
-  return (
-    <FormProvider {...methods}>
-      <PageChannel
-        messages={messages}
-        channel={channel}
-        onSend={onSend}
-        onFiles={onFiles}
-      />
-    </FormProvider>
-  )
 }

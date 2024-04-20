@@ -1,4 +1,6 @@
 import { ResponsiveState } from "@beep/contracts"
+// eslint-disable-next-line @nx/enforce-module-boundaries
+import { RootState } from "@beep/store"
 import { createSlice } from "@reduxjs/toolkit"
 
 export const RESPONSIVE_KEY = 'responsive'
@@ -29,3 +31,4 @@ export const channelsSlice = createSlice({
 
 export const responsiveReducer = channelsSlice.reducer
 export const responsiveActions = channelsSlice.actions
+export const getResponsiveState = (root: RootState) => root[RESPONSIVE_KEY]
