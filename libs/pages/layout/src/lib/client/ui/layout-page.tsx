@@ -23,7 +23,7 @@ export default function LayoutPage({
             : 'bg-violet-200 w-full p-6 flex flex-col gap-6 justify-between h-[100dvh]'
         }
       > */}
-      <div className="flex">{children}</div>
+      <div className="flex w-full">{children}</div>
 
       {/* <div
         className={isRightDivVisible ? 'flex abolute w-full' : 'hidden lg:flex'}

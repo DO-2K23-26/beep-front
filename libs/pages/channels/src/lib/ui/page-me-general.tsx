@@ -1,8 +1,3 @@
-
 export function PageMeGeneral() {
-  return (
-    <div>
-      <h1>Init PageMeGeneral!</h1>
-    </div>
-  )
+  return <div className="bg-violet-200 w-full"></div>
 }
