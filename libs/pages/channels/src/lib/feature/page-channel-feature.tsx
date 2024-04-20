@@ -1,42 +1,133 @@
-import { MessageEntity } from '@beep/contracts'
-// import { channelApi, useGetMessagesByChannelIdQuery } from '@beep/domains/channels';
-import { useParams } from 'react-router-dom'
-import { MessageFormValues, PageChannel } from '../ui/page-channel'
+import {
+  ChannelEntity,
+  ChannelType,
+  MessageEntity,
+  UserEntity,
+} from '@beep/contracts'
+import { FormProvider, useForm } from 'react-hook-form'
+import { PageChannel } from '../ui/page-channel'
+
+const user: UserEntity = {
+  id: '1',
+  email: 'rapidement@gmail.com',
+  username: 'Rapidement',
+  firstname: 'Dorian',
+  lastname: 'Grasset',
+  profilePicture: '/picture.svg',
+}
 
 const messages: MessageEntity[] = [
   {
-    id: 'fkremifjewiofj',
-    ownerId: 'fmjerwnfruif',
+    id: '1',
+    ownerId: '1',
     content: 'Hello',
-    channelId: 'fiejfriofj',
+    channelId: '1',
+    createdAt: '2021-09-20',
+    owner: user,
+  },
+  {
+    id: '2',
+    ownerId: '1',
+    content: 'World',
+    channelId: '1',
+    createdAt: '2021-09-20',
+    owner: user,
+  },
+  {
+    id: '3',
+    ownerId: '1',
+    content: '!',
+    channelId: '1',
+    createdAt: '2021-09-20',
+    owner: user,
+  },
+  {
+    id: '4',
+    ownerId: '1',
+    content: 'How are you?',
+    channelId: '1',
+    createdAt: '2021-09-20',
+    owner: user,
+  },
+  {
+    id: '5',
+    ownerId: '1',
+    content: 'I am fine',
+    channelId: '1',
+    createdAt: '2021-09-20',
+    owner: user,
+  },
+  {
+    id: '6',
+    ownerId: '1',
+    content: 'Thank you',
+    channelId: '1',
+    createdAt: '2021-09-20',
+    owner: user,
+  },
+  {
+    id: '7',
+    ownerId: '1',
+    content: '!',
+    channelId: '1',
+    createdAt: '2021-09-20',
+    owner: user,
+  },
+  {
+    id: '8',
+    ownerId: '1',
+    content: 'Goodbye',
+    channelId: '1',
+    createdAt: '2021-09-20',
+    owner: user,
+  },
+  {
+    id: '9',
+    ownerId: '1',
+    content: 'See you later',
+    channelId: '1',
+    createdAt: '2021-09-20',
+    owner: user,
+  },
+  {
+    id: '10',
+    ownerId: '1',
+    content:
+      'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA',
+    channelId: '1',
+    createdAt: '2021-09-20',
+    owner: user,
   },
 ]
 
+const channel: ChannelEntity = {
+  id: '1',
+  name: '418 I am a teapot',
+  server_id: '1',
+  type: ChannelType.TEXT,
+}
+
+const onSend = () => {
+  console.log('Send message')
+}
+
+const onFiles = () => {
+  console.log('Files')
+}
+
 export function PageChannelFeature() {
-  //recuperer les messages du channel dont l'id est numChannel
-  const { channelId = '' } = useParams<{ channelId: string }>()
-
-  // const { data: channel, refetch } = useGetMessagesByChannelIdQuery(channelId)
-  // const [createMessage, _] = channelApi.endpoints.createMessage.useMutation();
-
-  const sendMessage = (data: MessageFormValues) => {
-    const formadata = new FormData()
-    formadata.append('content', data.content)
-    if (data.files) {
-      for (let i = 0; i < data.files.length; i++) {
-        formadata.append('attachments[' + i + ']', data.files[i])
-      }
-    }
-    formadata.append('channelId', channelId)
-    console.log(formadata.getAll('attachments'))
-    // createMessage(formadata)
-  }
+  const methods = useForm({
+    mode: 'onChange',
+  })
 
   return (
-    <PageChannel
-      channelId={channelId}
-      messages={messages}
-      sendMessage={sendMessage}
-    />
+    <FormProvider {...methods}>
+      <PageChannel
+        messages={messages}
+        channel={channel}
+        onSend={onSend}
+        onFiles={onFiles}
+      />
+    </FormProvider>
   )
 }
