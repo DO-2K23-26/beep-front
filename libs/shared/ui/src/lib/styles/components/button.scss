@@ -1,5 +1,5 @@
 .btn {
-  @apply h-9 inline-flex items-center justify-center px-4 rounded cursor-pointer bg-brand-500 hover:bg-brand-600 text-white font-medium text-ssm gap-2;
+  @apply h-9 inline-flex items-center justify-center px-4 rounded-xl hover:rounded-2xl cursor-pointer bg-brand-500 hover:bg-brand-600 text-white font-medium text-ssm gap-2;
   transition: 0.25s color $timing-cubic;
   transition-property: color, background;
 
@@ -23,6 +23,10 @@
 
 .btn--none {
   @apply bg-transparent;
+}
+
+.btn--square {
+  @apply p-0 min-w-0 outline-none h-14 w-14 bg-violet-50 rounded-xl hover:rounded-2xl transition-all #{!important};
 }
 
 .btn--stroked {

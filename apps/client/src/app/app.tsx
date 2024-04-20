@@ -1,26 +1,32 @@
-import { Navigate, Route, Routes } from 'react-router'
-import { ROUTER } from './router.main'
+import { Layout } from '@beep/pages/layout'
+import {
+  Navigate,
+  Route,
+  Routes
+} from 'react-router-dom'
 import { match } from 'ts-pattern'
-import React from 'react'
+import { ROUTER } from './router.main'
 
 export default function App() {
   return (
     <div>
       <Routes>
-        {ROUTER.map((route, index) => (
-          <React.Fragment key={index}>
-            {match(route)
-              .when(
-                (r) => r.layout,
-                (r) => (
-                  <Route key={r.path} path={r.path} element={r.component} />
-                )
+        {ROUTER.map((route) =>
+          match(route)
+            .when(
+              (r) => r.layout,
+              (r) => (
+                <Route
+                  key={r.path}
+                  path={r.path}
+                  element={<Layout>{r.component}</Layout>}
+                />
               )
-              .otherwise((r) => (
-                <Route key={r.path} path={r.path} element={r.component} />
-              ))}
-          </React.Fragment>
-        ))}
+            )
+            .otherwise((r) => (
+              <Route key={r.path} path={r.path} element={r.component} />
+            ))
+        )}
         <Route path="*" element={<Navigate to="/channels/@me" />} />
       </Routes>
     </div>
