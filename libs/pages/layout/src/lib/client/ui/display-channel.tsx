@@ -1,5 +1,5 @@
 import { ChannelEntity, ChannelType } from '@beep/contracts'
-import { Icon } from '@beep/ui'
+import { Button, ButtonStyle, Icon } from '@beep/ui'
 
 interface DisplayChannelProps {
   channel: ChannelEntity
@@ -24,9 +24,9 @@ export default function DisplayChannel({
           <p className="font-semibold max-w-[150px] truncate">{channel.name}</p>
         </div>
         <div className="flex justify-center items-center invisible group-hover:visible">
-          <button onClick={onParameters}>
+          <Button style={ButtonStyle.NONE} onClick={onParameters}>
             <Icon name="lucide:settings" className="w-4 h-4" />
-          </button>
+          </Button>
         </div>
       </div>
     </div>

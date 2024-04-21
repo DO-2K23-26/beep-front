@@ -1,5 +1,5 @@
 import { UserEntity } from '@beep/contracts'
-import { Icon } from '@beep/ui'
+import { Button, ButtonStyle, Icon } from '@beep/ui'
 
 interface MessageProps {
   message: string
@@ -38,12 +38,12 @@ export default function Message({
           <p className="font-normal text-xs truncate">{createdAt}</p>
         </div>
         <div className="flex flex-row gap-4 items-center invisible group-hover:visible pr-2">
-          <button onClick={onEdit}>
+          <Button style={ButtonStyle.NONE} onClick={onEdit}>
             <Icon name="lucide:pencil" className="w-4 h-4" />
-          </button>
-          <button onClick={onDelete}>
+          </Button>
+          <Button style={ButtonStyle.NONE} onClick={onDelete}>
             <Icon name="lucide:trash" className="w-4 h-4" />
-          </button>
+          </Button>
         </div>
       </div>
       <div className="flex flex-row gap-2 ">

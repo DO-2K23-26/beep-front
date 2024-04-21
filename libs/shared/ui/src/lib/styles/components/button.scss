@@ -22,10 +22,12 @@
 }
 
 .btn--none {
-  @apply bg-transparent;
+  // eslint-disable-next-line scss/css-ruleorselectorexpected
+  @apply bg-transparent p-0 min-w-fit h-fit #{!important};
 }
 
 .btn--square {
+  // eslint-disable-next-line scss/css-ruleorselectorexpected
   @apply p-0 min-w-0 outline-none h-14 w-14 bg-violet-50 rounded-xl hover:rounded-2xl transition-all #{!important};
 }
 

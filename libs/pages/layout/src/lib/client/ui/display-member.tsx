@@ -1,6 +1,5 @@
 import { UserEntity } from '@beep/contracts'
-import { Badge, BadgeType, Icon } from '@beep/ui'
-
+import { Badge, BadgeType, Button, ButtonStyle, Icon } from '@beep/ui'
 
 interface DisplayMemberProps {
   user: UserEntity
@@ -24,12 +23,13 @@ export default function DisplayMember({
         </h5>
       </div>
       <div className="flex-row gap-3 items-center flex">
-        <button
+        <Button
+          style={ButtonStyle.NONE}
           className="hidden sm:flex invisible group-hover:visible"
           onClick={onPrivateMessage}
         >
           <Icon name="lucide:message-circle-more" />
-        </button>
+        </Button>
         <Badge
           type={BadgeType.ONLINE}
           title="Online"
