@@ -2,6 +2,7 @@ import { ChannelEntity, ChannelType } from '@beep/contracts'
 import ChannelsNavigation from '../ui/channels-navigation'
 import { useForm } from 'react-hook-form'
 import { useModal } from '@beep/ui'
+import { toast } from 'react-hot-toast'
 
 const channels: ChannelEntity[] = [
   {
@@ -37,6 +38,7 @@ export default function ChannelsNavigationFeature() {
 
   const onCreateChannel = methodsAddChannel.handleSubmit((data) => {
     console.log('Create channel')
+    toast.success('Channel created !')
     closeModal()
   })
 

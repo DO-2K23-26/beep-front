@@ -2,6 +2,7 @@ import { UserEntity } from '@beep/contracts'
 import { Button, ButtonStyle, Icon, InputText, UseModalProps } from '@beep/ui'
 import { useState } from 'react'
 import { ListMembers } from './list-members'
+import { toast } from 'react-hot-toast'
 
 interface MembersNavigationProps {
   users: UserEntity[]
@@ -60,6 +61,7 @@ function InviteMemberModal({ inviteCode }: InviteMemberModalProps) {
   const copyToClipboard = () => {
     navigator.clipboard.writeText(inviteCode)
     setCopied(true)
+    toast.success('Copied to clipboard')
     setTimeout(() => {
       setCopied(false)
     }, 1000)

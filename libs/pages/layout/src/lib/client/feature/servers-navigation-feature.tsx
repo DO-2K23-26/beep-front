@@ -2,6 +2,7 @@ import { ServerEntity } from '@beep/contracts'
 import ServersNavigation from '../ui/servers-navigation'
 import { useModal } from '@beep/ui'
 import { useForm } from 'react-hook-form'
+import { toast } from 'react-hot-toast'
 
 const servers: ServerEntity[] = [
   {
@@ -14,6 +15,7 @@ const servers: ServerEntity[] = [
 
 const onLogout = () => {
   console.log('Logout')
+  toast.success('Successfully logged out !')
 }
 
 const onPrivateMessage = () => {
@@ -32,6 +34,7 @@ export default function ServersNavigationFeature() {
 
   const onCreateServer = methodsAddChannel.handleSubmit((data) => {
     console.log('Create server')
+    toast.success('Server created !')
     closeModal()
   })
   return (

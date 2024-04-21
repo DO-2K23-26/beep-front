@@ -2,6 +2,7 @@ import { UserEntity } from '@beep/contracts'
 import CurrentUser from '../ui/current-user'
 import { useModal } from '@beep/ui'
 import { useForm } from 'react-hook-form'
+import { toast } from 'react-hot-toast'
 
 const currentUser: UserEntity = {
   id: '1',
@@ -36,6 +37,7 @@ export default function CurrentUserFeature() {
 
   const onSaveParameters = methods.handleSubmit((data) => {
     console.log('Save parameters')
+    toast.success('Settings updated !')
     closeModal()
   })
 
