@@ -6,12 +6,16 @@ interface DisplayServerProps {
   onServerChange?: () => void
 }
 
-export default function DisplayServer({ server, onServerChange }: DisplayServerProps) {
+export default function DisplayServer({
+  server,
+  onServerChange,
+}: DisplayServerProps) {
   return (
     <Button
       key={server.id}
       onClick={onServerChange}
       style={ButtonStyle.SQUARE}
+      className="!bg-violet-50"
     >
       <img
         src={server.picture}

@@ -62,10 +62,18 @@ export const PageChannel = ({
             placeholder="Type a message"
           />
           <div className="flex flex-row gap-6">
-            <Button style={ButtonStyle.SQUARE} onClick={onSend}>
+            <Button
+              style={ButtonStyle.SQUARE}
+              onClick={onSend}
+              className="!bg-violet-50"
+            >
               <Icon name="lucide:send" className="w-5 h-5" />
             </Button>
-            <Button style={ButtonStyle.SQUARE} onClick={onFiles}>
+            <Button
+              style={ButtonStyle.SQUARE}
+              onClick={onFiles}
+              className="!bg-violet-50"
+            >
               <Icon name="lucide:plus" className="w-5 h-5" />
             </Button>
           </div>

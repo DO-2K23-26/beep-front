@@ -1,5 +1,7 @@
 import { ServerEntity } from '@beep/contracts'
 import ServersNavigation from '../ui/servers-navigation'
+import { useModal } from '@beep/ui'
+import { useForm } from 'react-hook-form'
 
 const servers: ServerEntity[] = [
   {
@@ -18,17 +20,29 @@ const onPrivateMessage = () => {
   console.log('Private message')
 }
 
-const onAddServer = () => {
-  console.log('Add server')
-}
-
 export default function ServersNavigationFeature() {
+  const { openModal, closeModal } = useModal()
+
+  const methodsAddChannel = useForm({
+    mode: 'onChange',
+    defaultValues: {
+      name: '',
+    },
+  })
+
+  const onCreateServer = methodsAddChannel.handleSubmit((data) => {
+    console.log('Create server')
+    closeModal()
+  })
   return (
     <ServersNavigation
       servers={servers}
       onLogout={onLogout}
       onPrivateMessage={onPrivateMessage}
-      onAddServer={onAddServer}
+      onCreateServer={onCreateServer}
+      openModal={openModal}
+      closeModal={closeModal}
+      methods={methodsAddChannel}
     />
   )
 }

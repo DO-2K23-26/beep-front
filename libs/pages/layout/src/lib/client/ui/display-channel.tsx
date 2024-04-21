@@ -1,17 +1,24 @@
 import { ChannelEntity, ChannelType } from '@beep/contracts'
-import { Button, ButtonStyle, Icon } from '@beep/ui'
+import {
+  Button,
+  ButtonStyle,
+  Icon,
+  ModalConfirmation,
+  useModal,
+} from '@beep/ui'
 
 interface DisplayChannelProps {
   channel: ChannelEntity
   onJoinChannel?: () => void
-  onParameters?: (event: MouseEvent) => void
+  onDeleteChannel?: () => void
 }
 
 export default function DisplayChannel({
   channel,
   onJoinChannel,
-  onParameters,
+  onDeleteChannel,
 }: DisplayChannelProps) {
+  const { openModal, closeModal } = useModal()
   return (
     <div className="flex flex-col group w-full" onClick={onJoinChannel}>
       <div className="flex flex-row justify-between items-center w-full px-3 py-2 hover:bg-violet-400 cursor-pointer rounded-xl">
@@ -28,7 +35,19 @@ export default function DisplayChannel({
             style={ButtonStyle.NONE}
             onClick={(event?: MouseEvent) => {
               event?.stopPropagation()
-              onParameters && onParameters(event as MouseEvent)
+              openModal({
+                content: (
+                  <ModalConfirmation
+                    title="Delete channel"
+                    description="Please confirm your action."
+                    isDelete={true}
+                    callback={() => {
+                      onDeleteChannel && onDeleteChannel()
+                      closeModal()
+                    }}
+                  />
+                ),
+              })
             }}
           >
             <Icon name="lucide:settings" className="w-4 h-4" />

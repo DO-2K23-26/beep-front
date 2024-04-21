@@ -9,8 +9,8 @@ const onJoinChannel = () => {
   console.log('Join channel')
 }
 
-const onParameters = () => {
-  console.log('Modal parameters')
+const onDeleteChannel = () => {
+  console.log('Delete channel')
 }
 
 export default function DisplayChannelFeature({
@@ -20,7 +20,7 @@ export default function DisplayChannelFeature({
     <DisplayChannel
       channel={channel}
       onJoinChannel={onJoinChannel}
-      onParameters={onParameters}
+      onDeleteChannel={onDeleteChannel}
     />
   )
 }

@@ -1,10 +1,12 @@
 import { UserEntity } from '@beep/contracts'
 import CurrentUser from '../ui/current-user'
+import { useModal } from '@beep/ui'
+import { useForm } from 'react-hook-form'
 
 const currentUser: UserEntity = {
   id: '1',
   email: 'rapidement@gmail.com',
-  username: 'Rapidement',
+  username: 'rapidement',
   firstname: 'Dorian',
   lastname: 'Grasset',
   profilePicture: '/picture.svg',
@@ -18,17 +20,34 @@ const onPhone = () => {
   console.log('Phone')
 }
 
-const onSettings = () => {
-  console.log('Settings')
-}
-
 export default function CurrentUserFeature() {
+  const { openModal, closeModal } = useModal()
+
+  const methods = useForm({
+    mode: 'onChange',
+    defaultValues: {
+      username: currentUser.username,
+      email: currentUser.email,
+      'actual-password': '',
+      'new-password': '',
+      'confirm-password': '',
+    },
+  })
+
+  const onSaveParameters = methods.handleSubmit((data) => {
+    console.log('Save parameters')
+    closeModal()
+  })
+
   return (
     <CurrentUser
       user={currentUser}
       onMicrophone={onMicrophone}
       onPhone={onPhone}
-      onSettings={onSettings}
+      onSaveParameters={onSaveParameters}
+      openModal={openModal}
+      closeModal={closeModal}
+      methods={methods}
     />
   )
 }

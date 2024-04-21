@@ -6,22 +6,36 @@ import {
   ButtonSize,
   ButtonStyle,
   Icon,
+  InputText,
+  UseModalProps,
 } from '@beep/ui'
 import { useState } from 'react'
 
+import {
+  Controller,
+  FormProvider,
+  UseFormReturn,
+  useFormContext,
+} from 'react-hook-form'
 import CurrentUserFeature from '../feature/current-user-feature'
 import { ListChannels } from './list-channels'
 
 export interface ChannelsNavigationProps {
   channels?: ChannelEntity[]
   server?: ServerEntity
-  onAddChannel?: () => void
+  onCreateChannel: () => void
+  openModal: React.Dispatch<React.SetStateAction<UseModalProps | undefined>>
+  closeModal: () => void
+  methodsAddChannel: UseFormReturn<{ name: string }>
 }
 
 export default function ChannelsNavigation({
   channels,
   server,
-  onAddChannel,
+  onCreateChannel,
+  openModal,
+  closeModal,
+  methodsAddChannel,
 }: ChannelsNavigationProps) {
   const [isLeftDivVisible] = useState(false)
 
@@ -64,9 +78,20 @@ export default function ChannelsNavigation({
           iconLeft={'lucide:circle-plus'}
           size={ButtonSize.REGULAR}
           className="!bg-violet-400 px-2 xl:px-3 py-2 text-base font-semibold flex flex-row gap-2 items-center"
-          onClick={onAddChannel}
+          onClick={() => {
+            openModal({
+              content: (
+                <FormProvider {...methodsAddChannel}>
+                  <CreateChannelModal
+                    closeModal={closeModal}
+                    onCreateChannel={onCreateChannel}
+                  />
+                </FormProvider>
+              ),
+            })
+          }}
         >
-          <p>Add channel</p>
+          <p>Create channel</p>
         </Button>
         <div className="flex flex-col gap-6 min-w-max flex-grow overflow-y-scroll no-scrollbar scroll-smooth">
           <div className="flex flex-col flex-grow gap-6">
@@ -85,6 +110,68 @@ export default function ChannelsNavigation({
           className="!bg-violet-300"
         >
           <Icon name="lucide:arrow-left" />
+        </Button>
+      </div>
+    </div>
+  )
+}
+
+interface CreateChannelModalProps {
+  closeModal: () => void
+  onCreateChannel: () => void
+}
+
+function CreateChannelModal({
+  closeModal,
+  onCreateChannel,
+}: CreateChannelModalProps) {
+  const { control } = useFormContext()
+  return (
+    <div className="p-6">
+      <h3 className=" text-slate-700 font-bold mb-2 max-w-sm">
+        Create channel
+      </h3>
+      <div className="text-slate-500 text-sm mb-4">
+        Choose a name for your channel
+      </div>
+      <Controller
+        name="name"
+        rules={{
+          required: 'Please enter a name.',
+          minLength: {
+            value: 1,
+            message: 'Please enter a name.',
+          },
+        }}
+        control={control}
+        render={({ field, fieldState: { error } }) => (
+          <InputText
+            className="w-full !rounded-lg min-h-[40px] mb-4"
+            label={'Channel name'}
+            name="name"
+            type="text"
+            onChange={field.onChange}
+            value={field.value}
+            error={error?.message}
+          />
+        )}
+      />
+      <div className="flex gap-3 justify-between">
+        <Button
+          className="btn--no-min-w"
+          style={ButtonStyle.STROKED}
+          onClick={() => closeModal()}
+        >
+          Cancel
+        </Button>
+        <Button
+          className="btn--no-min-w"
+          style={ButtonStyle.BASIC}
+          onClick={() => {
+            onCreateChannel()
+          }}
+        >
+          Create
         </Button>
       </div>
     </div>

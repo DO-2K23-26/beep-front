@@ -1,5 +1,7 @@
 import { ChannelEntity, ChannelType } from '@beep/contracts'
 import ChannelsNavigation from '../ui/channels-navigation'
+import { useForm } from 'react-hook-form'
+import { useModal } from '@beep/ui'
 
 const channels: ChannelEntity[] = [
   {
@@ -23,16 +25,29 @@ const server = {
   picture: '/418.jpg',
 }
 
-const onAddChannel = () => {
-  console.log('Add channel')
-}
-
 export default function ChannelsNavigationFeature() {
+  const { openModal, closeModal } = useModal()
+
+  const methodsAddChannel = useForm({
+    mode: 'onChange',
+    defaultValues: {
+      name: '',
+    },
+  })
+
+  const onCreateChannel = methodsAddChannel.handleSubmit((data) => {
+    console.log('Create channel')
+    closeModal()
+  })
+
   return (
     <ChannelsNavigation
       channels={channels}
       server={server}
-      onAddChannel={onAddChannel}
+      onCreateChannel={onCreateChannel}
+      openModal={openModal}
+      closeModal={closeModal}
+      methodsAddChannel={methodsAddChannel}
     />
   )
 }

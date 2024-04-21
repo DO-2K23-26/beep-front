@@ -1,4 +1,5 @@
 import { UserEntity } from '@beep/contracts'
+import { useModal } from '@beep/ui'
 import MembersNavigation from '../ui/members-navigation'
 
 const users: UserEntity[] = [
@@ -12,10 +13,22 @@ const users: UserEntity[] = [
   },
 ]
 
-const onInviteMember = () => {
-  console.log('Invite member')
-}
+const inviteCode = 'beep/invite/3421eg34ssa34y3'
 
 export default function MembersNavigationFeature() {
-  return <MembersNavigation users={users} onInviteMember={onInviteMember} />
+  const { openModal, closeModal } = useModal()
+
+  const onInviteMember = () => {
+    console.log('Invite member')
+    closeModal()
+  }
+  return (
+    <MembersNavigation
+      users={users}
+      onInviteMember={onInviteMember}
+      openModal={openModal}
+      closeModal={closeModal}
+      inviteCode={inviteCode}
+    />
+  )
 }

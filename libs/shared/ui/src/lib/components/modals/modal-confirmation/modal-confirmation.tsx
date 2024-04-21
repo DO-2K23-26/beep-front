@@ -1,7 +1,14 @@
-import { Button, ButtonStyle, Callout, Icon, InputText, Tooltip, useModal } from '@beep/ui'
+import {
+  Button,
+  ButtonStyle,
+  Callout,
+  Icon,
+  InputText,
+  Tooltip,
+  useModal,
+} from '@beep/ui'
 import { PropsWithChildren, ReactNode } from 'react'
 import { Controller, useForm } from 'react-hook-form'
-
 
 export interface ModalConfirmationProps extends PropsWithChildren {
   title: string
@@ -41,7 +48,7 @@ export function ModalConfirmation({
 
   return (
     <div className="p-6">
-      <h2 className="h4 text-neutral-400 mb-2 max-w-sm">{title}</h2>
+      <h3 className=" text-slate-700 font-bold mb-2 max-w-sm">{title}</h3>
       {warning && (
         <Callout.Root className="mb-2" color="yellow">
           <Callout.Icon>
@@ -50,7 +57,7 @@ export function ModalConfirmation({
           <Callout.Text>{warning}</Callout.Text>
         </Callout.Root>
       )}
-      <div className="text-neutral-350 text-sm mb-6">
+      <div className="text-slate-500 text-sm mb-4">
         {isDelete ? (
           description ? (
             description
@@ -92,9 +99,9 @@ export function ModalConfirmation({
           defaultValue=""
           render={({ field, fieldState: { error } }) => (
             <InputText
-              className="mb-5"
+              className="w-full !rounded-lg min-h-[40px] mb-4"
               label={placeholder}
-              //placeholder={placeholder}
+              // placeholder={placeholder}
               name={field.name}
               onChange={field.onChange}
               value={field.value}
@@ -103,7 +110,7 @@ export function ModalConfirmation({
           )}
         />
         {children}
-        <div className="flex gap-3 justify-end">
+        <div className="flex gap-3 justify-between">
           <Button
             className="btn--no-min-w"
             style={ButtonStyle.STROKED}
