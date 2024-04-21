@@ -4,7 +4,7 @@ import { Button, ButtonStyle, Icon } from '@beep/ui'
 interface DisplayChannelProps {
   channel: ChannelEntity
   onJoinChannel?: () => void
-  onParameters?: () => void
+  onParameters?: (event: MouseEvent) => void
 }
 
 export default function DisplayChannel({
@@ -24,7 +24,13 @@ export default function DisplayChannel({
           <p className="font-semibold max-w-[150px] truncate">{channel.name}</p>
         </div>
         <div className="flex justify-center items-center invisible group-hover:visible">
-          <Button style={ButtonStyle.NONE} onClick={onParameters}>
+          <Button
+            style={ButtonStyle.NONE}
+            onClick={(event?: MouseEvent) => {
+              event?.stopPropagation()
+              onParameters && onParameters(event as MouseEvent)
+            }}
+          >
             <Icon name="lucide:settings" className="w-4 h-4" />
           </Button>
         </div>

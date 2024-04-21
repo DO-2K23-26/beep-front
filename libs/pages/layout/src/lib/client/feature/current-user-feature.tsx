@@ -10,6 +10,25 @@ const currentUser: UserEntity = {
   profilePicture: '/picture.svg',
 }
 
+const onMicrophone = () => {
+  console.log('Microphone')
+}
+
+const onPhone = () => {
+  console.log('Phone')
+}
+
+const onSettings = () => {
+  console.log('Settings')
+}
+
 export default function CurrentUserFeature() {
-  return <CurrentUser user={currentUser} />
+  return (
+    <CurrentUser
+      user={currentUser}
+      onMicrophone={onMicrophone}
+      onPhone={onPhone}
+      onSettings={onSettings}
+    />
+  )
 }

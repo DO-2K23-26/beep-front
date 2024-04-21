@@ -14,6 +14,21 @@ const onLogout = () => {
   console.log('Logout')
 }
 
+const onPrivateMessage = () => {
+  console.log('Private message')
+}
+
+const onAddServer = () => {
+  console.log('Add server')
+}
+
 export default function ServersNavigationFeature() {
-  return <ServersNavigation servers={servers} onLogout={onLogout} />
+  return (
+    <ServersNavigation
+      servers={servers}
+      onLogout={onLogout}
+      onPrivateMessage={onPrivateMessage}
+      onAddServer={onAddServer}
+    />
+  )
 }

@@ -20,7 +20,7 @@ const messages: MessageEntity[] = [
   {
     id: '1',
     ownerId: '1',
-    content: 'Hello',
+    content: 'Prod Message',
     channelId: '1',
     createdAt: '2021-09-20',
     owner: user,
@@ -28,7 +28,7 @@ const messages: MessageEntity[] = [
   {
     id: '2',
     ownerId: '1',
-    content: 'World',
+    content: 'Prod Message',
     channelId: '1',
     createdAt: '2021-09-20',
     owner: user,
@@ -36,7 +36,7 @@ const messages: MessageEntity[] = [
   {
     id: '3',
     ownerId: '1',
-    content: '!',
+    content: 'Prod Message',
     channelId: '1',
     createdAt: '2021-09-20',
     owner: user,
@@ -44,7 +44,7 @@ const messages: MessageEntity[] = [
   {
     id: '4',
     ownerId: '1',
-    content: 'How are you?',
+    content: 'Prod Message',
     channelId: '1',
     createdAt: '2021-09-20',
     owner: user,
@@ -52,7 +52,7 @@ const messages: MessageEntity[] = [
   {
     id: '5',
     ownerId: '1',
-    content: 'I am fine',
+    content: 'Prod Message',
     channelId: '1',
     createdAt: '2021-09-20',
     owner: user,
@@ -60,7 +60,7 @@ const messages: MessageEntity[] = [
   {
     id: '6',
     ownerId: '1',
-    content: 'Thank you',
+    content: 'Prod Message',
     channelId: '1',
     createdAt: '2021-09-20',
     owner: user,
@@ -68,7 +68,7 @@ const messages: MessageEntity[] = [
   {
     id: '7',
     ownerId: '1',
-    content: '!',
+    content: 'Prod Message',
     channelId: '1',
     createdAt: '2021-09-20',
     owner: user,
@@ -76,7 +76,7 @@ const messages: MessageEntity[] = [
   {
     id: '8',
     ownerId: '1',
-    content: 'Goodbye',
+    content: 'Prod Message',
     channelId: '1',
     createdAt: '2021-09-20',
     owner: user,
@@ -84,7 +84,7 @@ const messages: MessageEntity[] = [
   {
     id: '9',
     ownerId: '1',
-    content: 'See you later',
+    content: 'Prod Message',
     channelId: '1',
     createdAt: '2021-09-20',
     owner: user,
@@ -92,8 +92,7 @@ const messages: MessageEntity[] = [
   {
     id: '10',
     ownerId: '1',
-    content:
-      'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA',
+    content: 'Prod Message',
     channelId: '1',
     createdAt: '2021-09-20',
     owner: user,
@@ -112,7 +111,7 @@ const onSend = () => {
 }
 
 const onFiles = () => {
-  console.log('Files')
+  console.log('Send file')
 }
 
 export function PageChannelFeature() {

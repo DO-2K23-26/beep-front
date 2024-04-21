@@ -15,11 +15,13 @@ import { ListChannels } from './list-channels'
 export interface ChannelsNavigationProps {
   channels?: ChannelEntity[]
   server?: ServerEntity
+  onAddChannel?: () => void
 }
 
 export default function ChannelsNavigation({
   channels,
   server,
+  onAddChannel,
 }: ChannelsNavigationProps) {
   const [isLeftDivVisible] = useState(false)
 
@@ -62,6 +64,7 @@ export default function ChannelsNavigation({
           iconLeft={'lucide:circle-plus'}
           size={ButtonSize.REGULAR}
           className="!bg-violet-400 px-2 xl:px-3 py-2 text-base font-semibold flex flex-row gap-2 items-center"
+          onClick={onAddChannel}
         >
           <p>Add channel</p>
         </Button>

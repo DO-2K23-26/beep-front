@@ -6,12 +6,14 @@ interface ServersNavigationProps {
   servers: ServerEntity[]
   onPrivateMessage?: () => void
   onLogout?: () => void
+  onAddServer?: () => void
 }
 
 export default function ServersNavigation({
   servers,
   onPrivateMessage,
   onLogout,
+  onAddServer,
 }: ServersNavigationProps) {
   return (
     <div className="bg-violet-500 flex flex-col w-min p-6 ">
@@ -23,9 +25,7 @@ export default function ServersNavigation({
       <div className="flex flex-col gap-6 flex-grow overflow-y-scroll no-scrollbar scroll-smooth">
         <ListServers servers={servers} />
         <Button
-          onClick={() => {
-            console.log('+')
-          }}
+          onClick={onAddServer}
           style={ButtonStyle.SQUARE}
         >
           <Icon name="lucide:plus" className="w-5 h-5" />

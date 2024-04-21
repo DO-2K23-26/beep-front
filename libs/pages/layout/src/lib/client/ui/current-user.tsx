@@ -1,7 +1,6 @@
 import { UserEntity } from '@beep/contracts'
 import { Badge, BadgeType, Button, ButtonStyle, Icon } from '@beep/ui'
 
-
 interface CurrentUserProps {
   user: UserEntity
   onMicrophone?: () => void
@@ -61,16 +60,28 @@ export default function CurrentUser({
         </div>
 
         <div className="flex-row flex gap-4 ">
-          <button onClick={onMicrophone} className="cursor-pointer">
-            <Icon name="lucide:mic" className="w-5 h-5" />
-          </button>
-          <button onClick={onPhone} className="cursor-pointer">
-            <Icon name="lucide:phone" className="w-5 h-5" />
-          </button>
+          <Button
+            style={ButtonStyle.NONE}
+            onClick={onMicrophone}
+            className="cursor-pointer"
+          >
+            <Icon name="lucide:mic" className="!w-5 !h-5" />
+          </Button>
+          <Button
+            style={ButtonStyle.NONE}
+            onClick={onPhone}
+            className="cursor-pointer"
+          >
+            <Icon name="lucide:phone" className="!w-5 !h-5" />
+          </Button>
           {/* Make the settings modal */}
-          <button onClick={onSettings} className="cursor-pointer">
-            <Icon name="lucide:settings" className="w-5 h-5" />
-          </button>
+          <Button
+            style={ButtonStyle.NONE}
+            onClick={onSettings}
+            className="cursor-pointer"
+          >
+            <Icon name="lucide:settings" className="!w-5 !h-5" />
+          </Button>
         </div>
       </div>
     </>

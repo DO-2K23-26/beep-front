@@ -23,6 +23,16 @@ const server = {
   picture: '/418.jpg',
 }
 
+const onAddChannel = () => {
+  console.log('Add channel')
+}
+
 export default function ChannelsNavigationFeature() {
-  return <ChannelsNavigation channels={channels} server={server} />
+  return (
+    <ChannelsNavigation
+      channels={channels}
+      server={server}
+      onAddChannel={onAddChannel}
+    />
+  )
 }

@@ -12,6 +12,10 @@ const users: UserEntity[] = [
   },
 ]
 
+const onInviteMember = () => {
+  console.log('Invite member')
+}
+
 export default function MembersNavigationFeature() {
-  return <MembersNavigation users={users} />
+  return <MembersNavigation users={users} onInviteMember={onInviteMember} />
 }
