@@ -3,13 +3,13 @@ import { Avatar, AvatarProps } from './avatar';
 
 export default {
   component: Avatar,
-  title: 'Avatar',
+  title: 'Components/Avatar',
 };
 
 const Template: StoryFn<AvatarProps> = (args) => <Avatar {...args} />;
 
-export const Primary = Template.bind({});
+export const Default = Template.bind({});
 
-Primary.args = {
+Default.args = {
   username: 'Nathalos',
 };

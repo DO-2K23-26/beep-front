@@ -1,11 +1,7 @@
+import { Button, ButtonStyle, Callout, Icon, InputText, Tooltip, useModal } from '@beep/ui'
 import { PropsWithChildren, ReactNode } from 'react'
-import { Button, ButtonStyle } from '../../buttons'
-import { InputText } from '../../inputs'
-import { Icon } from '../../icons/icon'
-import { Tooltip } from '../../tooltip/tooltip'
-import { useModal } from '../../modal'
 import { Controller, useForm } from 'react-hook-form'
-import { Callout } from '../../callout/callout'
+
 
 export interface ModalConfirmationProps extends PropsWithChildren {
   title: string

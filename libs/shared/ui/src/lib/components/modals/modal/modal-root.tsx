@@ -1,6 +1,12 @@
-import { createContext, Dispatch, ReactNode, SetStateAction, useState } from 'react';
-import { Modal } from "./modal"
-import ModalAlert from "../modal-alert/modal-alert"
+import { Modal } from '@beep/ui'
+import {
+  createContext,
+  Dispatch,
+  ReactNode,
+  SetStateAction,
+  useState,
+} from 'react'
+import ModalAlert from '../modal-alert/modal-alert'
 
 interface ModalOptions {
   width: number
@@ -30,7 +36,7 @@ const defaultContext: DefaultContextProps = {
   // eslint-disable-next-line @typescript-eslint/no-empty-function
   setOptionsModal: () => {},
   optionsModal: {
-    width: 488
+    width: 488,
   },
   alertClickOutside: false,
   // eslint-disable-next-line @typescript-eslint/no-empty-function
@@ -50,7 +56,6 @@ interface ModalProviderProps {
   children: ReactNode
 }
 
-
 export const ModalProvider = (props: ModalProviderProps) => {
   const [openModal, setOpenModal] = useState(false)
   const [contentModal, setContentModal] = useState<any>(<></>)
@@ -59,8 +64,9 @@ export const ModalProvider = (props: ModalProviderProps) => {
   })
   const [alertClickOutside, enableAlertClickOutside] = useState(false)
   const [modalAlertOpen, setModalAlertOpen] = useState(false)
-  const [alertModalChoice, setAlertModalChoice] = useState<boolean | undefined>(undefined)
-
+  const [alertModalChoice, setAlertModalChoice] = useState<boolean | undefined>(
+    undefined
+  )
 
   return (
     <ModalContext.Provider
@@ -78,7 +84,11 @@ export const ModalProvider = (props: ModalProviderProps) => {
         setAlertModalChoice,
       }}
     >
-      <Modal externalOpen={openModal} setExternalOpen={setOpenModal} width={optionsModal.width}>
+      <Modal
+        externalOpen={openModal}
+        setExternalOpen={setOpenModal}
+        width={optionsModal.width}
+      >
         {contentModal}
       </Modal>
       <ModalAlert isOpen={modalAlertOpen} />

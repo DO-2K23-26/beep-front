@@ -11,11 +11,9 @@ import Select, {
   SingleValueProps,
   components,
 } from 'react-select'
-import { Tooltip } from '../tooltip/tooltip'
 import { Value } from '@beep/contracts'
-import { Icon } from '../icons/icon'
+import { Icon, IconFa, Tooltip } from '@beep/ui'
 
-import IconFa from '../icons/icon-fa/icon-fa'
 
 export interface InputSelectProps {
   className?: string

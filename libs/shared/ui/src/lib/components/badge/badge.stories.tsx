@@ -1,17 +1,16 @@
 import { StoryFn } from '@storybook/react'
 import { Badge, BadgeProps, BadgeType } from './badge'
-import React from 'react'
 
 export default {
   component: Badge,
-  title: 'Badge',
+  title: 'Components/Badge',
 }
 
 const Template: StoryFn<BadgeProps> = (args) => <Badge {...args} />
 
-export const Primary = Template.bind({})
+export const Default = Template.bind({})
 
-Primary.args = {
+Default.args = {
   title: 'Rapidement',
   type: BadgeType.DANGER,
 }

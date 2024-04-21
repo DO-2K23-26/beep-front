@@ -1,5 +1,5 @@
+import { InputRadio } from '@beep/ui'
 import { type FormEvent, type ReactNode } from 'react'
-import { InputRadio } from './input-radio'
 
 export interface InputRadioBoxProps {
   name: string

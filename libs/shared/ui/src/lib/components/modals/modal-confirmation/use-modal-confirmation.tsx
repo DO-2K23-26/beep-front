@@ -1,6 +1,5 @@
-import {ReactNode, useEffect, useState} from "react";
-import { useModal } from "../../modal/use-modal";
-import {ModalConfirmation} from "./modal-confirmation";
+import { ReactNode, useEffect, useState } from 'react'
+import { ModalConfirmation, useModal } from '@beep/ui'
 
 export interface UseModalConfirmationProps {
   title: string
@@ -14,14 +13,13 @@ export interface UseModalConfirmationProps {
 }
 
 export function useModalConfirmation() {
-  const [modalConfirmation, openModalConfirmation] = useState<UseModalConfirmationProps>()
+  const [modalConfirmation, openModalConfirmation] =
+    useState<UseModalConfirmationProps>()
 
   const { openModal } = useModal()
 
   useEffect(() => {
-    if (
-      modalConfirmation?.isDelete
-    ) {
+    if (modalConfirmation?.isDelete) {
       openModal({
         content: (
           <ModalConfirmation
@@ -33,12 +31,12 @@ export function useModalConfirmation() {
             placeholder={modalConfirmation.placeholder}
             isDelete={modalConfirmation?.isDelete}
           />
-        )
+        ),
       })
     } else {
       modalConfirmation?.action()
     }
-  }, [modalConfirmation, openModal]);
+  }, [modalConfirmation, openModal])
 
   return { openModalConfirmation }
 }

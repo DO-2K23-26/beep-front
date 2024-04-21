@@ -1,26 +1,26 @@
-import { LoaderSpinner } from './loader-spinner';
-import { StoryFn } from '@storybook/react';
+import { LoaderSpinner } from '@beep/ui'
+import { StoryFn } from '@storybook/react'
 
 export default {
   component: LoaderSpinner,
-  title: 'LoaderSpinner',
+  title: 'Components/LoaderSpinner',
   argTypes: {
     theme: {
       options: ['dark', 'light'],
       control: { type: 'select' },
     },
   },
-};
+}
 
 const Template: StoryFn<typeof LoaderSpinner> = (args) => (
   <LoaderSpinner {...args} />
-);
+)
 
-export const Primary = Template.bind({});
+export const Default = Template.bind({})
 
-Primary.args = {
+Default.args = {
   className: '',
   classWidth: 'w-16',
   classBorder: 'border-4',
   theme: 'light',
-};
+}

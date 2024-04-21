@@ -6,10 +6,10 @@ import {
   useEffect,
   useState,
 } from 'react'
-import useModalAlert from '../modal-alert/use-modal-alert'
 import { ModalContext } from './modal-root'
 import * as Dialog from '@radix-ui/react-dialog'
-import { Icon } from '../icons/icon'
+import { Icon } from '@beep/ui'
+import useModalAlert from '../modal-alert/use-modal-alert'
 
 export interface ModalProps {
   children: ReactElement

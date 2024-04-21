@@ -3,13 +3,13 @@ import { StoryFn } from '@storybook/react'
 
 export default {
   component: Button,
-  title: 'Button',
+  title: 'Components/Button',
 }
 
 const Template: StoryFn<typeof Button> = (args) => <Button {...args} />
 
-export const Primary = Template.bind({})
+export const Default = Template.bind({})
 
-Primary.args = {
+Default.args = {
   children: <p>Button</p>,
 }

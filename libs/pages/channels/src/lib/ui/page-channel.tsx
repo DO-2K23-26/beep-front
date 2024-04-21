@@ -1,7 +1,6 @@
 import { ChannelEntity, ChannelType, MessageEntity } from '@beep/contracts'
 import { Button, ButtonStyle, Icon, Input } from '@beep/ui'
 import { useState } from 'react'
-import MessageFeature from '../feature/message-feature'
 import ListMessages from './list-messages'
 
 export type MessageFormValues = {

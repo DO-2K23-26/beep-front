@@ -1,4 +1,4 @@
-import IconFa from './icon-fa/icon-fa';
+import { IconFa } from "@beep/ui"
 
 export interface IconProps {
   name: string

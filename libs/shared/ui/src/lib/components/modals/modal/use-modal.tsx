@@ -1,6 +1,5 @@
-import {ReactNode, useContext, useEffect, useState} from 'react'
-import {ModalContext} from './modal-root'
-
+import { ModalContext } from '@beep/ui'
+import { ReactNode, useContext, useEffect, useState } from 'react'
 
 export interface UseModalProps {
   content: ReactNode
@@ -11,7 +10,12 @@ export interface UseModalProps {
 
 export function useModal() {
   const [modal, openModal] = useState<UseModalProps>()
-  const { setOpenModal, setContentModal, setOptionsModal, enableAlertClickOutside } = useContext(ModalContext)
+  const {
+    setOpenModal,
+    setContentModal,
+    setOptionsModal,
+    enableAlertClickOutside,
+  } = useContext(ModalContext)
 
   useEffect(() => {
     if (modal) {
@@ -24,6 +28,6 @@ export function useModal() {
   return {
     openModal,
     closeModal: () => setOpenModal(false),
-    enableAlertClickOutside
+    enableAlertClickOutside,
   }
 }

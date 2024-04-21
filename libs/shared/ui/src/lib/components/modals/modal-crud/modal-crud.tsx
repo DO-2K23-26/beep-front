@@ -1,7 +1,6 @@
 import { type FormEventHandler, type ReactNode, useEffect } from 'react'
 import { useFormContext } from 'react-hook-form'
-import { Button, ButtonSize, ButtonStyle, Icon, Truncate } from '@beep/ui'
-import { Popover } from '../../popover/popover'
+import { Button, ButtonSize, ButtonStyle, Icon, Popover, Truncate } from '@beep/ui'
 
 export interface ModalCrudProps {
   children: ReactNode

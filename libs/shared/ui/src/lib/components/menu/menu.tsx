@@ -1,5 +1,12 @@
 import { ControlledMenu, type MenuCloseEvent } from '@szhsin/react-menu'
-import {type MouseEvent, ReactNode, useRef, useState, useMemo, useEffect } from "react"
+import {
+  type MouseEvent,
+  ReactNode,
+  useRef,
+  useState,
+  useMemo,
+  useEffect,
+} from 'react'
 import { MenuGroup } from './menu-group'
 import { MenuItemProps } from './menu-item'
 import { Tooltip } from '../tooltip/tooltip'
@@ -7,63 +14,62 @@ import { classNames } from '@beep/utils'
 
 export enum MenuDirection {
   TOP = 'top',
-	BOTTOM = 'bottom',
-	LEFT = 'left',
-	RIGHT = 'right'
+  BOTTOM = 'bottom',
+  LEFT = 'left',
+  RIGHT = 'right',
 }
 
 export enum MenuAlign {
-	START = 'start',
+  START = 'start',
   CENTER = 'center',
   END = 'end',
 }
 
 export type MenuData = {
-	items: MenuItemProps[]
-	label?: string
-	title?: string
-	sortAlphabetically?: boolean
-	button?: {
-		label: string | ReactNode
-		onClick: () => void
-	}
-	search?: boolean
+  items: MenuItemProps[]
+  label?: string
+  title?: string
+  sortAlphabetically?: boolean
+  button?: {
+    label: string | ReactNode
+    onClick: () => void
+  }
+  search?: boolean
 }[]
 
 const ignoreCircularReferences = () => {
-	const seen = new WeakSet()
-	return (key: string, value: any) => {
-		if (key.startsWith('_')) return
-		if (typeof value === 'object' && value !== null) {
-			if (seen.has(value)) return
-			seen.add(value)
-		}
+  const seen = new WeakSet()
+  return (key: string, value: any) => {
+    if (key.startsWith('_')) return
+    if (typeof value === 'object' && value !== null) {
+      if (seen.has(value)) return
+      seen.add(value)
+    }
 
-		return value
-	}
+    return value
+  }
 }
 
 export interface MenuProps {
-	trigger: ReactNode
-	menus: MenuData
-	children?: ReactNode
-	direction?: MenuDirection
-	open?: boolean
-	arrowAlign?: MenuAlign
-	triggerTooltip?: string
-	className?: string
-	header?: ReactNode
-	onClose?: (e: MenuCloseEvent | MouseEvent<HTMLDivElement, MouseEvent>) => void
-	width?: number
-	paddingMenuY?: number
-	paddingMenuX?: number
-	onOpen?: (e: boolean) => void
-	isFilter?: boolean
+  trigger: ReactNode
+  menus: MenuData
+  children?: ReactNode
+  direction?: MenuDirection
+  open?: boolean
+  arrowAlign?: MenuAlign
+  triggerTooltip?: string
+  className?: string
+  header?: ReactNode
+  onClose?: (e: MenuCloseEvent | MouseEvent<HTMLDivElement, MouseEvent>) => void
+  width?: number
+  paddingMenuY?: number
+  paddingMenuX?: number
+  onOpen?: (e: boolean) => void
+  isFilter?: boolean
 }
 
-
 export function Menu(props: MenuProps) {
-	const {
+  const {
     trigger,
     children,
     direction = MenuDirection.BOTTOM,
@@ -83,67 +89,67 @@ export function Menu(props: MenuProps) {
   const ref = useRef(null)
   const [isOpen, setOpen] = useState(false)
 
-	const menusStringify = JSON.stringify(menus, ignoreCircularReferences())
+  const menusStringify = JSON.stringify(menus, ignoreCircularReferences())
 
-	const menusMemo = useMemo(
-		() => 
-			menus.map((menu, index) => (
-				<MenuGroup 
-					key={index}
-					menu={menu}
-					isLast={index === menus.length - 1}
-					paddingMenuX={paddingMenuX}
-					paddingMenuY={paddingMenuY}
-					style={{ width }}
-					isFilter={isFilter}
-				/>
-			)),
-			[menusStringify]
-	)
+  const menusMemo = useMemo(
+    () =>
+      menus.map((menu, index) => (
+        <MenuGroup
+          key={index}
+          menu={menu}
+          isLast={index === menus.length - 1}
+          paddingMenuX={paddingMenuX}
+          paddingMenuY={paddingMenuY}
+          style={{ width }}
+          isFilter={isFilter}
+        />
+      )),
+    [menusStringify]
+  )
 
-	function handleClick (e: MenuCloseEvent | null) {
-		if (ref.current) {
-			const el = ref.current as HTMLElement
-			const btn = el.querySelector('.btn, .btn-icon')
-			btn?.classList.toggle('is-active')
-		}
+  function handleClick(e: MenuCloseEvent | null) {
+    if (ref.current) {
+      const el = ref.current as HTMLElement
+      const btn = el.querySelector('.btn, .btn-icon')
+      btn?.classList.toggle('is-active')
+    }
 
-		if (isOpen && e && onClose) {
-			onClose(e)
-		}
+    if (isOpen && e && onClose) {
+      onClose(e)
+    }
 
-		if (!e && !isOpen) {
-			onOpen && onOpen(true)
-		} else {
-			onOpen && onOpen(false)
-		}
+    if (!e && !isOpen) {
+      onOpen && onOpen(true)
+    } else {
+      onOpen && onOpen(false)
+    }
 
-		setOpen(!isOpen)
-	}
+    setOpen(!isOpen)
+  }
 
-	function closeMenu () {
-		setOpen(false)
-		if (ref.current) {
+  function closeMenu() {
+    setOpen(false)
+    if (ref.current) {
       const el = ref.current as HTMLElement
       const btn = el.querySelector('.btn, .btn-icon')
       btn?.classList.remove('is-active')
     }
-	}
+  }
 
-	useEffect(() => {
-		setOpen(open)
+  useEffect(() => {
+    setOpen(open)
     window.addEventListener('resize', closeMenu)
     window.addEventListener('scroll', closeMenu)
     return () => {
       window.removeEventListener('resize', closeMenu)
       window.removeEventListener('scroll', closeMenu)
     }
-	}, [open]) 
+  }, [open])
 
-	let offsetX = 0
-	let offsetY = 0
+  let offsetX = 0
+  let offsetY = 0
 
-	if (direction === MenuDirection.BOTTOM || direction === MenuDirection.TOP) {
+  if (direction === MenuDirection.BOTTOM || direction === MenuDirection.TOP) {
     if (arrowAlign === MenuAlign.START) offsetX = -16
     if (arrowAlign === MenuAlign.END) offsetX = 16
   }
@@ -153,31 +159,32 @@ export function Menu(props: MenuProps) {
     if (arrowAlign === MenuAlign.END) offsetY = 16
   }
 
-	return (
-		<>
-			<div
-				className={classNames(
-					`w-max menu__trigger menu__trigger--${isOpen ? 'open' : 'closed'}`,
-					className
-				)}
-				ref={ref}
-				onMouseDown={() => handleClick(null)}
-			>
-				{ !triggerTooltip ?
-					trigger
-					: <Tooltip content={triggerTooltip} delayDuration={100}>
-						<span>{ trigger }</span>
-					</Tooltip>
-				}
-			</div>
+  return (
+    <>
+      <div
+        className={classNames(
+          `w-max menu__trigger menu__trigger--${isOpen ? 'open' : 'closed'}`,
+          className
+        )}
+        ref={ref}
+        onMouseDown={() => handleClick(null)}
+      >
+        {!triggerTooltip ? (
+          trigger
+        ) : (
+          <Tooltip content={triggerTooltip} delayDuration={100}>
+            <span>{trigger}</span>
+          </Tooltip>
+        )}
+      </div>
 
-			<ControlledMenu
-				state={isOpen ? 'open' : 'closed'}
+      <ControlledMenu
+        state={isOpen ? 'open' : 'closed'}
         arrow
-				anchorPoint={{
-					x: offsetX,
-					y: offsetY
-				}}
+        anchorPoint={{
+          x: offsetX,
+          y: offsetY,
+        }}
         direction={direction}
         onClose={(e) => handleClick(e)}
         anchorRef={ref}
@@ -187,11 +194,10 @@ export function Menu(props: MenuProps) {
           isOpen ? 'open' : 'closed'
         } menu__container--${arrowAlign} dark:bg-neutral-700`}
         portal
-			>
-				{ children }
-				{ menusMemo }
-			</ControlledMenu>
-		
-		</>
-	)
+      >
+        {children}
+        {menusMemo}
+      </ControlledMenu>
+    </>
+  )
 }

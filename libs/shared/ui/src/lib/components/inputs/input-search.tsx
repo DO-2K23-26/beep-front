@@ -1,6 +1,6 @@
+import { Icon } from '@beep/ui'
 import { classNames } from '@beep/utils'
 import { type ReactElement, useRef, useState } from 'react'
-import { Icon } from '../icons/icon'
 
 export interface InputSearchProps {
   placeholder?: string

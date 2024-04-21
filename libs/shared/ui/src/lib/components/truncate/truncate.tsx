@@ -1,4 +1,4 @@
-import { Tooltip } from "../tooltip/tooltip"
+import { Tooltip } from '../tooltip/tooltip'
 
 export interface TruncateProps {
   truncateLimit: number
@@ -7,19 +7,29 @@ export interface TruncateProps {
   delayDuration?: number
 }
 
-export const truncateText = (text: string, truncateLimit: number) => text.slice(0, truncateLimit)
+export const truncateText = (text: string, truncateLimit: number) =>
+  text.slice(0, truncateLimit)
 
-export function Truncate ({ truncateLimit, text, defaultTooltipLimit = 200, delayDuration = 150 }: TruncateProps) {
+export function Truncate({
+  truncateLimit,
+  text,
+  defaultTooltipLimit = 200,
+  delayDuration = 150,
+}: TruncateProps) {
   if (text.length >= truncateLimit) {
     return (
-      <Tooltip 
+      <Tooltip
         delayDuration={delayDuration}
-        content={text.length >= defaultTooltipLimit ? `${truncateText(text, defaultTooltipLimit)}...` : text}
+        content={
+          text.length >= defaultTooltipLimit
+            ? `${truncateText(text, defaultTooltipLimit)}...`
+            : text
+        }
       >
-        <span>{ truncateText(text, truncateLimit)}...</span>
+        <span>{truncateText(text, truncateLimit)}...</span>
       </Tooltip>
     )
   } else {
-    return <span>{ text }</span>
+    return <span>{text}</span>
   }
 }

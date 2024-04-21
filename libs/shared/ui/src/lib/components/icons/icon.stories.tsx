@@ -3,13 +3,13 @@ import { Icon } from './icon';
 
 export default {
   component: Icon,
-  title: 'Icon',
+  title: 'Components/Icon',
 };
 
 const Template: StoryFn<typeof Icon> = (args) => <Icon {...args} />;
 
-export const Primary = Template.bind({});
+export const Default = Template.bind({});
 
-Primary.args = {
+Default.args = {
   name: 'logos:adonisjs',
 };

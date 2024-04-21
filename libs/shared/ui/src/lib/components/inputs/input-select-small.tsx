@@ -1,7 +1,7 @@
 import { classNames } from '@beep/utils'
 import { useEffect, useState } from 'react'
-import { Icon } from '../icons/icon'
 import { Value } from '@beep/contracts'
+import { Icon } from '@beep/ui'
 
 export interface InputSelectSmallProps {
   name: string
