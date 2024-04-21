@@ -1,10 +1,10 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 // eslint-disable-next-line @nx/enforce-module-boundaries
 import { RootState } from '@beep/store';
-import { UserEntity } from '@beep/contracts';
+import { UserEntity, backendUrl } from '@beep/contracts';
 
 const baseQuery = fetchBaseQuery({
-  baseUrl: import.meta.env.VITE_BACKEND,
+  baseUrl: backendUrl,
   credentials: 'include',
   prepareHeaders: (headers, { getState }) => {
     const { user } = getState() as RootState;
