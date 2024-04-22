@@ -5,7 +5,9 @@ import { Layout } from '@beep/pages/layout'
 import {
   Navigate,
   Route,
-  Routes, useLocation, useNavigate
+  Routes,
+  useLocation,
+  useNavigate,
 } from 'react-router-dom'
 import { match } from 'ts-pattern'
 import { ROUTER } from './router.main'
@@ -23,6 +25,7 @@ export default function App() {
 
   useEffect(() => {
     if (tokens.refreshToken && tokens.accessToken) {
+      console.log('interval set')
       const interval = setInterval(checkTokenValidityAndRefresh, 5000)
       setTokenRefreshInterval(interval)
     }
@@ -49,19 +52,24 @@ export default function App() {
   }
 
   useEffect(() => {
+    console.log('getting result')
     if (result) {
       if (!result.isLoading && result.data) {
+        console.log('result success')
+        dispatch(userActions.updateIsAuthentificated(true))
         dispatch(userActions.setTokens(result.data))
         sessionStorage.setItem('accessToken', result.data.accessToken)
         sessionStorage.setItem('refreshToken', result.data.refreshToken)
       }
 
       if (result.isError) {
+        console.log('result error')
+
         sessionStorage.removeItem('accessToken')
         sessionStorage.removeItem('refreshToken')
-
+        dispatch(userActions.updateIsAuthentificated(false))
         dispatch(userActions.setTokens({}))
-        navigate('/authentication/login')
+        navigate('/authentication/signin')
       }
     }
   }, [result])
@@ -69,20 +77,20 @@ export default function App() {
   useEffect(() => {
     const accessToken = sessionStorage.getItem('accessToken')
     const refreshToken = sessionStorage.getItem('refreshToken')
-
     if (accessToken && refreshToken) {
       dispatch(userActions.setTokens({ accessToken, refreshToken }))
     }
-    dispatch(userActions.updateIsLoading(false))
   }, [])
 
-  if (!isLoading && !isAuthenticated && !pathname.includes('authentication')) {
+  if (!isAuthenticated && !pathname.includes('authentication')) {
     return <Navigate to={'/authentication/signin'} replace />
   }
 
-
-
-  if (payload && !payload.isConfirmed && !pathname.includes('authentication')) {
+  if (
+    payload &&
+    !payload.audited_account &&
+    !pathname.includes('authentication')
+  ) {
     return <Navigate to={'/authentication/confirmation'} replace />
   }
 

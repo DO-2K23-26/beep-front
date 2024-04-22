@@ -13,7 +13,7 @@ export const ROUTER_AUTH: Route[] = [
     component: <PageSignupFeature />,
   },
   {
-    path: '/confirm-email',
+    path: '/confirmation',
     component: <PageConfirmEmailFeature />,
   },
   // {

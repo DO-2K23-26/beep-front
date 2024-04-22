@@ -34,6 +34,7 @@ export function PageSigninFeature() {
       sessionStorage.setItem('accessToken', result.data.tokens.accessToken)
       sessionStorage.setItem('refreshToken', result.data.tokens.refreshToken)
       dispatch(userActions.setTokens(result.data.tokens))
+      dispatch(userActions.updateIsAuthentificated(true))
     } else if (result.isError) {
       setError('Email or password incorrect')
     }

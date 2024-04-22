@@ -11,7 +11,6 @@ export const userAdapter = createEntityAdapter<UserEntity>()
 export const initialUserState: UserState = {
   isAuthenticated: false,
   isLoading: true,
-  isConfirmed: false,
   tokens: {},
 }
 export const userSlice = createSlice({
@@ -30,11 +29,17 @@ export const userSlice = createSlice({
           atob(payload.payload.accessToken?.split('.')[1]),
         );
       }
+
       state.tokens = payload.payload
       state.isAuthenticated = !!payload.payload.accessToken
+      console.log(payload.payload.accessToken);
+      console.log(!payload.payload.accessToken)
     },
     updateIsLoading(state, payload: PayloadAction<boolean>) {
       state.isLoading = payload.payload
+    },
+    updateIsAuthentificated(state, payload: PayloadAction<boolean>) {
+      state.isAuthenticated = payload.payload;
     }
   },
 })
