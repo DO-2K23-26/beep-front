@@ -1,0 +1,42 @@
+.gitversion_function:
+  image:
+    name: gittools/gitversion
+    entrypoint: [""]
+  stage: .pre
+  variables:
+    GIT_STRATEGY: fetch
+    GIT_DEPTH: 0 # force a deep/non-shallow fetch need by gitversion
+  cache: [] # caches and before / after scripts can mess things up
+  before_script: []
+  after_script: []
+  script:
+    - |
+      if [[ "${CI_SCRIPT_TRACE}" == "true" ]] || [[ -n "${CI_DEBUG_TRACE}" ]]; then
+        echo "Debugging enabled"
+        set -xv
+      fi
+
+      if [[ "${CI_GITVERSION_TRACE}" == "true" ]] || [[ -n "${CI_DEBUG_TRACE}" ]]; then
+        echo "Tracing is on, showing Gitversion configuration (including settings from defaults)..."
+        /tools/dotnet-gitversion /showconfig
+        VERBOSITYSETTING='/verbosity Diagnostic'
+      fi
+
+      echo "running git version and setting version in pipeline variables using dotenv artifacts"
+
+      /tools/dotnet-gitversion /output buildserver $VERBOSITYSETTING
+
+      # We could just collect the output file gitversion.properties (with artifacts:report:dotenv: gitversion.properties as it is already in DOTENV format,
+      # however it contains ~33 variables which unnecessarily consumes many of the 50 max DOTENV variables of the free GitLab version.
+      # Limits are higher for licensed editions, see https://docs.gitlab.com/ee/ci/yaml/artifacts_reports.html#artifactsreportsdotenv
+      grep 'GitVersion_LegacySemVer='          gitversion.properties >> thisversion.env
+      grep 'GitVersion_SemVer='          gitversion.properties >> thisversion.env
+      grep 'GitVersion_FullSemVer='      gitversion.properties >> thisversion.env
+      grep 'GitVersion_Major='           gitversion.properties >> thisversion.env
+      grep 'GitVersion_Minor='           gitversion.properties >> thisversion.env
+      grep 'GitVersion_Patch='           gitversion.properties >> thisversion.env
+      grep 'GitVersion_MajorMinorPatch=' gitversion.properties >> thisversion.env
+  artifacts:
+    reports:
+      #propagates variables into the pipeline level
+      dotenv: thisversion.env

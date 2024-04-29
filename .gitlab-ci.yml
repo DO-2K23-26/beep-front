@@ -1,33 +1,63 @@
 stages:
   - test
+  - build
+  - package
+  - publish
 include:
   - template: Jobs/Code-Quality.gitlab-ci.yml
   - template: Jobs/Dependency-Scanning.gitlab-ci.yml
+  - local: 'gitversion-ci-cd-plugin-extension.gitlab-ci.yml'
+
+determineversion:
+  rules:
+    - if: $CI_COMMIT_MESSAGE =~ /build/ || $CI_COMMIT_MESSAGE =~ /publish/
+  extends: .gitversion_function
 
 gemnasium-dependency_scanning:
   stage: test
-  only:
-    - develop
-    - master
   rules:
     - if: $CI_COMMIT_BRANCH == "main"
     - if: $CI_MERGE_REQUEST_IID
 
 code_quality:
   stage: test
-  only:
-    - develop
-    - master
   rules:
     - if: $CI_PIPELINE_SOURCE == "merge_request_event"
 
-Static Code Analysis:
-  image: node:latest
-  stage: test
-  only:
-    - develop
-    - master
+#Static Code Analysis:
+#  image: node:latest
+#  stage: test
+#  script:
+#    - npm install -g pnpm
+#    - pnpm install
+#    - pnpm run lint
+#
+build:
+  stage: build
+  rules:
+    - if: $CI_COMMIT_MESSAGE =~ /build/
+  image:
+    name: gcr.io/kaniko-project/executor:v1.14.0-debug
+    entrypoint: [ "" ]
   script:
-    - npm install -g pnpm
-    - pnpm install
-    - pnpm run lint
+    - echo "{\"auths\":{\"$CI_REGISTRY\":{\"username\":\"$CI_REGISTRY_USER\",\"password\":\"$CI_REGISTRY_PASSWORD\"}}}" > /kaniko/.docker/config.json
+    - /kaniko/executor --context $CI_PROJECT_DIR --dockerfile $CI_PROJECT_DIR/Dockerfile --build-arg VITE_API=$FILE_API_ENDPOINT --destination $CI_REGISTRY_IMAGE/beep-frontend-files:$GitVersion_LegacySemVer
+
+publish:
+  stage: publish
+  rules:
+    - if: $CI_COMMIT_MESSAGE =~ /publish/
+  dependencies:
+    - determineversion
+  image: alpine/helm:latest
+  script:
+    - wget https://github.com/mikefarah/yq/releases/download/v4.13.2/yq_linux_amd64 -O /usr/bin/yq && chmod +x /usr/bin/yq
+    - export VERSION=$GitVersion_LegacySemVer
+    - yq eval -i '.image.tag = env(VERSION)' helm/values.yaml
+    - yq eval -i '.version = env(VERSION)' helm/Chart.yaml
+    - yq eval -i '.appVersion = env(VERSION)' helm/Chart.yaml
+    - helm package helm/
+    - 'curl --request POST --user gitlab-ci-token:$CI_JOB_TOKEN --form "chart=@beep-frontend-files-$GitVersion_LegacySemVer.tgz" "${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/helm/api/stable/charts"'
+
+
+

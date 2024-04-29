@@ -1,0 +1,21 @@
+replicaCount: 1
+imagePullSecrets:
+  - name: beep-registry
+image:
+  repository: gitlab.polytech.umontpellier.fr:5050/beep/front/beep-frontend-files
+  pullPolicy: IfNotPresent
+  tag: 056b6d57
+  port: 8080
+
+service:
+  type: ClusterIP
+  port: 80
+
+ingress:
+  enabled: true
+  annotations: { traefik.ingress.kubernetes.io/router.entrypoints: web}
+  hosts:
+    - host: beep-staging.duratm.com
+      paths: ['/']
+
+resources: {}
