@@ -3,6 +3,7 @@ import ServersNavigation from '../ui/servers-navigation'
 import { useModal } from '@beep/ui'
 import { useForm } from 'react-hook-form'
 import { toast } from 'react-hot-toast'
+import { NavigateFunction, useNavigate } from 'react-router-dom'
 
 const servers: ServerEntity[] = [
   {
@@ -18,12 +19,14 @@ const onLogout = () => {
   toast.success('Successfully logged out !')
 }
 
-const onPrivateMessage = () => {
-  console.log('Private message')
+const onPrivateMessage = (navigation: NavigateFunction) => {
+  navigation('/channels/@me')
 }
 
 export default function ServersNavigationFeature() {
   const { openModal, closeModal } = useModal()
+
+  const navigate = useNavigate()
 
   const methodsAddChannel = useForm({
     mode: 'onChange',
@@ -41,7 +44,7 @@ export default function ServersNavigationFeature() {
     <ServersNavigation
       servers={servers}
       onLogout={onLogout}
-      onPrivateMessage={onPrivateMessage}
+      onPrivateMessage={() => onPrivateMessage(navigate)}
       onCreateServer={onCreateServer}
       openModal={openModal}
       closeModal={closeModal}
