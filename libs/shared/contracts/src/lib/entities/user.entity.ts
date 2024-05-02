@@ -9,6 +9,6 @@ export interface UserEntity {
     profilePicture?: string
     roles?: UserRole[]
     verifiedAt: Date | null
-    created_at?: string
-    updated_at?: string
+    createdAt?: string
+    updatedAt?: string
 }

@@ -1,7 +1,7 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 // eslint-disable-next-line @nx/enforce-module-boundaries
 import { RootState } from '@beep/store';
-import { UserEntity, backendUrl } from '@beep/contracts';
+import { UserEntity, backendUrl, CreateChannelRequest, CreateChannelResponse, ChannelEntity } from '@beep/contracts';
 
 const baseQuery = fetchBaseQuery({
   baseUrl: backendUrl,
@@ -17,8 +17,11 @@ export const channelApi = createApi({
   baseQuery,
   tagTypes: ['channels', 'messages'],
   endpoints: (builder) => ({
-    getChannels: builder.query<any, string>({
-      query: (params) => `/channels?${params}`,
+    getChannels: builder.query<ChannelEntity[], void>({
+      query: () => ({
+        url: `/channels`,
+        method: 'GET',
+      }),
       providesTags: ['channels']
     }),
     getChannel: builder.query<any, string>({
@@ -35,8 +38,7 @@ export const channelApi = createApi({
       query: (id: string) => `/channels/${id}?messages=true`,
       providesTags: ['messages'],
     }),
-
-    createChannel: builder.mutation({
+    createChannel: builder.mutation<CreateChannelResponse, CreateChannelRequest>({
       query: (channel) => ({
         url: `channels`,
         method: 'POST',
@@ -56,8 +58,8 @@ export const channelApi = createApi({
 })
 
 export const {
-  useGetChannelQuery,
   useGetChannelsQuery,
+  useGetChannelQuery,
   useCreateChannelMutation,
   useGetMessagesByChannelIdQuery,
   useCreateMessageMutation,

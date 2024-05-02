@@ -50,7 +50,7 @@ const user: UserEntity = {
   firstname: 'Dorian',
   lastname: 'Grasset',
   profilePicture: '/picture.svg',
-  verifiedAt: null,
+  verifiedAt: new Date('2021-09-20')
 }
 
 const messages: MessageEntity[] = [

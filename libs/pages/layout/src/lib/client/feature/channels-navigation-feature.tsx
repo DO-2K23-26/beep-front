@@ -1,8 +1,9 @@
-import { ChannelEntity, ChannelType } from '@beep/contracts'
+import { ChannelEntity, ChannelType, CreateChannelRequest } from '@beep/contracts'
 import ChannelsNavigation from '../ui/channels-navigation'
 import { useForm } from 'react-hook-form'
 import { useModal } from '@beep/ui'
 import { toast } from 'react-hot-toast'
+<<<<<<< HEAD
 import { AppDispatch } from '@beep/store'
 import { useDispatch } from 'react-redux'
 import { responsiveActions } from '@beep/responsive'
@@ -21,6 +22,10 @@ const channels: ChannelEntity[] = [
     type: ChannelType.TEXT,
   },
 ]
+=======
+import { useCreateChannelMutation, useGetChannelsQuery } from '@beep/channel'
+import { useEffect } from 'react'
+>>>>>>> fbce31e (connect add channel API + get channels)
 
 const server = {
   id: '@03248567',
@@ -32,6 +37,17 @@ const server = {
 export default function ChannelsNavigationFeature() {
   const { openModal, closeModal } = useModal()
 
+  const [createChannel, resultCreatedChannel] = useCreateChannelMutation()
+  const {data: channels} = useGetChannelsQuery()
+
+  useEffect(() => {
+    if (resultCreatedChannel.isSuccess && resultCreatedChannel.data !== undefined) {
+      toast.success('Channel created !')
+    } else if (resultCreatedChannel.isError) {
+      toast.error('An error occured while creating the channel !')
+    }
+  }, [resultCreatedChannel])
+
   const methodsAddChannel = useForm({
     mode: 'onChange',
     defaultValues: {
@@ -40,8 +56,7 @@ export default function ChannelsNavigationFeature() {
   })
 
   const onCreateChannel = methodsAddChannel.handleSubmit((data) => {
-    console.log('Create channel')
-    toast.success('Channel created !')
+    createChannel(data as CreateChannelRequest)
     closeModal()
   })
 
