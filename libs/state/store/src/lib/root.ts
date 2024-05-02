@@ -7,8 +7,9 @@ import { responsiveReducer } from '@beep/responsive'
 export const rootReducer = combineReducers({
   user: userReducer,
   channels: channelsReducer,
+  responsive: responsiveReducer,
   [userApi.reducerPath]: userApi.reducer,
-  [channelApi.reducerPath]: channelApi.reducer
+  [channelApi.reducerPath]: channelApi.reducer,
 })
 
 
