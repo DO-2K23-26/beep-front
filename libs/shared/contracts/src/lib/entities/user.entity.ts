@@ -1,4 +1,5 @@
 import { UserRole } from "../enums/user-roles"
+import { RoleEntity } from "./roles.entities"
 
 export interface UserEntity {
     id: string
@@ -7,7 +8,7 @@ export interface UserEntity {
     firstname: string
     lastname: string
     profilePicture?: string
-    roles?: UserRole[]
+    roles?: RoleEntity[]
     verifiedAt: Date | null
     created_at?: string
     updated_at?: string
