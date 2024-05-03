@@ -35,7 +35,6 @@ export const channelApi = createApi({
       query: (id: string) => `/channels/${id}?messages=true`,
       providesTags: ['messages'],
     }),
-
     createChannel: builder.mutation({
       query: (channel) => ({
         url: `channels`,
@@ -44,14 +43,6 @@ export const channelApi = createApi({
       }),
       invalidatesTags: ['channels'],
     }),
-    createMessage: builder.mutation<any, FormData>({
-      query: (message) => ({
-        url: '/messages',
-        method: 'POST',
-        body: message,
-      }),
-      invalidatesTags: ['messages']
-    })
   })
 })
 
@@ -59,6 +50,5 @@ export const {
   useGetChannelQuery,
   useGetChannelsQuery,
   useCreateChannelMutation,
-  useGetMessagesByChannelIdQuery,
-  useCreateMessageMutation,
+  useGetMessagesByChannelIdQuery
 } = channelApi
