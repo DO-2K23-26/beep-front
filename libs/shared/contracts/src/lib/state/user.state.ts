@@ -15,5 +15,9 @@ export interface UserState {
         resource_access: {
             roles: string[]
         }
+        username: string
+        firstName: string
+        lastName: string
+        email: string
     }
 }

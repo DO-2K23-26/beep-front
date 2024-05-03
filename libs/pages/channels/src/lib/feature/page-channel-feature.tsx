@@ -1,27 +1,28 @@
 import {
-  ChannelEntity,
   ChannelType,
-  MessageEntity,
-  UserEntity,
+  backendUrl,
 } from '@beep/contracts'
+import { FieldValues, FormProvider, useForm } from 'react-hook-form'
+import { PageChannel } from '../ui/page-channel'
+import { useParams } from 'react-router'
+import { useCreateMessageMutation, useGetMessagesByChannelIdQuery } from '@beep/channel'
+import { useEffect } from 'react'
+import { Transmit } from "@adonisjs/transmit-client";
+import toast from 'react-hot-toast'
+import { useDispatch } from 'react-redux'
 import { responsiveActions } from '@beep/responsive'
 import { AppDispatch } from '@beep/store'
-import { FormProvider, useForm } from 'react-hook-form'
-import { useDispatch } from 'react-redux'
-import { PageChannel } from '../ui/page-channel'
-
-const onSend = () => {
-  console.log('Send message')
-}
-
-const onFiles = () => {
-  console.log('Files')
-}
 
 export function PageChannelFeature() {
+  const { channelId = '' } = useParams<{ channelId: string }>()
+  const { data: response, refetch } = useGetMessagesByChannelIdQuery(channelId)
+
+  const [ createMessage, result ] = useCreateMessageMutation()
+
   const methods = useForm({
     mode: 'onChange',
   })
+
   const dispatch = useDispatch<AppDispatch>()
   const hideRightDiv = () => {
     dispatch(responsiveActions.manageRightPane())
@@ -29,116 +30,54 @@ export function PageChannelFeature() {
   const hideLeftDiv = () => {
     dispatch(responsiveActions.manageLeftPane())
   }
+
+  const onSend = methods.handleSubmit((data) => {
+    if ('message' in data && data.message !== '') {
+      const message = data.message
+      createMessage({
+        channelId: channelId,
+        content: message,
+        attachments: [],
+      })
+      data.message = ''
+      data.setContent('')
+    } else {
+      toast.error('A message is required')
+    }
+  })
+  
+  const onFiles = () => {
+    console.log('Send file')
+  }
+
+  useEffect(() => {
+    const transmit = new Transmit({
+      baseUrl: backendUrl,
+    })
+
+    const result = transmit.subscription(`channels/${channelId}/messages`)
+    result.onMessage((message) => {
+      refetch()
+    })
+  }, []);
+
   return (
     <FormProvider {...methods}>
-      <PageChannel
-        messages={messages}
-        channel={channel}
-        onSend={onSend}
-        onFiles={onFiles}
-        hideRightDiv={hideRightDiv}
-        hideLeftDiv={hideLeftDiv}
-      />
+      {
+        response ? (
+          <PageChannel
+            messages={response.messages}
+            channel={{ id: response.id, name: response.name, server_id: channelId, type: ChannelType.TEXT }}
+            sendMessage={onSend}
+            onFiles={onFiles}
+            hideRightDiv={hideRightDiv}
+            hideLeftDiv={hideLeftDiv}
+          />
+        ) : (
+          <p>Data is loading... Beboup beboup</p>
+        )
+      }
+      
     </FormProvider>
   )
-}
-
-const user: UserEntity = {
-  id: '1',
-  email: 'rapidement@gmail.com',
-  username: 'Rapidement',
-  firstname: 'Dorian',
-  lastname: 'Grasset',
-  profilePicture: '/picture.svg',
-  verifiedAt: new Date('2021-09-20')
-}
-
-const messages: MessageEntity[] = [
-  {
-    id: '1',
-    ownerId: '1',
-    content: 'Prod Message',
-    channelId: '1',
-    createdAt: '2021-09-20',
-    owner: user,
-  },
-  {
-    id: '2',
-    ownerId: '1',
-    content: 'Prod Message',
-    channelId: '1',
-    createdAt: '2021-09-20',
-    owner: user,
-  },
-  {
-    id: '3',
-    ownerId: '1',
-    content: 'Prod Message',
-    channelId: '1',
-    createdAt: '2021-09-20',
-    owner: user,
-  },
-  {
-    id: '4',
-    ownerId: '1',
-    content: 'Prod Message',
-    channelId: '1',
-    createdAt: '2021-09-20',
-    owner: user,
-  },
-  {
-    id: '5',
-    ownerId: '1',
-    content: 'Prod Message',
-    channelId: '1',
-    createdAt: '2021-09-20',
-    owner: user,
-  },
-  {
-    id: '6',
-    ownerId: '1',
-    content: 'Prod Message',
-    channelId: '1',
-    createdAt: '2021-09-20',
-    owner: user,
-  },
-  {
-    id: '7',
-    ownerId: '1',
-    content: 'Prod Message',
-    channelId: '1',
-    createdAt: '2021-09-20',
-    owner: user,
-  },
-  {
-    id: '8',
-    ownerId: '1',
-    content: 'Prod Message',
-    channelId: '1',
-    createdAt: '2021-09-20',
-    owner: user,
-  },
-  {
-    id: '9',
-    ownerId: '1',
-    content: 'Prod Message',
-    channelId: '1',
-    createdAt: '2021-09-20',
-    owner: user,
-  },
-  {
-    id: '10',
-    ownerId: '1',
-    content: 'Prod Message',
-    channelId: '1',
-    createdAt: '2021-09-20',
-    owner: user,
-  },
-]
-
-const channel: ChannelEntity = {
-  id: '1',
-  name: '418 I am a teapot',
-  server_id: '1',
-  type: ChannelType.TEXT,
 }

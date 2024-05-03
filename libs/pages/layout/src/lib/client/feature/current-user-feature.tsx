@@ -3,15 +3,8 @@ import CurrentUser from '../ui/current-user'
 import { useModal } from '@beep/ui'
 import { useForm } from 'react-hook-form'
 import { toast } from 'react-hot-toast'
-
-const currentUser: UserEntity = {
-  id: '1',
-  email: 'rapidement@gmail.com',
-  username: 'rapidement',
-  firstname: 'Dorian',
-  lastname: 'Grasset',
-  profilePicture: '/picture.svg',
-}
+import { useSelector } from 'react-redux'
+import { getUserState } from '@beep/user'
 
 const onMicrophone = () => {
   console.log('Microphone')
@@ -22,7 +15,27 @@ const onPhone = () => {
 }
 
 export default function CurrentUserFeature() {
+  const { tokens, isLoading, isAuthenticated, payload } = useSelector(getUserState)
+
   const { openModal, closeModal } = useModal()
+
+  const currentUser: UserEntity = payload ? {
+    id: payload.sub,
+    email: payload.email,
+    username: payload.username,
+    firstname: payload.firstName,
+    lastname: payload.lastName,
+    profilePicture: '/picture.svg',
+    verifiedAt: new Date(),
+  } : {
+    id: '1',
+    email: 'rapidement@gmail.com',
+    username: 'rapidement',
+    firstname: 'Dorian',
+    lastname: 'Grasset',
+    profilePicture: '/picture.svg',
+    verifiedAt: new Date(),
+  }
 
   const methods = useForm({
     mode: 'onChange',

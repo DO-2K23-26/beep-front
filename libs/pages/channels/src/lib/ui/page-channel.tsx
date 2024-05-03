@@ -1,6 +1,7 @@
 import { ChannelEntity, ChannelType, MessageEntity } from '@beep/contracts'
 import { Button, ButtonStyle, Icon, Input } from '@beep/ui'
 import ListMessages from './list-messages'
+import { Controller, useFormContext } from 'react-hook-form'
 
 export type MessageFormValues = {
   content: string
@@ -10,7 +11,7 @@ export type MessageFormValues = {
 export interface PageChannelProps {
   channel: ChannelEntity
   messages: MessageEntity[]
-  onSend?: () => void
+  sendMessage: () => void
   onFiles?: () => void
   hideRightDiv?: () => void
   hideLeftDiv?: () => void
@@ -19,11 +20,18 @@ export interface PageChannelProps {
 export const PageChannel = ({
   channel,
   messages,
-  onSend,
+  sendMessage,
   onFiles,
   hideRightDiv,
   hideLeftDiv,
 }: PageChannelProps) => {
+  const { control } = useFormContext()
+
+  const onSend = () => {
+    sendMessage();
+    control._reset();
+  }
+
   return (
     <div className="bg-violet-200 w-full p-6 flex flex-col gap-6 justify-between h-[100dvh]">
       {/* Message page Header */}
@@ -58,9 +66,19 @@ export const PageChannel = ({
       {/* Message input + bouttons */}
       <div className="flex flex-col gap-3 font-medium">
         <div className="flex flex-row gap-6 justify-between">
-          <Input
-            className="rounded-xl bg-violet-50 px-4 h-full w-full"
-            placeholder="Type a message"
+          <Controller
+            name='message'
+            control={control}
+            render={({ field }) => (
+              <Input
+                type='text'
+                name={'message'}
+                value={field.value}
+                className="rounded-xl bg-violet-50 px-4 h-full w-full"
+                placeholder="Type a message"
+                onChange={field.onChange}
+              />
+            )}
           />
           <div className="flex flex-row gap-6">
             <Button

@@ -7,7 +7,7 @@ interface ListMessagesProps {
 
 export default function ListMessages({ messages }: ListMessagesProps) {
   return (
-    <div className="flex flex-col-reverse gap-6 overflow-y-scroll no-scrollbar scroll-smooth">
+    <div className="flex flex-col-reverse gap-6 overflow-y-scroll no-scrollbar scroll-smooth h-full">
       {messages &&
         messages
           .slice()
