@@ -31,9 +31,9 @@ export function PageSigninFeature() {
 
   useEffect(() => {
     if (result.isSuccess && result.data !== undefined) {
-      sessionStorage.setItem('accessToken', result.data.tokens.accessToken)
-      sessionStorage.setItem('refreshToken', result.data.tokens.refreshToken)
-      dispatch(userActions.setTokens(result.data.tokens))
+      sessionStorage.setItem('accessToken', result.data.accessToken)
+      sessionStorage.setItem('refreshToken', result.data.refreshToken)
+      dispatch(userActions.setTokens(result.data))
       dispatch(userActions.updateIsAuthentificated(true))
     } else if (result.isError) {
       setError('Email or password incorrect')
