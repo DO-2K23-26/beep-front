@@ -4,13 +4,9 @@ import { useModal } from '@beep/ui'
 import { useForm } from 'react-hook-form'
 import { toast } from 'react-hot-toast'
 
+
 const servers: ServerEntity[] = [
-  {
-    id: '@03248567',
-    name: '418erreur',
-    owner_id: 'Rapidement',
-    picture: '/418.jpg',
-  },
+  
 ]
 
 const onLogout = () => {
