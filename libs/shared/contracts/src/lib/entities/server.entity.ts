@@ -1,7 +1,7 @@
 export interface ServerEntity {
-  id: string
+  id: number
   name: string
-  owner_id: string
+  owner_id: number
   picture?: string
   created_at?: string
   updated_at?: string
