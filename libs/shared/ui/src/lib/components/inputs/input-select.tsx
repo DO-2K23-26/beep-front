@@ -139,7 +139,7 @@ export function InputSelect({
           {isMulti ? (
             <span className="input-select__checkbox">
               {props.isSelected && (
-                <Icon name={'icon-solid-cloud-check'} className="text-xs" />
+                <Icon name={'ic:round-check'} className="text-xs !text-white" />
               )}
             </span>
           ) : props.isSelected ? (
@@ -287,7 +287,7 @@ export function InputSelect({
         {!isFilter && (
           <div className="absolute top-1/2 -translate-y-1/2 right-4 pointer-events-none">
             <Icon
-              name="icon-solid-angle-down"
+              name="flowbite:angle-down-outline"
               className="text-sm text-neutral-400"
             />
           </div>

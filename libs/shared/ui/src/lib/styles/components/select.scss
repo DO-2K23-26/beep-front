@@ -1,0 +1,128 @@
+.input-select__control .input-select__input-container {
+  @apply text-sm;
+  margin: 0;
+  color: theme('colors.neutral.400');
+}
+
+.input-select__control {
+  border: none !important;
+  background: none !important;
+  box-shadow: none !important;
+  min-height: auto !important;
+  height: 34px;
+}
+
+.input-select__value-container {
+  padding: 0 !important;
+  cursor: pointer;
+  display: flex !important;
+  flex-wrap: nowrap !important;
+  white-space: nowrap;
+  @apply mt-2 top-1;
+}
+
+.input--has-icon .input-select__control {
+  padding-left: theme('spacing.8');
+  transition-property: transform;
+}
+
+// state
+.input-select--error {
+  @apply border-red-500;
+  box-shadow: 0 2px 2px rgba(0, 0, 0, 0.05);
+  &:hover {
+    @apply border-red-500;
+  }
+}
+
+.input-select--focused {
+  & > label {
+    @apply text-xs translate-y-0;
+  }
+}
+
+.input-select--disabled {
+  @apply bg-neutral-100 border-neutral-250 pointer-events-none;
+
+  & > label {
+    @apply text-neutral-350;
+  }
+}
+
+// buttons
+.input-select__indicators {
+  display: none !important;
+}
+
+// menu
+.input-select__menu {
+  width: calc(100% + 2rem) !important;
+  left: -1rem;
+  margin-top: 1rem !important;
+  box-shadow: 0 4px 32px rgba(0, 0, 0, 0.12) !important;
+  @apply p-2;
+}
+
+.input-select__menu-list {
+  padding: 0 !important;
+}
+
+// option
+.input-select__option,
+.input-select__button {
+  display: flex !important;
+  background: #fff !important;
+  padding: 8px !important;
+  cursor: pointer !important;
+  @apply items-center gap-2 rounded-sm;
+
+  label {
+    @apply static translate-y-0 font-medium text-sm text-neutral-400;
+  }
+
+  .input-select__checkbox {
+    @apply bg-white border-2 border-neutral-350 rounded-sm w-4 h-4 flex items-center justify-center shrink-0;
+  }
+
+  &:hover {
+    background: #fff !important;
+  }
+}
+
+.input-select__option--is-selected {
+  background: theme('colors.white');
+
+  label {
+    @apply text-neutral-400;
+  }
+
+  .input-select__checkbox {
+    @apply bg-brand-500 border-0;
+  }
+}
+
+.input-select__placeholder {
+  display: none;
+}
+
+.input-select__option--is-focused,
+.input-select__option--is-focused.input-select__option--is-selected,
+.input-select__button:hover,
+.input-select__option--is-focused:hover {
+  background: theme('colors.brand.50') !important;
+  label {
+    color: theme('colors.brand.500') !important;
+  }
+}
+
+.input-select__menu-portal {
+  z-index: 1000;
+  position: relative;
+  //position: relative;
+  //height: 100px;
+}
+
+
+.input__select--small {
+  appearance: none;
+}
