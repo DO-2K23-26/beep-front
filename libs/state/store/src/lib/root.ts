@@ -3,7 +3,7 @@ import { userApi, userReducer } from '@beep/user';
 import { channelApi, channelsReducer } from '@beep/channel';
 import { combineReducers, configureStore } from '@reduxjs/toolkit';
 import { responsiveReducer } from '@beep/responsive'
-import { serverReducer } from '@beep/server'
+import { serverApi, serverReducer } from '@beep/server'
 
 export const rootReducer = combineReducers({
   user: userReducer,
@@ -12,6 +12,7 @@ export const rootReducer = combineReducers({
   servers: serverReducer,
   [userApi.reducerPath]: userApi.reducer,
   [channelApi.reducerPath]: channelApi.reducer,
+  [serverApi.reducerPath]: serverApi.reducer,
 })
 
 
@@ -26,6 +27,7 @@ export function setupStore(preloadedState?: never) {
       })
         .concat(userApi.middleware)
         .concat(channelApi.middleware)
+        .concat(serverApi.middleware),
   })
 }
 
