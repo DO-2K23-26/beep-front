@@ -3,9 +3,7 @@ import ServersNavigation from '../ui/servers-navigation'
 import { useModal } from '@beep/ui'
 import { useForm } from 'react-hook-form'
 import { toast } from 'react-hot-toast'
-
-const servers: ServerEntity[] = [
-]
+import { serverActions, useGetServersQuery, useJoinServerMutation } from '@beep/server'
 
 const onLogout = () => {
   console.log('Logout')
@@ -17,6 +15,8 @@ const onPrivateMessage = () => {
 }
 
 export default function ServersNavigationFeature() {
+  const { data: servers } = useGetServersQuery()
+  const [joinServer ] = useJoinServerMutation()
   const { openModal, closeModal } = useModal()
 
   const methodsAddChannel = useForm({
@@ -27,8 +27,7 @@ export default function ServersNavigationFeature() {
   })
 
   const onCreateServer = methodsAddChannel.handleSubmit((data) => {
-    console.log('Create server')
-    toast.success('Server created !')
+    joinServer(data.name)
     closeModal()
   })
   return (

@@ -9,7 +9,7 @@ import {
 } from 'react-hook-form'
 
 interface ServersNavigationProps {
-  servers: ServerEntity[]
+  servers: ServerEntity[] | undefined
   onPrivateMessage?: () => void
   onLogout?: () => void
   onCreateServer: () => void
