@@ -1,5 +1,5 @@
 .input {
-  @apply relative min-h-[52px] px-4 py-2 rounded border border-neutral-250 bg-white cursor-pointer;
+  @apply relative min-h-[52px] px-4 py-2 rounded border border-neutral-250 bg-white cursor-text;
   transition: 120ms all $timing-cubic, 0 outline;
 
   label {

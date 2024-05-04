@@ -17,7 +17,7 @@ export interface BadgeProps {
 export function Badge({ type, title, className }: BadgeProps) {
   return (
     <div
-      className={`${type} ${className} text-xs leading-none font-semibold text-white rounded-full py-[6px] px-2 cursor-pointer truncate w-min`}
+      className={`${type} ${className} text-xs leading-none font-semibold text-white rounded-full py-[6px] px-2 truncate w-min`}
     >
       {title}
     </div>
