@@ -39,8 +39,8 @@ export function PageChannelFeature() {
         content: message,
         attachments: [],
       })
-      data.message = ''
-      data.setContent('')
+
+      methods.setValue('message', '')
     } else {
       toast.error('A message is required')
     }

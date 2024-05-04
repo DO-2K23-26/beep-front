@@ -3,29 +3,11 @@ import ChannelsNavigation from '../ui/channels-navigation'
 import { useForm } from 'react-hook-form'
 import { useModal } from '@beep/ui'
 import { toast } from 'react-hot-toast'
-<<<<<<< HEAD
+import { useCreateChannelMutation, useGetChannelsQuery } from '@beep/channel'
+import { useEffect } from 'react'
 import { AppDispatch } from '@beep/store'
 import { useDispatch } from 'react-redux'
 import { responsiveActions } from '@beep/responsive'
-
-const channels: ChannelEntity[] = [
-  {
-    id: '1',
-    name: 'Salut les amis',
-    server_id: '13',
-    type: ChannelType.TEXT,
-  },
-  {
-    id: '2',
-    name: 'Nous sommes des salons vocaux',
-    server_id: '13',
-    type: ChannelType.TEXT,
-  },
-]
-=======
-import { useCreateChannelMutation, useGetChannelsQuery } from '@beep/channel'
-import { useEffect } from 'react'
->>>>>>> fbce31e (connect add channel API + get channels)
 
 const server = {
   id: '@03248567',
