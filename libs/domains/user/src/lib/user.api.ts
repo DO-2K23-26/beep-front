@@ -1,7 +1,7 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 // eslint-disable-next-line @nx/enforce-module-boundaries
 import { RootState } from '@beep/store'
-import { backendUrl, LoginRequest, LoginResponse, RefreshRequest, RefreshResponse, RegisterRequest, RegisterResponse, UserEntity } from '@beep/contracts'
+import { backendUrl, LoginRequest, LoginResponse, RegisterRequest, RegisterResponse } from '@beep/contracts'
 
 export const userApi = createApi({
   reducerPath: 'userApi',
@@ -20,40 +20,23 @@ export const userApi = createApi({
   endpoints: (builder) => ({
     login: builder.mutation<LoginResponse, LoginRequest>({
       query: (credentials) => ({
-        url: '/authentication/signin',
+        url: '/auth/login',
         method: 'POST',
-        body: credentials 
+        body: credentials
       })
     }),
     register: builder.mutation<RegisterResponse, RegisterRequest>({
       query: (data) => ({
-        url: '/authentication/signup',
+        url: '/user',
         method: 'POST',
         body: data
       })
     }),
     refresh: builder.mutation<RefreshResponse, RefreshRequest>({
       query: (refreshToken) => ({
-        url: '/authentication/refresh',
+        url: '/auth/refresh',
         method: 'POST',
-        body: refreshToken
-      })
-    }),
-    fetchAllUsers: builder.query<UserEntity[], void>({
-      query: () => '/users',
-      providesTags: ['users']
-    }),
-    sendEmail: builder.mutation<any, void>({
-      query: () => ({
-        url: '/authentication/send-email',
-        method: 'POST'
-      })
-    }),
-    verifyEmail: builder.mutation<any, { token: string }>({
-      query: (data) => ({
-        url: '/authentication/verify',
-        method: 'POST',
-        body: data
+        body: { refreshToken }
       })
     })
   })
@@ -63,7 +46,4 @@ export const {
   useLoginMutation,
   useRegisterMutation,
   useRefreshMutation,
-  useFetchAllUsersQuery,
-  useSendEmailMutation,
-  useVerifyEmailMutation,
 } = userApi;

@@ -90,14 +90,6 @@ export default function App() {
     return <Navigate to={'/authentication/signin'} replace />
   }
 
-  if (
-    payload &&
-    !payload.audited_account &&
-    !pathname.includes('authentication')
-  ) {
-    return <Navigate to={'/authentication/confirmation'} replace />
-  }
-
   return (
     <div>
       <Toaster />
