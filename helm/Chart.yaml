@@ -2,5 +2,5 @@ apiVersion: v2
 name: beep-frontend-files
 description: the frontend of beep for the file group
 type: application
-version: 1.0.0
-appVersion: "1.16.0"
+version: 0.0.0
+appVersion: "0.0.0"

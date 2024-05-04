@@ -2,10 +2,10 @@ FROM node:20-alpine AS builder
 
 WORKDIR /app
 
-ARG VITE_API
-ENV VITE_API $VITE_API
+ARG VITE_BACKEND_URL
+ENV VITE_BACKEND_URL $VITE_BACKEND_URL
 
-RUN echo "Variable VITE_API: $VITE_API"
+RUN echo "Variable VITE_BACKEND_URL: VITE_BACKEND_URL"
 
 COPY package.json .
 COPY pnpm-lock.yaml .
