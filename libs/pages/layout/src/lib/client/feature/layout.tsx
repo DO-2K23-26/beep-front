@@ -1,19 +1,13 @@
-import {
-  ChannelEntity,
-  ChannelType
-} from '@beep/contracts'
+import { responsiveActions } from '@beep/responsive'
+import { AppDispatch } from '@beep/store'
 import { PropsWithChildren } from 'react'
+import { useDispatch } from 'react-redux'
 import LayoutPage from '../ui/layout-page'
 
-const channels: ChannelEntity[] = [
-  {
-    id: '1',
-    name: 'Test',
-    server_id: '13',
-    type: ChannelType.TEXT,
-  },
-]
-
 export function Layout({ children }: PropsWithChildren) {
-  return <LayoutPage channels={channels}>{children}</LayoutPage>
+  const dispatch = useDispatch<AppDispatch>()
+  const hideRightDiv = () => {
+    dispatch(responsiveActions.manageRightPane())
+  }
+  return <LayoutPage hideRightDiv={hideRightDiv}>{children}</LayoutPage>
 }

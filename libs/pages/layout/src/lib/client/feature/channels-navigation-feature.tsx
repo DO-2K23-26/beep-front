@@ -3,6 +3,9 @@ import ChannelsNavigation from '../ui/channels-navigation'
 import { useForm } from 'react-hook-form'
 import { useModal } from '@beep/ui'
 import { toast } from 'react-hot-toast'
+import { AppDispatch } from '@beep/store'
+import { useDispatch } from 'react-redux'
+import { responsiveActions } from '@beep/responsive'
 
 const channels: ChannelEntity[] = [
   {
@@ -42,6 +45,11 @@ export default function ChannelsNavigationFeature() {
     closeModal()
   })
 
+  const dispatch = useDispatch<AppDispatch>()
+  const hideLeftDiv = () => {
+    dispatch(responsiveActions.manageLeftPane())
+  }
+
   return (
     <ChannelsNavigation
       channels={channels}
@@ -50,6 +58,7 @@ export default function ChannelsNavigationFeature() {
       openModal={openModal}
       closeModal={closeModal}
       methodsAddChannel={methodsAddChannel}
+      hideLeftDiv={hideLeftDiv}
     />
   )
 }

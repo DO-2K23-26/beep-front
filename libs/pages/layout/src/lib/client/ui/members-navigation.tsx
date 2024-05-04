@@ -3,6 +3,8 @@ import { Button, ButtonStyle, Icon, InputText, UseModalProps } from '@beep/ui'
 import { useState } from 'react'
 import { ListMembers } from './list-members'
 import { toast } from 'react-hot-toast'
+import { useSelector } from 'react-redux'
+import { getResponsiveState } from '@beep/responsive'
 
 interface MembersNavigationProps {
   users: UserEntity[]
@@ -19,19 +21,17 @@ export default function MembersNavigation({
   closeModal,
   inviteCode,
 }: MembersNavigationProps) {
-  const [isRightDivVisible] = useState(false)
+  const { showRightPane } = useSelector(getResponsiveState)
 
   return (
     <div
       className={`bg-violet-300 p-6 rounded-r-3xl flex flex-col gap-6 ${
-        isRightDivVisible ? 'w-full' : 'sm:w-fit'
+        showRightPane ? 'w-full' : 'sm:w-fit'
       }`}
     >
       <div className="flex flex-row justify-between items-center gap-10">
-        <div className="flex flex-row gap-2 items-center">
-          <Icon name="lucide:chevron-down" />
-          <h5 className="text-slate-900 font-semibold">Members</h5>
-        </div>
+        <h5 className="text-slate-900 font-semibold pl-3">Members</h5>
+        {/* Invite button */}
         <Button
           iconLeft="lucide:plus"
           className="!bg-violet-400 !min-w-0 px-2 xl:px-3 py-2 text-base rounded-xl hover:rounded-2xl transition-rounded font-semibold flex flex-row gap-2 justify-center items-center cursor-pointer"
@@ -44,6 +44,7 @@ export default function MembersNavigation({
           <h5>Invite</h5>
         </Button>
       </div>
+      {/* Members list */}
       <div className="flex flex-col gap-1 overflow-y-scroll no-scrollbar scroll-smooth">
         <ListMembers users={users} />
       </div>

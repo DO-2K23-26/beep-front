@@ -10,6 +10,7 @@ const users: UserEntity[] = [
     firstname: 'Dorian',
     lastname: 'Grasset',
     profilePicture: '/picture.svg',
+    verifiedAt: null,
   },
 ]
 

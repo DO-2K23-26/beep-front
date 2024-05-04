@@ -9,14 +9,15 @@ import {
   InputText,
   UseModalProps,
 } from '@beep/ui'
-import { useState } from 'react'
 
+import { getResponsiveState } from '@beep/responsive'
 import {
   Controller,
   FormProvider,
   UseFormReturn,
   useFormContext,
 } from 'react-hook-form'
+import { useSelector } from 'react-redux'
 import CurrentUserFeature from '../feature/current-user-feature'
 import { ListChannels } from './list-channels'
 
@@ -27,6 +28,7 @@ export interface ChannelsNavigationProps {
   openModal: React.Dispatch<React.SetStateAction<UseModalProps | undefined>>
   closeModal: () => void
   methodsAddChannel: UseFormReturn<{ name: string }>
+  hideLeftDiv?: () => void
 }
 
 export default function ChannelsNavigation({
@@ -36,19 +38,18 @@ export default function ChannelsNavigation({
   openModal,
   closeModal,
   methodsAddChannel,
+  hideLeftDiv,
 }: ChannelsNavigationProps) {
-  const [isLeftDivVisible] = useState(false)
+  const { showLeftPane } = useSelector(getResponsiveState)
 
   return (
-    <div
-      className={isLeftDivVisible ? 'flex abolute w-full' : 'hidden lg:flex'}
-    >
+    <div className={showLeftPane ? 'flex abolute w-full' : 'hidden lg:flex'}>
       <div
         className={`bg-violet-300 p-6 flex gap-6 flex-col h-[100dvh] ${
-          isLeftDivVisible ? 'w-full' : 'sm:w-fit'
+          showLeftPane ? 'w-full' : 'sm:w-fit'
         }`}
       >
-        {/* TODO: Add server DROPDOWN */}
+        {/* Server infos */}
         <div className="flex flex-row gap-6">
           <Button
             style={ButtonStyle.SQUARE}
@@ -73,7 +74,7 @@ export default function ChannelsNavigation({
             />
           </div>
         </div>
-        {/* TODO: DIALOG DE CREATION DE CHANNEL */}
+        {/* Create channel modal */}
         <Button
           iconLeft={'lucide:circle-plus'}
           size={ButtonSize.REGULAR}
@@ -93,6 +94,7 @@ export default function ChannelsNavigation({
         >
           <p>Create channel</p>
         </Button>
+        {/* Channels list */}
         <div className="flex flex-col gap-6 min-w-max flex-grow overflow-y-scroll no-scrollbar scroll-smooth">
           <div className="flex flex-col flex-grow gap-6">
             <div className="flex flex-col gap-1">
@@ -102,13 +104,9 @@ export default function ChannelsNavigation({
         </div>
         <CurrentUserFeature />
       </div>
-      <div className={isLeftDivVisible ? 'p-6 bg-violet-200 flex' : 'hidden'}>
-        <Button
-          onClick={() => {
-            console.log('click')
-          }}
-          className="!bg-violet-300"
-        >
+      {/* Responsive button */}
+      <div className={showLeftPane ? 'p-6 bg-violet-200 flex' : 'hidden'}>
+        <Button onClick={hideLeftDiv} style={ButtonStyle.SQUARE} className="!bg-violet-300">
           <Icon name="lucide:arrow-left" />
         </Button>
       </div>

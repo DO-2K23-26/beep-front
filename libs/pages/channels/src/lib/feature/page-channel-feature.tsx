@@ -4,7 +4,10 @@ import {
   MessageEntity,
   UserEntity,
 } from '@beep/contracts'
+import { responsiveActions } from '@beep/responsive'
+import { AppDispatch } from '@beep/store'
 import { FormProvider, useForm } from 'react-hook-form'
+import { useDispatch } from 'react-redux'
 import { PageChannel } from '../ui/page-channel'
 
 const onSend = () => {
@@ -19,6 +22,13 @@ export function PageChannelFeature() {
   const methods = useForm({
     mode: 'onChange',
   })
+  const dispatch = useDispatch<AppDispatch>()
+  const hideRightDiv = () => {
+    dispatch(responsiveActions.manageRightPane())
+  }
+  const hideLeftDiv = () => {
+    dispatch(responsiveActions.manageLeftPane())
+  }
   return (
     <FormProvider {...methods}>
       <PageChannel
@@ -26,6 +36,8 @@ export function PageChannelFeature() {
         channel={channel}
         onSend={onSend}
         onFiles={onFiles}
+        hideRightDiv={hideRightDiv}
+        hideLeftDiv={hideLeftDiv}
       />
     </FormProvider>
   )
@@ -38,6 +50,7 @@ const user: UserEntity = {
   firstname: 'Dorian',
   lastname: 'Grasset',
   profilePicture: '/picture.svg',
+  verifiedAt: null,
 }
 
 const messages: MessageEntity[] = [

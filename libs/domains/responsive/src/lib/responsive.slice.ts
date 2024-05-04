@@ -1,32 +1,33 @@
-import { ResponsiveState } from "@beep/contracts"
 // eslint-disable-next-line @nx/enforce-module-boundaries
-import { RootState } from "@beep/store"
-import { createSlice } from "@reduxjs/toolkit"
+import { ResponsiveState } from '@beep/contracts'
+// eslint-disable-next-line @nx/enforce-module-boundaries
+import { RootState } from '@beep/store'
+import { createSlice } from '@reduxjs/toolkit'
 
 export const RESPONSIVE_KEY = 'responsive'
 
 export const initialResponsiveState: ResponsiveState = {
-    showLeftPane: false,
-    showRightPane: false
+  showLeftPane: false,
+  showRightPane: false,
 }
 
 export const channelsSlice = createSlice({
-    name: RESPONSIVE_KEY,
-    initialState: initialResponsiveState,
-    reducers: {
-        manageLeftPane(state, action) {
-            state.showLeftPane = action.payload
-            if (state.showRightPane) {
-                state.showRightPane = !state.showRightPane
-            }
-        },
-        manageRightPane(state, action) {
-            state.showRightPane = action.payload
-            if (state.showLeftPane) {
-                state.showLeftPane = !state.showLeftPane
-            }
-        }
+  name: RESPONSIVE_KEY,
+  initialState: initialResponsiveState,
+  reducers: {
+    manageLeftPane(state) {
+      state.showLeftPane = !state.showLeftPane
+      if (!state.showRightPane) {
+        state.showRightPane = false
+      }
     },
+    manageRightPane(state) {
+      state.showRightPane = !state.showRightPane
+      if (!state.showLeftPane) {
+        state.showLeftPane = false
+      }
+    },
+  },
 })
 
 export const responsiveReducer = channelsSlice.reducer
