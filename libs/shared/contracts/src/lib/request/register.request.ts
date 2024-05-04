@@ -3,5 +3,6 @@ export interface RegisterRequest {
     username: string
     firstname: string
     lastname: string
+    password: string
     profilePicture: string
 }

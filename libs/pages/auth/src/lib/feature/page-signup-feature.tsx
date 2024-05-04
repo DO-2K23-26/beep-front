@@ -24,7 +24,7 @@ export function PageSignupFeature() {
     () => navigate('/authentication/signin'),
     [navigate]
   )
-    
+
   useEffect(() => {
     if (result.isError) {
       setError('Email already used')
@@ -39,6 +39,7 @@ export function PageSignupFeature() {
       username: data.username,
       firstname: data.firstname,
       lastname: data.lastname,
+      password: data.password,
       profilePicture: '',
     }
     register(request)
