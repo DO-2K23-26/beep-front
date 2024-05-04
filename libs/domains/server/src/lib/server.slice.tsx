@@ -1,11 +1,16 @@
 import { createEntityAdapter, createSlice, PayloadAction } from '@reduxjs/toolkit'
-import { ServerEntity } from '@beep/contracts'
+import { ServerEntity, ServerState } from '@beep/contracts'
+import { RootState } from "@beep/store"
+
+export const initialServersState: ServerState = {
+  servers: []
+}
 
 const serverAdapter = createEntityAdapter<ServerEntity>()
-export const SERVER_KEY = 'server'
+export const SERVER_KEY = 'servers'
 export const serverSlice = createSlice({
   name: SERVER_KEY,
-  initialState: [],
+  initialState: serverAdapter.getInitialState(initialServersState),
   reducers: {
     setServers(state, payload: PayloadAction<ServerEntity[]>) {
       serverAdapter.setAll(state, payload.payload)
@@ -19,3 +24,5 @@ export const serverSlice = createSlice({
   },
 })
 export const serverReducer = serverSlice.reducer
+export const serverActions = serverSlice.actions
+export const getServersState = (root: RootState) => root[SERVER_KEY]

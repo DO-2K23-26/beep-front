@@ -29,6 +29,7 @@
       "@beep/ui": ["libs/shared/ui/src/index.ts"],
       "@beep/user": ["libs/domains/user/src/index.ts"],
       "@beep/utils": ["libs/shared/utils/src/index.ts"],
+      "@beep/server": ["libs/domains/server/src/index.ts"],
       "@front/server": ["libs/domains/server/src/index.ts"]
     }
   },

@@ -4,9 +4,7 @@ import { useModal } from '@beep/ui'
 import { useForm } from 'react-hook-form'
 import { toast } from 'react-hot-toast'
 
-
 const servers: ServerEntity[] = [
-  
 ]
 
 const onLogout = () => {
