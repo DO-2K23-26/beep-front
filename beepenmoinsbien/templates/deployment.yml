@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: beepenmoinsbien
+  labels:
+    project: beep
+    app: beepenmoinsbien
+    role: frontend
+spec:
+  replicas: {{ .Values.beepenmoinsbien.replicas }}
+  selector:
+    matchLabels:
+      project: beep
+      app: beepenmoinsbien
+      role: frontend
+  template:
+    metadata:
+      labels:
+        project: beep
+        app: beepenmoinsbien
+        role: frontend
+    spec:
+      containers:
+        - name: beepenmoinsbien
+          image: {{ .Values.beepenmoinsbien.image.repository }}:{{ .Chart.AppVersion }}
+          imagePullPolicy: {{ .Values.beepenmoinsbien.image.pullPolicy }}
+          env:
+            - name: VITE_BACKEND_URL
+              value: {{ .Values.backend.url }}
+          resources:
+            limits:
+              memory: '2Gi'
+              cpu: '500m'
+          ports:
+            - containerPort: 8080
+              protocol: TCP
+      imagePullSecrets:
+        - name: {{ .Values.beepenmoinsbien.image.registry.credentials }}
