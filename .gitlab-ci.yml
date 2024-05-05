@@ -62,7 +62,7 @@ Build staging helm chart:
   image: dtzar/helm-kubectl
   script:
     - helm lint helm/beepenmoinsbien
-    - helm package helm/beepenmoinsbien --app-version $CI_COMMIT_TAG
+    - helm package helm/beepenmoinsbien --app-version $CI_COMMIT_SHORT_SHA
     - curl --request POST --user gitlab-ci-token:$CI_JOB_TOKEN --form "chart=@beepenmoinsbien-0.1.0.tgz" "${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/helm/api/staging/charts"
 
 Build stable helm chart:
@@ -74,5 +74,5 @@ Build stable helm chart:
   when: manual
   script:
     - helm lint helm/beepenmoinsbien
-    - helm package helm/beepenmoinsbien --app-version $CI_COMMIT_TAG
+    - helm package helm/beepenmoinsbien --app-version $CI_COMMIT_SHORT_SHA
     - curl --request POST --user gitlab-ci-token:$CI_JOB_TOKEN --form "chart=@beepenmoinsbien-0.1.0.tgz" "${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/helm/api/stable/charts"
