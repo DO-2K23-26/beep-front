@@ -80,7 +80,7 @@ export default function App() {
         sessionStorage.removeItem('refreshToken')
 
         dispatch(userActions.setTokens({}))
-        navigate('/authentication/login')
+        navigate('/authentication/signin')
       }
 
     }
