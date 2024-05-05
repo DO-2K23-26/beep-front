@@ -3,7 +3,7 @@ import { ServerEntity, ServerState } from '@beep/contracts'
 import { RootState } from "@beep/store"
 
 export const initialServersState: ServerState = {
-  server: { id: 0, name: '', owner_id: 0 }
+  server: undefined
 }
 
 const serverAdapter = createEntityAdapter<ServerEntity>()

@@ -1,5 +1,5 @@
 import { ServerEntity } from "../entities"
 
 export interface ServerState {
-    server: ServerEntity
+    server: ServerEntity | undefined
 }

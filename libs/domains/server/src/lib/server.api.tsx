@@ -17,7 +17,7 @@ export const serverApi = createApi({
     baseQuery,
     tagTypes: ['servers'],
     endpoints: (builder) => ({
-      getServers: builder.query<ServerEntity[], void>({
+      getServers: builder.query<ServerEntity[], number>({
         query: (params) => `/server`,
         providesTags: ['servers']
       }),

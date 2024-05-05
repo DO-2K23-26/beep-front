@@ -20,6 +20,7 @@ import {
 import { useSelector } from 'react-redux'
 import CurrentUserFeature from '../feature/current-user-feature'
 import { ListChannels } from './list-channels'
+import { getServersState } from '@beep/server'
 
 export interface ChannelsNavigationProps {
   channels?: ChannelEntity[]
@@ -47,7 +48,7 @@ export default function ChannelsNavigation({
       <div
         className={`bg-violet-300 p-6 flex gap-6 flex-col h-[100dvh] ${
           showLeftPane ? 'w-full' : 'sm:w-fit'
-        }`}
+        } ${!server && 'hidden'}`}
       >
         {/* Server infos */}
         <div className="flex flex-row gap-6">

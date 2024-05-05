@@ -1,32 +1,18 @@
-import { ChannelEntity, ChannelType } from '@beep/contracts'
-import ChannelsNavigation from '../ui/channels-navigation'
-import { useForm } from 'react-hook-form'
-import { useModal } from '@beep/ui'
-import { toast } from 'react-hot-toast'
-import { AppDispatch } from '@beep/store'
-import { useDispatch, useSelector } from 'react-redux'
+import { useCreateChannelMutation, useGetChannelsQuery } from '@beep/channel'
 import { responsiveActions } from '@beep/responsive'
 import { getServersState } from '@beep/server'
-import { useEffect } from 'react'
-
-const channels: ChannelEntity[] = [
-  {
-    id: '1',
-    name: 'Salut les amis',
-    server_id: '13',
-    type: ChannelType.TEXT,
-  },
-  {
-    id: '2',
-    name: 'Nous sommes des salons vocaux',
-    server_id: '13',
-    type: ChannelType.TEXT,
-  },
-]
+import { AppDispatch } from '@beep/store'
+import { useModal } from '@beep/ui'
+import { useForm } from 'react-hook-form'
+import { toast } from 'react-hot-toast'
+import { useDispatch, useSelector } from 'react-redux'
+import ChannelsNavigation from '../ui/channels-navigation'
 
 export default function ChannelsNavigationFeature() {
   const { server } = useSelector(getServersState)
+  const { data: channels } = useGetChannelsQuery(server?.id)
   const { openModal, closeModal } = useModal()
+  const [createChannel] = useCreateChannelMutation()
 
   const methodsAddChannel = useForm({
     mode: 'onChange',
@@ -36,8 +22,10 @@ export default function ChannelsNavigationFeature() {
   })
 
   const onCreateChannel = methodsAddChannel.handleSubmit((data) => {
-    console.log('Create channel')
-    toast.success('Channel created !')
+    createChannel({
+      serverId: server.id,
+      nom: data.name,
+    })
     closeModal()
   })
 
