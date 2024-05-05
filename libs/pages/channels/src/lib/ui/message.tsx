@@ -1,26 +1,33 @@
-import { UserEntity } from '@beep/contracts'
-import { Button, ButtonStyle, Icon } from '@beep/ui'
+import { MessageEntity, UserEntity } from '@beep/contracts'
+import { Button, ButtonStyle, Icon, Input } from '@beep/ui'
+import { Controller } from 'react-hook-form'
 
 interface MessageProps {
-  message: string
+  message: MessageEntity
   user?: UserEntity
   image?: string
   gif?: string
   video?: string
-  onEdit?: () => void
-  onDelete?: () => void
-  createdAt?: string
+  isEditing: boolean
+  switchEditing: (() => void) | null
+  onUpdateMessage: () => void
+  onDelete: (() => void) | null
+  createdAt: string
   updatedAt?: string
+  control?: any
 }
 
 export default function Message({
   user,
   message,
   onDelete,
-  onEdit,
+  isEditing,
+  switchEditing,
+  onUpdateMessage,
   createdAt,
-  updatedAt,
+  control
 }: MessageProps) {
+
   return (
     <div className="flex flex-col gap-2 hover:bg-violet-300 p-3 rounded-xl group">
       <div className="flex flex-row justify-between">
@@ -38,18 +45,51 @@ export default function Message({
           <p className="font-normal text-xs truncate">{createdAt}</p>
         </div>
         <div className="flex flex-row gap-4 items-center invisible group-hover:visible pr-2">
-          <Button style={ButtonStyle.NONE} onClick={onEdit}>
-            <Icon name="lucide:pencil" className="w-4 h-4" />
-          </Button>
-          <Button style={ButtonStyle.NONE} onClick={onDelete}>
-            <Icon name="lucide:trash" className="w-4 h-4" />
-          </Button>
+          {
+            switchEditing && isEditing ? (
+              <></>
+            ) : (
+              <>
+              {
+                switchEditing ? <Button style={ButtonStyle.NONE} onClick={switchEditing}><Icon name="lucide:pencil" className="w-4 h-4" /></Button> : <></>
+              }
+              {
+                onDelete ? <Button style={ButtonStyle.NONE} onClick={onDelete}><Icon name="lucide:trash" className="w-4 h-4" /></Button> : <></>
+              }
+              </>
+            )
+          }
         </div>
       </div>
       <div className="flex flex-row gap-2 ">
-        <p className="text-xs font-semibold break-all bg-violet-50 rounded-xl rounded-tl-none p-6 flex ">
-          {message}
-        </p>
+        {
+          isEditing && switchEditing && control ? (
+            <div className='flex flex-row justify-between items-center gap-3'>
+              <Controller
+              name={'message-' + message.id}
+              control={control}
+              render={({ field }) => (
+                <Input
+                  type='text'
+                  name={'message-' + message.id}
+                  value={field.value}
+                  className="rounded-xl bg-violet-50 px-4 h-full w-full"
+                  placeholder="Update your message"
+                  onChange={field.onChange}
+                  onKeyDown={(e: any) => e.key === 'Enter' ? onUpdateMessage() : {}}
+                />
+              )}
+            />
+            <Button style={ButtonStyle.NONE} onClick={onUpdateMessage}>
+              <Icon name="lucide:save" className="w-10 h-10" />
+            </Button>
+          </div>
+          ) : (
+            <p className="text-xs font-semibold break-all bg-violet-50 rounded-xl rounded-tl-none p-6 flex ">
+              {message.content}
+            </p>
+          )
+        }
       </div>
     </div>
   )

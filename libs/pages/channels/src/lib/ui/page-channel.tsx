@@ -12,6 +12,7 @@ export interface PageChannelProps {
   channel: ChannelEntity
   messages: MessageEntity[]
   sendMessage: () => void
+  onUpdateMessage: (messageId: string) => void
   onFiles?: () => void
   hideRightDiv?: () => void
   hideLeftDiv?: () => void
@@ -21,16 +22,12 @@ export const PageChannel = ({
   channel,
   messages,
   sendMessage,
+  onUpdateMessage,
   onFiles,
   hideRightDiv,
   hideLeftDiv,
 }: PageChannelProps) => {
   const { control } = useFormContext()
-
-  const onSend = () => {
-    sendMessage();
-    control._reset();
-  }
 
   return (
     <div className="bg-violet-200 w-full p-6 flex flex-col gap-6 justify-between h-[100dvh]">
@@ -62,7 +59,7 @@ export const PageChannel = ({
         </Button>
       </div>
       {/* Message list */}
-      <ListMessages messages={messages} />
+      <ListMessages messages={messages} onUpdateMessage={onUpdateMessage} control={control} />
       {/* Message input + bouttons */}
       <div className="flex flex-col gap-3 font-medium">
         <div className="flex flex-row gap-6 justify-between">
@@ -77,13 +74,14 @@ export const PageChannel = ({
                 className="rounded-xl bg-violet-50 px-4 h-full w-full"
                 placeholder="Type a message"
                 onChange={field.onChange}
+                onKeyDown={(e: any) => e.key === 'Enter' ? sendMessage() : {}}
               />
             )}
           />
           <div className="flex flex-row gap-6">
             <Button
               style={ButtonStyle.SQUARE}
-              onClick={onSend}
+              onClick={sendMessage}
               className="!bg-violet-50"
             >
               <Icon name="lucide:send" className="w-5 h-5" />

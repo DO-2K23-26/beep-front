@@ -5,7 +5,7 @@ import {
 import { FieldValues, FormProvider, useForm } from 'react-hook-form'
 import { PageChannel } from '../ui/page-channel'
 import { useParams } from 'react-router'
-import { useCreateMessageMutation, useGetMessagesByChannelIdQuery } from '@beep/channel'
+import { useCreateMessageMutation, useDeleteMessageMutation, useGetMessagesByChannelIdQuery, useUpdateMessageMutation } from '@beep/channel'
 import { useEffect } from 'react'
 import { Transmit } from "@adonisjs/transmit-client";
 import toast from 'react-hot-toast'
@@ -18,6 +18,8 @@ export function PageChannelFeature() {
   const { data: response, refetch } = useGetMessagesByChannelIdQuery(channelId)
 
   const [ createMessage, result ] = useCreateMessageMutation()
+  const [ updateMessage, resultUpdate ] = useUpdateMessageMutation()
+  const [ deleteMessage, resultDelete ] = useDeleteMessageMutation()
 
   const methods = useForm({
     mode: 'onChange',
@@ -31,7 +33,7 @@ export function PageChannelFeature() {
     dispatch(responsiveActions.manageLeftPane())
   }
 
-  const onSend = methods.handleSubmit((data) => {
+  const onSendMessage = methods.handleSubmit((data) => {
     if ('message' in data && data.message !== '') {
       const message = data.message
       createMessage({
@@ -44,6 +46,23 @@ export function PageChannelFeature() {
     } else {
       toast.error('A message is required')
     }
+  })
+
+  methods.handleSubmit((data) => {
+    console.log(data)
+    // if ('message' in data && data["message-" + messageId] !== '') {
+    //   const messageForm = data["message-" + messageId]
+      
+    //   updateMessage({
+    //     id: messageId,
+    //     content: messageForm,
+    //     attachments: []
+    //   })
+
+    //   methods.setValue(('message-' + messageId), '')
+    // } else {
+    //   toast.error('A message is required')
+    // }
   })
   
   const onFiles = () => {
@@ -68,7 +87,8 @@ export function PageChannelFeature() {
           <PageChannel
             messages={response.messages}
             channel={{ id: response.id, name: response.name, server_id: channelId, type: ChannelType.TEXT }}
-            sendMessage={onSend}
+            sendMessage={onSendMessage}
+            onUpdateMessage={() => {}}
             onFiles={onFiles}
             hideRightDiv={hideRightDiv}
             hideLeftDiv={hideLeftDiv}

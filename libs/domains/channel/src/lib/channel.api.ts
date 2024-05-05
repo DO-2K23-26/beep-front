@@ -1,7 +1,7 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 // eslint-disable-next-line @nx/enforce-module-boundaries
 import { RootState } from '@beep/store';
-import { UserEntity, backendUrl, CreateChannelRequest, CreateChannelResponse, ChannelEntity, GetMessagesResponse, CreateMessageRequest, MessageEntity } from '@beep/contracts';
+import { UserEntity, backendUrl, CreateChannelRequest, CreateChannelResponse, ChannelEntity, GetMessagesResponse, CreateMessageRequest, MessageEntity, UpdateMessageRequest } from '@beep/contracts';
 
 const baseQuery = fetchBaseQuery({
   baseUrl: backendUrl,
@@ -53,6 +53,21 @@ export const channelApi = createApi({
         body: message,
       }),
       invalidatesTags: ['messages']
+    }),
+    updateMessage: builder.mutation<MessageEntity, UpdateMessageRequest>({
+      query: (message) => ({
+        url: `/messages/${message.id}`,
+        method: 'PUT',
+        body: message,
+      }),
+      invalidatesTags: ['messages']
+    }),
+    deleteMessage: builder.mutation<void, string>({
+      query: (id) => ({
+        url: `/messages/${id}`,
+        method: 'DELETE',
+      }),
+      invalidatesTags: ['messages']
     })
   })
 })
@@ -63,4 +78,6 @@ export const {
   useCreateChannelMutation,
   useGetMessagesByChannelIdQuery,
   useCreateMessageMutation,
+  useUpdateMessageMutation,
+  useDeleteMessageMutation,
 } = channelApi
