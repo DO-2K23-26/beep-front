@@ -52,7 +52,7 @@ Test CI:
     - echo "Hello, $GITLAB_USER_LOGIN!"
 
 Buid image:
-  stage: build
+  stage: test
   image: docker:latest
   services:
     - docker:dind
