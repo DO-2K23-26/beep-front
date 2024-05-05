@@ -14,8 +14,7 @@ import { ROUTER } from './router.main'
 import { Toaster } from 'react-hot-toast'
 
 export default function App() {
-  const { tokens, isLoading, isAuthenticated, payload } =
-    useSelector(getUserState)
+  const { tokens, isAuthenticated, payload } = useSelector(getUserState)
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const [tokenRefreshInterval, setTokenRefreshInterval] =
@@ -24,24 +23,24 @@ export default function App() {
   const { pathname } = useLocation()
 
   useEffect(() => {
-    if (tokens.refreshToken && tokens.accessToken) {
+    if (tokens && tokens.refreshToken && tokens.accessToken) {
       console.log('interval set')
-      const interval = setInterval(checkTokenValidityAndRefresh, 5000)
+      const interval = setInterval(checkTokenValidityAndRefresh, 300000)
       setTokenRefreshInterval(interval)
     }
   }, [tokens])
 
   async function checkTokenValidityAndRefresh() {
+    console.log('token checked')
     if (tokens.accessToken && tokens.refreshToken) {
-      const payload = tokens.accessToken.split('.')[1]
-      const data = atob(payload)
-      const result = JSON.parse(data)
-      const tokenExpiration = new Date(result.exp * 1000)
-
+      const tokenExpiration = new Date(
+        JSON.parse(atob(tokens.accessToken.split('.')[1])).exp * 1000
+      )
       const currentTime = new Date()
       if (tokenExpiration < currentTime) {
         try {
-          refresh(tokens.refreshToken)
+          console.log('token refresh')
+          refresh({ refreshToken: tokens.refreshToken })
         } catch (e) {
           console.error(e)
           sessionStorage.removeItem('accessToken')
@@ -53,24 +52,19 @@ export default function App() {
 
   useEffect(() => {
     console.log('getting result')
-    if (result) {
-      if (!result.isLoading && result.data) {
-        console.log('result success')
-        dispatch(userActions.updateIsAuthentificated(true))
-        dispatch(userActions.setTokens(result.data))
-        sessionStorage.setItem('accessToken', result.data.accessToken)
-        sessionStorage.setItem('refreshToken', result.data.refreshToken)
-      }
-
-      if (result.isError) {
-        console.log('result error')
-
-        sessionStorage.removeItem('accessToken')
-        sessionStorage.removeItem('refreshToken')
-        dispatch(userActions.updateIsAuthentificated(false))
-        dispatch(userActions.setTokens({}))
-        navigate('/authentication/signin')
-      }
+    if (result.isSuccess && result.data) {
+      console.log('result success')
+      dispatch(userActions.updateIsAuthentificated(true))
+      dispatch(userActions.setTokens(result.data))
+      sessionStorage.setItem('accessToken', result.data.accessToken)
+      sessionStorage.setItem('refreshToken', result.data.refreshToken)
+    } else if (result.isError) {
+      console.log('result error')
+      sessionStorage.removeItem('accessToken')
+      sessionStorage.removeItem('refreshToken')
+      dispatch(userActions.updateIsAuthentificated(false))
+      dispatch(userActions.setTokens({}))
+      navigate('/authentication/signin')
     }
   }, [result])
 
