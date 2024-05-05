@@ -7,6 +7,7 @@ import { AppDispatch } from '@beep/store'
 import { useDispatch, useSelector } from 'react-redux'
 import { responsiveActions } from '@beep/responsive'
 import { getServersState } from '@beep/server'
+import { useEffect } from 'react'
 
 const channels: ChannelEntity[] = [
   {
@@ -24,7 +25,7 @@ const channels: ChannelEntity[] = [
 ]
 
 export default function ChannelsNavigationFeature() {
-  const server = useSelector(getServersState)
+  const { server } = useSelector(getServersState)
   const { openModal, closeModal } = useModal()
 
   const methodsAddChannel = useForm({
@@ -44,7 +45,7 @@ export default function ChannelsNavigationFeature() {
   const hideLeftDiv = () => {
     dispatch(responsiveActions.manageLeftPane())
   }
-
+  
   return (
     <ChannelsNavigation
       channels={channels}
