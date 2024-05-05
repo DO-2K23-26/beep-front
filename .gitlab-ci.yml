@@ -41,6 +41,7 @@ stages:
 
 Test CI:
   stage: test
+  image: node:latest
   only:
     - messages
     - messagegrp/feat/helm-argo
