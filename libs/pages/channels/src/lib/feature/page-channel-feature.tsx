@@ -2,11 +2,11 @@ import {
   ChannelType,
   backendUrl,
 } from '@beep/contracts'
-import { FieldValues, FormProvider, useForm } from 'react-hook-form'
+import { FormProvider, useForm } from 'react-hook-form'
 import { PageChannel } from '../ui/page-channel'
 import { useParams } from 'react-router'
 import { useCreateMessageMutation, useDeleteMessageMutation, useGetMessagesByChannelIdQuery, useUpdateMessageMutation } from '@beep/channel'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { Transmit } from "@adonisjs/transmit-client";
 import toast from 'react-hot-toast'
 import { useDispatch } from 'react-redux'
@@ -16,6 +16,9 @@ import { AppDispatch } from '@beep/store'
 export function PageChannelFeature() {
   const { channelId = '' } = useParams<{ channelId: string }>()
   const { data: response, refetch } = useGetMessagesByChannelIdQuery(channelId)
+
+  const [files, setFiles] = useState<File[]>([])
+  const [previewUrls, setPreviewUrls] = useState<{ content: string | null }[]>([]);
 
   const [ createMessage, result ] = useCreateMessageMutation()
   const [ updateMessage, resultUpdate ] = useUpdateMessageMutation()
@@ -33,6 +36,21 @@ export function PageChannelFeature() {
     dispatch(responsiveActions.manageLeftPane())
   }
 
+  const onAddFile = (file: File) => {
+    setFiles(prev => [...prev, file])
+    const reader = new FileReader();
+
+    reader.onloadend = () => {
+      setPreviewUrls(prev => [...prev, { content: reader.result as string }]);
+    };
+    reader.readAsDataURL(file);
+  }
+
+  const onDeleteFile = (index: number) => {
+    setFiles(prev => prev.filter((_, i) => i !== index))
+    setPreviewUrls(prev => prev.filter((_, i) => i !== index))
+  }
+
   const onSendMessage = methods.handleSubmit((data) => {
     if ('message' in data && data.message !== '') {
       const message = data.message
@@ -43,6 +61,7 @@ export function PageChannelFeature() {
       })
 
       methods.setValue('message', '')
+      setFiles([])
     } else {
       toast.error('A message is required')
     }
@@ -64,10 +83,6 @@ export function PageChannelFeature() {
     //   toast.error('A message is required')
     // }
   })
-  
-  const onFiles = () => {
-    console.log('Send file')
-  }
 
   useEffect(() => {
     const transmit = new Transmit({
@@ -89,7 +104,10 @@ export function PageChannelFeature() {
             channel={{ id: response.id, name: response.name, server_id: channelId, type: ChannelType.TEXT }}
             sendMessage={onSendMessage}
             onUpdateMessage={() => {}}
-            onFiles={onFiles}
+            files={files}
+            filesPreview={previewUrls}
+            onAddFiles={onAddFile}
+            onDeleteFile={onDeleteFile}
             hideRightDiv={hideRightDiv}
             hideLeftDiv={hideLeftDiv}
           />
