@@ -58,13 +58,18 @@ export function PageChannelFeature() {
   }
 
   const onSendMessage = methods.handleSubmit((data) => {
-    if ('message' in data && data.message !== '') {
-      const message = data.message
-      createMessage({
-        channelId: channelId,
-        content: message,
-        attachments: [],
-      })
+    if ('message' in data && (data.message !== '' || files.length > 0)) {
+      const formData = new FormData()
+
+      formData.append('content', data.content)
+      if (files.length) {
+        files.forEach((file, i) => {
+          formData.append(`attachments[${i}]`, file)
+        })
+      }
+
+      formData.append('channelId', channelId)
+      createMessage(formData)
 
       methods.setValue('message', '')
       setFiles([])

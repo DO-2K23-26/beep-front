@@ -46,7 +46,7 @@ export const channelApi = createApi({
       }),
       invalidatesTags: ['channels'],
     }),
-    createMessage: builder.mutation<MessageEntity, CreateMessageRequest>({
+    createMessage: builder.mutation<MessageEntity, FormData>({
       query: (message) => ({
         url: '/messages',
         method: 'POST',
