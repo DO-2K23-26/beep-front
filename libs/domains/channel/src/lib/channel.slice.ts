@@ -1,21 +1,21 @@
 import { ChannelEntity, ChannelsState } from "@beep/contracts"
 import { RootState } from "@beep/store"
-import { createEntityAdapter, createSlice } from "@reduxjs/toolkit"
+import { createEntityAdapter, createSlice, PayloadAction } from "@reduxjs/toolkit"
 
 export const CHANNELS_KEY = 'channels'
 export const channelsAdapter = createEntityAdapter<ChannelEntity>()
 
 export const initialChannelsState: ChannelsState = {
-    channels: []
+    currentChannel: undefined
 }
 
 export const channelsSlice = createSlice({
     name: CHANNELS_KEY,
     initialState: channelsAdapter.getInitialState(initialChannelsState),
     reducers: {
-        setChannels(state, { payload }) {
-            channelsAdapter.setAll(state, payload)
-        }
+        setCurrentChannel(state, payload: PayloadAction<ChannelEntity>) {
+            state.currentChannel = payload.payload
+        },
     },
 })
 

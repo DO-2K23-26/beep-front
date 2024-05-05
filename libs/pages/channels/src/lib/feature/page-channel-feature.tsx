@@ -7,7 +7,7 @@ import {
 import { responsiveActions } from '@beep/responsive'
 import { AppDispatch } from '@beep/store'
 import { FormProvider, useForm } from 'react-hook-form'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { PageChannel } from '../ui/page-channel'
 
 const onSend = () => {
