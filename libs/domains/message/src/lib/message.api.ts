@@ -1,7 +1,7 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 // eslint-disable-next-line @nx/enforce-module-boundaries
 import { RootState } from '@beep/store';
-import { backendUrl, MessageEntity } from '@beep/contracts';
+import { backendUrl, MessageEntity, MessageRequest } from '@beep/contracts';
 
 const baseQuery = fetchBaseQuery({
   baseUrl: backendUrl,
@@ -19,7 +19,7 @@ export const messageApi = createApi({
   endpoints: (builder) => ({
     getMessages: builder.query<MessageEntity[], MessageRequest>({
       query: (params) => `/server/${params}/channels`,
-      providesTags: ['channels']
+      providesTags: ['messages']
     }),
   })
 })
