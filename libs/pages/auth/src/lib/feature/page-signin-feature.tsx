@@ -30,15 +30,17 @@ export function PageSigninFeature() {
   })
 
   useEffect(() => {
-    if (result.isSuccess && result.data !== undefined) {
-      sessionStorage.setItem('accessToken', result.data.tokens.accessToken)
-      sessionStorage.setItem('refreshToken', result.data.tokens.refreshToken)
-      dispatch(userActions.setTokens(result.data.tokens))
-      dispatch(userActions.updateIsAuthentificated(true))
-    } else if (result.isError) {
-      setError('Email or password incorrect')
+    if (result) {
+      if (result.isSuccess && result.status === 'fulfilled') {
+        console.log("RESULT", result.data)
+        sessionStorage.setItem('accessToken', result.data.tokens.accessToken)
+        sessionStorage.setItem('refreshToken', result.data.tokens.refreshToken)
+        dispatch(userActions.setTokens(result.data.tokens))
+      }
     }
+
   }, [result])
+
 
   useEffect(() => {
     if (isAuthenticated) {

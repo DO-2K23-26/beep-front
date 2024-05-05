@@ -38,9 +38,6 @@ export const userSlice = createSlice({
     updateIsLoading(state, payload: PayloadAction<boolean>) {
       state.isLoading = payload.payload
     },
-    updateIsAuthentificated(state, payload: PayloadAction<boolean>) {
-      state.isAuthenticated = payload.payload;
-    }
   },
 })
 export const getUserState = (root: RootState) => root[USER_KEY]

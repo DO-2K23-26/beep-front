@@ -14,7 +14,7 @@ import { ROUTER } from './router.main'
 import { Toaster } from 'react-hot-toast'
 
 export default function App() {
-  const { tokens, isAuthenticated, payload } = useSelector(getUserState)
+  const { tokens, isLoading, isAuthenticated, payload } = useSelector(getUserState)
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const [tokenRefreshInterval, setTokenRefreshInterval] =
@@ -23,10 +23,27 @@ export default function App() {
   const { pathname } = useLocation()
 
   useEffect(() => {
+    const accessToken = sessionStorage.getItem('accessToken')
+    const refreshToken = sessionStorage.getItem('refreshToken')
+
+    if (accessToken && refreshToken) {
+      dispatch(userActions.setTokens({accessToken, refreshToken}))
+    }
+
+    dispatch(userActions.updateIsLoading(false))
+  }, [])
+
+  useEffect(() => {
     if (tokens && tokens.refreshToken && tokens.accessToken) {
-      console.log('interval set')
       const interval = setInterval(checkTokenValidityAndRefresh, 300000)
       setTokenRefreshInterval(interval)
+    }
+
+    return () => {
+      if (tokenRefreshInterval) {
+        clearInterval(tokenRefreshInterval)
+      }
+
     }
   }, [tokens])
 
@@ -51,32 +68,25 @@ export default function App() {
   }
 
   useEffect(() => {
-    console.log('getting result')
-    if (result.isSuccess && result.data) {
-      console.log('result success')
-      dispatch(userActions.updateIsAuthentificated(true))
-      dispatch(userActions.setTokens(result.data))
-      sessionStorage.setItem('accessToken', result.data.accessToken)
-      sessionStorage.setItem('refreshToken', result.data.refreshToken)
-    } else if (result.isError) {
-      console.log('result error')
-      sessionStorage.removeItem('accessToken')
-      sessionStorage.removeItem('refreshToken')
-      dispatch(userActions.updateIsAuthentificated(false))
-      dispatch(userActions.setTokens({}))
-      navigate('/authentication/signin')
+    if (result) {
+      if (!result.isLoading && result.data) {
+        dispatch(userActions.setTokens(result.data))
+        sessionStorage.setItem('accessToken', result.data.accessToken)
+        sessionStorage.setItem('refreshToken', result.data.refreshToken)
+      }
+
+      if (!result.isLoading && result.isError) {
+        sessionStorage.removeItem('accessToken')
+        sessionStorage.removeItem('refreshToken')
+
+        dispatch(userActions.setTokens({}))
+        navigate('/authentication/login')
+      }
+
     }
   }, [result])
 
-  useEffect(() => {
-    const accessToken = sessionStorage.getItem('accessToken')
-    const refreshToken = sessionStorage.getItem('refreshToken')
-    if (accessToken && refreshToken) {
-      dispatch(userActions.setTokens({ accessToken, refreshToken }))
-    }
-  }, [])
-
-  if (!isAuthenticated && !pathname.includes('authentication')) {
+  if (!isLoading && !isAuthenticated && !pathname.includes('authentication')) {
     return <Navigate to={'/authentication/signin'} replace />
   }
 
