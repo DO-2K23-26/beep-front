@@ -43,5 +43,6 @@ Test CI:
   stage: test
   only:
     - messages
+    - messagegrp/feat/helm-argo
   script:
     - echo "Hello, $GITLAB_USER_LOGIN!"
