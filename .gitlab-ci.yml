@@ -39,6 +39,9 @@
 stages:
   - test
 
+variables:
+  IMAGE_TAG: $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG
+
 Test CI:
   stage: test
   image: node:latest
@@ -47,3 +50,15 @@ Test CI:
     - messagegrp/feat/helm-argo
   script:
     - echo "Hello, $GITLAB_USER_LOGIN!"
+
+Buid image:
+  stage: build
+  image: docker:latest
+  services:
+    - docker:dind
+  script:
+    - docker build --cache-from $IMAGE_TAG -t $IMAGE_TAG .
+  cache:
+    key: ${CI_PIPELINE_ID}
+    paths:
+      - node_modules/
