@@ -40,6 +40,7 @@ export default function CurrentUser({
   closeModal,
   methods,
 }: CurrentUserProps) {
+  console.log('user', user)
   return (
     <div className="flex flex-row justify-between items-center gap-4">
       <div className="flex flex-row gap-3">

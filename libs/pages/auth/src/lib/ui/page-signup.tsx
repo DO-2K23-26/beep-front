@@ -1,4 +1,4 @@
-import { Button, ButtonStyle, InputText } from '@beep/ui'
+import { Button, ButtonStyle, Icon, InputText } from '@beep/ui';
 import { Controller, useFormContext } from 'react-hook-form'
 
 export interface PageSignupProps {
@@ -6,6 +6,8 @@ export interface PageSignupProps {
   loading?: boolean
   toSignin?: () => void
   error?: string
+  addProfilePicture: (file: File) => void
+  previewUrl: string | null
 }
 
 export function PageSignup({
@@ -13,6 +15,8 @@ export function PageSignup({
   error,
   onSubmit,
   toSignin,
+  addProfilePicture,
+  previewUrl
 }: PageSignupProps) {
   const { control, watch } = useFormContext()
   return (
@@ -161,6 +165,29 @@ export function PageSignup({
             />
           )}
         />
+
+
+        <label htmlFor="file_upload" className="w-full h-fit input !cursor-pointer !rounded-lg !bg-violet-50 flex flex-col justify-center items-center">
+          <p>Profile picture</p>
+        </label>
+        <input
+        id="file_upload"
+        type="file"
+        className="hidden"
+        accept="image/*"
+        onChange={(e) => {
+          console.log(e.target?.files);
+          addProfilePicture(e.target?.files![0]);
+        }} />
+        {previewUrl && (
+          <div className="flex justify-center items-center w-full">
+          <img
+            src={previewUrl}
+            alt="profile-picture"
+            className="w-40 h-40 bg-violet-50 flex justify-center items-center border-2 border-black rounded-2xl"
+          />
+          </div>
+        )}
 
         <div className="flex flex-col w-full">
           <Button

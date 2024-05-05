@@ -4,5 +4,5 @@ export interface RegisterRequest {
     firstname: string
     lastname: string
     password: string
-    profilePicture: string
+    profilePicture: File | undefined
 }

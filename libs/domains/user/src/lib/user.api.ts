@@ -22,14 +22,15 @@ export const userApi = createApi({
       query: (credentials) => ({
         url: '/authentication/signin',
         method: 'POST',
-        body: credentials 
+        body: credentials
       })
     }),
-    register: builder.mutation<RegisterResponse, RegisterRequest>({
+    register: builder.mutation<RegisterResponse, FormData>({
       query: (data) => ({
         url: '/authentication/signup',
         method: 'POST',
-        body: data
+        body: data,
+        formData: true
       })
     }),
     refresh: builder.mutation<RefreshResponse, RefreshRequest>({
