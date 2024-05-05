@@ -70,15 +70,23 @@ export const PageChannel = ({
       {/* Message input + bouttons + files */}
       <div className='flex flex-col w-full gap-3'>
         {/* files */}
-        <div className='flex flex-row gap-3 items-start w-full'>
+        <div className='flex flex-row gap-3 items-end w-full'>
           {files.map((file: File, index: number) => {
             return (
               <div key={index} className="flex flex-col gap-2 items-center relative w-[180px] relative">
-                <div className='grid grid-cols-[1fr_20px] gap-2 w-[180px]'>
-                  <p className='text-ellipsis overflow-hidden w-[140px]'>{file.name}</p>
+                <div className='grid grid-cols-[1fr_16px] items-end gap-2 w-[180px]'>
+                  <p className='truncate overflow-hidden w-[140px]'>{file.name}</p>
                   <div onClick={() => onDeleteFile(index)}><Icon name="lucide:trash-2" className="w-5 h-5 cursor-pointer" /></div>
                 </div>
-                <img className='h-[180px] w-[180px] object-cover rounded' src={filesPreview.length > index ? (filesPreview[index].content ?? undefined) : undefined} />
+                {
+                  filesPreview.length > index && filesPreview[index].content ? (
+                    <img className='h-[180px] w-[180px] object-cover rounded' src={filesPreview[index].content ?? undefined} />
+                  )  : (
+                    <div className='h-[180px] w-[180px] bg-violet-600 rounded flex justify-center items-center'>
+                      <Icon name="lucide:file-text" className="w-10 h-10" />
+                    </div>
+                  )
+                }
               </div>
             )
           })}

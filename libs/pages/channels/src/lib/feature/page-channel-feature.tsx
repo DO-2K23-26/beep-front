@@ -38,12 +38,18 @@ export function PageChannelFeature() {
 
   const onAddFile = (file: File) => {
     setFiles(prev => [...prev, file])
-    const reader = new FileReader();
 
-    reader.onloadend = () => {
-      setPreviewUrls(prev => [...prev, { content: reader.result as string }]);
-    };
-    reader.readAsDataURL(file);
+    if (file.type.includes('image')) {
+      const reader = new FileReader();
+
+      reader.onloadend = () => {
+        setPreviewUrls(prev => [...prev, { content: reader.result as string }]);
+      };
+      reader.readAsDataURL(file);
+    } else {
+      setPreviewUrls(prev => [...prev, { content: null }]);
+    }
+    
   }
 
   const onDeleteFile = (index: number) => {
