@@ -10,7 +10,7 @@ beepenmoinsbien:
     repository: gitlab.polytech.umontpellier.fr:5050/pluff/beepenmieux #TODO: change this to the correct registry when the first image is pushed and the url is defined
     pullPolicy: Always
     registry: 
-      credentials: pluff-registry-credentials #TODO: Create secret and change this to the correct secret 
+      credentials: beep-registry-credentials
 
 backend:
   url: https://api.beep.gay
