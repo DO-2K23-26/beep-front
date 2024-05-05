@@ -4,8 +4,9 @@ import { useForm } from 'react-hook-form'
 import { useModal } from '@beep/ui'
 import { toast } from 'react-hot-toast'
 import { AppDispatch } from '@beep/store'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { responsiveActions } from '@beep/responsive'
+import { getServersState } from '@beep/server'
 
 const channels: ChannelEntity[] = [
   {
@@ -22,14 +23,8 @@ const channels: ChannelEntity[] = [
   },
 ]
 
-const server = {
-  id: '@03248567',
-  name: '418erreur',
-  owner_id: 'Rapidement',
-  picture: '/418.jpg',
-}
-
 export default function ChannelsNavigationFeature() {
+  const server = useSelector(getServersState)
   const { openModal, closeModal } = useModal()
 
   const methodsAddChannel = useForm({

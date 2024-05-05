@@ -3,7 +3,7 @@ import { ServerEntity, ServerState } from '@beep/contracts'
 import { RootState } from "@beep/store"
 
 export const initialServersState: ServerState = {
-  servers: []
+  server: { id: 0, name: '', owner_id: 0 }
 }
 
 const serverAdapter = createEntityAdapter<ServerEntity>()
@@ -12,15 +12,9 @@ export const serverSlice = createSlice({
   name: SERVER_KEY,
   initialState: serverAdapter.getInitialState(initialServersState),
   reducers: {
-    setServers(state, payload: PayloadAction<ServerEntity[]>) {
-      serverAdapter.setAll(state, payload.payload)
-    },
-    addServer(state, payload: PayloadAction<ServerEntity>) {
-      serverAdapter.addOne(state, payload.payload)
-    },
-    removeServer(state, payload: PayloadAction<number>) {
-      serverAdapter.removeOne(state, payload.payload)
-    },
+    setServer(state, payload: PayloadAction<ServerEntity>) {
+      state.server = payload.payload
+    }
   },
 })
 export const serverReducer = serverSlice.reducer
