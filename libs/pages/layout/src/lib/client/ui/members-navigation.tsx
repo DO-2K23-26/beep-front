@@ -31,8 +31,9 @@ export default function MembersNavigation({
         showRightPane ? 'w-full' : 'sm:w-fit'
       }`}
     >
-      <div className="flex flex-row justify-between items-center gap-10">
-        <h5 className="text-slate-900 font-semibold pl-3">Members</h5>
+              <h5 className="text-slate-900 font-semibold pl-3">Members</h5>
+
+      <div className=" flex-row justify-between items-center gap-10 hidden">
         {/* Invite button */}
         <Button
           iconLeft="lucide:plus"

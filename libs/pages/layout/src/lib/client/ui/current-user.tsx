@@ -63,16 +63,16 @@ export default function CurrentUser({
         <Button
           style={ButtonStyle.NONE}
           onClick={onMicrophone}
-          className="cursor-pointer"
+          className="cursor-pointer "
         >
-          <Icon name="lucide:mic" className="!w-5 !h-5" />
+          <Icon name="lucide:mic hidden" className="!w-5 !h-5" />
         </Button>
         <Button
           style={ButtonStyle.NONE}
           onClick={onPhone}
           className="cursor-pointer"
         >
-          <Icon name="lucide:phone" className="!w-5 !h-5" />
+          <Icon name="lucide:phone hidden" className="!w-5 !h-5" />
         </Button>
         <Button
           style={ButtonStyle.NONE}
@@ -91,7 +91,7 @@ export default function CurrentUser({
             })
           }}
         >
-          <Icon name="lucide:settings" className="!w-5 !h-5" />
+          <Icon name="lucide:settings hidden" className="!w-5 !h-5" />
         </Button>
       </div>
     </div>

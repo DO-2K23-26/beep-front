@@ -76,9 +76,9 @@ export function PageSignin({
         <Button
           onClick={toForgetPassword}
           style={ButtonStyle.NONE}
-          className="text-purple-600 font-medium hover:!bg-transparent !p-0 !min-w-0 !h-fit"
+          className="text-purple-600 font-medium hover:!bg-transparent !p-0 !min-w-0 !h-fit hidden"
         >
-          <p className="text-purple-600 font-normal">Forgot password ?</p>
+          <p className="text-purple-600 font-normal hidden">Forgot password ?</p>
         </Button>
         <div className="flex flex-col w-full">
           <Button
