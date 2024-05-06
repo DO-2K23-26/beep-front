@@ -49,7 +49,7 @@ export function PageChannelFeature() {
     } else {
       setPreviewUrls(prev => [...prev, { content: null }]);
     }
-    
+
   }
 
   const onDeleteFile = (index: number) => {
@@ -60,14 +60,11 @@ export function PageChannelFeature() {
   const onSendMessage = methods.handleSubmit((data) => {
     if ('message' in data && (data.message !== '' || files.length > 0)) {
       const formData = new FormData()
-
       formData.append('content', data.message ?? ' ')
       if (files.length > 0) {
         files.forEach((file, i) => {
           formData.append(`attachments[${i}]`, file)
         })
-      } else {
-        formData.append('attachments', '[]')
       }
 
       formData.append('channelId', channelId)
@@ -84,7 +81,7 @@ export function PageChannelFeature() {
     console.log(data)
     // if ('message' in data && data["message-" + messageId] !== '') {
     //   const messageForm = data["message-" + messageId]
-      
+
     //   updateMessage({
     //     id: messageId,
     //     content: messageForm,
@@ -128,7 +125,7 @@ export function PageChannelFeature() {
           <p>Data is loading... Beboup beboup</p>
         )
       }
-      
+
     </FormProvider>
   )
 }
