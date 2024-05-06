@@ -2,6 +2,7 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 // eslint-disable-next-line @nx/enforce-module-boundaries
 import { RootState } from '@beep/store';
 import { UserEntity, backendUrl, CreateChannelRequest, CreateChannelResponse, ChannelEntity, GetMessagesResponse, CreateMessageRequest, MessageEntity, UpdateMessageRequest } from '@beep/contracts';
+import { useFetchProfilePictureQuery } from '@beep/user';
 
 const baseQuery = fetchBaseQuery({
   baseUrl: backendUrl,
@@ -25,7 +26,23 @@ export const channelApi = createApi({
       providesTags: ['channels']
     }),
     getChannel: builder.query<any, string>({
-      query: (id: string) => `/channels/${id}?messages=true`,
+      query: (id: string) => ({
+        url: `/channels/${id}?messages=true`,
+        responseHandler : async (response: Response) => {
+        const data = await response.json();
+        if (response.ok) {
+          for (const message of data.messages) {
+            message.owner.profilePicture = useFetchProfilePictureQuery(message.owner.id);
+            for (const attachment of message.attachments) {
+              attachment.url = useFetchAttachmentImageQuery(attachment.id);
+            }
+          }
+          return data;
+        } else {
+          return Promise.reject(data);
+        }
+      }
+      })
     }),
     getUsers: builder.query<UserEntity[], void>({
       query: (credentials) => ({
@@ -51,6 +68,7 @@ export const channelApi = createApi({
         url: '/messages',
         method: 'POST',
         body: message,
+        formData: true
       }),
       invalidatesTags: ['messages']
     }),
@@ -68,7 +86,16 @@ export const channelApi = createApi({
         method: 'DELETE',
       }),
       invalidatesTags: ['messages']
-    })
+    }),
+    fetchAttachmentImage: builder.query<string, string>({
+      query: (id) => ({
+        url: `/storage/files/secure/attachment/${id}`,
+        responseHandler: async (response) => {
+          const blob = await response.blob();
+          return URL.createObjectURL(blob);
+        }
+      })
+    }),
   })
 })
 
@@ -80,4 +107,5 @@ export const {
   useCreateMessageMutation,
   useUpdateMessageMutation,
   useDeleteMessageMutation,
+  useFetchAttachmentImageQuery,
 } = channelApi

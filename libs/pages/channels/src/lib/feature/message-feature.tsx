@@ -1,8 +1,8 @@
 import { MessageEntity, UserEntity } from '@beep/contracts'
 import Message from '../ui/message'
-import { useState } from 'react'
+import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux'
-import { getUserState } from '@beep/user'
+import { getUserState, useFetchProfilePictureQuery } from '@beep/user';
 import { useForm } from 'react-hook-form'
 
 interface MessageFeatureProps {
@@ -30,6 +30,9 @@ export default function MessageFeature({
   })
 
   const [isEditing, setIsEditing] = useState<boolean>(false)
+  const userProfilePicture = useFetchProfilePictureQuery(user!.id, {
+    skip: !user
+  }).currentData
 
   const switchEditing = () => {
     setIsEditing((prevValue) => !prevValue)
@@ -39,11 +42,11 @@ export default function MessageFeature({
 
   }
 
-
   return (
     <Message
       user={user}
       message={message}
+      profilePicture={userProfilePicture}
       isEditing={isEditing}
       onDelete={payload && payload.sub === user?.id ? deleteMessage : null}
       switchEditing={payload && payload.sub === user?.id ? switchEditing : null}

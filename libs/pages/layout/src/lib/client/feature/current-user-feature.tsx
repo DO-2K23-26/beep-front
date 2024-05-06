@@ -4,7 +4,7 @@ import { useModal } from '@beep/ui'
 import { useForm } from 'react-hook-form'
 import { toast } from 'react-hot-toast'
 import { useSelector } from 'react-redux'
-import { getUserState } from '@beep/user'
+import { getUserState, useFetchProfilePictureQuery } from '@beep/user';
 
 const onMicrophone = () => {
   console.log('Microphone')
@@ -25,7 +25,7 @@ export default function CurrentUserFeature() {
     username: payload.username,
     firstname: payload.firstName,
     lastname: payload.lastName,
-    profilePicture: '/picture.svg',
+    profilePicture: useFetchProfilePictureQuery(payload.sub).currentData || '/picture.svg',
     verifiedAt: new Date(),
   } : {
     id: '1',

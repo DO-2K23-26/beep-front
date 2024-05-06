@@ -33,6 +33,15 @@ export const userApi = createApi({
         formData: true
       })
     }),
+    fetchProfilePicture: builder.query<string, string>({
+      query: (id) => ({
+        url: `/storage/files/secure/profilePicture/${id}`,
+        responseHandler: async (response) => {
+          const blob = await response.blob();
+          return URL.createObjectURL(blob);
+        }
+      })
+    }),
     refresh: builder.mutation<RefreshResponse, RefreshRequest>({
       query: (refreshToken) => ({
         url: '/authentication/refresh',
@@ -69,6 +78,7 @@ export const {
   useRegisterMutation,
   useRefreshMutation,
   useFetchAllUsersQuery,
+  useFetchProfilePictureQuery,
   useFetchAllUsersConnectedQuery,
   useSendEmailMutation,
   useVerifyEmailMutation,

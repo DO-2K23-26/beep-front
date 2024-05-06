@@ -1,6 +1,7 @@
 import { MessageEntity, UserEntity } from '@beep/contracts'
 import { Button, ButtonStyle, Icon, Input } from '@beep/ui'
 import { Controller } from 'react-hook-form'
+import AttachmentFeature from '../feature/attachment-feature'
 
 interface MessageProps {
   message: MessageEntity
@@ -9,6 +10,7 @@ interface MessageProps {
   gif?: string
   video?: string
   isEditing: boolean
+  profilePicture?: string
   switchEditing: (() => void) | null
   onUpdateMessage: () => void
   onDelete: (() => void) | null
@@ -23,6 +25,7 @@ export default function Message({
   onDelete,
   isEditing,
   switchEditing,
+  profilePicture,
   onUpdateMessage,
   createdAt,
   control
@@ -35,7 +38,7 @@ export default function Message({
           <div className="flex flex-row gap-3 items-center overflow-hidden">
             <img
               className="w-9 min-w-[36px] h-9 min-h-[36px] bg-violet-50 rounded-xl"
-              src={(user && user.profilePicture) || '/picture.svg'}
+              src={(profilePicture && profilePicture) || '/picture.svg'}
               alt={user && user.username + '-img'}
             />
             <h5 className="font-semibold text-xs truncate">
@@ -85,9 +88,17 @@ export default function Message({
             </Button>
           </div>
           ) : (
-            <p className="text-xs font-semibold break-all bg-violet-50 rounded-xl rounded-tl-none p-6 flex ">
-              {message.content}
-            </p>
+            <div className="bg-violet-50 rounded-xl rounded-tl-none p-6 flex flex-col">
+              <p className="text-xs font-semibold break-all ">
+                {message.content}
+              </p>
+              {
+                message.attachments ?
+                  message.attachments.map((attachment, i) => {
+                    return <AttachmentFeature attachment={attachment} key={i} />
+                  }) : <></>
+              }
+            </div>
           )
         }
       </div>
