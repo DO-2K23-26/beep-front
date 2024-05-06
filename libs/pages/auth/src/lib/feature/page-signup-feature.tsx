@@ -10,6 +10,8 @@ export function PageSignupFeature() {
   const [error, setError] = useState('')
   const [register, result] = useRegisterMutation()
   const [previewUrl, setPreviewUrl] = useState<string | null>(null)
+  const [loading, setLoading] = useState<boolean>(false)
+
   const methods = useForm({
     mode: 'onChange',
     defaultValues: {
@@ -64,13 +66,15 @@ export function PageSignupFeature() {
       profilePicture: methods.getValues('profilePicture') ? methods.getValues('profilePicture'): undefined ,
     }
     console.log(formData)
+    setLoading(true)
     register(formData)
+    setLoading(false)
     result.isSuccess = true
   })
 
   return (
     <FormProvider {...methods}>
-      <PageSignup onSubmit={onSubmit} toSignin={toSignin} error={error} addProfilePicture={addProfilePicture} previewUrl={previewUrl} />
+      <PageSignup onSubmit={onSubmit} toSignin={toSignin} error={error} loading={loading} addProfilePicture={addProfilePicture} previewUrl={previewUrl} />
     </FormProvider>
   )
 }

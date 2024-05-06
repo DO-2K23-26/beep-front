@@ -45,7 +45,7 @@ export default function CurrentUser({
     <div className="flex flex-row justify-between items-center gap-4">
       <div className="flex flex-row gap-3">
         <img
-          className="w-[50px] min-w-[50px] h-[50px] min-h-[50px] bg-violet-50 flex justify-center items-center rounded-2xl"
+          className="w-[50px] min-w-[50px] h-[50px] min-h-[50px] object-cover bg-violet-50 flex justify-center items-center rounded-2xl"
           src={user.profilePicture || 'current user picture'}
           alt="Profilepicture"
         />

@@ -19,6 +19,7 @@ export default function MembersNavigationFeature() {
     })
 
     const result = transmit.subscription(`users/state`)
+    result.create()
     result.onMessage((message) => {
       refetchUsersConnected()
     })

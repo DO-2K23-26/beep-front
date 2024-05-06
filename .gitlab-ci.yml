@@ -41,7 +41,7 @@ build:
     entrypoint: [ "" ]
   script:
     - echo "{\"auths\":{\"$CI_REGISTRY\":{\"username\":\"$CI_REGISTRY_USER\",\"password\":\"$CI_REGISTRY_PASSWORD\"}}}" > /kaniko/.docker/config.json
-    - /kaniko/executor --context $CI_PROJECT_DIR --dockerfile $CI_PROJECT_DIR/Dockerfile --build-arg VITE_BACKEND_URL=$FILE_API_ENDPOINT --destination $CI_REGISTRY_IMAGE/beep-frontend-files:$GitVersion_LegacySemVer
+    - /kaniko/executor --context $CI_PROJECT_DIR --dockerfile $CI_PROJECT_DIR/Dockerfile --build-arg VITE_BACKEND_URL=$FILE_API_ENDPOINT --destination $CI_REGISTRY_IMAGE/file-beep-frontend:$GitVersion_LegacySemVer
 
 publish:
   stage: publish

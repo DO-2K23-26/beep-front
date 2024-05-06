@@ -32,6 +32,7 @@ export default function DisplayChannel({
         </div>
         <div className="flex justify-center items-center invisible group-hover:visible">
           <Button
+            className="!hidden"
             style={ButtonStyle.NONE}
             onClick={(event?: MouseEvent) => {
               event?.stopPropagation()

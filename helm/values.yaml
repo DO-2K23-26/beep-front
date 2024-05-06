@@ -2,8 +2,8 @@ replicaCount: 1
 imagePullSecrets:
   - name: beep-registry
 image:
-  repository: gitlab.polytech.umontpellier.fr:5050/beep/front/beep-frontend-files
-  pullPolicy: IfNotPresent
+  repository: gitlab.polytech.umontpellier.fr:5050/beep/front/file-beep-frontend
+  pullPolicy: Always
   tag: 056b6d57
   port: 8080
 

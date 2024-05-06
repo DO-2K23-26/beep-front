@@ -1,8 +1,9 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ printf "%s-deployment" (include "beep-frontend-files.fullname" .) }}
-  namespace: {{ .Release.Namespace }}
+  name: {{ include "beep-frontend-files.fullname" . }}
+  labels:
+    {{- include "beep-frontend-files.labels" . | nindent 4 }}
 spec:
   replicas: {{ .Values.replicaCount }}
   selector:

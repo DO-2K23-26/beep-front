@@ -16,7 +16,6 @@ export default function AttachmentFeature({ attachment }: AttachmentFeatureProps
   const blob = useFetchAttachmentImageQuery(attachment.id).currentData;
   const name  = attachment.name.split('/').slice(-1);
   if (attachment.contentType.includes('image')) {
-    console.log('Attachment', attachment);
     return (
       <img
         src={blob}

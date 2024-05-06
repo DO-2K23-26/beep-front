@@ -77,30 +77,15 @@ export function PageChannelFeature() {
     }
   })
 
-  methods.handleSubmit((data) => {
-    console.log(data)
-    // if ('message' in data && data["message-" + messageId] !== '') {
-    //   const messageForm = data["message-" + messageId]
-
-    //   updateMessage({
-    //     id: messageId,
-    //     content: messageForm,
-    //     attachments: []
-    //   })
-
-    //   methods.setValue(('message-' + messageId), '')
-    // } else {
-    //   toast.error('A message is required')
-    // }
-  })
-
   useEffect(() => {
     const transmit = new Transmit({
       baseUrl: backendUrl,
     })
 
-    const result = transmit.subscription(`channels/${channelId}/messages`)
-    result.onMessage((message) => {
+    const subscription = transmit.subscription(`channels/${channelId}/messages`)
+    subscription.create()
+    subscription.onMessage((message) => {
+      console.log('NEW MESSAGE :', message)
       refetch()
     })
   }, []);

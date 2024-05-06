@@ -3,7 +3,7 @@ import { Controller, useFormContext } from 'react-hook-form'
 
 export interface PageSignupProps {
   onSubmit: () => void
-  loading?: boolean
+  loading: boolean
   toSignin?: () => void
   error?: string
   addProfilePicture: (file: File) => void

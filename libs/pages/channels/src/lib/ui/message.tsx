@@ -37,7 +37,7 @@ export default function Message({
         <div className="flex flex-row gap-4 items-center">
           <div className="flex flex-row gap-3 items-center overflow-hidden">
             <img
-              className="w-9 min-w-[36px] h-9 min-h-[36px] bg-violet-50 rounded-xl"
+              className="w-9 min-w-[36px] h-9 min-h-[36px] object-cover bg-violet-50 rounded-xl"
               src={(profilePicture && profilePicture) || '/picture.svg'}
               alt={user && user.username + '-img'}
             />
@@ -54,10 +54,10 @@ export default function Message({
             ) : (
               <>
               {
-                switchEditing ? <Button style={ButtonStyle.NONE} onClick={switchEditing}><Icon name="lucide:pencil" className="w-4 h-4" /></Button> : <></>
+                switchEditing ? <Button style={ButtonStyle.NONE} onClick={switchEditing}><Icon name="lucide:pencil" className="w-4 h-4 hidden" /></Button> : <></>
               }
               {
-                onDelete ? <Button style={ButtonStyle.NONE} onClick={onDelete}><Icon name="lucide:trash" className="w-4 h-4" /></Button> : <></>
+                onDelete ? <Button style={ButtonStyle.NONE} onClick={onDelete}><Icon name="lucide:trash" className="w-4 h-4 hidden" /></Button> : <></>
               }
               </>
             )
@@ -84,14 +84,15 @@ export default function Message({
               )}
             />
             <Button style={ButtonStyle.NONE} onClick={onUpdateMessage}>
-              <Icon name="lucide:save" className="w-10 h-10" />
+              <Icon name="lucide:save" className="w-10 h-10 hidden" />
             </Button>
           </div>
           ) : (
-            <div className="bg-violet-50 rounded-xl rounded-tl-none p-6 flex flex-col">
-              <p className="text-xs font-semibold break-all ">
+            <div className="bg-violet-50 rounded-xl rounded-tl-none p-6 flex flex-col gap-3">
+              <p className="text-xs font-semibold break-all">
                 {message.content}
               </p>
+              
               {
                 message.attachments ?
                   message.attachments.map((attachment, i) => {
