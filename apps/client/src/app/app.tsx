@@ -12,12 +12,13 @@ import {
 import { match } from 'ts-pattern'
 import { ROUTER } from './router.main'
 import { Toaster } from 'react-hot-toast'
+import { AppDispatch } from '@beep/store'
 import { LoadingScreen } from '@beep/ui'
 
 export default function App() {
   const { tokens, isLoading, isAuthenticated, payload } = useSelector(getUserState)
   const navigate = useNavigate()
-  const dispatch = useDispatch()
+  const dispatch = useDispatch<AppDispatch>()
   const [tokenRefreshInterval, setTokenRefreshInterval] =
     useState<NodeJS.Timeout>()
   const [refresh, result] = useRefreshMutation()
