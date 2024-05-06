@@ -1,8 +1,9 @@
-import { UserEntity } from '@beep/contracts'
+import { UserConnectedEntity } from '@beep/contracts'
 import DisplayMember from '../ui/display-member'
 
 interface DisplayMemberFeatureProps {
-  user: UserEntity
+  user: UserConnectedEntity
+  isConnected: boolean
 }
 
 const onPrivateMessage = () => {
@@ -11,6 +12,7 @@ const onPrivateMessage = () => {
 
 export default function DisplayMemberFeature({
   user,
+  isConnected
 }: DisplayMemberFeatureProps) {
-  return <DisplayMember user={user} onPrivateMessage={onPrivateMessage} />
+  return <DisplayMember isConnected={isConnected} user={user} onPrivateMessage={onPrivateMessage} />
 }

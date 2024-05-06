@@ -1,4 +1,4 @@
-import { UserEntity } from '@beep/contracts'
+import { UserConnectedEntity } from '@beep/contracts'
 import { Button, ButtonStyle, Icon, InputText, UseModalProps } from '@beep/ui'
 import { useState } from 'react'
 import { ListMembers } from './list-members'
@@ -7,7 +7,8 @@ import { useSelector } from 'react-redux'
 import { getResponsiveState } from '@beep/responsive'
 
 interface MembersNavigationProps {
-  users: UserEntity[]
+  usersConnected: UserConnectedEntity[]
+  users: UserConnectedEntity[]
   onInviteMember: () => void
   openModal: React.Dispatch<React.SetStateAction<UseModalProps | undefined>>
   closeModal: () => void
@@ -15,6 +16,7 @@ interface MembersNavigationProps {
 }
 
 export default function MembersNavigation({
+  usersConnected,
   users,
   onInviteMember,
   openModal,
@@ -46,7 +48,7 @@ export default function MembersNavigation({
       </div>
       {/* Members list */}
       <div className="flex flex-col gap-1 overflow-y-scroll no-scrollbar scroll-smooth">
-        <ListMembers users={users} />
+        <ListMembers usersConnected={usersConnected}  users={users} />
       </div>
     </div>
   )

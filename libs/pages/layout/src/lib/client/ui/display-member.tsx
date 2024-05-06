@@ -1,13 +1,15 @@
-import { UserEntity } from '@beep/contracts'
+import { UserConnectedEntity } from '@beep/contracts'
 import { Badge, BadgeType, Button, ButtonStyle, Icon } from '@beep/ui'
 
 interface DisplayMemberProps {
-  user: UserEntity
+  user: UserConnectedEntity
+  isConnected: boolean
   onPrivateMessage?: () => void
 }
 
 export default function DisplayMember({
   user,
+  isConnected,
   onPrivateMessage,
 }: DisplayMemberProps) {
   return (
@@ -15,7 +17,7 @@ export default function DisplayMember({
       <div className="flex flex-row gap-3 items-center">
         <img
           className="w-9 min-w-[36px] h-9 min-h-[36px] bg-violet-50 rounded-xl"
-          src={user.profilePicture}
+          src='/picture.svg'
           alt={user.username + '-img'}
         />
         <h5 className="font-semibold text-xs truncate max-w-[125px]">
@@ -30,11 +32,21 @@ export default function DisplayMember({
         >
           <Icon name="lucide:message-circle-more" />
         </Button>
-        <Badge
-          type={BadgeType.ONLINE}
-          title="Online"
-          className="!text-slate-900"
-        />
+        {
+          isConnected ? (
+            <Badge
+              type={BadgeType.ONLINE}
+              title="Online"
+              className="!text-slate-900"
+            />
+          ) : (
+            <Badge
+              type={BadgeType.OFFLINE}
+              title="Offline"
+              className="!text-slate-900"
+            />
+          )
+        }
       </div>
     </div>
   )

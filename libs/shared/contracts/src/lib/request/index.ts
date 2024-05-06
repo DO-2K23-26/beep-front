@@ -1,5 +1,6 @@
 export * from './user/login.request'
 export * from './user/register.request'
+export * from './refresh.request'
 
 export * from './channel/create-channel.request'
 

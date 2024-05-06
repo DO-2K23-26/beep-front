@@ -1,7 +1,7 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 // eslint-disable-next-line @nx/enforce-module-boundaries
 import { RootState } from '@beep/store'
-import { backendUrl, LoginRequest, LoginResponse, RefreshRequest, RefreshResponse, RegisterRequest, RegisterResponse, UserEntity } from '@beep/contracts'
+import { backendUrl, LoginRequest, LoginResponse, RefreshRequest, RefreshResponse, RegisterRequest, RegisterResponse, UserConnectedEntity, UserEntity } from '@beep/contracts'
 
 export const userApi = createApi({
   reducerPath: 'userApi',
@@ -40,8 +40,12 @@ export const userApi = createApi({
         body: refreshToken
       })
     }),
-    fetchAllUsers: builder.query<UserEntity[], void>({
-      query: () => '/users',
+    fetchAllUsers: builder.query<UserConnectedEntity[], void>({
+      query: () => '/users/display',
+      providesTags: ['users']
+    }),
+    fetchAllUsersConnected: builder.query<UserConnectedEntity[], void>({
+      query: () => '/users/onlines',
       providesTags: ['users']
     }),
     sendEmail: builder.mutation<any, void>({
@@ -65,6 +69,7 @@ export const {
   useRegisterMutation,
   useRefreshMutation,
   useFetchAllUsersQuery,
+  useFetchAllUsersConnectedQuery,
   useSendEmailMutation,
   useVerifyEmailMutation,
 } = userApi;
