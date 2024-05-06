@@ -1,12 +1,19 @@
-import { useNavigate } from 'react-router-dom'
+import { NavigateFunction, useNavigate } from 'react-router-dom'
 import PageConfirmEmail from '../ui/page-confirm-email'
+import { AppDispatch } from '@beep/store'
+import { useDispatch } from 'react-redux'
+import { userActions } from '@beep/user'
 
 export default function PageConfirmEmailFeature() {
   const navigate = useNavigate()
+  const dispatch = useDispatch<AppDispatch>()
 
-  const onSignin = () => {
-    navigate('/authentication/signin')
+  const onSignin = (navigation: NavigateFunction ) => {
+      sessionStorage.removeItem('accessToken')
+      sessionStorage.removeItem('refreshToken')
+      dispatch(userActions.setTokens({}))
+      navigation('/authentication/signin')
   }
 
-  return <PageConfirmEmail onSignin={onSignin} />
+  return <PageConfirmEmail onSignin={() => onSignin(navigate)} />
 }

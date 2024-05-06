@@ -4,6 +4,9 @@ import { useModal } from '@beep/ui'
 import { useForm } from 'react-hook-form'
 import { toast } from 'react-hot-toast'
 import { NavigateFunction, useNavigate } from 'react-router-dom'
+import { userActions } from '@beep/user'
+import { useDispatch } from 'react-redux'
+import { AppDispatch } from '@beep/store'
 
 const servers: ServerEntity[] = [
   {
@@ -14,17 +17,27 @@ const servers: ServerEntity[] = [
   },
 ]
 
-const onLogout = () => {
-  console.log('Logout')
-  toast.success('Successfully logged out !')
-}
+
 
 const onPrivateMessage = (navigation: NavigateFunction) => {
   navigation('/channels/@me')
+
 }
 
 export default function ServersNavigationFeature() {
   const { openModal, closeModal } = useModal()
+  const dispatch = useDispatch<AppDispatch>()
+
+
+  const onLogout = (navigation: NavigateFunction) => {
+    sessionStorage.removeItem('accessToken')
+    sessionStorage.removeItem('refreshToken')
+    dispatch(userActions.setTokens({}))
+    toast.success('Successfully logged out !')
+    navigation('/authentication/signin')
+  }
+
+
 
   const navigate = useNavigate()
 
@@ -34,6 +47,7 @@ export default function ServersNavigationFeature() {
       name: '',
     },
   })
+  
 
   const onCreateServer = methodsAddChannel.handleSubmit((data) => {
     console.log('Create server')
@@ -43,7 +57,7 @@ export default function ServersNavigationFeature() {
   return (
     <ServersNavigation
       servers={servers}
-      onLogout={onLogout}
+      onLogout={() => onLogout(navigate)}
       onPrivateMessage={() => onPrivateMessage(navigate)}
       onCreateServer={onCreateServer}
       openModal={openModal}
