@@ -1,28 +1,51 @@
-{{/* Generate basic labels */}}
-{{- define "beep-frontend-files.labels" -}}
-helm.sh/chart: beep-frontend-files-{{ .Chart.Version | replace "+" "_" }}
-app.kubernetes.io/name: beep-frontend-files
-app.kubernetes.io/instance: {{ .Release.Name }}
-app.kubernetes.io/version: {{ .Chart.AppVersion }}
-app.kubernetes.io/managed-by: {{ .Release.Service }}
-{{- end -}}
+{{/*
+Expand the name of the chart.
+*/}}
+{{- define "beep-frontend-files.name" -}}
+{{- default .Chart.Name .Values.nameOverride | trunc 63 | trimSuffix "-" }}
+{{- end }}
 
-{{/* Generate the name of the service account */}}
-{{- define "beep-frontend-files.serviceAccountName" -}}
-{{- if .Values.serviceAccount.create -}}
-{{- default (include "beep-frontend-files.fullname" .) .Values.serviceAccount.name }}
-{{- else -}}
-{{- default "default" .Values.serviceAccount.name }}
-{{- end -}}
-{{- end -}}
-
-{{/* Generate the fullname of the chart */}}
+{{/*
+Create a default fully qualified app name.
+We truncate at 63 chars because some Kubernetes name fields are limited to this (by the DNS naming spec).
+If release name contains chart name it will be used as a full name.
+*/}}
 {{- define "beep-frontend-files.fullname" -}}
-{{- default .Chart.Name .Values.fullnameOverride | trunc 63 | trimSuffix "-" }}
-{{- end -}}
+{{- if .Values.fullnameOverride }}
+{{- .Values.fullnameOverride | trunc 63 | trimSuffix "-" }}
+{{- else }}
+{{- $name := default .Chart.Name .Values.nameOverride }}
+{{- if contains $name .Release.Name }}
+{{- .Release.Name | trunc 63 | trimSuffix "-" }}
+{{- else }}
+{{- printf "%s-%s" .Release.Name $name | trunc 63 | trimSuffix "-" }}
+{{- end }}
+{{- end }}
+{{- end }}
 
-{{/* Generate the selector labels */}}
+{{/*
+Create chart name and version as used by the chart label.
+*/}}
+{{- define "beep-frontend-files.chart" -}}
+{{- printf "%s-%s" .Chart.Name .Chart.Version | replace "+" "_" | trunc 63 | trimSuffix "-" }}
+{{- end }}
+
+{{/*
+Common labels
+*/}}
+{{- define "beep-frontend-files.labels" -}}
+helm.sh/chart: {{ include "beep-frontend-files.chart" . }}
+{{ include "beep-frontend-files.selectorLabels" . }}
+{{- if .Chart.AppVersion }}
+app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
+{{- end }}
+app.kubernetes.io/managed-by: {{ .Release.Service }}
+{{- end }}
+
+{{/*
+Selector labels
+*/}}
 {{- define "beep-frontend-files.selectorLabels" -}}
-app.kubernetes.io/name: beep-frontend-files
+app.kubernetes.io/name: {{ include "beep-frontend-files.name" . }}
 app.kubernetes.io/instance: {{ .Release.Name }}
-{{- end -}}
+{{- end }}
