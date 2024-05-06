@@ -5,19 +5,21 @@ interface DisplayMemberProps {
   user: UserConnectedEntity
   isConnected: boolean
   onPrivateMessage?: () => void
+  profilePicture?: string
 }
 
 export default function DisplayMember({
   user,
   isConnected,
   onPrivateMessage,
+  profilePicture,
 }: DisplayMemberProps) {
   return (
     <div className="flex flex-row justify-between items-center p-2 hover:bg-violet-400 rounded-xl transition-all cursor-pointer w-full group gap-2">
       <div className="flex flex-row gap-3 items-center">
         <img
           className="w-9 min-w-[36px] h-9 min-h-[36px] bg-violet-50 rounded-xl"
-          src='/picture.svg'
+          src={(profilePicture && profilePicture) || '/picture.svg'}
           alt={user.username + '-img'}
         />
         <h5 className="font-semibold text-xs truncate max-w-[125px]">

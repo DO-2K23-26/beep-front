@@ -3,6 +3,7 @@ import { getUserState } from '@beep/user';
 import { useFetchAttachmentImageQuery } from '@beep/channel';
 import { Attachment } from '@beep/contracts';
 import { useEffect, useState } from 'react';
+import { Icon } from '@beep/ui';
 
 interface AttachmentFeatureProps {
   attachment: Attachment,
@@ -29,7 +30,6 @@ export default function AttachmentFeature({ attachment }: AttachmentFeatureProps
     return (
       <video
         src={blob}
-        type={attachment.contentType}
         controls
         style={{ maxWidth: '200px', maxHeight: '200px' }}
       >
@@ -42,7 +42,6 @@ export default function AttachmentFeature({ attachment }: AttachmentFeatureProps
     return (
       <audio
         src={blob}
-        type={attachment.contentType}
         controls
       >
         Votre navigateur ne permet pas de lire l'audio.
@@ -52,13 +51,7 @@ export default function AttachmentFeature({ attachment }: AttachmentFeatureProps
   if (attachment.contentType.includes('application/pdf')) {
     return (
       <div className="flex">
-        {/*<img*/}
-        {/*  src={pdf}*/}
-        {/*  alt="PDF Icon"*/}
-        {/*  style={{ width: '50px', height: '50px' }}*/}
-        {/*  className='m-2'*/}
-
-        {/*/>*/}
+        <Icon name="ph:file-pdf-bold" className="w-10 h-10" />
         <a
           href={blob}
           download={name}
@@ -75,20 +68,14 @@ export default function AttachmentFeature({ attachment }: AttachmentFeatureProps
   if (attachment.contentType.includes('text')) {
     return (
       <div className="flex">
-        {/*<img*/}
-        {/*  src={text}*/}
-        {/*  alt="Text File Icon"*/}
-        {/*  style={{ width: '50px', height: '50px' }}*/}
-        {/*  className='m-2'*/}
-        {/*/>*/}
-        <div>{name}</div>
+        <Icon name="ph:file-txt-bold" className="w-10 h-10" />
         <a
           href={blob}
           download={name}
           style={{ display: 'block', marginTop: '10px' }}
           className='underline'
         >
-          Télécharger Texte
+          {name}
         </a>
       </div>
     );
@@ -99,7 +86,7 @@ export default function AttachmentFeature({ attachment }: AttachmentFeatureProps
     <div
       className="flex align-middle m-2"
     >
-      {/*<DocumentArrowDownIcon className="h-[50px] w-[50px]"/>*/}
+      <Icon name="lucide:file-up" className="w-10 h-10" />
       <a
         href={blob}
         download={name}

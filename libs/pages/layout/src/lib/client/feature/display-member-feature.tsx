@@ -1,5 +1,6 @@
 import { UserConnectedEntity } from '@beep/contracts'
 import DisplayMember from '../ui/display-member'
+import { useFetchProfilePictureQuery } from '@beep/user';
 
 interface DisplayMemberFeatureProps {
   user: UserConnectedEntity
@@ -14,5 +15,6 @@ export default function DisplayMemberFeature({
   user,
   isConnected
 }: DisplayMemberFeatureProps) {
-  return <DisplayMember isConnected={isConnected} user={user} onPrivateMessage={onPrivateMessage} />
+  const profilePicture = useFetchProfilePictureQuery(user.id).currentData
+  return <DisplayMember isConnected={isConnected} user={user} onPrivateMessage={onPrivateMessage} profilePicture={profilePicture} />
 }
