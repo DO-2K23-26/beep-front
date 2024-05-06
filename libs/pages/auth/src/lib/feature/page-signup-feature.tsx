@@ -23,7 +23,7 @@ export function PageSignupFeature() {
   })
 
   const toSignin = useCallback(
-    () => navigate('/authentication/signin'),
+    () => navigate('/authentication/signedup'),
     [navigate]
   )
 
