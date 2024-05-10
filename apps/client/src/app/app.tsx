@@ -12,6 +12,7 @@ import {
 import { match } from 'ts-pattern'
 import { ROUTER } from './router.main'
 import { Toaster } from 'react-hot-toast'
+import { LoadingScreen } from '@beep/ui'
 
 export default function App() {
   const { tokens, isLoading, isAuthenticated, payload } = useSelector(getUserState)
@@ -48,7 +49,6 @@ export default function App() {
   }, [tokens])
 
   async function checkTokenValidityAndRefresh() {
-    console.log('token checked')
     if (tokens.accessToken && tokens.refreshToken) {
       const tokenExpiration = new Date(
         JSON.parse(atob(tokens.accessToken.split('.')[1])).exp * 1000
@@ -56,10 +56,8 @@ export default function App() {
       const currentTime = new Date()
       if (tokenExpiration < currentTime) {
         try {
-          console.log('token refresh')
           refresh({ refreshToken: tokens.refreshToken })
         } catch (e) {
-          console.error(e)
           sessionStorage.removeItem('accessToken')
           sessionStorage.removeItem('refreshToken')
         }
@@ -88,6 +86,12 @@ export default function App() {
 
   if (!isLoading && !isAuthenticated && !pathname.includes('authentication')) {
     return <Navigate to={'/authentication/signin'} replace />
+  }
+
+  if (isLoading && !pathname.includes('authentication')) {
+    return (
+      <LoadingScreen />
+    )
   }
 
   if (
