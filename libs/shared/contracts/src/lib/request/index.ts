@@ -6,3 +6,5 @@ export * from './channel/create-channel.request'
 
 export * from './message/create-message.request'
 export * from './message/update-message.request'
+export * from './message/delete-message.request'
+export * from './message/show-message.request'

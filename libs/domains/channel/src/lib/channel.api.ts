@@ -1,7 +1,7 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 // eslint-disable-next-line @nx/enforce-module-boundaries
 import { RootState } from '@beep/store';
-import { UserEntity, backendUrl, CreateChannelRequest, CreateChannelResponse, ChannelEntity, GetMessagesResponse, CreateMessageRequest, MessageEntity, UpdateMessageRequest } from '@beep/contracts';
+import { UserEntity, backendUrl, CreateChannelRequest, CreateChannelResponse, ChannelEntity, GetMessagesResponse, CreateMessageRequest, MessageEntity, UpdateMessageRequest, DeleteMessageRequest, ShowMessageRequest } from '@beep/contracts';
 import { useFetchProfilePictureQuery } from '@beep/user';
 
 const baseQuery = fetchBaseQuery({
@@ -28,20 +28,20 @@ export const channelApi = createApi({
     getChannel: builder.query<any, string>({
       query: (id: string) => ({
         url: `/channels/${id}?messages=true`,
-        responseHandler : async (response: Response) => {
-        const data = await response.json();
-        if (response.ok) {
-          for (const message of data.messages) {
-            message.owner.profilePicture = useFetchProfilePictureQuery(message.owner.id);
-            for (const attachment of message.attachments) {
-              attachment.url = useFetchAttachmentImageQuery(attachment.id);
+        responseHandler: async (response: Response) => {
+          const data = await response.json();
+          if (response.ok) {
+            for (const message of data.messages) {
+              message.owner.profilePicture = useFetchProfilePictureQuery(message.owner.id);
+              for (const attachment of message.attachments) {
+                attachment.url = useFetchAttachmentImageQuery(attachment.id);
+              }
             }
+            return data;
+          } else {
+            return Promise.reject(data);
           }
-          return data;
-        } else {
-          return Promise.reject(data);
         }
-      }
       })
     }),
     getUsers: builder.query<UserEntity[], void>({
@@ -64,25 +64,32 @@ export const channelApi = createApi({
       invalidatesTags: ['channels'],
     }),
     createMessage: builder.mutation<MessageEntity, FormData>({
-      query: (message) => ({
-        url: '/messages',
+      query: (request) => ({
+        url: '/channels/${request.channelId}',
         method: 'POST',
         body: message,
         formData: true
       }),
       invalidatesTags: ['messages']
     }),
+    getOneMessage: builder.query<MessageEntity, ShowMessageRequest>({
+      query: (request) => ({
+        url: `/channels/${request.channelId}/messages`,
+        method: 'GET',
+      }),
+    }),
     updateMessage: builder.mutation<MessageEntity, UpdateMessageRequest>({
-      query: (message) => ({
-        url: `/messages/${message.id}`,
-        method: 'PUT',
-        body: message,
+      query: (request) => ({
+        url: `channels/${request.channelId}/messages/${request.messageId}`,
+        method: 'PATCH',
+        body: request,
+        formData: true,
       }),
       invalidatesTags: ['messages']
     }),
-    deleteMessage: builder.mutation<void, string>({
-      query: (id) => ({
-        url: `/messages/${id}`,
+    deleteMessage: builder.mutation<void, DeleteMessageRequest>({
+      query: (request) => ({
+        url: `/channels/${request.channelId}/messages/${request.messageId}`,
         method: 'DELETE',
       }),
       invalidatesTags: ['messages']

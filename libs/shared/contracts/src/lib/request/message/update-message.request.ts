@@ -1,5 +1,6 @@
 export interface UpdateMessageRequest {
-    id: string
+    channelId: string
+    messageId: string
     content: string
-    attachments: unknown[]
+    attachments: FormData
 }
