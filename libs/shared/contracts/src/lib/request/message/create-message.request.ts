@@ -1,5 +1,5 @@
 export interface CreateMessageRequest {
     channelId: string
     content: string
-    attachments: FormData
+    attachments?: FormData | null
 }

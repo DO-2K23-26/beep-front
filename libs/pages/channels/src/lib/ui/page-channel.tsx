@@ -1,8 +1,7 @@
 import { ChannelEntity, ChannelType, MessageEntity } from '@beep/contracts'
 import { Button, ButtonStyle, Icon, Input } from '@beep/ui'
-import ListMessages from './list-messages'
 import { Controller, useFormContext } from 'react-hook-form'
-import { Dispatch, SetStateAction, useState } from 'react'
+import ListMessages from './list-messages'
 
 export type MessageFormValues = {
   content: string
