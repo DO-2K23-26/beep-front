@@ -1,7 +1,7 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 // eslint-disable-next-line @nx/enforce-module-boundaries
+import { ChannelEntity, CreateChannelRequest, CreateChannelResponse, CreateMessageRequest, DeleteMessageRequest, GetMessageFromChannelRequest, GetMessagesResponse, MessageEntity, ShowMessageRequest, UpdateMessageRequest, UserEntity, backendUrl } from '@beep/contracts';
 import { RootState } from '@beep/store';
-import { UserEntity, backendUrl, CreateChannelRequest, CreateChannelResponse, ChannelEntity, GetMessagesResponse, CreateMessageRequest, MessageEntity, UpdateMessageRequest, DeleteMessageRequest, ShowMessageRequest } from '@beep/contracts';
 import { useFetchProfilePictureQuery } from '@beep/user';
 
 const baseQuery = fetchBaseQuery({
@@ -51,8 +51,8 @@ export const channelApi = createApi({
         body: credentials,
       }),
     }),
-    getMessagesByChannelId: builder.query<GetMessagesResponse, string>({
-      query: (id: string) => `/channels/${id}?messages=true`,
+    getMessagesByChannelId: builder.query<GetMessagesResponse, GetMessageFromChannelRequest>({
+      query: (request) => `/channels/${request.channelId}/messages`,
       providesTags: ['messages'],
     }),
     createChannel: builder.mutation<CreateChannelResponse, CreateChannelRequest>({
@@ -63,11 +63,11 @@ export const channelApi = createApi({
       }),
       invalidatesTags: ['channels'],
     }),
-    createMessage: builder.mutation<MessageEntity, FormData>({
+    createMessage: builder.mutation<MessageEntity, CreateMessageRequest>({
       query: (request) => ({
-        url: '/channels/${request.channelId}',
+        url: `/channels/${request.channelId}/messages`,
         method: 'POST',
-        body: message,
+        body: request,
         formData: true
       }),
       invalidatesTags: ['messages']
