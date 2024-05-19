@@ -25,23 +25,23 @@ export const channelApi = createApi({
       }),
       providesTags: ['channels']
     }),
-    getChannel: builder.query<any, string>({
-      query: (id: string) => ({
-        url: `/channels/${id}?messages=true`,
-        responseHandler: async (response: Response) => {
-          const data = await response.json();
-          if (response.ok) {
-            for (const message of data.messages) {
-              message.owner.profilePicture = useFetchProfilePictureQuery(message.owner.id);
-              for (const attachment of message.attachments) {
-                attachment.url = useFetchAttachmentImageQuery(attachment.id);
-              }
-            }
-            return data;
-          } else {
-            return Promise.reject(data);
-          }
-        }
+    getChannel: builder.query<ChannelEntity, { serverId: string, channelId: string }>({
+      query: (request: { serverId: string, channelId: string }) => ({
+        url: `/servers/${request.serverId}/channels/${request.channelId}` // `/channels/${id}?messages=true`,
+        // responseHandler: async (response: Response) => {
+        //   const data = await response.json();
+        //   if (response.ok) {
+        //     for (const message of data.messages) {
+        //       message.owner.profilePicture = useFetchProfilePictureQuery(message.owner.id);
+        //       for (const attachment of message.attachments) {
+        //         attachment.url = useFetchAttachmentImageQuery(attachment.id);
+        //       }
+        //     }
+        //     return data;
+        //   } else {
+        //     return Promise.reject(data);
+        //   }
+        // }
       })
     }),
     getUsers: builder.query<UserEntity[], void>({
@@ -51,7 +51,7 @@ export const channelApi = createApi({
         body: credentials,
       }),
     }),
-    getMessagesByChannelId: builder.query<GetMessagesResponse, GetMessageFromChannelRequest>({
+    getMessagesByChannelId: builder.query<MessageEntity[], GetMessageFromChannelRequest>({
       query: (request) => `/channels/${request.channelId}/messages`,
       providesTags: ['messages'],
     }),
@@ -67,7 +67,7 @@ export const channelApi = createApi({
       query: (request) => ({
         url: `/channels/${request.channelId}/messages`,
         method: 'POST',
-        body: request,
+        body: request.body,
         formData: true
       }),
       invalidatesTags: ['messages']
