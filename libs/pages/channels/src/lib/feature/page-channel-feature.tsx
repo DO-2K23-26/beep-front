@@ -1,6 +1,7 @@
 import { Transmit } from '@adonisjs/transmit-client'
 import {
   useCreateMessageMutation,
+  useGetChannelQuery,
   useGetMessagesByChannelIdQuery
 } from '@beep/channel'
 import { ChannelType, backendUrl } from '@beep/contracts'
@@ -14,8 +15,9 @@ import { useParams } from 'react-router'
 import { PageChannel } from '../ui/page-channel'
 
 export function PageChannelFeature() {
-  const { channelId = '' } = useParams<{ channelId: string }>()
-  const { data: response, refetch } = useGetMessagesByChannelIdQuery({
+  const { serverId = '', channelId = '' } = useParams<{ serverId: string, channelId: string }>()
+  const { data: channel } = useGetChannelQuery({ serverId: serverId, channelId: channelId }) 
+  const { data: messages, refetch } = useGetMessagesByChannelIdQuery({
     channelId: channelId,
   })
 
@@ -62,17 +64,20 @@ export function PageChannelFeature() {
   }
 
   const onSendMessage = methods.handleSubmit((data) => {
-    if ('message' in data && (data.message !== '' || files.length > 0)) {
-      const formData = new FormData()
+    if ('message' in data && ((data.message !== '' && data.message !== undefined) || files.length > 0)) {
+      const formData: FormData = new FormData()
+
+      formData.set('content', data.message === '' || data.message === undefined ? ' ' : data.message)
+      
       if (files.length > 0) {
+        formData.set('attachments', JSON.stringify([]))
         files.forEach((file, i) => {
           formData.append(`attachments[${i}]`, file)
         })
       }
       createMessage({
         channelId: channelId,
-        content: data.message,
-        attachments: formData,
+        body: formData
       })
       methods.setValue('message', '')
       setFiles([])
@@ -87,6 +92,7 @@ export function PageChannelFeature() {
     })
 
     const subscription = transmit.subscription(`channels/${channelId}/messages`)
+
     subscription.create()
     subscription.onMessage((message) => {
       console.log('NEW MESSAGE :', message)
@@ -96,13 +102,13 @@ export function PageChannelFeature() {
 
   return (
     <FormProvider {...methods}>
-      {response ? (
+      {messages !== undefined && channel !== undefined ? (
         <PageChannel
-          messages={response.messages}
+          messages={messages}
           channel={{
-            id: response.id,
-            name: response.name,
-            server_id: channelId,
+            id: channel.id,
+            name: channel.name,
+            serverId: channelId,
             type: ChannelType.TEXT,
           }}
           sendMessage={onSendMessage}
