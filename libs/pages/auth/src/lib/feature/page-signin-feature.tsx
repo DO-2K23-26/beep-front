@@ -44,7 +44,7 @@ export function PageSigninFeature() {
 
   useEffect(() => {
     if (isAuthenticated) {
-      navigate('/channels/@me')
+      navigate('/servers/@me')
     }
   }, [isAuthenticated])
 

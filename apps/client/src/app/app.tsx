@@ -123,7 +123,7 @@ export default function App() {
               <Route key={r.path} path={r.path} element={r.component} />
             ))
         )}
-        <Route path="*" element={<Navigate to="/channels/@me" />} />
+        <Route path="*" element={<Navigate to="/servers/@me" />} />
       </Routes>
     </div>
   )

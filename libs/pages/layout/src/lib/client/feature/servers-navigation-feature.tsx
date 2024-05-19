@@ -20,7 +20,7 @@ const servers: ServerEntity[] = [
 
 
 const onPrivateMessage = (navigation: NavigateFunction) => {
-  navigation('/channels/@me')
+  navigation('/servers/@me')
 
 }
 

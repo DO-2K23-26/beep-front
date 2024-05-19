@@ -7,6 +7,5 @@ export const ROUTER_CHANNELS: Route[] = [
     path: '/@me',
     component: <PageMeGeneralFeature />,
   },
-
-  { path: '/:channelId', component: <PageChannelFeature /> },
+  { path: '/:serverId/channels/:channelId', component: <PageChannelFeature /> },
 ]

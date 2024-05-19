@@ -9,7 +9,7 @@ import {
 
 interface DisplayChannelProps {
   channel: ChannelEntity
-  onJoinChannel?: (channelId: string) => void
+  onJoinChannel?: (serverId: string, channelId: string) => void
   onDeleteChannel?: () => void
 }
 
@@ -20,7 +20,7 @@ export default function DisplayChannel({
 }: DisplayChannelProps) {
   const { openModal, closeModal } = useModal()
   return (
-    <div className="flex flex-col group w-full" onClick={() => onJoinChannel ? onJoinChannel(channel.id) : {}}>
+    <div className="flex flex-col group w-full" onClick={() => onJoinChannel ? onJoinChannel(channel.serverId, channel.id) : {}}>
       <div className="flex flex-row justify-between items-center w-full px-3 py-2 hover:bg-violet-400 cursor-pointer rounded-xl">
         <div className="flex flex-row justify-center items-center gap-2">
           {channel.type === ChannelType.VOICE ? (

@@ -15,7 +15,7 @@ export const ROUTER: RouteProps[] = [
     layout: false,
   },
   {
-    path: '/channels/*',
+    path: '/servers/*',
     component: <PageChannels />,
     layout: true,
   },

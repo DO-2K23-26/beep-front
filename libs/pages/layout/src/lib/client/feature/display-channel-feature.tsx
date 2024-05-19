@@ -15,8 +15,8 @@ const onDeleteChannel = () => {
 export default function DisplayChannelFeature({ channel }: DisplayChannelFeature) {
   const navigate = useNavigate()
 
-  const onJoinChannel = (channelId: string) => {
-    navigate(`/channels/${channelId}`)
+  const onJoinChannel = (serverId: string, channelId: string) => {
+    navigate(`/servers/${serverId}/channels/${channelId}`)
   }
 
   return (
