@@ -1,7 +1,15 @@
+<<<<<<< HEAD
 import { ChannelEntity, ChannelType, ChannelsState } from '@beep/contracts'
 import { RootState } from '@beep/store'
 import { createEntityAdapter, createSlice } from '@reduxjs/toolkit'
 import { socket } from '@beep/utils'
+=======
+import { ChannelEntity, ChannelsState } from "@beep/contracts"
+import { RootState } from "@beep/store"
+import { socket } from '@beep/utils';
+import { createEntityAdapter, createSlice } from "@reduxjs/toolkit"
+import { Channel } from "diagnostics_channel";
+>>>>>>> 028e824 (chore: Update channel.slice.ts)
 
 export const CHANNELS_KEY = 'channels'
 export const channelsAdapter = createEntityAdapter<ChannelEntity>()
