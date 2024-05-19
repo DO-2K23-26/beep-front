@@ -31,22 +31,22 @@ export const channelApi = createApi({
       providesTags: ['users'],
     }),
     getChannel: builder.query<any, string>({
-      query: (id: string) => ({
-        url: `/channels/${id}?messages=true`,
-        responseHandler : async (response: Response) => {
-        const data = await response.json();
-        if (response.ok) {
-          for (const message of data.messages) {
-            message.owner.profilePicture = useFetchProfilePictureQuery(message.owner.id);
-            for (const attachment of message.attachments) {
-              attachment.url = useFetchAttachmentImageQuery(attachment.id);
-            }
-          }
-          return data;
-        } else {
-          return Promise.reject(data);
-        }
-      }
+      query: (channelId: string) => ({
+        url: `/channels/${channelId}/messages`,
+      //   responseHandler : async (response: Response) => {
+      //   const data = await response.json();
+      //   if (response.ok) {
+      //     for (const message of data.messages) {
+      //       message.owner.profilePicture = useFetchProfilePictureQuery(message.owner.id);
+      //       for (const attachment of message.attachments) {
+      //         attachment.url = useFetchAttachmentImageQuery(attachment.id);
+      //       }
+      //     }
+      //     return data;
+      //   } else {
+      //     return Promise.reject(data);
+      //   }
+      // }
       })
     }),
     getUsers: builder.query<UserEntity[], void>({
