@@ -1,22 +1,45 @@
-import { ChannelEntity, ChannelsState } from "@beep/contracts"
-import { RootState } from "@beep/store"
-import { createEntityAdapter, createSlice } from "@reduxjs/toolkit"
+import { ChannelEntity, ChannelType, ChannelsState } from '@beep/contracts'
+// eslint-disable-next-line @nx/enforce-module-boundaries
+import { RootState } from '@beep/store'
+import { createEntityAdapter, createSlice } from '@reduxjs/toolkit'
+import { socket } from '@beep/utils'
 
 export const CHANNELS_KEY = 'channels'
 export const channelsAdapter = createEntityAdapter<ChannelEntity>()
-
+export const initialChannel: ChannelEntity = {
+  id: '',
+  name: '',
+  type: ChannelType.VOICE,
+}
 export const initialChannelsState: ChannelsState = {
-    channels: []
+  focusedChannel: initialChannel,
+  connected: false,
+  // connectionState: 'none',
 }
 
 export const channelsSlice = createSlice({
-    name: CHANNELS_KEY,
-    initialState: channelsAdapter.getInitialState(initialChannelsState),
-    reducers: {
-        setChannels(state, { payload }) {
-            channelsAdapter.setAll(state, payload)
-        }
+  name: CHANNELS_KEY,
+  initialState: channelsAdapter.getInitialState(initialChannelsState),
+  reducers: {
+    setFocusedChannel(state, { payload }) {
+      console.log('Joining channel', payload)
+      socket.emit('join_channel', {
+        channel_id: payload.id,
+      })
+      state.focusedChannel = payload
+      state.connected = true
     },
+    unsetFocusedChannel(state) {
+      socket.emit('leave_channel', {
+        channel_id: state.focusedChannel.id,
+      })
+      state.focusedChannel = initialChannel
+      state.connected = false
+    },
+    // setConnectionState(state, { payload }) {
+    //   state.connectionState = payload
+    // },
+  },
 })
 
 export const channelsReducer = channelsSlice.reducer

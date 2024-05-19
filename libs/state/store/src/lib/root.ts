@@ -1,17 +1,18 @@
 /* eslint-disable @nx/enforce-module-boundaries */
-import { userApi, userReducer } from '@beep/user';
-import { channelApi, channelsReducer } from '@beep/channel';
-import { combineReducers, configureStore } from '@reduxjs/toolkit';
+import { channelApi, channelsReducer } from '@beep/channel'
 import { responsiveReducer } from '@beep/responsive'
+import { userApi, userReducer } from '@beep/user'
+import { voiceSliceReducer } from '@beep/voice'
+import { combineReducers, configureStore } from '@reduxjs/toolkit'
 
 export const rootReducer = combineReducers({
   user: userReducer,
   channels: channelsReducer,
   responsive: responsiveReducer,
+  voice: voiceSliceReducer,
   [userApi.reducerPath]: userApi.reducer,
   [channelApi.reducerPath]: channelApi.reducer,
 })
-
 
 export function setupStore(preloadedState?: never) {
   return configureStore({
@@ -23,7 +24,7 @@ export function setupStore(preloadedState?: never) {
         immutableCheck: false,
       })
         .concat(userApi.middleware)
-        .concat(channelApi.middleware)
+        .concat(channelApi.middleware),
   })
 }
 

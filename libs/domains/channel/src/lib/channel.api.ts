@@ -1,6 +1,7 @@
+/* eslint-disable @nx/enforce-module-boundaries */
+/* eslint-disable react-hooks/rules-of-hooks */
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
-// eslint-disable-next-line @nx/enforce-module-boundaries
-import { ChannelEntity, CreateChannelRequest, CreateChannelResponse, CreateMessageRequest, DeleteMessageRequest, GetMessageFromChannelRequest, GetMessagesResponse, MessageEntity, ShowMessageRequest, UpdateMessageRequest, UserEntity, backendUrl } from '@beep/contracts';
+import { ChannelEntity, CreateChannelRequest, CreateChannelResponse, CreateMessageRequest, DeleteMessageRequest, GetMessageFromChannelRequest, MessageEntity, OccupiedChannelEntity, ShowMessageRequest, UpdateMessageRequest, UserEntity, backendUrl } from '@beep/contracts';
 import { RootState } from '@beep/store';
 import { useFetchProfilePictureQuery } from '@beep/user';
 
@@ -16,7 +17,7 @@ const baseQuery = fetchBaseQuery({
 export const channelApi = createApi({
   reducerPath: 'channelApi',
   baseQuery,
-  tagTypes: ['channels', 'messages'],
+  tagTypes: ['channels', 'messages', 'users'],
   endpoints: (builder) => ({
     getChannels: builder.query<ChannelEntity[], void>({
       query: () => ({
@@ -25,23 +26,27 @@ export const channelApi = createApi({
       }),
       providesTags: ['channels']
     }),
-    getChannel: builder.query<ChannelEntity, { serverId: string, channelId: string }>({
-      query: (request: { serverId: string, channelId: string }) => ({
-        url: `/servers/${request.serverId}/channels/${request.channelId}` // `/channels/${id}?messages=true`,
-        // responseHandler: async (response: Response) => {
-        //   const data = await response.json();
-        //   if (response.ok) {
-        //     for (const message of data.messages) {
-        //       message.owner.profilePicture = useFetchProfilePictureQuery(message.owner.id);
-        //       for (const attachment of message.attachments) {
-        //         attachment.url = useFetchAttachmentImageQuery(attachment.id);
-        //       }
-        //     }
-        //     return data;
-        //   } else {
-        //     return Promise.reject(data);
-        //   }
-        // }
+    getConnectedUsers: builder.query<OccupiedChannelEntity[], void>({
+      query: () => `/channel/connected`,
+      providesTags: ['users'],
+    }),
+    getChannel: builder.query<any, string>({
+      query: (id: string) => ({
+        url: `/channels/${id}?messages=true`,
+        responseHandler : async (response: Response) => {
+        const data = await response.json();
+        if (response.ok) {
+          for (const message of data.messages) {
+            message.owner.profilePicture = useFetchProfilePictureQuery(message.owner.id);
+            for (const attachment of message.attachments) {
+              attachment.url = useFetchAttachmentImageQuery(attachment.id);
+            }
+          }
+          return data;
+        } else {
+          return Promise.reject(data);
+        }
+      }
       })
     }),
     getUsers: builder.query<UserEntity[], void>({
@@ -115,4 +120,5 @@ export const {
   useUpdateMessageMutation,
   useDeleteMessageMutation,
   useFetchAttachmentImageQuery,
+  useGetConnectedUsersQuery,
 } = channelApi
