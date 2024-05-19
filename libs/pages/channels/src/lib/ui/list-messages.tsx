@@ -13,7 +13,6 @@ export default function ListMessages({ messages, onUpdateMessage, control }: Lis
       {messages &&
         messages
           .slice()
-          .reverse()
           .map((message) => (
             <MessageFeature
               key={message.id}

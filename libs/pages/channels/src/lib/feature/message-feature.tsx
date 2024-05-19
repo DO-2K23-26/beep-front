@@ -30,9 +30,9 @@ export default function MessageFeature({
   })
 
   const [isEditing, setIsEditing] = useState<boolean>(false)
-  const userProfilePicture = useFetchProfilePictureQuery(user!.id, {
+  const userProfilePicture = user ? useFetchProfilePictureQuery(user!.id, {
     skip: !user
-  }).currentData
+  }).currentData : undefined
 
   const switchEditing = () => {
     setIsEditing((prevValue) => !prevValue)
