@@ -64,21 +64,29 @@ export function PageChannelFeature() {
   }
 
   const onSendMessage = methods.handleSubmit((data) => {
+    // check if message is not empty OR files are not empty
     if ('message' in data && ((data.message !== '' && data.message !== undefined) || files.length > 0)) {
+      // create a form data object for the http request
       const formData: FormData = new FormData()
 
+      // set the content of the message -> { content: data.message }
       formData.set('content', data.message === '' || data.message === undefined ? ' ' : data.message)
       
+      // if files are present, append them to the form data object
       if (files.length > 0) {
         formData.set('attachments', JSON.stringify([]))
         files.forEach((file, i) => {
           formData.append(`attachments[${i}]`, file)
         })
       }
+      
+      // send the http request to the server and create a new message
       createMessage({
         channelId: channelId,
         body: formData
       })
+
+      // reset the form
       methods.setValue('message', '')
       setFiles([])
     } else {
@@ -95,7 +103,6 @@ export function PageChannelFeature() {
 
     subscription.create()
     subscription.onMessage((message) => {
-      console.log('NEW MESSAGE :', message)
       refetch()
     })
   }, [])
