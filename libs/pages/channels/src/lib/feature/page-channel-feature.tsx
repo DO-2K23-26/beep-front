@@ -108,8 +108,8 @@ export function PageChannelFeature() {
   }, [])
 
   return (
-    <FormProvider {...methods}>
-      {messages !== undefined && channel !== undefined ? (
+    messages !== undefined && channel !== undefined ? (
+      <FormProvider {...methods}>
         <PageChannel
           messages={messages}
           channel={{
@@ -127,9 +127,9 @@ export function PageChannelFeature() {
           hideRightDiv={hideRightDiv}
           hideLeftDiv={hideLeftDiv}
         />
-      ) : (
-        <p>Data is loading... Beboup beboup</p>
-      )}
-    </FormProvider>
+      </FormProvider>
+    ) : (
+      <p>Data is loading... Beboup beboup</p>
+    )
   )
 }
