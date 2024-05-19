@@ -10,6 +10,7 @@ export const initialChannel: ChannelEntity = {
   id: '',
   name: '',
   type: ChannelType.VOICE,
+  serverId: ''
 }
 export const initialChannelsState: ChannelsState = {
   focusedChannel: initialChannel,
