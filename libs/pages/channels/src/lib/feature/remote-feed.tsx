@@ -1,4 +1,4 @@
-import {  ConnectedUserEntity, UserEntity } from '@beep/contracts'
+import { UserConnectedEntity, UserEntity } from '@beep/contracts'
 import { getVoiceState } from '@beep/voice'
 import { FC, memo, useCallback, useEffect, useRef, useState } from 'react'
 import { useSelector } from 'react-redux'
@@ -6,7 +6,7 @@ import { useSelector } from 'react-redux'
 import { Media } from '../ui/media'
 import { socket } from '@beep/utils'
 interface RemoteFeedProps {
-  member: ConnectedUserEntity
+  member: UserConnectedEntity
 }
 
 export const RemoteFeed: FC<RemoteFeedProps> = memo(
