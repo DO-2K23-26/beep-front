@@ -180,16 +180,18 @@ function CreateChannelModal({
           />
         )}
       />
-      <div>
+      <div className="ml-4 pb-2">
         <input
+          className="mr-2"
           type="radio"
           value={ChannelType.TEXT}
           {...methodsAddChannel.register('type')}
         />
         Texte
       </div>
-      <div>
+      <div className="ml-4 pb-6">
         <input
+          className="mr-2"
           type="radio"
           value={ChannelType.VOICE}
           {...methodsAddChannel.register('type')}
