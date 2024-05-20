@@ -9,7 +9,7 @@ import {
 } from 'react-hook-form'
 
 interface ServersNavigationProps {
-  servers: ServerEntity[]
+  servers: ServerEntity[] | undefined
   onPrivateMessage?: () => void
   onLogout?: () => void
   onCreateServer: () => void
@@ -40,9 +40,9 @@ export default function ServersNavigation({
       </div>
       <div className="flex flex-col gap-6 flex-grow overflow-y-scroll no-scrollbar scroll-smooth">
         <ListServers servers={servers} />
-        {/* <Button
+        <Button
           style={ButtonStyle.SQUARE}
-          className="!bg-violet-50 hidden"
+          className="!bg-violet-50"
           onClick={() => {
             openModal({
               content: (
@@ -56,8 +56,8 @@ export default function ServersNavigation({
             })
           }}
         >
-          <Icon name="lucide:plus" className="w-5 h-5 hidden" />
-        </Button> */}
+          <Icon name="lucide:plus" className="w-5 h-5" />
+        </Button>
       </div>
       <div className="pt-12">
         <Button

@@ -17,11 +17,18 @@ export default function DisplayServer({
       style={ButtonStyle.SQUARE}
       className="!bg-violet-50"
     >
-      <img
-        src={server.picture}
-        alt={server.name}
-        className="rounded-xl hover:rounded-2xl transition-all"
-      />
+      {
+        server.picture ? (
+          <img
+            src={server.picture}
+            alt={server.name}
+            className="rounded-xl hover:rounded-2xl transition-all"
+          />
+        ) : (
+          <p>{server.name}</p>
+        )
+      }
+      
     </Button>
   )
 }

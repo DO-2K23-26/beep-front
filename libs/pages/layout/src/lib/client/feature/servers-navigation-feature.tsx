@@ -1,4 +1,3 @@
-import { ServerEntity } from '@beep/contracts'
 import ServersNavigation from '../ui/servers-navigation'
 import { useModal } from '@beep/ui'
 import { useForm } from 'react-hook-form'
@@ -7,24 +6,16 @@ import { NavigateFunction, useNavigate } from 'react-router-dom'
 import { userActions } from '@beep/user'
 import { useDispatch } from 'react-redux'
 import { AppDispatch } from '@beep/store'
-
-const servers: ServerEntity[] = [
-  {
-    id: '@03248567',
-    name: '418erreur',
-    owner_id: 'Rapidement',
-    picture: '/418.jpg',
-  },
-]
-
+import { useGetServersQuery, useJoinServerMutation } from '@beep/server'
 
 
 const onPrivateMessage = (navigation: NavigateFunction) => {
   navigation('/servers/@me')
-
 }
 
 export default function ServersNavigationFeature() {
+  const { data: servers } = useGetServersQuery()
+  const [joinServer ] = useJoinServerMutation()
   const { openModal, closeModal } = useModal()
   const dispatch = useDispatch<AppDispatch>()
 
@@ -37,8 +28,6 @@ export default function ServersNavigationFeature() {
     navigation('/authentication/signin')
   }
 
-
-
   const navigate = useNavigate()
 
   const methodsAddChannel = useForm({
@@ -47,11 +36,10 @@ export default function ServersNavigationFeature() {
       name: '',
     },
   })
-  
+
 
   const onCreateServer = methodsAddChannel.handleSubmit((data) => {
-    console.log('Create server')
-    toast.success('Server created !')
+    joinServer(data.name)
     closeModal()
   })
   return (

@@ -57,11 +57,21 @@ export default function ChannelsNavigation({
               console.log('click')
             }}
           >
-            <img
-              src={server?.picture}
-              alt="Server"
-              className="rounded-xl hover:rounded-2xl transition-all"
-            />
+            {
+              server ? (
+                server.picture ? (
+                  <img
+                    src={server?.picture}
+                    alt="Server"
+                    className="rounded-xl hover:rounded-2xl transition-all"
+                  />
+                ) : (
+                  <p className='max-w-[175px] truncate'>{server.name}</p>
+                )
+              ) : (
+                <p>@ME</p>
+              )
+            }
           </Button>
           <div className="flex flex-col items-start justify-between">
             <h5 className="font-semibold max-w-[175px] truncate">

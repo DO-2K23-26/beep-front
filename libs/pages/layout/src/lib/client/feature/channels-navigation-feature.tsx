@@ -1,27 +1,30 @@
-import { ChannelEntity, ChannelType, CreateChannelRequest } from '@beep/contracts'
+import { CreateChannelRequest } from '@beep/contracts'
 import ChannelsNavigation from '../ui/channels-navigation'
 import { useForm } from 'react-hook-form'
 import { useModal } from '@beep/ui'
 import { toast } from 'react-hot-toast'
-import { useCreateChannelMutation, useGetChannelsQuery } from '@beep/channel'
+import { useCreateChannelMutation } from '@beep/channel'
 import { useEffect } from 'react'
-import { AppDispatch } from '@beep/store'
-import { useDispatch } from 'react-redux'
+import { AppDispatch, RootState } from '@beep/store'
+import { useDispatch, useSelector } from 'react-redux'
 import { responsiveActions } from '@beep/responsive'
-
-const server = {
-  id: '@03248567',
-  name: '418erreur',
-  owner_id: 'Rapidement',
-  picture: '/418.jpg',
-}
+import { serverActions, useGetServerChannelsQuery, useGetServersQuery } from '@beep/server'
+import { skipToken } from '@reduxjs/toolkit/query'
 
 export default function ChannelsNavigationFeature() {
+  const server = useSelector((state: RootState) => state.servers.server)
+  const dispatch = useDispatch<AppDispatch>()
   const { openModal, closeModal } = useModal()
+  const { data: servers } = useGetServersQuery();
+
+  useEffect(() => {
+    if (!server && servers && servers.length > 0) {
+      dispatch(serverActions.setServer(servers[0]));
+    }
+  }, [server, servers, dispatch]);
 
   const [createChannel, resultCreatedChannel] = useCreateChannelMutation()
-  const {data: channels} = useGetChannelsQuery()
-
+  const { data: channels } = useGetServerChannelsQuery(server?.id || skipToken)
   useEffect(() => {
     if (resultCreatedChannel.isSuccess && resultCreatedChannel.data !== undefined) {
       toast.success('Channel created !')
@@ -42,7 +45,6 @@ export default function ChannelsNavigationFeature() {
     closeModal()
   })
 
-  const dispatch = useDispatch<AppDispatch>()
   const hideLeftDiv = () => {
     dispatch(responsiveActions.manageLeftPane())
   }

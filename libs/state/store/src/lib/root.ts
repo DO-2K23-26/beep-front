@@ -4,14 +4,17 @@ import { responsiveReducer } from '@beep/responsive'
 import { userApi, userReducer } from '@beep/user'
 import { voiceSliceReducer } from '@beep/voice'
 import { combineReducers, configureStore } from '@reduxjs/toolkit'
+import { serverApi, serverReducer } from '@beep/server'
 
 export const rootReducer = combineReducers({
   user: userReducer,
   channels: channelsReducer,
   responsive: responsiveReducer,
   voice: voiceSliceReducer,
+  servers: serverReducer,
   [userApi.reducerPath]: userApi.reducer,
   [channelApi.reducerPath]: channelApi.reducer,
+  [serverApi.reducerPath]: serverApi.reducer,
 })
 
 export function setupStore(preloadedState?: never) {
@@ -24,7 +27,8 @@ export function setupStore(preloadedState?: never) {
         immutableCheck: false,
       })
         .concat(userApi.middleware)
-        .concat(channelApi.middleware),
+        .concat(channelApi.middleware)
+        .concat(serverApi.middleware)
   })
 }
 
