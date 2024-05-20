@@ -1,4 +1,4 @@
-import { ChannelEntity, ServerEntity } from '@beep/contracts'
+import { ChannelEntity, ChannelType, ServerEntity } from '@beep/contracts'
 import {
   Badge,
   BadgeType,
@@ -29,7 +29,8 @@ export interface ChannelsNavigationProps {
   onCreateChannel: () => void
   openModal: React.Dispatch<React.SetStateAction<UseModalProps | undefined>>
   closeModal: () => void
-  methodsAddChannel: UseFormReturn<{ name: string }>
+  methodsAddChannel: UseFormReturn<{ name: string; type: ChannelType }>
+
   hideLeftDiv?: () => void
 }
 
@@ -60,21 +61,19 @@ export default function ChannelsNavigation({
               console.log('click')
             }}
           >
-            {
-              server ? (
-                server.picture ? (
-                  <img
-                    src={server?.picture}
-                    alt="Server"
-                    className="rounded-xl hover:rounded-2xl transition-all"
-                  />
-                ) : (
-                  <p className='max-w-[175px] truncate'>{server.name}</p>
-                )
+            {server ? (
+              server.picture ? (
+                <img
+                  src={server?.picture}
+                  alt="Server"
+                  className="rounded-xl hover:rounded-2xl transition-all"
+                />
               ) : (
-                <p>@ME</p>
+                <p className="max-w-[175px] truncate">{server.name}</p>
               )
-            }
+            ) : (
+              <p>@ME</p>
+            )}
           </Button>
           <div className="flex flex-col items-start justify-between">
             <h5 className="font-semibold max-w-[175px] truncate">
@@ -99,6 +98,7 @@ export default function ChannelsNavigation({
                   <CreateChannelModal
                     closeModal={closeModal}
                     onCreateChannel={onCreateChannel}
+                    methodsAddChannel={methodsAddChannel}
                   />
                 </FormProvider>
               ),
@@ -112,7 +112,12 @@ export default function ChannelsNavigation({
           <div className="flex flex-col flex-grow gap-6">
             <div className="flex flex-col gap-1">
               <ListTextChannels channels={textChannels || []} />
-              <ListVoiceChannels channels={voiceChannels || []} occupiedChannels={[]} onJoinChannel={(channel) => {}} onDeleteChannel={(id) => {}} />
+              <ListVoiceChannels
+                channels={voiceChannels || []}
+                occupiedChannels={[]}
+                onJoinChannel={(channel) => {}}
+                onDeleteChannel={(id) => {}}
+              />
             </div>
           </div>
         </div>
@@ -120,7 +125,11 @@ export default function ChannelsNavigation({
       </div>
       {/* Responsive button */}
       <div className={showLeftPane ? 'p-6 bg-violet-200 flex' : 'hidden'}>
-        <Button onClick={hideLeftDiv} style={ButtonStyle.SQUARE} className="!bg-violet-300">
+        <Button
+          onClick={hideLeftDiv}
+          style={ButtonStyle.SQUARE}
+          className="!bg-violet-300"
+        >
           <Icon name="lucide:arrow-left" />
         </Button>
       </div>
@@ -131,13 +140,16 @@ export default function ChannelsNavigation({
 interface CreateChannelModalProps {
   closeModal: () => void
   onCreateChannel: () => void
+  methodsAddChannel: UseFormReturn<{ name: string; type: ChannelType }>
 }
 
 function CreateChannelModal({
   closeModal,
   onCreateChannel,
+  methodsAddChannel,
 }: CreateChannelModalProps) {
   const { control } = useFormContext()
+
   return (
     <div className="p-6">
       <h3 className=" text-slate-700 font-bold mb-2 max-w-sm">
@@ -168,6 +180,22 @@ function CreateChannelModal({
           />
         )}
       />
+      <div>
+        <input
+          type="radio"
+          value={ChannelType.TEXT}
+          {...methodsAddChannel.register('type')}
+        />
+        Texte
+      </div>
+      <div>
+        <input
+          type="radio"
+          value={ChannelType.VOICE}
+          {...methodsAddChannel.register('type')}
+        />
+        Voice
+      </div>
       <div className="flex gap-3 justify-between">
         <Button
           className="btn--no-min-w"
