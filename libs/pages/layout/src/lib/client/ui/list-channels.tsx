@@ -1,11 +1,11 @@
 import { ChannelEntity } from '@beep/contracts'
 import DisplayChannelFeature from '../feature/display-channel-feature'
 
-export interface ListChannelsProps {
+export interface ListTextChannelsProps {
   channels: ChannelEntity[]
 }
 
-export function ListChannels({ channels }: ListChannelsProps) {
+export function ListTextChannels({ channels }: ListTextChannelsProps) {
   return (
     <>
       {channels.map((channel) => (

@@ -1,4 +1,4 @@
-import { CreateChannelRequest } from '@beep/contracts'
+import { ChannelType, CreateChannelRequest } from '@beep/contracts'
 import ChannelsNavigation from '../ui/channels-navigation'
 import { useForm } from 'react-hook-form'
 import { useModal } from '@beep/ui'
@@ -51,7 +51,8 @@ export default function ChannelsNavigationFeature() {
 
   return (
     <ChannelsNavigation
-      channels={channels}
+      textChannels={channels?.filter(channel => channel.type === ChannelType.TEXT)}
+      voiceChannels={channels?.filter(channel => channel.type === ChannelType.VOICE)}
       server={server}
       onCreateChannel={onCreateChannel}
       openModal={openModal}

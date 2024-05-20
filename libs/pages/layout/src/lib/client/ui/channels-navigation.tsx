@@ -19,10 +19,12 @@ import {
 } from 'react-hook-form'
 import { useSelector } from 'react-redux'
 import CurrentUserFeature from '../feature/current-user-feature'
-import { ListChannels } from './list-channels'
+import { ListTextChannels } from './list-channels'
+import { ListVoiceChannels } from './list-voice-channels'
 
 export interface ChannelsNavigationProps {
-  channels?: ChannelEntity[]
+  textChannels?: ChannelEntity[]
+  voiceChannels?: ChannelEntity[]
   server?: ServerEntity
   onCreateChannel: () => void
   openModal: React.Dispatch<React.SetStateAction<UseModalProps | undefined>>
@@ -32,7 +34,8 @@ export interface ChannelsNavigationProps {
 }
 
 export default function ChannelsNavigation({
-  channels,
+  textChannels,
+  voiceChannels,
   server,
   onCreateChannel,
   openModal,
@@ -108,7 +111,8 @@ export default function ChannelsNavigation({
         <div className="flex flex-col gap-6 min-w-max flex-grow overflow-y-scroll no-scrollbar scroll-smooth">
           <div className="flex flex-col flex-grow gap-6">
             <div className="flex flex-col gap-1">
-              <ListChannels channels={channels || []} />
+              <ListTextChannels channels={textChannels || []} />
+              <ListVoiceChannels channels={voiceChannels || []} occupiedChannels={[]} onJoinChannel={(channel) => {}} onDeleteChannel={(id) => {}} />
             </div>
           </div>
         </div>
