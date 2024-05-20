@@ -30,9 +30,9 @@ export const channelApi = createApi({
       query: () => `/channel/connected`,
       providesTags: ['users'],
     }),
-    getChannel: builder.query<any, string>({
-      query: (channelId: string) => ({
-        url: `/channels/${channelId}/messages`,
+    getChannel: builder.query<any, { serverId: string, channelId: string }>({
+      query: (request: { serverId: string, channelId: string }) => ({
+        url: `/servers/${request.serverId}/channels/${request.channelId}`,
       //   responseHandler : async (response: Response) => {
       //   const data = await response.json();
       //   if (response.ok) {
