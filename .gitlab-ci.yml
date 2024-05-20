@@ -1,16 +1,40 @@
 stages:
   - test
-  - build
-  - package
   - publish
+  - deploy
+
 include:
-  - template: Jobs/Code-Quality.gitlab-ci.yml
   - template: Jobs/Dependency-Scanning.gitlab-ci.yml
-  - local: 'gitversion-ci-cd-plugin-extension.gitlab-ci.yml'
+  - local: gitversion-ci-cd-plugin-extension.gitlab-ci.yml
+
+variables:
+  DEPLOY_VARIABLE: garbage
+  CHART_NAME: garbage
+
+workflow:
+  rules:
+    # - if: '$CI_COMMIT_BRANCH == "main" && $CI_PIPELINE_SOURCE == "merge_request_event"'
+    # - if: '$CI_COMMIT_BRANCH == "feat/ci-environment"'
+    #   variables:
+    #     DEPLOY_VARIABLE: develop
+    #     CHART_NAME: beep-frontend-develop
+    - if: '$CI_COMMIT_TAG =~ /^[0-9]+\.[0-9]+\.[0-9]+-staging$/'
+      variables:
+        DEPLOY_VARIABLE: staging
+        CHART_NAME: beep-frontend-staging
+    - if: '$CI_COMMIT_TAG =~ /^[0-9]+\.[0-9]+\.[0-9]+$/'
+      variables:
+        DEPLOY_VARIABLE: production
+        CHART_NAME: beep-frontend
+    - if: $DEPLOY_VARIABLE == "garbage"
+      when: never
 
 determineversion:
+  stage: .pre
   rules:
-    - if: $CI_COMMIT_MESSAGE =~ /build/ || $CI_COMMIT_MESSAGE =~ /publish/
+    # - if: '$CI_COMMIT_BRANCH == "main" && $CI_PIPELINE_SOURCE == "merge_request_event"'
+    # - if: '$CI_COMMIT_BRANCH == "feat/ci-environment"'
+    - if: $CI_COMMIT_TAG
   extends: .gitversion_function
 
 gemnasium-dependency_scanning:
@@ -19,45 +43,58 @@ gemnasium-dependency_scanning:
     - if: $CI_COMMIT_BRANCH == "main"
     - if: $CI_MERGE_REQUEST_IID
 
-code_quality:
-  stage: test
-  rules:
-    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
-
-#Static Code Analysis:
-#  image: node:latest
-#  stage: test
-#  script:
-#    - npm install -g pnpm
-#    - pnpm install
-#    - pnpm run lint
-#
-build:
-  stage: build
-  rules:
-    - if: $CI_COMMIT_MESSAGE =~ /build/
-  image:
-    name: gcr.io/kaniko-project/executor:v1.14.0-debug
-    entrypoint: [ "" ]
-  script:
-    - echo "{\"auths\":{\"$CI_REGISTRY\":{\"username\":\"$CI_REGISTRY_USER\",\"password\":\"$CI_REGISTRY_PASSWORD\"}}}" > /kaniko/.docker/config.json
-    - /kaniko/executor --context $CI_PROJECT_DIR --dockerfile $CI_PROJECT_DIR/Dockerfile --build-arg VITE_BACKEND_URL=$FILE_API_ENDPOINT --destination $CI_REGISTRY_IMAGE/file-beep-frontend:$GitVersion_LegacySemVer
-
-publish:
+build-publish-image:
   stage: publish
   rules:
-    - if: $CI_COMMIT_MESSAGE =~ /publish/
+    # - if: '$CI_COMMIT_BRANCH == "main" && $CI_PIPELINE_SOURCE == "merge_request_event"'
+    # - if: '$CI_COMMIT_BRANCH == "feat/ci-environment"'
+    - if: $CI_COMMIT_TAG
+  image:
+    name: 'gcr.io/kaniko-project/executor:v1.14.0-debug'
+    entrypoint:
+      - ''
   dependencies:
     - determineversion
-  image: alpine/helm:latest
   script:
-    - wget https://github.com/mikefarah/yq/releases/download/v4.13.2/yq_linux_amd64 -O /usr/bin/yq && chmod +x /usr/bin/yq
-    - export VERSION=$GitVersion_LegacySemVer
-    - yq eval -i '.image.tag = env(VERSION)' helm/values.yaml
-    - yq eval -i '.version = env(VERSION)' helm/Chart.yaml
-    - yq eval -i '.appVersion = env(VERSION)' helm/Chart.yaml
-    - helm package helm/
-    - 'curl --request POST --user gitlab-ci-token:$CI_JOB_TOKEN --form "chart=@beep-frontend-files-$GitVersion_LegacySemVer.tgz" "${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/helm/api/stable/charts"'
+    - >-
+      echo
+      "{\"auths\":{\"$CI_REGISTRY\":{\"username\":\"$CI_REGISTRY_USER\",\"password\":\"$CI_REGISTRY_PASSWORD\"}}}"
+      > /kaniko/.docker/config.json
+    - >-
+      /kaniko/executor --context $CI_PROJECT_DIR --dockerfile
+      $CI_PROJECT_DIR/Dockerfile --destination
+      $CI_REGISTRY_IMAGE:$GitVersion_LegacySemVer
+      --build-arg VITE_BACKEND_URL=$API_URL_ENDPOINT
+  environment:
+    name: $DEPLOY_VARIABLE
 
-
-
+package-publish-helm:
+  stage: publish
+  rules:
+    # - if: '$CI_COMMIT_BRANCH == "main" && $CI_PIPELINE_SOURCE == "merge_request_event"'
+    # - if: '$CI_COMMIT_BRANCH == "feat/ci-environment"'
+    - if: $CI_COMMIT_TAG
+  image: 'alpine/helm:latest'
+  dependencies:
+    - determineversion
+  script:
+    - wget https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd64 -O yq && chmod +x ./yq
+    - export VERSION=$GitVersion_MajorMinorPatch
+    # Echo pour débogage des variables d'environnement
+    - "echo \"FRONT_URL_ENDPOINT: $FRONT_URL_ENDPOINT\""
+    - "echo \"API_URL_ENDPOINT: $API_URL_ENDPOINT\""
+    - "echo \"VERSION: $VERSION\""
+    - "echo \"CHART_NAME: $CHART_NAME\""
+    # Extraire le domaine de FRONT_URL_ENDPOINT
+    - DOMAIN=$(echo $FRONT_URL_ENDPOINT | awk -F[/:] '{print $4}')
+    - "echo \"Extracted DOMAIN: $DOMAIN\""
+    # Modifier le fichier values.yaml avec les variables extraites
+    - ./yq -i ".ingress.hosts[0].host=\"$DOMAIN\"" helm/values.yaml
+    - ./yq -i ".backend.url=\"$API_URL_ENDPOINT\"" helm/values.yaml
+    - ./yq -i ".name=\"$CHART_NAME\"" helm/Chart.yaml
+    # Vérifier le contenu de values.yaml après modification
+    - cat helm/values.yaml
+    - helm package helm/ --version $VERSION --app-version $VERSION
+    - curl --request POST --user gitlab-ci-token:$CI_JOB_TOKEN --form "chart=@$CHART_NAME-$VERSION.tgz" "${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/helm/api/$DEPLOY_VARIABLE/charts"
+  environment:
+    name: $DEPLOY_VARIABLE

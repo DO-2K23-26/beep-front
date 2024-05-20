@@ -2,7 +2,7 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: {{ printf "%s-ingresss" (include "beep-frontend-files.fullname" .) }}
+  name: {{ printf "%s-ingress" (include "beep-frontend-files.fullname" .) }}
   namespace: {{ .Release.Namespace }}
   annotations:
     {{- toYaml .Values.ingress.annotations | nindent 4 }}
