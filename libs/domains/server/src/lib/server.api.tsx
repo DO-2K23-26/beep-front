@@ -49,7 +49,7 @@ export const serverApi = createApi({
           type: request.type,
         },
       }),
-      invalidatesTags: ['servers'],
+      invalidatesTags: ['channels'],
     }),
     getServerChannels: builder.query<ChannelEntity[], string>({
       query: (serverId) => `/servers/${serverId}/channels`,
