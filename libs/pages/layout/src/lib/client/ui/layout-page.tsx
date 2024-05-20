@@ -1,6 +1,6 @@
 import { getResponsiveState } from '@beep/responsive'
 import { Button, ButtonStyle, Icon } from '@beep/ui'
-import { PropsWithChildren } from 'react'
+import { PropsWithChildren, useId } from 'react'
 import { useSelector } from 'react-redux'
 import ChannelsNavigationFeature from '../feature/channels-navigation-feature'
 import MembersListFeature from '../feature/members-navigation-feature'
@@ -14,6 +14,7 @@ export default function LayoutPage({
   children,
   hideRightDiv,
 }: PropsWithChildren<LayoutPageProps>) {
+  const id: string = useId();
   const { showRightPane, showLeftPane } = useSelector(getResponsiveState)
 
   return (
@@ -22,7 +23,7 @@ export default function LayoutPage({
       <ChannelsNavigationFeature />
 
       {/* Chat content */}
-      <div className={showLeftPane || showRightPane ? 'hidden' : 'flex w-full'}>
+      <div key={id} className={showLeftPane || showRightPane ? 'hidden' : 'flex w-full'}>
         {children}
       </div>
 
