@@ -6,7 +6,7 @@ import { NavigateFunction, useNavigate } from 'react-router-dom'
 import { userActions } from '@beep/user'
 import { useDispatch } from 'react-redux'
 import { AppDispatch } from '@beep/store'
-import { useGetServersQuery, useJoinServerMutation } from '@beep/server'
+import { useGetServersQuery, useJoinServerMutation, useCreateServerMutation } from '@beep/server'
 
 
 const onPrivateMessage = (navigation: NavigateFunction) => {
@@ -15,6 +15,7 @@ const onPrivateMessage = (navigation: NavigateFunction) => {
 
 export default function ServersNavigationFeature() {
   const { data: servers } = useGetServersQuery()
+  const [createServer] = useCreateServerMutation()
   const [joinServer ] = useJoinServerMutation()
   const { openModal, closeModal } = useModal()
   const dispatch = useDispatch<AppDispatch>()
@@ -39,15 +40,22 @@ export default function ServersNavigationFeature() {
 
 
   const onCreateServer = methodsAddChannel.handleSubmit((data) => {
-    joinServer(data.name)
+    createServer(data.name)
     closeModal()
   })
+
+  const onJoinServer = (serverId: string) => {
+    joinServer(serverId)
+    closeModal()
+  }
+
   return (
     <ServersNavigation
       servers={servers}
       onLogout={() => onLogout(navigate)}
       onPrivateMessage={() => onPrivateMessage(navigate)}
       onCreateServer={onCreateServer}
+      onJoinServer={onJoinServer}
       openModal={openModal}
       closeModal={closeModal}
       methods={methodsAddChannel}

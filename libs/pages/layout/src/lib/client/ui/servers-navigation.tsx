@@ -7,12 +7,14 @@ import {
   UseFormReturn,
   useFormContext,
 } from 'react-hook-form'
+import { useState } from 'react'
 
 interface ServersNavigationProps {
   servers: ServerEntity[] | undefined
   onPrivateMessage?: () => void
   onLogout?: () => void
   onCreateServer: () => void
+  onJoinServer: (serverId: string) => void
   openModal: React.Dispatch<React.SetStateAction<UseModalProps | undefined>>
   closeModal: () => void
   methods: UseFormReturn<{ name: string }>
@@ -23,6 +25,7 @@ export default function ServersNavigation({
   onPrivateMessage,
   onLogout,
   onCreateServer,
+  onJoinServer,
   openModal,
   closeModal,
   methods,
@@ -50,6 +53,7 @@ export default function ServersNavigation({
                   <CreateServerModal
                     closeModal={closeModal}
                     onCreateServer={onCreateServer}
+                    onJoinServer={onJoinServer}
                   />
                 </FormProvider>
               ),
@@ -75,59 +79,128 @@ export default function ServersNavigation({
 interface CreateServerModalProps {
   closeModal: () => void
   onCreateServer: () => void
+  onJoinServer: (serverId: string) => void
 }
 
 function CreateServerModal({
   closeModal,
   onCreateServer,
+  onJoinServer,
 }: CreateServerModalProps) {
-  const { control } = useFormContext()
+  const { control, getValues } = useFormContext()
+  const [option, setOption] = useState('create')
+
   return (
     <div className="p-6">
-      <h3 className=" text-slate-700 font-bold mb-2 max-w-sm">Create server</h3>
+      <h3 className=" text-slate-700 font-bold mb-2 max-w-sm">Create or Join a Server</h3>
       <div className="text-slate-500 text-sm mb-4">
-        Choose a name for your server
+        Choose an option to proceed
       </div>
-      <Controller
-        name="name"
-        rules={{
-          required: 'Please enter a name.',
-          minLength: {
-            value: 1,
-            message: 'Please enter a name.',
-          },
-        }}
-        control={control}
-        render={({ field, fieldState: { error } }) => (
-          <InputText
-            className="w-full !rounded-lg min-h-[40px] mb-4"
-            label={'Server name'}
+      <div className="ml-4 pb-2">
+        <input
+          className="mr-2"
+          type="radio"
+          name="option"
+          value="create Server"
+          checked={option === 'create'}
+          onChange={() => setOption('create')}
+        />
+        Create Server
+      </div>
+      <div className="ml-4 pb-6">
+        <input
+          className="mr-2"
+          type="radio"
+          name="option"
+          value="Join Server"
+          checked={option === 'join'}
+          onChange={() => setOption('join')}
+        />
+        Join Server
+      </div>
+      {option === 'create' && (
+        <>
+          <Controller
             name="name"
-            type="text"
-            onChange={field.onChange}
-            value={field.value}
-            error={error?.message}
+            rules={{
+              required: 'Please enter a name.',
+              minLength: {
+                value: 1,
+                message: 'Please enter a name.',
+              },
+            }}
+            control={control}
+            render={({ field, fieldState: { error } }) => (
+              <InputText
+                className="w-full !rounded-lg min-h-[40px] mb-4"
+                label={'Server name'}
+                name="name"
+                type="text"
+                onChange={field.onChange}
+                value={field.value}
+                error={error?.message}
+              />
+            )}
           />
-        )}
-      />
-      <div className="flex gap-3 justify-between">
-        <Button
-          className="btn--no-min-w"
-          style={ButtonStyle.STROKED}
-          onClick={() => closeModal()}
-        >
-          Cancel
-        </Button>
-        <Button
-          className="btn--no-min-w"
-          style={ButtonStyle.BASIC}
-          onClick={() => {
-            onCreateServer()
-          }}
-        >
-          Create
-        </Button>
-      </div>
+          <div className="flex gap-3 justify-between">
+            <Button
+              className="btn--no-min-w"
+              style={ButtonStyle.STROKED}
+              onClick={closeModal}
+            >
+              Cancel
+            </Button>
+            <Button
+              className="btn--no-min-w"
+              style={ButtonStyle.BASIC}
+              onClick={onCreateServer}
+            >
+              Create
+            </Button>
+          </div>
+        </>
+      )}
+      {option === 'join' && (
+        <>
+          <Controller
+            name="serverId"
+            rules={{
+              required: 'Please enter a server ID.',
+            }}
+            control={control}
+            render={({ field, fieldState: { error } }) => (
+              <InputText
+                className="w-full !rounded-lg min-h-[40px] mb-4"
+                label={'Server ID'}
+                name="serverId"
+                type="text"
+                onChange={field.onChange}
+                value={field.value}
+                error={error?.message}
+              />
+            )}
+          />
+          <div className="flex gap-3 justify-between">
+            <Button
+              className="btn--no-min-w"
+              style={ButtonStyle.STROKED}
+              onClick={closeModal}
+            >
+              Cancel
+            </Button>
+            <Button
+              className="btn--no-min-w"
+              style={ButtonStyle.BASIC}
+              onClick={() => {
+                const serverId = getValues('serverId')
+                onJoinServer(serverId)
+              }}
+            >
+              Join
+            </Button>
+          </div>
+        </>
+      )}
     </div>
   )
 }

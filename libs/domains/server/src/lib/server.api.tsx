@@ -27,13 +27,20 @@ export const serverApi = createApi({
       query: (params) => `/servers`,
       providesTags: ['servers'],
     }),
-    joinServer: builder.mutation<void, string>({
+    createServer: builder.mutation<void, string>({
       query: (serverId) => ({
         url: `/servers`,
         method: 'POST',
         body: {
           name: serverId,
         },
+      }),
+      invalidatesTags: ['servers'],
+    }),
+    joinServer: builder.mutation<void, string>({
+      query: (serverId) => ({
+        url: `/servers/${serverId}/join`,
+        method: 'POST',
       }),
       invalidatesTags: ['servers'],
     }),
@@ -61,6 +68,7 @@ export const serverApi = createApi({
 export const {
   useGetServersQuery,
   useJoinServerMutation,
+  useCreateServerMutation,
   useGetServerChannelsQuery,
   useCreateChannelInServerMutation,
 } = serverApi
