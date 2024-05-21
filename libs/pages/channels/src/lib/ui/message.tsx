@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useRef, useState } from "react";
+import React from "react";
 import { MessageEntity, UserEntity } from '@beep/contracts'
 import { Button, ButtonStyle, Icon, Input } from '@beep/ui'
 import { Controller } from 'react-hook-form'
@@ -33,7 +33,7 @@ export default function Message({
   onUpdateMessage,
   createdAt,
   control
-}: MessageProps) {
+}: Readonly<MessageProps>) {
 
   // Convert markdown to Markdoc nodes
   const adjustLineBreaks = preprocessMarkdown(message.content);
