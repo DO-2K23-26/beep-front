@@ -1,0 +1,3 @@
+interface UserConnectedPayload {
+  message: string
+}

@@ -1,6 +1,7 @@
 import { Route, Routes } from 'react-router-dom'
 import { ROUTER_CHANNELS } from './router'
 import { VoiceChat } from './feature/voice-chat'
+import { ChannelEvents } from './events'
 
 export function PageChannels() {
   return (
@@ -11,6 +12,7 @@ export function PageChannels() {
         ))}
       </Routes>
       <VoiceChat />
+      <ChannelEvents />
     </>
   )
 }
