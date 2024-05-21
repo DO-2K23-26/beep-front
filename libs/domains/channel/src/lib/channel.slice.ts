@@ -1,8 +1,8 @@
+/* eslint-disable @nx/enforce-module-boundaries */
 import { ChannelEntity, ChannelType, ChannelsState } from '@beep/contracts'
 import { RootState } from '@beep/store'
 import { createEntityAdapter, createSlice } from '@reduxjs/toolkit'
 import { socket } from '@beep/utils'
-import { Channel } from "diagnostics_channel";
 
 export const CHANNELS_KEY = 'channels'
 export const channelsAdapter = createEntityAdapter<ChannelEntity>()

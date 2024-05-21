@@ -21,12 +21,15 @@ import { useSelector } from 'react-redux'
 import CurrentUserFeature from '../feature/current-user-feature'
 import { ListTextChannels } from './list-channels'
 import { ListVoiceChannels } from './list-voice-channels'
+import { ConnectedChannelRow } from './connect-channel-row'
+import { getChannelsState } from '@beep/channel'
 
 export interface ChannelsNavigationProps {
   textChannels?: ChannelEntity[]
   voiceChannels?: ChannelEntity[]
   server?: ServerEntity
   onCreateChannel: () => void
+  onLeaveVoiceChannel: () => void
   openModal: React.Dispatch<React.SetStateAction<UseModalProps | undefined>>
   closeModal: () => void
   methodsAddChannel: UseFormReturn<{ name: string; type: ChannelType }>
@@ -39,13 +42,14 @@ export default function ChannelsNavigation({
   voiceChannels,
   server,
   onCreateChannel,
+  onLeaveVoiceChannel,
   openModal,
   closeModal,
   methodsAddChannel,
   hideLeftDiv,
 }: ChannelsNavigationProps) {
   const { showLeftPane } = useSelector(getResponsiveState)
-
+  const { connected } = useSelector(getChannelsState)
   return (
     <div className={showLeftPane ? 'flex abolute w-full' : 'hidden lg:flex'}>
       <div
@@ -69,7 +73,7 @@ export default function ChannelsNavigation({
                   className="rounded-xl hover:rounded-2xl transition-all"
                 />
               ) : (
-                <p className="max-w-[175px] truncate">{server.name}</p>
+                <p className="max-w-[175px] truncate">{server.name[0]}</p>
               )
             ) : (
               <p>@ME</p>
@@ -121,6 +125,7 @@ export default function ChannelsNavigation({
             </div>
           </div>
         </div>
+        {connected && <ConnectedChannelRow onLeave={onLeaveVoiceChannel} />}
         <CurrentUserFeature />
       </div>
       {/* Responsive button */}
