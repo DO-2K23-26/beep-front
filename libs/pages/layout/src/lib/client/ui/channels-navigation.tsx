@@ -30,6 +30,7 @@ export interface ChannelsNavigationProps {
   server?: ServerEntity
   onCreateChannel: () => void
   onLeaveVoiceChannel: () => void
+  onJoinVoiceChannel: (channel:ChannelEntity) => void 
   openModal: React.Dispatch<React.SetStateAction<UseModalProps | undefined>>
   closeModal: () => void
   methodsAddChannel: UseFormReturn<{ name: string; type: ChannelType }>
@@ -42,6 +43,7 @@ export default function ChannelsNavigation({
   voiceChannels,
   server,
   onCreateChannel,
+  onJoinVoiceChannel,
   onLeaveVoiceChannel,
   openModal,
   closeModal,
@@ -85,7 +87,7 @@ export default function ChannelsNavigation({
             </h5>
             <Badge
               type={BadgeType.DEFAULT}
-              title={server?.id || ''}
+              title={server?.id ?? ''}
               className="bg-violet-50 hover:bg-violet-100 !text-violet-900 max-w-[175px] truncate"
             />
           </div>
@@ -119,7 +121,7 @@ export default function ChannelsNavigation({
               <ListVoiceChannels
                 channels={voiceChannels || []}
                 occupiedChannels={[]}
-                onJoinChannel={(channel) => {}}
+                onJoinChannel={onJoinVoiceChannel}
                 onDeleteChannel={(id) => {}}
               />
             </div>

@@ -1,9 +1,13 @@
-import { ChannelType, CreateChannelRequest } from '@beep/contracts'
+import {
+  ChannelEntity,
+  ChannelType,
+  CreateChannelRequest,
+} from '@beep/contracts'
 import ChannelsNavigation from '../ui/channels-navigation'
 import { useForm } from 'react-hook-form'
 import { useModal } from '@beep/ui'
 import { toast } from 'react-hot-toast'
-import { useCreateChannelMutation } from '@beep/channel'
+import { channelsActions, useCreateChannelMutation } from '@beep/channel'
 import { useEffect } from 'react'
 import { AppDispatch, RootState } from '@beep/store'
 import { useDispatch, useSelector } from 'react-redux'
@@ -49,7 +53,12 @@ export default function ChannelsNavigationFeature() {
       type: ChannelType.TEXT,
     },
   })
-
+  const onJoinVoiceChannel = (channel: ChannelEntity) => {
+    dispatch(channelsActions.setFocusedChannel(channel))
+  }
+  const onLeaveVoiceChannel = () => {
+    dispatch(channelsActions.unsetFocusedChannel())
+  }
   const onCreateChannel = methodsAddChannel.handleSubmit((data) => {
     const createChannelRequest: CreateChannelRequest = {
       serverId: server?.id || '',
@@ -65,8 +74,14 @@ export default function ChannelsNavigationFeature() {
 
   return (
     <ChannelsNavigation
-      textChannels={channels?.filter(channel => channel.type === ChannelType.TEXT)}
-      voiceChannels={channels?.filter(channel => channel.type === ChannelType.VOICE)}
+      textChannels={channels?.filter(
+        (channel) => channel.type === ChannelType.TEXT
+      )}
+      voiceChannels={channels?.filter(
+        (channel) => channel.type === ChannelType.VOICE
+      )}
+      onJoinVoiceChannel={onJoinVoiceChannel}
+      onLeaveVoiceChannel={onLeaveVoiceChannel}
       server={server}
       onCreateChannel={onCreateChannel}
       openModal={openModal}

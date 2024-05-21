@@ -22,7 +22,7 @@ export const channelsSlice = createSlice({
   name: CHANNELS_KEY,
   initialState: channelsAdapter.getInitialState(initialChannelsState),
   reducers: {
-    setFocusedChannel(state, { payload }) {
+    setFocusedChannel(state, { payload }: { payload: ChannelEntity }) {
       console.log('Joining channel', payload)
       socket.emit('join_channel', {
         channel_id: payload.id,
@@ -44,30 +44,30 @@ export const channelsSlice = createSlice({
 })
 
 export interface VoiceChannelState {
-    focusedChannel: ChannelEntity
-    connected: boolean
+  focusedChannel: ChannelEntity
+  connected: boolean
 }
 
 export const voiceChannelSlice = createSlice({
-    name: 'voiceChannel',
-    initialState: {
-        focusedChannel: {} as ChannelEntity,
-        connected: false
-    } as VoiceChannelState,
-    reducers: {
-        setFocusedVoiceChannel(state, { payload }) {
-            console.log('Joining voice channel', payload)
-            socket.emit('join_voice_channel', {
-                channel_id: payload.id,
-            })
-            state.focusedChannel = payload;
-            state.connected = true;
-        },
-        unsetFocusedVoiceChannel(state) {
-            state.focusedChannel = {} as ChannelEntity;
-            state.connected = false;
-        }
+  name: 'voiceChannel',
+  initialState: {
+    focusedChannel: {} as ChannelEntity,
+    connected: false
+  } as VoiceChannelState,
+  reducers: {
+    setFocusedVoiceChannel(state, { payload }) {
+      console.log('Joining voice channel', payload)
+      socket.emit('join_voice_channel', {
+        channel_id: payload.id,
+      })
+      state.focusedChannel = payload;
+      state.connected = true;
+    },
+    unsetFocusedVoiceChannel(state) {
+      state.focusedChannel = {} as ChannelEntity;
+      state.connected = false;
     }
+  }
 });
 
 export const voiceChannelReducer = voiceChannelSlice.reducer;
