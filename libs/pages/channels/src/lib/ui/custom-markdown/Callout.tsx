@@ -17,11 +17,11 @@ export default function Callout({
   title,
   type,
   children,
-}: {
+}: Readonly<{
   title: string;
   type: string;
   children: React.ReactNode;
-}) {
+}>) {
   const contentStyleObj: ContentStyle = {
     note: {
       content: "bg-blue-100 border-blue-500",
@@ -44,6 +44,7 @@ export default function Callout({
       copy: "text-green-800",
     },
   };
+  
   const contentStyle = new Map<string, TextStyle>();
   for (const [key, value] of Object.entries(contentStyleObj)) {
     console.log(key);
