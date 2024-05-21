@@ -58,7 +58,14 @@ export default function ChannelsNavigationFeature() {
     },
   })
   const onJoinVoiceChannel = (channel: ChannelEntity) => {
-    dispatch(voiceChannelActions.setFocusedVoiceChannel(channel))
+    if (server?.id) {
+      dispatch(
+        voiceChannelActions.setFocusedVoiceChannel({
+          channel: channel,
+          serverId: server.id,
+        })
+      )
+    }
   }
   const onLeaveVoiceChannel = () => {
     dispatch(voiceChannelActions.unsetFocusedVoiceChannel())
