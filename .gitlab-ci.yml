@@ -26,8 +26,7 @@ workflow:
       variables:
         DEPLOY_VARIABLE: production
         CHART_NAME: beep-frontend
-    - if: $DEPLOY_VARIABLE == "garbage"
-      when: never
+    - if: '$CI_PIPELINE_SOURCE == "push"'
 
 determineversion:
   stage: .pre
@@ -42,6 +41,18 @@ gemnasium-dependency_scanning:
   rules:
     - if: $CI_COMMIT_BRANCH == "main"
     - if: $CI_MERGE_REQUEST_IID
+
+lint:
+  stage: test
+  image: node:18.17.1
+  before_script:
+    - corepack enable
+    - corepack prepare pnpm@latest-9 --activate
+    - pnpm config set store-dir .pnpm-store
+  script:
+    - pnpm install
+    # - pnpm typecheck
+  when: always
 
 build-publish-image:
   stage: publish
