@@ -3,6 +3,7 @@ import {
   ChannelEntity,
   CreateChannelRequest,
   CreateChannelResponse,
+  OccupiedChannelEntity,
   ServerEntity,
 } from '@beep/contracts'
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
@@ -21,7 +22,7 @@ const baseQuery = fetchBaseQuery({
 export const serverApi = createApi({
   reducerPath: 'serverApi',
   baseQuery,
-  tagTypes: ['servers', 'channels'],
+  tagTypes: ['servers', 'channels','streamingUsers'],
   endpoints: (builder) => ({
     getServers: builder.query<ServerEntity[], void>({
       query: (params) => `/servers`,
@@ -62,6 +63,10 @@ export const serverApi = createApi({
       query: (serverId) => `/servers/${serverId}/channels`,
       providesTags: ['channels'],
     }),
+    getCurrentStreamingUsers: builder.query<OccupiedChannelEntity[], string>({
+      query: (serverId) => `/servers/${serverId}/channels/streaming/users`,
+      providesTags: ['streamingUsers'],
+    }),
   }),
 })
 
@@ -71,4 +76,5 @@ export const {
   useCreateServerMutation,
   useGetServerChannelsQuery,
   useCreateChannelInServerMutation,
+  useGetCurrentStreamingUsersQuery
 } = serverApi

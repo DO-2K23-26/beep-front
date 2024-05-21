@@ -26,27 +26,24 @@ export const channelApi = createApi({
       }),
       providesTags: ['channels']
     }),
-    getConnectedUsers: builder.query<OccupiedChannelEntity[], void>({
-      query: () => `/channel/connected`,
-      providesTags: ['users'],
-    }),
+
     getChannel: builder.query<any, { serverId: string, channelId: string }>({
       query: (request: { serverId: string, channelId: string }) => ({
         url: `/servers/${request.serverId}/channels/${request.channelId}`,
-      //   responseHandler : async (response: Response) => {
-      //   const data = await response.json();
-      //   if (response.ok) {
-      //     for (const message of data.messages) {
-      //       message.owner.profilePicture = useFetchProfilePictureQuery(message.owner.id);
-      //       for (const attachment of message.attachments) {
-      //         attachment.url = useFetchAttachmentImageQuery(attachment.id);
-      //       }
-      //     }
-      //     return data;
-      //   } else {
-      //     return Promise.reject(data);
-      //   }
-      // }
+        //   responseHandler : async (response: Response) => {
+        //   const data = await response.json();
+        //   if (response.ok) {
+        //     for (const message of data.messages) {
+        //       message.owner.profilePicture = useFetchProfilePictureQuery(message.owner.id);
+        //       for (const attachment of message.attachments) {
+        //         attachment.url = useFetchAttachmentImageQuery(attachment.id);
+        //       }
+        //     }
+        //     return data;
+        //   } else {
+        //     return Promise.reject(data);
+        //   }
+        // }
       })
     }),
     getUsers: builder.query<UserEntity[], void>({
@@ -120,5 +117,4 @@ export const {
   useUpdateMessageMutation,
   useDeleteMessageMutation,
   useFetchAttachmentImageQuery,
-  useGetConnectedUsersQuery,
 } = channelApi

@@ -1,14 +1,16 @@
 import { useSelector } from 'react-redux'
 import { LocalFeed } from './local-feed'
-import { getChannelsState, useGetConnectedUsersQuery } from '@beep/channel'
+import { getChannelsState } from '@beep/channel'
 import { getUserState } from '@beep/user'
 import { socket } from '@beep/utils'
 import { RemoteFeed } from './remote-feed'
 import { useEffect } from 'react'
+import { getServersState, useGetCurrentStreamingUsersQuery } from '@beep/server'
 
 export function VoiceChat() {
+  const { server } = useSelector(getServersState)
   const channels = useSelector(getChannelsState)
-  const connectedUsers = useGetConnectedUsersQuery()
+  const connectedUsers = useGetCurrentStreamingUsersQuery(server?.id ?? '')
   const { payload } = useSelector(getUserState)
   useEffect(() => {
     socket.on('usermove', connectedUsers.refetch)
