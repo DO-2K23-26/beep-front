@@ -27,9 +27,11 @@ export function Media({ stream, url, username }: MediaProps) {
             ref={(ref) => {
               if (ref) {
                 ref.srcObject = stream
+                ref.muted = true 
               }
             }}
             autoPlay
+            muted
           />
         )}
         {url && <video className="rounded-lg" ref={videoRef} />}
