@@ -1,4 +1,9 @@
-import { ChannelEntity, ChannelType, ServerEntity } from '@beep/contracts'
+import {
+  ChannelEntity,
+  ChannelType,
+  OccupiedChannelEntity,
+  ServerEntity,
+} from '@beep/contracts'
 import {
   Badge,
   BadgeType,
@@ -6,31 +11,30 @@ import {
   ButtonSize,
   ButtonStyle,
   Icon,
-  InputText,
-  UseModalProps,
+  UseModalProps
 } from '@beep/ui'
 
+import { getChannelsState } from '@beep/channel'
 import { getResponsiveState } from '@beep/responsive'
 import {
-  Controller,
   FormProvider,
-  UseFormReturn,
-  useFormContext,
+  UseFormReturn
 } from 'react-hook-form'
 import { useSelector } from 'react-redux'
 import CurrentUserFeature from '../feature/current-user-feature'
+import { ConnectedChannelRow } from './connect-channel-row'
+import { CreateChannelModal } from './create-channel-modal'
 import { ListTextChannels } from './list-channels'
 import { ListVoiceChannels } from './list-voice-channels'
-import { ConnectedChannelRow } from './connect-channel-row'
-import { getChannelsState } from '@beep/channel'
 
 export interface ChannelsNavigationProps {
   textChannels?: ChannelEntity[]
   voiceChannels?: ChannelEntity[]
+  streamingUsers: OccupiedChannelEntity[]
   server?: ServerEntity
   onCreateChannel: () => void
   onLeaveVoiceChannel: () => void
-  onJoinVoiceChannel: (channel:ChannelEntity) => void 
+  onJoinVoiceChannel: (channel: ChannelEntity) => void
   openModal: React.Dispatch<React.SetStateAction<UseModalProps | undefined>>
   closeModal: () => void
   methodsAddChannel: UseFormReturn<{ name: string; type: ChannelType }>
@@ -42,6 +46,7 @@ export default function ChannelsNavigation({
   textChannels,
   voiceChannels,
   server,
+  streamingUsers,
   onCreateChannel,
   onJoinVoiceChannel,
   onLeaveVoiceChannel,
@@ -120,9 +125,9 @@ export default function ChannelsNavigation({
               <ListTextChannels channels={textChannels || []} />
               <ListVoiceChannels
                 channels={voiceChannels || []}
-                occupiedChannels={[]}
+                occupiedChannels={streamingUsers}
                 onJoinChannel={onJoinVoiceChannel}
-                onDeleteChannel={(id) => {}}
+                onDeleteChannel={(id) => {console.log('add Logic to delete a channel')}}
               />
             </div>
           </div>
@@ -144,85 +149,3 @@ export default function ChannelsNavigation({
   )
 }
 
-interface CreateChannelModalProps {
-  closeModal: () => void
-  onCreateChannel: () => void
-  methodsAddChannel: UseFormReturn<{ name: string; type: ChannelType }>
-}
-
-function CreateChannelModal({
-  closeModal,
-  onCreateChannel,
-  methodsAddChannel,
-}: CreateChannelModalProps) {
-  const { control } = useFormContext()
-
-  return (
-    <div className="p-6">
-      <h3 className=" text-slate-700 font-bold mb-2 max-w-sm">
-        Create channel
-      </h3>
-      <div className="text-slate-500 text-sm mb-4">
-        Choose a name for your channel
-      </div>
-      <Controller
-        name="name"
-        rules={{
-          required: 'Please enter a name.',
-          minLength: {
-            value: 1,
-            message: 'Please enter a name.',
-          },
-        }}
-        control={control}
-        render={({ field, fieldState: { error } }) => (
-          <InputText
-            className="w-full !rounded-lg min-h-[40px] mb-4"
-            label={'Channel name'}
-            name="name"
-            type="text"
-            onChange={field.onChange}
-            value={field.value}
-            error={error?.message}
-          />
-        )}
-      />
-      <div className="ml-4 pb-2">
-        <input
-          className="mr-2"
-          type="radio"
-          value={ChannelType.TEXT}
-          {...methodsAddChannel.register('type')}
-        />
-        Texte
-      </div>
-      <div className="ml-4 pb-6">
-        <input
-          className="mr-2"
-          type="radio"
-          value={ChannelType.VOICE}
-          {...methodsAddChannel.register('type')}
-        />
-        Voice
-      </div>
-      <div className="flex gap-3 justify-between">
-        <Button
-          className="btn--no-min-w"
-          style={ButtonStyle.STROKED}
-          onClick={() => closeModal()}
-        >
-          Cancel
-        </Button>
-        <Button
-          className="btn--no-min-w"
-          style={ButtonStyle.BASIC}
-          onClick={() => {
-            onCreateChannel()
-          }}
-        >
-          Create
-        </Button>
-      </div>
-    </div>
-  )
-}

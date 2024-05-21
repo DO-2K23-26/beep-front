@@ -22,7 +22,7 @@ const baseQuery = fetchBaseQuery({
 export const serverApi = createApi({
   reducerPath: 'serverApi',
   baseQuery,
-  tagTypes: ['servers', 'channels','streamingUsers'],
+  tagTypes: ['servers', 'channels', 'streamingUsers'],
   endpoints: (builder) => ({
     getServers: builder.query<ServerEntity[], void>({
       query: (params) => `/servers`,
@@ -64,7 +64,7 @@ export const serverApi = createApi({
       providesTags: ['channels'],
     }),
     getCurrentStreamingUsers: builder.query<OccupiedChannelEntity[], string>({
-      query: (serverId) => `/servers/${serverId}/channels/streaming/users`,
+      query: (serverId) => `/servers/${serverId}/streaming/users`,
       providesTags: ['streamingUsers'],
     }),
   }),
@@ -76,5 +76,5 @@ export const {
   useCreateServerMutation,
   useGetServerChannelsQuery,
   useCreateChannelInServerMutation,
-  useGetCurrentStreamingUsersQuery
+  useGetCurrentStreamingUsersQuery,
 } = serverApi

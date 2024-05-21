@@ -1,27 +1,31 @@
+import { voiceChannelActions } from '@beep/channel'
 import {
   ChannelEntity,
   ChannelType,
   CreateChannelRequest,
 } from '@beep/contracts'
-import ChannelsNavigation from '../ui/channels-navigation'
-import { useForm } from 'react-hook-form'
-import { useModal } from '@beep/ui'
-import { toast } from 'react-hot-toast'
-import { channelsActions, useCreateChannelMutation } from '@beep/channel'
-import { useEffect } from 'react'
-import { AppDispatch, RootState } from '@beep/store'
-import { useDispatch, useSelector } from 'react-redux'
 import { responsiveActions } from '@beep/responsive'
 import {
   serverActions,
   useCreateChannelInServerMutation,
+  useGetCurrentStreamingUsersQuery,
   useGetServerChannelsQuery,
   useGetServersQuery,
 } from '@beep/server'
+import { AppDispatch, RootState } from '@beep/store'
+import { useModal } from '@beep/ui'
 import { skipToken } from '@reduxjs/toolkit/query'
+import { useEffect } from 'react'
+import { useForm } from 'react-hook-form'
+import { toast } from 'react-hot-toast'
+import { useDispatch, useSelector } from 'react-redux'
+import ChannelsNavigation from '../ui/channels-navigation'
 
 export default function ChannelsNavigationFeature() {
   const server = useSelector((state: RootState) => state.servers.server)
+  const { data: streamingUsers } = useGetCurrentStreamingUsersQuery(
+    server?.id ?? ''
+  )
   const dispatch = useDispatch<AppDispatch>()
   const { openModal, closeModal } = useModal()
   const { data: servers } = useGetServersQuery()
@@ -34,7 +38,7 @@ export default function ChannelsNavigationFeature() {
 
   const [createChannel, resultCreatedChannel] =
     useCreateChannelInServerMutation()
-  const { data: channels } = useGetServerChannelsQuery(server?.id || skipToken)
+  const { data: channels } = useGetServerChannelsQuery(server?.id ?? skipToken)
   useEffect(() => {
     if (
       resultCreatedChannel.isSuccess &&
@@ -54,14 +58,14 @@ export default function ChannelsNavigationFeature() {
     },
   })
   const onJoinVoiceChannel = (channel: ChannelEntity) => {
-    dispatch(channelsActions.setFocusedChannel(channel))
+    dispatch(voiceChannelActions.setFocusedVoiceChannel(channel))
   }
   const onLeaveVoiceChannel = () => {
-    dispatch(channelsActions.unsetFocusedChannel())
+    dispatch(voiceChannelActions.unsetFocusedVoiceChannel())
   }
   const onCreateChannel = methodsAddChannel.handleSubmit((data) => {
     const createChannelRequest: CreateChannelRequest = {
-      serverId: server?.id || '',
+      serverId: server?.id ?? '',
       name: data.name,
       type: data.type,
     }
@@ -80,6 +84,7 @@ export default function ChannelsNavigationFeature() {
       voiceChannels={channels?.filter(
         (channel) => channel.type === ChannelType.VOICE
       )}
+      streamingUsers={streamingUsers ?? []}
       onJoinVoiceChannel={onJoinVoiceChannel}
       onLeaveVoiceChannel={onLeaveVoiceChannel}
       server={server}

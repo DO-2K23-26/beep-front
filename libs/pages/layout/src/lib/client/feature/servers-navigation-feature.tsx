@@ -1,13 +1,16 @@
-import ServersNavigation from '../ui/servers-navigation'
+import {
+  useCreateServerMutation,
+  useGetServersQuery,
+  useJoinServerMutation
+} from '@beep/server'
+import { AppDispatch } from '@beep/store'
 import { useModal } from '@beep/ui'
+import { userActions } from '@beep/user'
 import { useForm } from 'react-hook-form'
 import { toast } from 'react-hot-toast'
-import { NavigateFunction, useNavigate } from 'react-router-dom'
-import { userActions } from '@beep/user'
 import { useDispatch } from 'react-redux'
-import { AppDispatch } from '@beep/store'
-import { useGetServersQuery, useJoinServerMutation, useCreateServerMutation } from '@beep/server'
-
+import { NavigateFunction, useNavigate } from 'react-router-dom'
+import ServersNavigation from '../ui/servers-navigation'
 
 const onPrivateMessage = (navigation: NavigateFunction) => {
   navigation('/servers/@me')
@@ -16,10 +19,9 @@ const onPrivateMessage = (navigation: NavigateFunction) => {
 export default function ServersNavigationFeature() {
   const { data: servers } = useGetServersQuery()
   const [createServer] = useCreateServerMutation()
-  const [joinServer ] = useJoinServerMutation()
+  const [joinServer] = useJoinServerMutation()
   const { openModal, closeModal } = useModal()
   const dispatch = useDispatch<AppDispatch>()
-
 
   const onLogout = (navigation: NavigateFunction) => {
     sessionStorage.removeItem('accessToken')
@@ -37,7 +39,6 @@ export default function ServersNavigationFeature() {
       name: '',
     },
   })
-
 
   const onCreateServer = methodsAddChannel.handleSubmit((data) => {
     createServer(data.name)

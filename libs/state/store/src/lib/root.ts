@@ -1,14 +1,14 @@
 /* eslint-disable @nx/enforce-module-boundaries */
-import { channelApi, channelsReducer } from '@beep/channel'
+import { channelApi, voiceChannelReducer } from '@beep/channel'
 import { responsiveReducer } from '@beep/responsive'
+import { serverApi, serverReducer } from '@beep/server'
 import { userApi, userReducer } from '@beep/user'
 import { voiceSliceReducer } from '@beep/voice'
 import { combineReducers, configureStore } from '@reduxjs/toolkit'
-import { serverApi, serverReducer } from '@beep/server'
 
 export const rootReducer = combineReducers({
   user: userReducer,
-  channels: channelsReducer,
+  channels: voiceChannelReducer,
   responsive: responsiveReducer,
   voice: voiceSliceReducer,
   servers: serverReducer,
