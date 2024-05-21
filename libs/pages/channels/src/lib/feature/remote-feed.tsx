@@ -1,10 +1,10 @@
-import { UserConnectedEntity, UserEntity } from '@beep/contracts'
+import { UserConnectedEntity } from '@beep/contracts'
 import { getVoiceState } from '@beep/voice'
 import { FC, memo, useCallback, useEffect, useRef, useState } from 'react'
 import { useSelector } from 'react-redux'
 
-import { Media } from '../ui/media'
 import { socket } from '@beep/utils'
+import { Media } from '../ui/media'
 interface RemoteFeedProps {
   member: UserConnectedEntity
 }
