@@ -1,7 +1,11 @@
+import React, { useContext, useEffect, useRef, useState } from "react";
 import { MessageEntity, UserEntity } from '@beep/contracts'
 import { Button, ButtonStyle, Icon, Input } from '@beep/ui'
 import { Controller } from 'react-hook-form'
 import AttachmentFeature from '../feature/attachment-feature'
+import Markdoc from "@markdoc/markdoc";
+import { config, markdownComponents } from "../utils/markdown-config";
+import { preprocessMarkdown } from "../utils/markdown-parser";
 
 interface MessageProps {
   message: MessageEntity
@@ -30,6 +34,16 @@ export default function Message({
   createdAt,
   control
 }: MessageProps) {
+
+  // Convert markdown to Markdoc nodes
+  const adjustLineBreaks = preprocessMarkdown(message.content);
+  const nodes = Markdoc.parse(adjustLineBreaks);
+  // Transform nodes to a Markdoc AST
+  const ast = Markdoc.transform(nodes, config);
+  // Render the AST to React elements
+  const renderedMessage = Markdoc.renderers.react(ast, React, {
+    components: markdownComponents,
+  });
 
   return (
     <div className="flex flex-col gap-2 hover:bg-violet-300 p-3 rounded-xl group">
@@ -89,9 +103,9 @@ export default function Message({
           </div>
           ) : (
             <div className="bg-violet-50 rounded-xl rounded-tl-none p-6 flex flex-col gap-3">
-              <p className="text-xs font-semibold break-all">
-                {message.content}
-              </p>
+              <div className="text-xs font-semibold break-all">
+                {renderedMessage}
+              </div>
               
               {
                 message.attachments ?
