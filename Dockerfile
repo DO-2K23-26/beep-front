@@ -3,9 +3,8 @@ FROM node:20-alpine AS builder
 WORKDIR /app
 
 ARG VITE_BACKEND_URL
-ENV VITE_BACKEND_URL $API_URL_ENDPOINT
 
-RUN echo "Variable VITE_BACKEND_URL: $API_URL_ENDPOINT"
+RUN echo "Variable VITE_BACKEND_URL: $VITE_BACKEND_URL"
 
 COPY package.json .
 COPY pnpm-lock.yaml .
