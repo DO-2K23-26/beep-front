@@ -4,5 +4,9 @@ export * from './lib/value.interface'
 export * from './lib/state'
 export * from './lib/response'
 export * from './lib/request'
-export const backendUrl = import.meta.env.VITE_BACKEND_URL
-
+const backendUrlRaw = import.meta.env.VITE_BACKEND_URL
+export const backendUrl =
+  backendUrlRaw[backendUrlRaw.length - 1] === '/'
+    ? backendUrlRaw.slice(0, -1)
+    : backendUrlRaw
+console.log('backendUrl', backendUrl)
