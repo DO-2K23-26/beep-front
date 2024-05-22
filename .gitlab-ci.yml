@@ -67,6 +67,7 @@ build-publish-image:
   dependencies:
     - determineversion
   script:
+    - echo "Building image with tag $CI_REGISTRY_IMAGE/$CHART_NAME:$GitVersion_LegacySemVer and for api ${API_URL_ENDPOINT}"
     - >-
       echo
       "{\"auths\":{\"$CI_REGISTRY\":{\"username\":\"$CI_REGISTRY_USER\",\"password\":\"$CI_REGISTRY_PASSWORD\"}}}"
@@ -74,9 +75,8 @@ build-publish-image:
     - /kaniko/executor
         --context $CI_PROJECT_DIR
         --dockerfile $CI_PROJECT_DIR/Dockerfile
-        --build-arg VITE_BACKEND_URL=$API_URL_ENDPOINT
+        --build-arg VITE_BACKEND_URL="${API_URL_ENDPOINT}"
         --destination $CI_REGISTRY_IMAGE/$CHART_NAME:$GitVersion_LegacySemVer
-
   environment:
     name: $DEPLOY_VARIABLE
 
