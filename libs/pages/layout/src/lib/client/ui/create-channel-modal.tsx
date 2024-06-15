@@ -52,7 +52,7 @@ export function CreateChannelModal({
           value={ChannelType.TEXT}
           {...methodsAddChannel.register('type')}
         />
-        Texte
+        Text
       </div>
       <div className="ml-4 pb-6">
         <input
