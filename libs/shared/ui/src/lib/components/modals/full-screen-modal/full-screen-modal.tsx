@@ -1,22 +1,21 @@
 import {
   FullScreenDialog,
   FullScreenDialogContent,
-  FullScreenDialogTrigger,
-  Icon,
+  FullScreenDialogTrigger
 } from '@beep/ui'
 import { ReactNode } from 'react'
 
 interface DialogCloseButtonProps {
+  triggerButton: ReactNode
   content: ReactNode
-  icon: string
 }
 
-export function DialogCloseButton({ content, icon }: DialogCloseButtonProps) {
+export function DialogCloseButton({ content, triggerButton }: DialogCloseButtonProps) {
   return (
     <FullScreenDialog>
       <FullScreenDialogTrigger asChild>
         <button className="cursor-pointer">
-          <Icon name={icon} className="!w-5 !h-5" />
+          {triggerButton}
         </button>
       </FullScreenDialogTrigger>
       <FullScreenDialogContent className="w-full h-full bg-white">
