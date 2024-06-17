@@ -1,5 +1,9 @@
 import { Device, UserEntity } from '@beep/contracts'
-import { SettingsModal, SubSettings } from '@beep/settings'
+import {
+  ModifyProfileCardFeature,
+  SettingsModal,
+  SubSettings,
+} from '@beep/settings'
 import {
   Badge,
   BadgeType,
@@ -111,8 +115,19 @@ export default function CurrentUser({
 const subSetting: SubSettings = {
   subGroupSettingTitle: 'Account',
   settings: [
-    { title: 'account', settingComponent: <Input /> },
+    { title: 'account', settingComponent: <ModifyProfileCardFeature /> },
     { title: 'voice', settingComponent: <p>voice</p> },
     { title: 'text', settingComponent: <p>text</p> },
+  ],
+}
+// for testing purpose
+const subSetting2: SubSettings = {
+  subGroupSettingTitle: 'Set',
+  settings: [
+    { title: 'pouette', settingComponent: <p>pouette</p> },
+    {
+      title: 'pouette2',
+      settingComponent: <p>pouette2</p>,
+    },
   ],
 }
