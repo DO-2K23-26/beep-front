@@ -11,15 +11,13 @@ import {
   ButtonSize,
   ButtonStyle,
   Icon,
-  UseModalProps
+  Tooltip,
+  UseModalProps,
 } from '@beep/ui'
 
 import { getChannelsState } from '@beep/channel'
 import { getResponsiveState } from '@beep/responsive'
-import {
-  FormProvider,
-  UseFormReturn
-} from 'react-hook-form'
+import { FormProvider, UseFormReturn } from 'react-hook-form'
 import { useSelector } from 'react-redux'
 import CurrentUserFeature from '../feature/current-user-feature'
 import { ConnectedChannelRow } from './connect-channel-row'
@@ -32,13 +30,13 @@ export interface ChannelsNavigationProps {
   voiceChannels?: ChannelEntity[]
   streamingUsers: OccupiedChannelEntity[]
   server?: ServerEntity
+  onClickId: (id: string) => void
   onCreateChannel: () => void
   onLeaveVoiceChannel: () => void
   onJoinVoiceChannel: (channel: ChannelEntity) => void
   openModal: React.Dispatch<React.SetStateAction<UseModalProps | undefined>>
   closeModal: () => void
   methodsAddChannel: UseFormReturn<{ name: string; type: ChannelType }>
-
   hideLeftDiv?: () => void
 }
 
@@ -47,6 +45,7 @@ export default function ChannelsNavigation({
   voiceChannels,
   server,
   streamingUsers,
+  onClickId,
   onCreateChannel,
   onJoinVoiceChannel,
   onLeaveVoiceChannel,
@@ -90,11 +89,14 @@ export default function ChannelsNavigation({
             <h5 className="font-semibold max-w-[175px] truncate">
               {server?.name}
             </h5>
-            <Badge
-              type={BadgeType.DEFAULT}
-              title={server?.id ?? ''}
-              className="bg-violet-50 hover:bg-violet-100 !text-violet-900 max-w-[175px] truncate"
-            />
+            <Tooltip content={'TEST'}>
+              <Badge
+                type={BadgeType.DEFAULT}
+                title={server?.id ?? ''}
+                className="bg-violet-50 hover:bg-violet-100 !text-violet-900 max-w-[175px] truncate cursor-pointer"
+                onClick={() => onClickId(server?.id ?? '')}
+              />
+            </Tooltip>
           </div>
         </div>
         {/* Create channel modal */}
@@ -127,7 +129,9 @@ export default function ChannelsNavigation({
                 channels={voiceChannels || []}
                 occupiedChannels={streamingUsers}
                 onJoinChannel={onJoinVoiceChannel}
-                onDeleteChannel={(id) => {console.log('add Logic to delete a channel')}}
+                onDeleteChannel={(id) => {
+                  console.log('add Logic to delete a channel')
+                }}
               />
             </div>
           </div>
@@ -148,4 +152,3 @@ export default function ChannelsNavigation({
     </div>
   )
 }
-

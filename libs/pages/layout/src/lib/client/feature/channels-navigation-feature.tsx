@@ -82,6 +82,10 @@ export default function ChannelsNavigationFeature() {
   const hideLeftDiv = () => {
     dispatch(responsiveActions.manageLeftPane())
   }
+  const onClickId = (text: string) => {
+    navigator.clipboard.writeText(text)
+    toast.success('Server ID copied to clipboard')
+  }
 
   return (
     <ChannelsNavigation
@@ -95,6 +99,7 @@ export default function ChannelsNavigationFeature() {
       onJoinVoiceChannel={onJoinVoiceChannel}
       onLeaveVoiceChannel={onLeaveVoiceChannel}
       server={server}
+      onClickId={onClickId}
       onCreateChannel={onCreateChannel}
       openModal={openModal}
       closeModal={closeModal}
