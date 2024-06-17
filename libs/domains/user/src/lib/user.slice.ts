@@ -32,8 +32,6 @@ export const userSlice = createSlice({
 
       state.tokens = payload.payload
       state.isAuthenticated = !!payload.payload.accessToken
-      console.log(payload.payload.accessToken);
-      console.log(!payload.payload.accessToken)
     },
     updateIsLoading(state, payload: PayloadAction<boolean>) {
       state.isLoading = payload.payload

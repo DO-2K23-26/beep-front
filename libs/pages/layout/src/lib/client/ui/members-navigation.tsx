@@ -5,6 +5,7 @@ import { ListMembers } from './list-members'
 import { toast } from 'react-hot-toast'
 import { useSelector } from 'react-redux'
 import { getResponsiveState } from '@beep/responsive'
+import { SettingPickerButton } from '@beep/settings'
 
 interface MembersNavigationProps {
   usersConnected: UserConnectedEntity[]
@@ -31,7 +32,7 @@ export default function MembersNavigation({
         showRightPane ? 'w-full' : 'sm:w-fit'
       }`}
     >
-              <h5 className="text-slate-900 font-semibold pl-3">Members</h5>
+      <h5 className="text-slate-900 font-semibold pl-3">Members</h5>
 
       <div className=" flex-row justify-between items-center gap-10 hidden">
         {/* Invite button */}
@@ -49,7 +50,7 @@ export default function MembersNavigation({
       </div>
       {/* Members list */}
       <div className="flex flex-col gap-1 overflow-y-scroll no-scrollbar scroll-smooth">
-        <ListMembers usersConnected={usersConnected}  users={users} />
+        <ListMembers usersConnected={usersConnected} users={users} />
       </div>
     </div>
   )

@@ -1,12 +1,15 @@
 import { Device, UserEntity } from '@beep/contracts'
-import CurrentUser from '../ui/current-user'
 import { useModal } from '@beep/ui'
+import {
+  useFetchProfilePictureQuery,
+  useGetMeQuery
+} from '@beep/user'
+import { voiceSliceSelector } from '@beep/voice'
+import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { toast } from 'react-hot-toast'
 import { useDispatch, useSelector } from 'react-redux'
-import { getUserState, useFetchProfilePictureQuery } from '@beep/user'
-import { useEffect, useState } from 'react'
-import { voiceSliceSelector } from '@beep/voice'
+import CurrentUser from '../ui/current-user'
 
 const onMicrophone = () => {
   console.log('Microphone')
@@ -17,25 +20,21 @@ const onPhone = () => {
 }
 
 export default function CurrentUserFeature() {
-  const { tokens, isLoading, isAuthenticated, payload } =
-    useSelector(getUserState)
-
+  const { data } = useGetMeQuery()
   const dispatch = useDispatch()
 
-  const { currentData } = useFetchProfilePictureQuery(
-    payload ? payload.sub : '1'
-  )
+  const { currentData } = useFetchProfilePictureQuery(data ? data.id : '1')
 
   const { openModal, closeModal } = useModal()
 
-  const currentUser: UserEntity = payload
+  const currentUser: UserEntity = data
     ? {
-        id: payload.sub,
-        email: payload.email,
-        username: payload.username,
-        firstname: payload.firstName,
-        lastname: payload.lastName,
-        profilePicture: currentData || '/picture.svg',
+        id: data.id,
+        email: data.email,
+        username: data.username,
+        firstname: data.firstname,
+        lastname: data.lastname,
+        profilePicture: currentData ?? '/picture.svg',
         verifiedAt: new Date(),
       }
     : {
@@ -71,7 +70,6 @@ export default function CurrentUserFeature() {
   const devices = useSelector(voiceSliceSelector.selectDevices)
 
   const handleDeviceChange = () => {
-    // console.log('device change');
     navigator.mediaDevices.enumerateDevices().then((devices) => {
       dispatch({
         type: 'voice/setDevices',
@@ -117,7 +115,6 @@ export default function CurrentUserFeature() {
         })
       })
     }
-    // console.log(devices);
     devices.forEach(function (device: Device) {
       if (device.kind === 'audiooutput') {
         audioOutputs.push({

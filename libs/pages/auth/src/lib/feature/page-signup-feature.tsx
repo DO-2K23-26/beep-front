@@ -32,11 +32,11 @@ export function PageSignupFeature() {
   const addProfilePicture = (file: File) => {
     if (file.type.includes('image')) {
       methods.setValue('profilePicture', file)
-      const reader = new FileReader();
+      const reader = new FileReader()
       reader.onloadend = () => {
-        setPreviewUrl(reader.result as string);
-      };
-      reader.readAsDataURL(file);
+        setPreviewUrl(reader.result as string)
+      }
+      reader.readAsDataURL(file)
     }
   }
 
@@ -63,7 +63,9 @@ export function PageSignupFeature() {
       firstname: data.firstname,
       lastname: data.lastname,
       password: data.password,
-      profilePicture: methods.getValues('profilePicture') ? methods.getValues('profilePicture'): undefined ,
+      profilePicture: methods.getValues('profilePicture')
+        ? methods.getValues('profilePicture')
+        : undefined,
     }
     console.log(formData)
     setLoading(true)
@@ -74,7 +76,14 @@ export function PageSignupFeature() {
 
   return (
     <FormProvider {...methods}>
-      <PageSignup onSubmit={onSubmit} toSignin={toSignin} error={error} loading={loading} addProfilePicture={addProfilePicture} previewUrl={previewUrl} />
+      <PageSignup
+        onSubmit={onSubmit}
+        toSignin={toSignin}
+        error={error}
+        loading={loading}
+        addProfilePicture={addProfilePicture}
+        previewUrl={previewUrl}
+      />
     </FormProvider>
   )
 }

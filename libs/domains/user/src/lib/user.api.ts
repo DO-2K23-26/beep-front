@@ -1,7 +1,7 @@
-import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
+import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 // eslint-disable-next-line @nx/enforce-module-boundaries
-import { RootState } from '@beep/store'
-import { backendUrl, LoginRequest, LoginResponse, RefreshRequest, RefreshResponse, RegisterResponse, UserConnectedEntity } from '@beep/contracts'
+import { backendUrl, ConfirmEmailRequest, LoginRequest, LoginResponse, RefreshRequest, RefreshResponse, RegisterResponse, UpdateUserResponse, UserConnectedEntity, UserEntity } from '@beep/contracts';
+import { RootState } from '@beep/store';
 
 export const userApi = createApi({
   reducerPath: 'userApi',
@@ -16,7 +16,7 @@ export const userApi = createApi({
       return headers;
     }
   }),
-  tagTypes: ['users'],
+  tagTypes: ['users', 'profilePicture', 'me'],
   endpoints: (builder) => ({
     login: builder.mutation<LoginResponse, LoginRequest>({
       query: (credentials) => ({
@@ -33,6 +33,23 @@ export const userApi = createApi({
         formData: true
       })
     }),
+    updateMe: builder.mutation<UpdateUserResponse, FormData>({
+      query: (data) => ({
+        url: '/users/@me',
+        method: 'PUT',
+        body: data,
+        formData: true
+
+      }),
+      invalidatesTags: ['profilePicture','me']
+    }),
+    getMe: builder.query<UserEntity, void>({
+      query: () => ({
+        url: '/users/@me',
+        method: 'GET',
+      }),
+      providesTags: ['me']
+    }),
     fetchProfilePicture: builder.query<string, string>({
       query: (id) => ({
         url: `/storage/files/secure/profilePicture/${id}`,
@@ -40,13 +57,21 @@ export const userApi = createApi({
           const blob = await response.blob();
           return URL.createObjectURL(blob);
         }
-      })
+      }),
+      providesTags: ['profilePicture']
     }),
     refresh: builder.mutation<RefreshResponse, RefreshRequest>({
       query: (refreshToken) => ({
         url: '/authentication/refresh',
         method: 'POST',
         body: refreshToken
+      })
+    }),
+    confirmEmail: builder.mutation<void, ConfirmEmailRequest>({
+      query: (data) => ({
+        url: `/users/@me/email`,
+        method: 'PUT',
+        body: data
       })
     }),
     fetchAllUsers: builder.query<UserConnectedEntity[], void>({
@@ -74,10 +99,13 @@ export const userApi = createApi({
 });
 
 export const {
+  useConfirmEmailMutation,
   useLoginMutation,
   useRegisterMutation,
   useRefreshMutation,
+  useGetMeQuery,
   useFetchAllUsersQuery,
+  useUpdateMeMutation,
   useFetchProfilePictureQuery,
   useFetchAllUsersConnectedQuery,
   useSendEmailMutation,

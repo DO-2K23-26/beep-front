@@ -8,7 +8,6 @@ const VOICE_KEY = 'voice'
 
 function getDevice(key: string): Media {
   const initialValue = localStorage.getItem(key) || '{}'
-  console.log('initialValue', initialValue)
   const parsedValue = JSON.parse(initialValue)
   return {
     id: parsedValue.id || '',
