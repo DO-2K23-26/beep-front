@@ -22,7 +22,7 @@ export default function DisplayMember({
           src={(profilePicture && profilePicture) || '/picture.svg'}
           alt={user.username + '-img'}
         />
-        <h5 className="font-semibold text-xs truncate max-w-[125px]">
+        <h5 className="font-semibold text-xs truncate md:max-w-[125px] max-w-[70px]">
           {user.username}
         </h5>
       </div>

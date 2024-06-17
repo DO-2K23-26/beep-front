@@ -21,7 +21,7 @@ export function Badge({ type, title, className, onClick }: BadgeProps) {
       className={`${type} ${className} text-xs leading-none font-semibold text-white rounded-full py-[6px] px-2 truncate w-min`}
       onClick={onClick}
     >
-      {title}
+      <div className="hidden md:block truncate">{title}</div>
     </div>
   )
 }
