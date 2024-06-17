@@ -12,12 +12,14 @@ export interface BadgeProps {
   type: BadgeType
   title: string
   className?: string
+  onClick?: () => void
 }
 
-export function Badge({ type, title, className }: BadgeProps) {
+export function Badge({ type, title, className, onClick }: BadgeProps) {
   return (
     <div
       className={`${type} ${className} text-xs leading-none font-semibold text-white rounded-full py-[6px] px-2 truncate w-min`}
+      onClick={onClick}
     >
       {title}
     </div>
