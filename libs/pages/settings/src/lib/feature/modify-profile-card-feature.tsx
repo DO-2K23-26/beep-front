@@ -1,8 +1,16 @@
 import { UpdateUserRequest } from '@beep/contracts'
+<<<<<<< HEAD
 import {
   useFetchProfilePictureQuery,
   useGetMeQuery,
   useUpdateMeMutation,
+=======
+import { ModifyProfileCard } from '@beep/settings'
+import {
+  useFetchProfilePictureQuery,
+  useGetMeQuery,
+  useUpdateMeMutation
+>>>>>>> f08a655 (feat(settings):init lib)
 } from '@beep/user'
 import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
@@ -10,7 +18,10 @@ import toast from 'react-hot-toast'
 import { ModifyEmailDialog } from '../components/modify-email-dialog'
 import { ModifyProfilePictureDialog } from '../components/modify-profile-picture-dialog'
 import { ModifyUsernameDialog } from '../components/modify-username-dialog'
+<<<<<<< HEAD
 import { ModifyProfileCard } from '../components/modify-profile-card'
+=======
+>>>>>>> f08a655 (feat(settings):init lib)
 
 export function ModifyProfileCardFeature() {
   const [isUsernameModalOpen, setIsUsernameModalOpen] = useState(false)
@@ -30,7 +41,11 @@ export function ModifyProfileCardFeature() {
     }
   }, [result])
 
+<<<<<<< HEAD
   const errorPictureNotFilled =
+=======
+  const errorPictureNotFilled: string =
+>>>>>>> f08a655 (feat(settings):init lib)
     'Choose a picture by clicking on the button first'
   const emailFormController = useForm({
     mode: 'onChange',
@@ -62,7 +77,13 @@ export function ModifyProfileCardFeature() {
       reader.readAsDataURL(file)
     }
   }
+<<<<<<< HEAD
   const { currentData } = useFetchProfilePictureQuery(data ? data.id : '1')
+=======
+  const { currentData } = useFetchProfilePictureQuery(
+    data ? data.id : '1'
+  )
+>>>>>>> f08a655 (feat(settings):init lib)
   const handleUsernameSubmit = usernameFormController.handleSubmit((data) => {
     setIsPictureModalOpen(false)
     const formData = new FormData()

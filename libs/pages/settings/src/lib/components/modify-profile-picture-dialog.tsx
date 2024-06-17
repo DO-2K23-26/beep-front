@@ -27,7 +27,6 @@ export function ModifyProfilePictureDialog({
         <HoverModifyPicture
           profilePicture={currentPicture}
           onClick={() => {
-            
             setIsModalOpen(!isModalOpen)
           }}
         />
@@ -55,7 +54,7 @@ export function ModifyProfilePictureDialog({
             <div className="flex justify-center items-center w-full">
               <img
                 src={selectedProfilePicture}
-                alt="profile-picture"
+                alt="profile"
                 className="w-40 h-40 bg-violet-50 flex justify-center items-center border-2 border-black rounded-2xl"
               />
             </div>
