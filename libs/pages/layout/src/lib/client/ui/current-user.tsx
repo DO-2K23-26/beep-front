@@ -115,6 +115,8 @@ export default function CurrentUser({
 const subSetting: SubSettings = {
   subGroupSettingTitle: 'Account',
   settings: [
-    { title: 'account', settingComponent: <ModifyProfileCardFeature /> },
+    { title: 'account', settingComponent: <Input /> },
+    { title: 'voice', settingComponent: <p>voice</p> },
+    { title: 'text', settingComponent: <p>text</p> },
   ],
 }

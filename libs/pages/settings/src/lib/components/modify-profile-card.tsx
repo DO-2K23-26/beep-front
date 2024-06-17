@@ -1,5 +1,5 @@
-import { ModifyUsernameEmail } from '@beep/settings'
 import { ReactNode } from 'react'
+import { ModifyUsernameEmail } from './modify-username-email'
 
 interface ModifyProfileCardProps {
   username: string

@@ -1,6 +1,13 @@
+<<<<<<< HEAD
 import { ReactNode, useState } from 'react'
 import { ButtonNavigationList } from '../components/button-navigation-list'
+=======
+import { ModifyProfileCard } from '@beep/settings'
+import { useState } from 'react'
+>>>>>>> 0f2ba20 (feat(settings):init lib)
 import { SubSettings } from '../models/setting-navigation-models'
+import { ButtonNavigationList } from '../components/button-navigation-list'
+import { ModifyProfileCardFeature } from '../feature/modify-profile-card-feature'
 
 export interface SettingsUserModalProps {
   settings: SubSettings[]
