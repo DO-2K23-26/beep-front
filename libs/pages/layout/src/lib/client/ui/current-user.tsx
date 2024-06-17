@@ -1,9 +1,5 @@
 import { Device, UserEntity } from '@beep/contracts'
-import {
-  ModifyProfileCardFeature,
-  SettingsModal,
-  SubSettings,
-} from '@beep/settings'
+import { SettingsModal, SubSettings } from '@beep/settings'
 import {
   Badge,
   BadgeType,
