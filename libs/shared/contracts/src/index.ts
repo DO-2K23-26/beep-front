@@ -9,4 +9,3 @@ export const backendUrl =
   backendUrlRaw[backendUrlRaw.length - 1] === '/'
     ? backendUrlRaw.slice(0, -1)
     : backendUrlRaw
-console.log('backendUrl', backendUrl)

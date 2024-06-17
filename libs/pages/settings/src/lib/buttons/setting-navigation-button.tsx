@@ -16,9 +16,9 @@ export function SettingPickerButton({
       onClick={navigateTo}
       className={`${
         isPicked ? '!bg-violet-400' : '!bg-transparent'
-      } hover:!bg-violet-100 hover:!rounded-lg !rounded-lg !p-0 text-base font-semibold items-center`}
+      } hover:!bg-violet-100 hover:!rounded-lg !rounded-lg !p-0 text-base font-semibold !flex !justify-start`}
     >
-      <p>{title}</p>
+      <p className='ml-2'>{title}</p>
     </Button>
   )
 }

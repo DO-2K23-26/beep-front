@@ -1,8 +1,5 @@
-import { useSelector } from 'react-redux'
-import { getUserState } from '@beep/user';
 import { useFetchAttachmentImageQuery } from '@beep/channel';
 import { Attachment } from '@beep/contracts';
-import { useEffect, useState } from 'react';
 import { Icon } from '@beep/ui';
 
 interface AttachmentFeatureProps {
@@ -11,7 +8,6 @@ interface AttachmentFeatureProps {
 }
 
 export default function AttachmentFeature({ attachment }: AttachmentFeatureProps) {
-  const { tokens, isLoading, isAuthenticated, payload } = useSelector(getUserState)
 
   const blob = useFetchAttachmentImageQuery(attachment.id).currentData;
   const name  = attachment.name.split('/').slice(-1);

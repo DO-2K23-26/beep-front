@@ -8,7 +8,7 @@ export interface UserState {
         refreshToken?: string | null
         accessToken?: string | null
     }
-    payload?: {
+    data?: {
         audited_account: boolean
         sub: string
         exp: number
