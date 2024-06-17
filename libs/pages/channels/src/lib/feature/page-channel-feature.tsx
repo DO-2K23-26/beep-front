@@ -124,7 +124,6 @@ export function PageChannelFeature() {
       setDynamicSelector(undefined)
       return;
     }
-
     const nonUserTagRegex = /@(?!(\$[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}))/;
     const nonChannelTagRegex = /#(?!(\$[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}))/;
 
