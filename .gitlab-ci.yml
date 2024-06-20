@@ -1,108 +1,46 @@
 stages:
-  - test
-  - publish
-  - deploy
+  - notify
 
-include:
-  - template: Jobs/Dependency-Scanning.gitlab-ci.yml
-  - local: gitversion-ci-cd-plugin-extension.gitlab-ci.yml
-
-variables:
-  DEPLOY_VARIABLE: garbage
-  CHART_NAME: garbage
-
-workflow:
-  rules:
-    # - if: '$CI_COMMIT_BRANCH == "main" && $CI_PIPELINE_SOURCE == "merge_request_event"'
-    # - if: '$CI_COMMIT_BRANCH == "feat/ci-environment"'
-    #   variables:
-    #     DEPLOY_VARIABLE: develop
-    #     CHART_NAME: beep-frontend-develop
-    - if: '$CI_COMMIT_TAG =~ /^[0-9]+\.[0-9]+\.[0-9]+-staging$/'
-      variables:
-        DEPLOY_VARIABLE: staging
-        CHART_NAME: beep-frontend-staging
-    - if: '$CI_COMMIT_TAG =~ /^[0-9]+\.[0-9]+\.[0-9]+$/'
-      variables:
-        DEPLOY_VARIABLE: production
-        CHART_NAME: beep-frontend
-    - if: '$CI_PIPELINE_SOURCE == "push"'
-
-determineversion:
-  stage: .pre
-  rules:
-    # - if: '$CI_COMMIT_BRANCH == "main" && $CI_PIPELINE_SOURCE == "merge_request_event"'
-    # - if: '$CI_COMMIT_BRANCH == "feat/ci-environment"'
-    - if: $CI_COMMIT_TAG
-  extends: .gitversion_function
-
-gemnasium-dependency_scanning:
-  stage: test
-  rules:
-    - if: $CI_COMMIT_BRANCH == "main"
-    - if: $CI_MERGE_REQUEST_IID
-
-lint:
-  stage: test
-  image: node:18.17.1
-  before_script:
-    - corepack enable
-    - corepack prepare pnpm@latest-9 --activate
-    - pnpm config set store-dir .pnpm-store
+notify_discord:
+  stage: notify
+  only:
+    - main
   script:
-    - pnpm install
-    # - pnpm typecheck
-  when: always
-
-build-publish-image:
-  stage: publish
-  rules:
-    # - if: '$CI_COMMIT_BRANCH == "main" && $CI_PIPELINE_SOURCE == "merge_request_event"'
-    # - if: '$CI_COMMIT_BRANCH == "feat/ci-environment"'
-    - if: $CI_COMMIT_TAG
-  image:
-    name: 'gcr.io/kaniko-project/executor:v1.14.0-debug'
-    entrypoint:
-      - ''
-  dependencies:
-    - determineversion
-  script:
-    - echo "Building image with tag $CI_REGISTRY_IMAGE/$CHART_NAME:$GitVersion_MajorMinorPatchr and for api ${API_URL_ENDPOINT}"
-    - >-
-      echo
-      "{\"auths\":{\"$CI_REGISTRY\":{\"username\":\"$CI_REGISTRY_USER\",\"password\":\"$CI_REGISTRY_PASSWORD\"}}}"
-      > /kaniko/.docker/config.json
-    - /kaniko/executor --context $CI_PROJECT_DIR --dockerfile $CI_PROJECT_DIR/Dockerfile --build-arg "VITE_BACKEND_URL=${API_URL_ENDPOINT}" --destination $CI_REGISTRY_IMAGE/$CHART_NAME:$GitVersion_MajorMinorPatch
+    - |
+      COMMIT_SHA=$(echo "$CI_COMMIT_SHORT_SHA")
+      COMMIT_MESSAGE=$(git log -1 --pretty=%B)
+      ACTOR=$(echo "$GITLAB_USER_NAME")
+      curl -X POST -H "Content-Type: application/json" \
+      -d '{
+            "content": "<@&1237702910582980699>",
+            "embeds": [{
+              "title": "FRONT - New commit merged to main branch!",
+              "description": "A new commit has been merged to the main branch. Here are the details:",
+              "color": 10181046,
+              "fields": [
+                {
+                  "name": "Commit Message",
+                  "value": "'"${COMMIT_MESSAGE}"'",
+                  "inline": false
+                },
+                {
+                  "name": "Commit SHA",
+                  "value": "'"${COMMIT_SHA}"'",
+                  "inline": true
+                },
+                {
+                  "name": "Author",
+                  "value": "'"${ACTOR}"'",
+                  "inline": true
+                }
+              ],
+              "footer": {
+                "text": "GitLab CI",
+                "icon_url": "https://about.gitlab.com/images/press/logo/png/gitlab-icon-rgb.png"
+              },
+              "timestamp": "'"$(date -u +%Y-%m-%dT%H:%M:%SZ)"'"
+            }]
+          }' \
+      $DISCORD_WEBHOOK_URL
   environment:
-    name: $DEPLOY_VARIABLE
-
-package-publish-helm:
-  stage: publish
-  rules:
-    # - if: '$CI_COMMIT_BRANCH == "main" && $CI_PIPELINE_SOURCE == "merge_request_event"'
-    # - if: '$CI_COMMIT_BRANCH == "feat/ci-environment"'
-    - if: $CI_COMMIT_TAG
-  image: 'alpine/helm:latest'
-  dependencies:
-    - determineversion
-  script:
-    - wget https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd64 -O yq && chmod +x ./yq
-    - export VERSION=$GitVersion_MajorMinorPatch
-    # Echo pour débogage des variables d'environnement
-    - "echo \"FRONT_URL_ENDPOINT: $FRONT_URL_ENDPOINT\""
-    - "echo \"API_URL_ENDPOINT: $API_URL_ENDPOINT\""
-    - "echo \"VERSION: $VERSION\""
-    - "echo \"CHART_NAME: $CHART_NAME\""
-    # Extraire le domaine de FRONT_URL_ENDPOINT
-    - DOMAIN=$(echo $FRONT_URL_ENDPOINT | awk -F[/:] '{print $4}')
-    - "echo \"Extracted DOMAIN: $DOMAIN\""
-    # Modifier le fichier values.yaml avec les variables extraites
-    - ./yq -i ".ingress.hosts[0].host=\"$DOMAIN\"" helm/values.yaml
-    - ./yq -i ".backend.url=\"$API_URL_ENDPOINT\"" helm/values.yaml
-    - ./yq -i ".name=\"$CHART_NAME\"" helm/Chart.yaml
-    # Vérifier le contenu de values.yaml après modification
-    - cat helm/values.yaml
-    - helm package helm/ --version $VERSION --app-version $VERSION
-    - curl --request POST --user gitlab-ci-token:$CI_JOB_TOKEN --form "chart=@$CHART_NAME-$VERSION.tgz" "${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/helm/api/$DEPLOY_VARIABLE/charts"
-  environment:
-    name: $DEPLOY_VARIABLE
+    name: production
