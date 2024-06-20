@@ -1,91 +1,30 @@
-import { cva, VariantProps } from 'class-variance-authority'
-import * as TooltipPrimitive from '@radix-ui/react-tooltip'
-import { ComponentProps, ElementRef, forwardRef, ReactNode } from 'react'
-import { classNames } from '@beep/utils'
+"use client"
 
-const tooltipContentVariants = cva(
-  ['rounded-sm', 'px-2', 'py-1', 'text-xs', 'font-medium', 'z-20'],
-  {
-    variants: {
-      color: {
-        neutral: [
-          'bg-neutral-600',
-          'text-neutral-50',
-          'dark:bg-neutral-100',
-          'dark:text-neutral-400',
-        ],
-        orange: ['bg-orange-500', 'text-neutral-500'],
-      },
-    },
-  }
-)
+import * as React from "react"
+import * as TooltipPrimitive from "@radix-ui/react-tooltip"
 
-const tooltipArrowVariants = cva('', {
-  variants: {
-    color: {
-      neutral: ['fill-neutral-600', 'dark:fill-neutral-100'],
-      orange: ['fill-orange-500'],
-    },
-  },
-})
+import { cn } from "@beep/utils"
 
-export interface TooltipProps
-  extends VariantProps<typeof tooltipArrowVariants>,
-    TooltipPrimitive.TooltipProps {
-  content: ReactNode
-  container?: ComponentProps<typeof TooltipPrimitive.Portal>['container']
-  side?: 'top' | 'right' | 'bottom' | 'left'
-  align?: 'start' | 'center' | 'end'
-  classNameTrigger?: string
-}
+const TooltipProvider = TooltipPrimitive.Provider
 
-export const Tooltip = forwardRef<
-  ElementRef<typeof TooltipPrimitive.Content>,
-  TooltipProps
->(function Tooltip(
-  {
-    children,
-    content,
-    open,
-    defaultOpen,
-    onOpenChange,
-    container,
-    side = 'top',
-    align = 'center',
-    delayDuration = 200,
-    classNameTrigger = '',
-    color = 'neutral',
-  },
-  forwardedRef
-) {
-  return (
-    <TooltipPrimitive.Root
-      open={open}
-      defaultOpen={defaultOpen}
-      onOpenChange={onOpenChange}
-      delayDuration={delayDuration}
-    >
-      <TooltipPrimitive.Trigger asChild className={classNameTrigger}>
-        {children}
-      </TooltipPrimitive.Trigger>
+const Tooltip = TooltipPrimitive.Root
 
-      <TooltipPrimitive.Portal container={container}>
-        <TooltipPrimitive.Content
-          className={classNames(tooltipContentVariants({ color }), 'z-[100]')}
-          side={side}
-          sideOffset={6}
-          align={align}
-          ref={forwardedRef}
-        >
-          {content}
-          <TooltipPrimitive.Arrow
-            className={classNames(tooltipArrowVariants({ color }))}
-            offset={10}
-            width={11}
-            height={5}
-          />
-        </TooltipPrimitive.Content>
-      </TooltipPrimitive.Portal>
-    </TooltipPrimitive.Root>
-  )
-})
+const TooltipTrigger = TooltipPrimitive.Trigger
+
+const TooltipContent = React.forwardRef<
+  React.ElementRef<typeof TooltipPrimitive.Content>,
+  React.ComponentPropsWithoutRef<typeof TooltipPrimitive.Content>
+>(({ className, sideOffset = 4, ...props }, ref) => (
+  <TooltipPrimitive.Content
+    ref={ref}
+    sideOffset={sideOffset}
+    className={cn(
+      "z-50 overflow-hidden rounded-md border bg-violet-50 px-3 py-1.5 text-sm text-popover-foreground shadow-md animate-in fade-in-0 zoom-in-95 data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2",
+      className
+    )}
+    {...props}
+  />
+))
+TooltipContent.displayName = TooltipPrimitive.Content.displayName
+
+export { Tooltip, TooltipTrigger, TooltipContent, TooltipProvider }

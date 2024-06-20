@@ -12,6 +12,8 @@ import {
   ButtonStyle,
   Icon,
   Tooltip,
+  TooltipContent,
+  TooltipTrigger,
   UseModalProps,
 } from '@beep/ui'
 
@@ -89,13 +91,18 @@ export default function ChannelsNavigation({
             <h5 className="font-semibold max-w-[175px] truncate">
               {server?.name}
             </h5>
-            <Tooltip content={'TEST'}>
-              <Badge
-                type={BadgeType.DEFAULT}
-                title={server?.id ?? ''}
-                className="bg-violet-50 hover:bg-violet-100 !text-violet-900 max-w-[175px] truncate cursor-pointer"
-                onClick={() => onClickId(server?.id ?? '')}
-              />
+            <Tooltip>
+              <TooltipTrigger>
+                <Badge
+                  type={BadgeType.DEFAULT}
+                  title={server?.id ?? ''}
+                  className="bg-violet-50 hover:bg-violet-100 !text-violet-900 max-w-[175px] truncate cursor-pointer"
+                  onClick={() => onClickId(server?.id ?? '')}
+                />
+              </TooltipTrigger>
+              <TooltipContent>
+                <p>{server?.id ?? ''}</p>
+              </TooltipContent>
             </Tooltip>
           </div>
         </div>
