@@ -26,6 +26,7 @@ import { ConnectedChannelRow } from './connect-channel-row'
 import { CreateChannelModal } from './create-channel-modal'
 import { ListTextChannels } from './list-channels'
 import { ListVoiceChannels } from './list-voice-channels'
+import { getServersState } from '@beep/server'
 
 export interface ChannelsNavigationProps {
   textChannels?: ChannelEntity[]
@@ -57,7 +58,7 @@ export default function ChannelsNavigation({
   hideLeftDiv,
 }: ChannelsNavigationProps) {
   const { showLeftPane } = useSelector(getResponsiveState)
-  const { connected } = useSelector(getChannelsState)
+  const { connected, focusedChannel } = useSelector(getChannelsState)
   return (
     <div className={showLeftPane ? 'flex abolute w-full' : 'hidden lg:flex'}>
       <div
@@ -143,7 +144,7 @@ export default function ChannelsNavigation({
             </div>
           </div>
         </div>
-        {connected && <ConnectedChannelRow onLeave={onLeaveVoiceChannel} />}
+        {connected && <ConnectedChannelRow onLeave={onLeaveVoiceChannel} channelName={focusedChannel.name} serverName={ server?.name } />}
         <CurrentUserFeature />
       </div>
       {/* Responsive button */}
