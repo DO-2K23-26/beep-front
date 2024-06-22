@@ -58,7 +58,7 @@ export default function ChannelsNavigation({
   hideLeftDiv,
 }: ChannelsNavigationProps) {
   const { showLeftPane } = useSelector(getResponsiveState)
-  const { connected, focusedChannel } = useSelector(getChannelsState)
+  const { connected, focusedChannel, serverName } = useSelector(getChannelsState)
   return (
     <div className={showLeftPane ? 'flex abolute w-full' : 'hidden lg:flex'}>
       <div
@@ -144,7 +144,7 @@ export default function ChannelsNavigation({
             </div>
           </div>
         </div>
-        {connected && <ConnectedChannelRow onLeave={onLeaveVoiceChannel} channelName={focusedChannel.name} serverName={ server?.name } />}
+        {connected && <ConnectedChannelRow onLeave={onLeaveVoiceChannel} channelName={focusedChannel.name} serverName={ serverName } />}
         <CurrentUserFeature />
       </div>
       {/* Responsive button */}

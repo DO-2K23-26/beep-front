@@ -15,6 +15,7 @@ export const initialChannel: ChannelEntity = {
 
 export interface VoiceChannelState {
   focusedChannel: ChannelEntity
+  serverName: string
   connected: boolean
 }
 
@@ -22,6 +23,7 @@ export const voiceChannelSlice = createSlice({
   name: 'voiceChannel',
   initialState: {
     focusedChannel: {} as ChannelEntity,
+    serverName: '',
     connected: false
   } as VoiceChannelState,
   reducers: {
@@ -32,6 +34,7 @@ export const voiceChannelSlice = createSlice({
         serverId: payload.serverId
       })
       state.focusedChannel = payload.channel;
+      state.serverName = payload.serverName;
       state.connected = true;
     },
     unsetFocusedVoiceChannel(state) {
@@ -39,6 +42,7 @@ export const voiceChannelSlice = createSlice({
         channel_id: state.focusedChannel.id,
       })
       state.focusedChannel = {} as ChannelEntity;
+      state.serverName = '';
       state.connected = false;
     }
   }

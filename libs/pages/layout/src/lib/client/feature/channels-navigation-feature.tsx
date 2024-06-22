@@ -63,6 +63,7 @@ export default function ChannelsNavigationFeature() {
         voiceChannelActions.setFocusedVoiceChannel({
           channel: channel,
           serverId: server.id,
+          serverName: server.name,
         })
       )
     }
