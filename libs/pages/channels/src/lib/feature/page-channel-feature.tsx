@@ -14,6 +14,7 @@ import { useDispatch } from 'react-redux'
 import { useParams } from 'react-router'
 import { PageChannel } from '../ui/page-channel'
 import { DynamicSelectorProps } from '@beep/ui'
+import { useGetUsersByServerIdQuery } from '@beep/server'
 
 export function PageChannelFeature() {
   const { serverId = '', channelId = '' } = useParams<{ serverId: string, channelId: string }>()
@@ -21,6 +22,7 @@ export function PageChannelFeature() {
   const { data: messages, refetch } = useGetMessagesByChannelIdQuery({
     channelId: channelId,
   })
+  const { data: usersServer } = useGetUsersByServerIdQuery(serverId)
 
   const [files, setFiles] = useState<File[]>([])
   const [previewUrls, setPreviewUrls] = useState<{ content: string | null }[]>(

@@ -5,6 +5,7 @@ import {
   CreateChannelResponse,
   OccupiedChannelEntity,
   ServerEntity,
+  UserDisplayedEntity,
 } from '@beep/contracts'
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 // eslint-disable-next-line @nx/enforce-module-boundaries
@@ -22,7 +23,7 @@ const baseQuery = fetchBaseQuery({
 export const serverApi = createApi({
   reducerPath: 'serverApi',
   baseQuery,
-  tagTypes: ['servers', 'channels', 'streamingUsers'],
+  tagTypes: ['servers', 'channels', 'streamingUsers', 'users'],
   endpoints: (builder) => ({
     getServers: builder.query<ServerEntity[], void>({
       query: (params) => `/servers`,
@@ -67,6 +68,18 @@ export const serverApi = createApi({
       query: (serverId) => `/servers/${serverId}/streaming/users`,
       providesTags: ['streamingUsers'],
     }),
+    getUsersByServerId: builder.query<UserDisplayedEntity[], string>({
+      query: (serverId) => `servers/${serverId}/users`,
+      providesTags: (result, error, serverId) =>
+        result ?
+          [
+            ...result.map(({ id }) => ({ type: 'users' as const, id })),
+            { type: 'users', id: `LIST-${serverId}` },
+          ] : [
+            { type: 'users', id: `LIST-${serverId}` }
+          ]
+    })
+    
   }),
 })
 
@@ -77,4 +90,5 @@ export const {
   useGetServerChannelsQuery,
   useCreateChannelInServerMutation,
   useGetCurrentStreamingUsersQuery,
+  useGetUsersByServerIdQuery
 } = serverApi

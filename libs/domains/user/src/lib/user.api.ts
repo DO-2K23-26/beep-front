@@ -1,7 +1,7 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 // eslint-disable-next-line @nx/enforce-module-boundaries
 import { RootState } from '@beep/store'
-import { backendUrl, LoginRequest, LoginResponse, RefreshRequest, RefreshResponse, RegisterRequest, RegisterResponse, UserConnectedEntity, UserEntity } from '@beep/contracts'
+import { backendUrl, LoginRequest, LoginResponse, RefreshRequest, RefreshResponse, RegisterResponse, UserConnectedEntity } from '@beep/contracts'
 
 export const userApi = createApi({
   reducerPath: 'userApi',
