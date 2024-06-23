@@ -8,6 +8,7 @@ import {
   useFormContext,
 } from 'react-hook-form'
 import { useState } from 'react'
+import CreateServerFeature from '../feature/create-server-feature'
 
 interface ServersNavigationProps {
   servers: ServerEntity[] | undefined
@@ -48,15 +49,7 @@ export default function ServersNavigation({
           className="!bg-violet-50"
           onClick={() => {
             openModal({
-              content: (
-                <FormProvider {...methods}>
-                  <CreateServerModal
-                    closeModal={closeModal}
-                    onCreateServer={onCreateServer}
-                    onJoinServer={onJoinServer}
-                  />
-                </FormProvider>
-              ),
+              content: <CreateServerFeature />,
             })
           }}
         >
@@ -82,7 +75,7 @@ interface CreateServerModalProps {
   onJoinServer: (serverId: string) => void
 }
 
-function CreateServerModal({
+function CreateServerModalOld({
   closeModal,
   onCreateServer,
   onJoinServer,
@@ -92,7 +85,9 @@ function CreateServerModal({
 
   return (
     <div className="p-6">
-      <h3 className=" text-slate-700 font-bold mb-2 max-w-sm">Create or Join a Server</h3>
+      <h3 className=" text-slate-700 font-bold mb-2 max-w-sm">
+        Create or Join a Server
+      </h3>
       <div className="text-slate-500 text-sm mb-4">
         Choose an option to proceed
       </div>
