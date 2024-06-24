@@ -16,6 +16,7 @@ import { PageChannel } from '../ui/page-channel'
 import { DynamicSelectorProps } from '@beep/ui'
 import { useGetUsersByServerIdQuery } from '@beep/server'
 import { useFetchProfilePictureQuery } from '@beep/user'
+import { DynamicSelectorFeature } from './dynamic-selector-item-feature'
 
 export function PageChannelFeature() {
   const { serverId = '', channelId = '' } = useParams<{ serverId: string, channelId: string }>()
@@ -49,6 +50,7 @@ export function PageChannelFeature() {
       setDynamicSelector(undefined)
       return;
     }
+
     const nonUserTagRegex = /@(?!(\$[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}))/;
     const nonChannelTagRegex = /#(?!(\$[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}))/;
 
@@ -56,14 +58,7 @@ export function PageChannelFeature() {
     if (nonUserTagRegex.test(text)) {
       const elements = usersServer ? usersServer.filter(u => u.username.toLowerCase().includes(text.slice(1).toLowerCase()) || text.slice(1) === '').map(u => ({
         id: u.id,
-        content: <div className='flex items-center gap-4'>
-          <img
-            className="w-9 min-w-[36px] h-9 min-h-[36px] object-cover bg-violet-50 rounded-xl"
-            src={'/picture.svg'}
-            alt={u.username + '-img'}
-          />
-          <p>{u.username}</p>
-        </div>
+        content: <DynamicSelectorFeature user={u} />
       })) : []
 
       if (elements.length === 0) {
