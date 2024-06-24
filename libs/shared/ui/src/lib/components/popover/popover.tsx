@@ -1,84 +1,33 @@
-import * as PopoverPrimitive from '@radix-ui/react-popover'
-import {
-  type ComponentPropsWithoutRef,
-  type ElementRef,
-  forwardRef,
-} from 'react'
-import { twMerge } from '@beep/utils'
+"use client"
 
-type PopoverRootProps = ComponentPropsWithoutRef<typeof PopoverPrimitive.Root>
-function PopoverRoot(props: PopoverRootProps) {
-  return <PopoverPrimitive.Root {...props} />
-}
+import * as React from "react"
+import * as PopoverPrimitive from "@radix-ui/react-popover"
 
-type PopoverTriggerProps = Omit<
-  ComponentPropsWithoutRef<typeof PopoverPrimitive.Trigger>,
-  'asChild'
->
-const PopoverTrigger = forwardRef<
-  ElementRef<typeof PopoverPrimitive.Trigger>,
-  PopoverTriggerProps
->(function PopoverTrigger(props, forwardedRef) {
-  return <PopoverPrimitive.Trigger {...props} ref={forwardedRef} asChild />
-})
+import { cn } from "@beep/utils"
 
-interface PopoverContentProps
-  extends Omit<
-    ComponentPropsWithoutRef<typeof PopoverPrimitive.Content>,
-    'asChild'
-  > {
-  container?: PopoverPrimitive.PortalProps['container']
-}
+const Popover = PopoverPrimitive.Root
 
-const PopoverContent = forwardRef<
-  ElementRef<typeof PopoverPrimitive.Content>,
-  PopoverContentProps
->(function PopoverContent(
-  { container, forceMount, className, ...props },
-  forwardedRef
-) {
-  return (
-    <PopoverPrimitive.Portal container={container} forceMount={forceMount}>
-      <PopoverPrimitive.Content
-        align="start"
-        sideOffset={8}
-        collisionPadding={10}
-        {...props}
-        ref={forwardedRef}
-        className={twMerge(
-          'bg-white p-4 z-[99] shadow-xl rounded border border-neutral-200 outline-none data-[state=open]:data-[side=top]:animate-slidein-down-sm-faded data-[state=open]:data-[side=right]:animate-slidein-left-sm-faded data-[state=open]:data-[side=bottom]:animate-slidein-up-sm-faded data-[state=open]:data-[side=left]:animate-slidein-right-sm-faded',
-          className
-        )}
-      />
-    </PopoverPrimitive.Portal>
-  )
-})
+const PopoverTrigger = PopoverPrimitive.Trigger
 
-type PopoverCloseProps = Omit<
-  ComponentPropsWithoutRef<typeof PopoverPrimitive.Close>,
-  'asChild'
->
-const PopoverClose = forwardRef<
-  ElementRef<typeof PopoverPrimitive.Close>,
-  PopoverCloseProps
->(function PopoverClose(props, forwardedRef) {
-  return <PopoverPrimitive.Close {...props} ref={forwardedRef} asChild />
-})
+const PopoverAnchor = PopoverPrimitive.Anchor
 
-const Popover = Object.assign(
-  {},
-  {
-    Root: PopoverRoot,
-    Content: PopoverContent,
-    Trigger: PopoverTrigger,
-    Close: PopoverClose,
-  }
-)
+const PopoverContent = React.forwardRef<
+  React.ElementRef<typeof PopoverPrimitive.Content>,
+  React.ComponentPropsWithoutRef<typeof PopoverPrimitive.Content>
+>(({ className, align = "center", sideOffset = 4, ...props }, ref) => (
+  <PopoverPrimitive.Portal>
+    <PopoverPrimitive.Content
+      ref={ref}
+      align={align}
+      sideOffset={sideOffset}
+      className={cn(
+        "z-50 w-72 rounded-md border bg-popover p-4 text-popover-foreground shadow-md outline-none data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2",
+        className
+      )}
+      {...props}
+    />
+  </PopoverPrimitive.Portal>
+))
+PopoverContent.displayName = PopoverPrimitive.Content.displayName
 
-export { Popover, PopoverRoot, PopoverContent, PopoverTrigger, PopoverClose }
-export type {
-  PopoverRootProps,
-  PopoverContentProps,
-  PopoverTriggerProps,
-  PopoverCloseProps,
-}
+export { Popover, PopoverTrigger, PopoverContent, PopoverAnchor }
