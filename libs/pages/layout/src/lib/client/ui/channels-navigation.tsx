@@ -27,6 +27,7 @@ import { CreateChannelModal } from './create-channel-modal'
 import { ListTextChannels } from './list-channels'
 import { ListVoiceChannels } from './list-voice-channels'
 import { getServersState } from '@beep/server'
+import { ServerDropdownMenu } from './server-dropdown-menu'
 
 export interface ChannelsNavigationProps {
   textChannels?: ChannelEntity[]
@@ -58,7 +59,8 @@ export default function ChannelsNavigation({
   hideLeftDiv,
 }: ChannelsNavigationProps) {
   const { showLeftPane } = useSelector(getResponsiveState)
-  const { connected, focusedChannel, serverName } = useSelector(getChannelsState)
+  const { connected, focusedChannel, serverName } =
+    useSelector(getChannelsState)
   return (
     <div className={showLeftPane ? 'flex abolute w-full' : 'hidden lg:flex'}>
       <div
@@ -68,7 +70,7 @@ export default function ChannelsNavigation({
       >
         {/* Server infos */}
         <div className="flex flex-row gap-6">
-          <Button
+          {/* <Button
             style={ButtonStyle.SQUARE}
             onClick={() => {
               console.log('click')
@@ -87,7 +89,8 @@ export default function ChannelsNavigation({
             ) : (
               <p>@ME</p>
             )}
-          </Button>
+          </Button> */}
+          <ServerDropdownMenu server={server} />
           <div className="flex flex-col items-start justify-between">
             <h5 className="font-semibold max-w-[175px] truncate">
               {server?.name}
@@ -146,7 +149,13 @@ export default function ChannelsNavigation({
             </div>
           </div>
         </div>
-        {connected && <ConnectedChannelRow onLeave={onLeaveVoiceChannel} channelName={focusedChannel.name} serverName={ serverName } />}
+        {connected && (
+          <ConnectedChannelRow
+            onLeave={onLeaveVoiceChannel}
+            channelName={focusedChannel.name}
+            serverName={serverName}
+          />
+        )}
         <CurrentUserFeature />
       </div>
       {/* Responsive button */}
