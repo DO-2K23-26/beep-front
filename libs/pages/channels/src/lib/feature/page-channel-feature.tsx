@@ -4,7 +4,7 @@ import {
   useGetChannelQuery,
   useGetMessagesByChannelIdQuery
 } from '@beep/channel'
-import { ChannelType, backendUrl } from '@beep/contracts'
+import { ChannelType, UserDisplayedEntity, backendUrl } from '@beep/contracts'
 import { responsiveActions } from '@beep/responsive'
 import { AppDispatch } from '@beep/store'
 import { useEffect, useRef, useState } from 'react'
@@ -15,6 +15,7 @@ import { useParams } from 'react-router'
 import { PageChannel } from '../ui/page-channel'
 import { DynamicSelectorProps } from '@beep/ui'
 import { useGetUsersByServerIdQuery } from '@beep/server'
+import { useFetchProfilePictureQuery } from '@beep/user'
 
 export function PageChannelFeature() {
   const { serverId = '', channelId = '' } = useParams<{ serverId: string, channelId: string }>()
