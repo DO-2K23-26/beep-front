@@ -128,7 +128,6 @@ export function PageChannelFeature() {
     const nonChannelTagRegex = /#(?!(\$[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}))/;
 
     const text: string = message.slice(startWordIndex, endWordIndex).trim()
-
     if (nonUserTagRegex.test(text)) {
       const elements = usersServer.filter(u => u.firstname.toLowerCase().includes(text.slice(1).toLowerCase()) || u.username.toLowerCase().includes(text.slice(1).toLowerCase()) || text.slice(1) === '').map(u => ({
         id: u.id,
