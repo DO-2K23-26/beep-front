@@ -5,8 +5,6 @@ import { useEffect } from 'react'
 import { backendUrl } from '@beep/contracts'
 import { Transmit } from "@adonisjs/transmit-client";
 
-const inviteCode = 'beep/invite/3421eg34ssa34y3'
-
 export default function MembersNavigationFeature() {
   const { openModal, closeModal } = useModal()
 
@@ -25,10 +23,7 @@ export default function MembersNavigationFeature() {
     })
   }, []);
 
-  const onInviteMember = () => {
-    console.log('Invite member')
-    closeModal()
-  }
+
   return (
     usersConnected === undefined || users === undefined ? (
       <></>
@@ -36,10 +31,8 @@ export default function MembersNavigationFeature() {
       <MembersNavigation
         usersConnected={usersConnected}
         users={users}
-        onInviteMember={onInviteMember}
         openModal={openModal}
         closeModal={closeModal}
-        inviteCode={inviteCode}
       />
     )
   )
