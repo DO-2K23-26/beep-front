@@ -30,84 +30,6 @@ export function PageChannelFeature() {
   )
   const inputRef = useRef<HTMLInputElement>(null);
 
-  const usersServer = [
-    {
-      id: '56bd5d7c-8874-45a5-b2a4-4457b2bc2ed2',
-      firstname: 'Baptiste',
-      username: 'baraly'
-    },
-    {
-      id: '4febae3f-37fc-4cd5-be87-529f30c0378e',
-      firstname: 'Benoit',
-      username: 'kalvapaux'
-    },
-    {
-      id: 'b50bb44a-2ec6-4c87-9e75-e45b3d58c448',
-      firstname: 'DorianG',
-      username: 'rapidement'
-    },
-    {
-      id: 'b50bb44a-2ec6-4c87-9e75-e45b3d58c441',
-      firstname: 'Hugo',
-      username: 'fouéfoué'
-    },
-    {
-      id: 'b50bb44a-2ec6-4c87-9e75-e45b3d58c442',
-      firstname: 'Sarah',
-      username: 'light_srh'
-    },
-    {
-      id: 'b50bb44a-2ec6-4c87-9e75-e45b3d58c443',
-      firstname: 'Louis',
-      username: 'razano'
-    },
-    {
-      id: 'b50bb44a-2ec6-4c87-9e75-e45b3d58c444',
-      firstname: 'Mathias',
-      username: 'lefou9577'
-    },
-    {
-      id: 'b50bb44a-2ec6-4c87-9e75-e45b3d58c445',
-      firstname: 'Nathael',
-      username: 'nathaelb'
-    },
-    {
-      id: 'b50bb44a-2ec6-4c87-9e75-e45b3d58c446',
-      firstname: 'Tristan',
-      username: 'courtcircuits'
-    },
-    {
-      id: 'b50bb44a-2ec6-4c87-9e75-e45b3d58c447',
-      firstname: 'DorianT',
-      username: 'nayrode'
-    },
-    {
-      id: 'b50bb44a-2ec6-4c87-9e75-e45b3d58c449',
-      firstname: 'Giada',
-      username: 'giada_flo'
-    },
-    {
-      id: 'b50bb44a-2ec6-4c87-9e75-e45b3d58c450',
-      firstname: 'Isalyne',
-      username: '_isalyne_'
-    },
-    {
-      id: 'b50bb44a-2ec6-4c87-9e75-e45b3d58c451',
-      firstname: 'Pauline',
-      username: 'mooh_line'
-    },
-    {
-      id: 'b50bb44a-2ec6-4c87-9e75-e45b3d58c452',
-      firstname: 'Thomas',
-      username: '.sorio.'
-    },
-    {
-      id: 'b50bb44a-2ec6-4c87-9e75-e45b3d58c453',
-      firstname: 'Théo',
-      username: 'tecobot'
-    }
-  ]
-
   const [createMessage] = useCreateMessageMutation()
 
   const methods = useForm({
@@ -131,22 +53,17 @@ export function PageChannelFeature() {
 
     const text: string = message.slice(startWordIndex, endWordIndex).trim();
     if (nonUserTagRegex.test(text)) {
-      const elements = usersServer.filter(u => u.firstname.toLowerCase().includes(text.slice(1).toLowerCase()) || u.username.toLowerCase().includes(text.slice(1).toLowerCase()) || text.slice(1) === '').map(u => ({
+      const elements = usersServer ? usersServer.filter(u => u.username.toLowerCase().includes(text.slice(1).toLowerCase()) || text.slice(1) === '').map(u => ({
         id: u.id,
-        content: <div className='flex items-center justify-between'>
-          <div className='flex items-center gap-4'>
-            <img
-              className="w-9 min-w-[36px] h-9 min-h-[36px] object-cover bg-violet-50 rounded-xl"
-              src={'/picture.svg'}
-              alt={u.username + '-img'}
-            />
-            <p>{u.firstname}</p>
-          </div>
-          <div>
-            <p className='text-right'>{u.username}</p>
-          </div>
-      </div>
-      }))
+        content: <div className='flex items-center gap-4'>
+          <img
+            className="w-9 min-w-[36px] h-9 min-h-[36px] object-cover bg-violet-50 rounded-xl"
+            src={'/picture.svg'}
+            alt={u.username + '-img'}
+          />
+          <p>{u.username}</p>
+        </div>
+      })) : []
 
       if (elements.length === 0) {
         setDynamicSelector(undefined)
