@@ -10,8 +10,8 @@ interface ConnectedChannelRowProps {
 export function ConnectedChannelRow({ onLeave, channelName, serverName }: ConnectedChannelRowProps) {
   return (
     <div className="w-full pb-3 border-b-2 border-violet-400 flex flex-row items-center justify-between">
-      <div>
-        <h3 className="text-lg font-semibold text-slate-700">
+      <div className='flex flex-col gap-2' >
+        <h3 className="text-lg font-bold text-slate-700 truncate max-w-[200px]">
           {channelName} / {serverName}
         </h3>
         <Badge
