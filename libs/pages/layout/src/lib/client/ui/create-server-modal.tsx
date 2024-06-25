@@ -2,12 +2,12 @@ import { Control, Controller, UseFormRegister } from 'react-hook-form'
 import { CreateServerForm } from '../feature/create-server-feature'
 import { BaseSyntheticEvent } from 'react'
 import { Button, InputText } from '@beep/ui'
-import { error } from '@markdoc/markdoc/dist/src/schema'
 
 interface CreateServerModalProps {
   register: UseFormRegister<CreateServerForm>
   control: Control<CreateServerForm, any>
   onSubmit: (e: BaseSyntheticEvent) => Promise<void>
+  loading: boolean
 }
 
 export default function CreateServerModal({
@@ -42,7 +42,6 @@ export default function CreateServerModal({
               name="serverName"
               className="w-full !rounded-lg min-h-[40px]"
               value={field.value}
-              error={error?.message}
             />
           )}
         ></Controller>
@@ -68,6 +67,16 @@ export default function CreateServerModal({
           )}
         ></Controller>
         <div>
+          <div className="flex flex-col w-full">
+            <Button
+              type="submit"
+              loading={loading}
+              className="!bg-slate-800 hover:!bg-slate-900 w-full !rounded-lg min-h-[40px]"
+            >
+              <p className="text-violet-50">Back</p>
+            </Button>
+          </div>
+
           <div className="flex flex-col w-full">
             <Button
               type="submit"
