@@ -81,7 +81,7 @@ export function PageChannelFeature() {
     } else if (nonChannelTagRegex.test(text)) {
       setDynamicSelector({
         title: 'Text channels',
-        elements: channels?.filter(c => c.type === ChannelType.TEXT && c.name.toLowerCase().includes(text.split('#').slice(1).map(s => s.split(' ')[0])[0].toLowerCase())).map(c => ({
+        elements: channels?.filter((c: { type: ChannelType; name: string }) => c.type === ChannelType.TEXT && c.name.toLowerCase().includes(text.split('#').slice(1).map(s => s.split(' ')[0])[0].toLowerCase())).map(c => ({
           id: c.id,
           content: <p>{c.name}</p>
         })) ?? [],
