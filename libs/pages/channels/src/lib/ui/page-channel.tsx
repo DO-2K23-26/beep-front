@@ -1,5 +1,5 @@
 import { ChannelEntity, ChannelType, MessageEntity } from '@beep/contracts'
-import { Button, ButtonStyle, Icon, Input } from '@beep/ui'
+import { Button, ButtonStyle, DynamicSelector, DynamicSelectorProps, Icon, Input } from '@beep/ui'
 import { Controller, useFormContext } from 'react-hook-form'
 import ListMessages from './list-messages'
 
@@ -19,6 +19,10 @@ export interface PageChannelProps {
   filesPreview: { content: string | null }[]
   hideRightDiv?: () => void
   hideLeftDiv?: () => void
+  inputRef?: React.RefObject<HTMLInputElement>
+  onChange?: (value: string, onChange: (value: string) => void) => void
+  onCursorChange?: () => void
+  dynamicSelector?: DynamicSelectorProps
 }
 
 export const PageChannel = ({
@@ -32,6 +36,10 @@ export const PageChannel = ({
   filesPreview,
   hideRightDiv,
   hideLeftDiv,
+  inputRef,
+  onChange,
+  onCursorChange,
+  dynamicSelector,
 }: PageChannelProps) => {
   const { control } = useFormContext()
 
@@ -90,6 +98,8 @@ export const PageChannel = ({
             )
           })}
         </div>
+        {/* dynamic selector to tag users and channels */}
+        { dynamicSelector && <DynamicSelector title={dynamicSelector.title} elements={dynamicSelector.elements} maxElements={5} emptyMessage={dynamicSelector.emptyMessage} onSelect={dynamicSelector.onSelect} /> }
         {/* bottom input + text */}
         <div className="flex flex-row gap-6 justify-between w-full items-end font-medium">
           {/* text input */}
@@ -104,7 +114,10 @@ export const PageChannel = ({
                   value={field.value}
                   className="rounded-xl bg-violet-50 px-4 h-full w-full"
                   placeholder="Type a message"
-                  onChange={field.onChange}
+                  ref={inputRef}
+                  onChange={onChange ? (e) => onChange(e.target.value, field.onChange) : field.onChange}
+                  onMouseUp={onCursorChange ? (e) => onCursorChange() : undefined}
+                  onKeyUp={onCursorChange ? (e) => onCursorChange() : undefined}
                   onKeyDown={(e: any) => e.key === 'Enter' ? sendMessage() : {}}
                 />
               )}

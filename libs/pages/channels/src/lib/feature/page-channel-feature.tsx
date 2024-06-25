@@ -7,12 +7,13 @@ import {
 import { ChannelType, backendUrl } from '@beep/contracts'
 import { responsiveActions } from '@beep/responsive'
 import { AppDispatch } from '@beep/store'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
 import toast from 'react-hot-toast'
 import { useDispatch } from 'react-redux'
 import { useParams } from 'react-router'
 import { PageChannel } from '../ui/page-channel'
+import { DynamicSelectorProps } from '@beep/ui'
 
 export function PageChannelFeature() {
   const { serverId = '', channelId = '' } = useParams<{ serverId: string, channelId: string }>()
@@ -25,12 +26,188 @@ export function PageChannelFeature() {
   const [previewUrls, setPreviewUrls] = useState<{ content: string | null }[]>(
     []
   )
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  const usersServer = [
+    {
+      id: '56bd5d7c-8874-45a5-b2a4-4457b2bc2ed2',
+      firstname: 'Baptiste',
+      username: 'baraly'
+    },
+    {
+      id: '4febae3f-37fc-4cd5-be87-529f30c0378e',
+      firstname: 'Benoit',
+      username: 'kalvapaux'
+    },
+    {
+      id: 'b50bb44a-2ec6-4c87-9e75-e45b3d58c448',
+      firstname: 'DorianG',
+      username: 'rapidement'
+    },
+    {
+      id: 'b50bb44a-2ec6-4c87-9e75-e45b3d58c441',
+      firstname: 'Hugo',
+      username: 'fouéfoué'
+    },
+    {
+      id: 'b50bb44a-2ec6-4c87-9e75-e45b3d58c442',
+      firstname: 'Sarah',
+      username: 'light_srh'
+    },
+    {
+      id: 'b50bb44a-2ec6-4c87-9e75-e45b3d58c443',
+      firstname: 'Louis',
+      username: 'razano'
+    },
+    {
+      id: 'b50bb44a-2ec6-4c87-9e75-e45b3d58c444',
+      firstname: 'Mathias',
+      username: 'lefou9577'
+    },
+    {
+      id: 'b50bb44a-2ec6-4c87-9e75-e45b3d58c445',
+      firstname: 'Nathael',
+      username: 'nathaelb'
+    },
+    {
+      id: 'b50bb44a-2ec6-4c87-9e75-e45b3d58c446',
+      firstname: 'Tristan',
+      username: 'courtcircuits'
+    },
+    {
+      id: 'b50bb44a-2ec6-4c87-9e75-e45b3d58c447',
+      firstname: 'DorianT',
+      username: 'nayrode'
+    },
+    {
+      id: 'b50bb44a-2ec6-4c87-9e75-e45b3d58c449',
+      firstname: 'Giada',
+      username: 'giada_flo'
+    },
+    {
+      id: 'b50bb44a-2ec6-4c87-9e75-e45b3d58c450',
+      firstname: 'Isalyne',
+      username: '_isalyne_'
+    },
+    {
+      id: 'b50bb44a-2ec6-4c87-9e75-e45b3d58c451',
+      firstname: 'Pauline',
+      username: 'mooh_line'
+    },
+    {
+      id: 'b50bb44a-2ec6-4c87-9e75-e45b3d58c452',
+      firstname: 'Thomas',
+      username: '.sorio.'
+    },
+    {
+      id: 'b50bb44a-2ec6-4c87-9e75-e45b3d58c453',
+      firstname: 'Théo',
+      username: 'tecobot'
+    }
+  ]
 
   const [createMessage] = useCreateMessageMutation()
 
   const methods = useForm({
     mode: 'onChange',
   })
+
+  const [dynamicSelector, setDynamicSelector] = useState<DynamicSelectorProps | undefined>(undefined)
+
+  const updateDynamicSelector = (message: string, cursorPos: number) => {
+    const startWordIndex: number = message.slice(0, cursorPos).includes(' ') ? message.slice(0, cursorPos).lastIndexOf(' ') + 1 : 0;
+    const endWordIndex: number = message.slice(cursorPos).includes(' ') ? message.indexOf(' ', cursorPos) : message.length;
+
+    const currentWord = message.slice(startWordIndex, endWordIndex);
+
+    if (currentWord[0] !== '@' && currentWord[0] !== '#') {
+      setDynamicSelector(undefined)
+      return;
+    }
+
+    const nonUserTagRegex = /@(?!(\$[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}))/;
+    const nonChannelTagRegex = /#(?!(\$[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}))/;
+
+    const text: string = message.slice(startWordIndex, endWordIndex).trim()
+
+    if (nonUserTagRegex.test(text)) {
+      const elements = usersServer.filter(u => u.firstname.toLowerCase().includes(text.slice(1).toLowerCase()) || u.username.toLowerCase().includes(text.slice(1).toLowerCase()) || text.slice(1) === '').map(u => ({
+        id: u.id,
+        content: <div className='flex items-center justify-between'>
+          <div className='flex items-center gap-4'>
+            <img
+              className="w-9 min-w-[36px] h-9 min-h-[36px] object-cover bg-violet-50 rounded-xl"
+              src={'/picture.svg'}
+              alt={u.username + '-img'}
+            />
+            <p>{u.firstname}</p>
+          </div>
+          <div>
+            <p className='text-right'>{u.username}</p>
+          </div>
+      </div>
+      }))
+
+      if (elements.length === 0) {
+        setDynamicSelector(undefined)
+      } else {
+        setDynamicSelector({
+          title: 'Users',
+          elements: elements,
+          maxElements: 5,
+          emptyMessage: 'Any user.',
+          onSelect: (id) => {
+            methods.setValue('message', message.slice(0, startWordIndex) + `@$${id}` + message.slice(endWordIndex))
+            setDynamicSelector(undefined)
+          },
+        })
+      }
+    } else if (nonChannelTagRegex.test(text)) {
+      setDynamicSelector({
+        title: 'Text channels',
+        elements: [
+          {
+            id: '56bd5d7c-8874-45a5-b2a4-4457b2bc2ed2',
+            content: <p># DO</p>
+          },
+          {
+            id: '4febae3f-37fc-4cd5-be87-529f30c0378e',
+            content: <p># IG</p>
+          },
+          {
+            id: 'b50bb44a-2ec6-4c87-9e75-e45b3d58c448',
+            content: <p># MEA</p>
+          }
+        ],
+        maxElements: 5,
+        emptyMessage: 'Any text channel.',
+        onSelect: (id) => {
+          methods.setValue('message', `${text.slice(0, text.indexOf('#'))}#$${id}`)
+          setDynamicSelector(undefined)
+        },
+      })
+    } else {
+      setDynamicSelector(undefined)
+    }
+  }
+
+  const handleInputChange = (value: string, onChange: (value: string) => void) => {
+    onChange(value);
+    if (value === undefined || value === '') return;
+
+    const cursorPos: number = inputRef.current ? inputRef.current.selectionStart! : 0;
+
+    updateDynamicSelector(value, cursorPos)
+  };
+
+  const handleCursorChange = () => {
+    if (inputRef.current) {
+      const value = inputRef.current.value;
+      const cursorPos: number = inputRef.current ? inputRef.current.selectionStart! : 0;
+
+      updateDynamicSelector(value, cursorPos)
+    }
+  };
 
   const dispatch = useDispatch<AppDispatch>()
   const hideRightDiv = () => {
@@ -126,6 +303,10 @@ export function PageChannelFeature() {
           onDeleteFile={onDeleteFile}
           hideRightDiv={hideRightDiv}
           hideLeftDiv={hideLeftDiv}
+          inputRef={inputRef}
+          onChange={handleInputChange}
+          onCursorChange={handleCursorChange}
+          dynamicSelector={dynamicSelector}
         />
       </FormProvider>
     ) : (
