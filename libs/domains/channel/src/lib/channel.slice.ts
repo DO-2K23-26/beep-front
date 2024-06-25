@@ -1,8 +1,8 @@
 /* eslint-disable @nx/enforce-module-boundaries */
 import { ChannelEntity, ChannelType, JoinVoiceChannelRequest } from '@beep/contracts'
 import { RootState } from '@beep/store'
-import { socket } from '@beep/utils'
 import { createEntityAdapter, createSlice } from '@reduxjs/toolkit'
+import { useJoinVoiceChannelMutation, useLeaveVoiceChannelMutation } from '@beep/server'
 
 export const CHANNELS_KEY = 'channels'
 export const channelsAdapter = createEntityAdapter<ChannelEntity>()
@@ -28,19 +28,11 @@ export const voiceChannelSlice = createSlice({
   } as VoiceChannelState,
   reducers: {
     setFocusedVoiceChannel(state, { payload }: { payload: JoinVoiceChannelRequest }) {
-      console.log('Joining voice channel', payload)
-      socket.emit('join_voice', {
-        channelId: payload.channel.id,
-        serverId: payload.serverId
-      })
       state.focusedChannel = payload.channel;
       state.serverName = payload.serverName;
       state.connected = true;
     },
     unsetFocusedVoiceChannel(state) {
-      socket.emit('leave_voice', {
-        channel_id: state.focusedChannel.id,
-      })
       state.focusedChannel = {} as ChannelEntity;
       state.serverName = '';
       state.connected = false;

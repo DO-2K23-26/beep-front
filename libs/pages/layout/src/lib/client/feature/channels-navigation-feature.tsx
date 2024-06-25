@@ -1,5 +1,6 @@
 import { voiceChannelActions } from '@beep/channel'
 import {
+  backendUrl,
   ChannelEntity,
   ChannelType,
   CreateChannelRequest,
@@ -11,6 +12,8 @@ import {
   useGetCurrentStreamingUsersQuery,
   useGetServerChannelsQuery,
   useGetServersQuery,
+  useJoinVoiceChannelMutation,
+  useLeaveVoiceChannelMutation,
 } from '@beep/server'
 import { AppDispatch, RootState } from '@beep/store'
 import { useModal } from '@beep/ui'
@@ -20,6 +23,7 @@ import { useForm } from 'react-hook-form'
 import { toast } from 'react-hot-toast'
 import { useDispatch, useSelector } from 'react-redux'
 import ChannelsNavigation from '../ui/channels-navigation'
+import { Transmit } from '@adonisjs/transmit-client'
 
 export default function ChannelsNavigationFeature() {
   const server = useSelector((state: RootState) => state.servers.server)
@@ -50,6 +54,20 @@ export default function ChannelsNavigationFeature() {
     }
   }, [resultCreatedChannel])
 
+  const { refetch } = useGetCurrentStreamingUsersQuery(server?.id ?? '')
+  useEffect(() => {
+    const transmit = new Transmit({
+      baseUrl: backendUrl,
+    })
+    if (!server?.id) return
+    const subscription = transmit.subscription(`servers/${server?.id}/movement`)
+    subscription.create()
+    subscription.onMessage((message) => {
+      console.log('message', message)
+      refetch()
+    })
+  }, [refetch, server?.id])
+
   const methodsAddChannel = useForm({
     mode: 'onChange',
     defaultValues: {
@@ -57,6 +75,8 @@ export default function ChannelsNavigationFeature() {
       type: ChannelType.TEXT,
     },
   })
+  const [joinServer] = useJoinVoiceChannelMutation()
+  const [leaveServer] = useLeaveVoiceChannelMutation()
   const onJoinVoiceChannel = (channel: ChannelEntity) => {
     if (server?.id) {
       dispatch(
@@ -66,10 +86,12 @@ export default function ChannelsNavigationFeature() {
           serverName: server.name,
         })
       )
+      joinServer({serverId: server.id, channelId: channel.id})
     }
   }
   const onLeaveVoiceChannel = () => {
     dispatch(voiceChannelActions.unsetFocusedVoiceChannel())
+    leaveServer()
   }
   const onCreateChannel = methodsAddChannel.handleSubmit((data) => {
     const createChannelRequest: CreateChannelRequest = {

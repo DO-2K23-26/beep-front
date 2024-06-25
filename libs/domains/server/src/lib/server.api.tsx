@@ -10,6 +10,7 @@ import {
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 // eslint-disable-next-line @nx/enforce-module-boundaries
 import { RootState } from '@beep/store'
+import { join } from 'path'
 
 const baseQuery = fetchBaseQuery({
   baseUrl: backendUrl,
@@ -64,9 +65,26 @@ export const serverApi = createApi({
       query: (serverId) => `/servers/${serverId}/channels`,
       providesTags: ['channels'],
     }),
+    joinVoiceChannel: builder.mutation<void, {serverId:string, channelId:string}>({
+      query: ({ serverId, channelId }) => ({
+        url: `/servers/${serverId}/channels/${channelId}/join`,
+        method: 'POST',
+      }),
+      invalidatesTags: (result, error, arg) => [{ type: 'streamingUsers', channelId: arg.channelId }]
+    }),
+    leaveVoiceChannel: builder.mutation<void, void>({
+      query: () => ({
+        url: `/servers/channels/leave`,
+        method: 'POST',
+      }),
+      invalidatesTags: ['streamingUsers']
+    }),
     getCurrentStreamingUsers: builder.query<OccupiedChannelEntity[], string>({
       query: (serverId) => `/servers/${serverId}/streaming/users`,
-      providesTags: ['streamingUsers'],
+      providesTags: (result, error, arg) =>
+        result
+          ? [...result.map(({ channelId }) => ({ type: 'streamingUsers' as const, channelId })), 'streamingUsers']
+          : ['streamingUsers'],
     }),
     getUsersByServerId: builder.query<UserDisplayedEntity[], string>({
       query: (serverId) => `servers/${serverId}/users`,
@@ -89,6 +107,8 @@ export const {
   useCreateServerMutation,
   useGetServerChannelsQuery,
   useCreateChannelInServerMutation,
+  useJoinVoiceChannelMutation,
+  useLeaveVoiceChannelMutation,
   useGetCurrentStreamingUsersQuery,
   useGetUsersByServerIdQuery
 } = serverApi

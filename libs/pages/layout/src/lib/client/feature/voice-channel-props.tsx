@@ -1,6 +1,7 @@
 import { ChannelEntity, UserConnectedEntity } from '@beep/contracts'
 import DisplayChannel from '../ui/display-channel'
 import { ListConnectedUsers } from '../ui/list-connected-user'
+import { useGetCurrentStreamingUsersQuery } from '@beep/server'
 
 
 interface VoiceChannelProps {
