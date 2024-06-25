@@ -1,7 +1,7 @@
-import React, { useEffect } from 'react'
+import React, { ReactNode, useEffect } from "react";
 import { MessageEntity, UserEntity } from '@beep/contracts'
 import { Button, ButtonStyle, Icon, Input } from '@beep/ui'
-import { Controller, useFormContext } from 'react-hook-form'
+import { Controller } from 'react-hook-form'
 import AttachmentFeature from '../feature/attachment-feature'
 import Markdoc from "@markdoc/markdoc"
 import { config, markdownComponents } from "../utils/markdown-config"
@@ -20,27 +20,36 @@ interface MessageProps {
   onDelete: (() => void) | null
   cancelEditing: () => void
   createdAt: string
+  updatedAt?: string
   payload?: any
   onPin: () => void
-  isPinned?: boolean; // New property to indicate if message is pinned
+  isPinned?: boolean // New property to indicate if message is pinned
+  control?: any
+  replaceTagEntity: (message: ReactNode) => ReactNode
+  isHighlighted: boolean
 }
 
 export default function Message({
-  user,
   message,
-  onDelete,
+  user,
+  image,
+  gif,
+  video,
   isEditing,
-  switchEditing,
   profilePicture,
+  switchEditing,
   onUpdateMessage,
+  onDelete,
   cancelEditing,
   createdAt,
+  updatedAt,
   payload,
   onPin,
-  isPinned
+  isPinned,
+  control,
+  replaceTagEntity,
+  isHighlighted
 }: Readonly<MessageProps>) {
-  const { control } = useFormContext()
-
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
       if (event.key === 'Escape') {
@@ -61,17 +70,18 @@ export default function Message({
   }, [isEditing, cancelEditing, onUpdateMessage]);
 
   // Convert markdown to Markdoc nodes
-  const adjustLineBreaks = preprocessMarkdown(message.content)
-  const nodes = Markdoc.parse(adjustLineBreaks)
+  // const adjustLineBreaks = preprocessMarkdown(replaceTagEntity(message.content));
+  const adjustLineBreaks = preprocessMarkdown(message.content);
+  const nodes = Markdoc.parse(adjustLineBreaks);
   // Transform nodes to a Markdoc AST
   const ast = Markdoc.transform(nodes, config)
   // Render the AST to React elements
-  const renderedMessage = Markdoc.renderers.react(ast, React, {
+  const renderedMessage = replaceTagEntity(Markdoc.renderers.react(ast, React, {
     components: markdownComponents,
-  })
+  }));
 
   return (
-    <div className="flex flex-col gap-2 hover:bg-violet-300 p-3 rounded-xl group">
+    <div className={"flex flex-col gap-2 hover:bg-violet-300 p-3 rounded-xl group" + (isHighlighted ? ' bg-green-100/60 hover:bg-green-100' : '')}>
       <div className="flex flex-row justify-between">
         <div className="flex flex-row gap-4 items-center">
           <div className="flex flex-row gap-3 items-center overflow-hidden">

@@ -1,7 +1,7 @@
 import { FormProvider, useForm } from 'react-hook-form'
-import { MessageEntity, UserEntity } from '@beep/contracts'
 import Message from '../ui/message'
-import { useEffect, useState } from 'react';
+import { MessageEntity, UserDisplayedEntity, UserEntity } from '@beep/contracts'
+import React, { ReactNode, useEffect } from 'react';
 import { useSelector } from 'react-redux'
 import { getUserState, useFetchProfilePictureQuery } from '@beep/user';
 import { useCreateMessageMutation, useFindAndDeleteMessageMutation, usePinMessageMutation } from '@beep/channel';
@@ -10,26 +10,33 @@ import toast from 'react-hot-toast';
 interface MessageFeatureProps {
   message: MessageEntity
   user?: UserEntity
-  onUpdateMessage: (messageId: string, newContent: string) => void
   image?: string
   gif?: string
   video?: string
   createdAt: string
   updatedAt?: string
-  control?: any
+  onUpdateMessage: (messageId: string, newContent: string) => void
   editingMessageId: string | null
   setEditingMessageId: (id: string | null) => void
   isPinned: boolean
+  control?: any
+  findUserForTag?: (value: string) => UserDisplayedEntity | undefined
 }
 
 export default function MessageFeature({
-  user,
   message,
+  user,
+  image,
+  gif,
+  video,
   createdAt,
+  updatedAt,
   onUpdateMessage,
   editingMessageId,
   setEditingMessageId,
-  isPinned
+  isPinned,
+  control,
+  findUserForTag
 }: MessageFeatureProps) {
   const [pinMessage, result] = usePinMessageMutation()
   const [createMessage] = useCreateMessageMutation()
@@ -113,23 +120,63 @@ export default function MessageFeature({
       console.error("Error updating message:", error)
     }
   })
+  
+  const replaceTagEntity = (message: ReactNode): ReactNode => {
+    if (!findUserForTag) return message;
+
+    const regex = /@\$(?:[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12})/ig;
+
+    const replaceText = (text: string): ReactNode => {
+        const parts: ReactNode[] = [];
+        let lastIndex = 0;
+
+        text.replace(regex, (match, offset) => {
+            const user = findUserForTag(match);
+            parts.push(text.slice(lastIndex, offset));
+            parts.push(<span key={offset} className='bg-violet-300 p-1 rounded cursor-pointer'>{user ? '@' + user.username : 'undefined user'}</span>);
+            lastIndex = offset + match.length;
+            return match;
+        });
+
+        parts.push(text.slice(lastIndex));
+        return parts;
+    };
+
+    const recurseChildren = (node: ReactNode): ReactNode => {
+        if (typeof node === 'string') {
+            return replaceText(node);
+        } else if (React.isValidElement(node)) {
+            return React.cloneElement(node, {}, React.Children.map(node.props.children, child => recurseChildren(child)));
+        } else if (Array.isArray(node)) {
+            return node.map(recurseChildren);
+        } else {
+            return node;
+        }
+    };
+
+    return recurseChildren(message);
+};
 
   return (
     <FormProvider {...methods}>
       <Message
-      user={user}
-      message={message}
-      profilePicture={userProfilePicture}
-      isEditing={isEditing}
-      onDelete={payload && payload.sub === user?.id ? deleteMessage : null}
-      switchEditing={payload && payload.sub === user?.id ? switchEditing : null}
-      cancelEditing={cancelEditing}
-      onUpdateMessage={onUpdateMessageSubmit}
-      createdAt={createdAt}
-      payload={payload}
+        user={user}
+        message={message}
+        profilePicture={userProfilePicture}
+        isEditing={isEditing}
+        onDelete={payload && payload.sub === user?.id ? deleteMessage : null}
+        switchEditing={payload && payload.sub === user?.id ? switchEditing : null}
+        cancelEditing={cancelEditing}
+        onUpdateMessage={onUpdateMessageSubmit}
+        createdAt={createdAt}
+        payload={payload}
+        control={control}
+        replaceTagEntity={replaceTagEntity}
+        isHighlighted={message.content.includes('@$' + payload?.sub)}
         onPin={onPin}
-      isPinned={isPinned}
-    />
+        isPinned={isPinned}
+      />
     </FormProvider>
+      
   )
 }

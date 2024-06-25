@@ -1,4 +1,4 @@
-import { MessageEntity } from '@beep/contracts'
+import { MessageEntity, UserDisplayedEntity } from '@beep/contracts'
 import MessageFeature from '../feature/message-feature'
 import { useState } from 'react'
 
@@ -6,9 +6,10 @@ interface ListMessagesProps {
   messages: MessageEntity[]
   onUpdateMessage: (messageId: string, newContent: string) => void
   control: any
+  findUserForTag?: (value: string) => UserDisplayedEntity | undefined
 }
 
-export default function ListMessages({ messages, onUpdateMessage, control }: ListMessagesProps) {
+export default function ListMessages({ messages, onUpdateMessage, control, findUserForTag }: ListMessagesProps) {
   const [editingMessageId, setEditingMessageId] = useState<string | null>(null)
   return (
     <div className="flex flex-col-reverse gap-6 overflow-y-scroll no-scrollbar scroll-smooth h-full">
@@ -26,6 +27,7 @@ export default function ListMessages({ messages, onUpdateMessage, control }: Lis
               editingMessageId={editingMessageId}
               setEditingMessageId={setEditingMessageId}
               isPinned= {false}
+              findUserForTag={findUserForTag}
             />
           ))}
     </div>

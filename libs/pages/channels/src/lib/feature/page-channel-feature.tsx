@@ -3,7 +3,7 @@ import {
   useGetChannelQuery,
   useGetMessagesByChannelIdQuery, useUpdateMessageMutation
 } from '@beep/channel'
-import { ChannelType } from '@beep/contracts'
+import { ChannelType, UserDisplayedEntity, backendUrl } from '@beep/contracts'
 import { responsiveActions } from '@beep/responsive'
 import { useGetUsersByServerIdQuery } from '@beep/server'
 import { AppDispatch } from '@beep/store'
@@ -122,6 +122,14 @@ export function PageChannelFeature() {
     }
   }
 
+  const findUserForTag = (tag: string): UserDisplayedEntity | undefined => {
+    if (usersServer) {
+      return usersServer.find(u => u.id === tag.slice(2))
+    }
+
+    return undefined
+  }
+
   const dispatch = useDispatch<AppDispatch>()
   const hideRightDiv = () => {
     dispatch(responsiveActions.manageRightPane())
@@ -226,6 +234,7 @@ export function PageChannelFeature() {
           onChange={handleInputChange}
           onCursorChange={handleCursorChange}
           dynamicSelector={dynamicSelector}
+          findUserForTag={findUserForTag}
         />
       </FormProvider>
     ) : (

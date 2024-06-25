@@ -1,4 +1,4 @@
-import { ChannelEntity, ChannelType, MessageEntity } from '@beep/contracts'
+import { ChannelEntity, ChannelType, MessageEntity, UserDisplayedEntity } from '@beep/contracts'
 import { Button, ButtonStyle, DynamicSelector, DynamicSelectorProps, Icon, Input } from '@beep/ui'
 import { Controller, useFormContext } from 'react-hook-form'
 import ListMessages from './list-messages'
@@ -24,6 +24,7 @@ export interface PageChannelProps {
   onChange?: (value: string, onChange: (value: string) => void) => void
   onCursorChange?: () => void
   dynamicSelector?: DynamicSelectorProps
+  findUserForTag?: (value: string) => UserDisplayedEntity | undefined
 }
 
 export const PageChannel = ({
@@ -41,6 +42,7 @@ export const PageChannel = ({
   onChange,
   onCursorChange,
   dynamicSelector,
+  findUserForTag,
 }: PageChannelProps) => {
   const { control } = useFormContext()
 
@@ -76,7 +78,7 @@ export const PageChannel = ({
         </Button>
       </div>
       {/* Message list */}
-      <ListMessages messages={messages} onUpdateMessage={onUpdateMessage} control={control} />
+      <ListMessages messages={messages} onUpdateMessage={onUpdateMessage} control={control} findUserForTag={findUserForTag} />
       {/* Message input + bouttons + files */}
       <div className='flex flex-col w-full gap-3'>
         {/* files */}
