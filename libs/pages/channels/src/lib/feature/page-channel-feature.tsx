@@ -3,7 +3,9 @@ import {
   useGetChannelQuery,
   useGetMessagesByChannelIdQuery, useUpdateMessageMutation
 } from '@beep/channel'
-import { ChannelType } from '@beep/contracts'
+import { useGetServerChannelsQuery } from '@beep/server'
+import { skipToken } from '@reduxjs/toolkit/query'
+import { ChannelType, backendUrl } from '@beep/contracts'
 import { responsiveActions } from '@beep/responsive'
 import { useGetUsersByServerIdQuery } from '@beep/server'
 import { AppDispatch } from '@beep/store'
@@ -20,8 +22,9 @@ import { TransmitSingleton } from '@beep/utils'
 export function PageChannelFeature() {
   const { serverId = '', channelId = '' } = useParams<{ serverId: string, channelId: string }>()
   const { data: channel } = useGetChannelQuery({ serverId: serverId, channelId: channelId })
-  const { data: messages, refetch, isSuccess } = useGetMessagesByChannelIdQuery({ channelId })
-  const { data: usersServer } = useGetUsersByServerIdQuery(serverId)
+  const { data: messages, refetch } = useGetMessagesByChannelIdQuery({
+    channelId: channelId,
+  })
 
   const [files, setFiles] = useState<File[]>([])
   const [previewUrls, setPreviewUrls] = useState<{ content: string | null }[]>(
@@ -78,26 +81,17 @@ export function PageChannelFeature() {
     } else if (nonChannelTagRegex.test(text)) {
       setDynamicSelector({
         title: 'Text channels',
-        elements: [
-          {
-            id: '56bd5d7c-8874-45a5-b2a4-4457b2bc2ed2',
-            content: <p># DO</p>
-          },
-          {
-            id: '4febae3f-37fc-4cd5-be87-529f30c0378e',
-            content: <p># IG</p>
-          },
-          {
-            id: 'b50bb44a-2ec6-4c87-9e75-e45b3d58c448',
-            content: <p># MEA</p>
-          }
-        ],
+        elements: channels?.filter(c => c.type === ChannelType.TEXT && c.name.toLowerCase().includes(text.split('#').slice(1).map(s => s.split(' ')[0])[0].toLowerCase())).map(c => ({
+          id: c.id,
+          content: <p>{c.name}</p>
+        })) ?? [],
         maxElements: 5,
         emptyMessage: 'Any text channel.',
         onSelect: (id) => {
           methods.setValue('message', `${text.slice(0, text.indexOf('#'))}#$${id}`)
           setDynamicSelector(undefined)
-        }
+        },
+
       })
     } else {
       setDynamicSelector(undefined)
