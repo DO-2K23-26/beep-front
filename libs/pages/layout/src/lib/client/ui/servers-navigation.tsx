@@ -49,7 +49,7 @@ export default function ServersNavigation({
           className="!bg-violet-50"
           onClick={() => {
             openModal({
-              content: <CreateServerFeature />,
+              content: <CreateServerFeature closeModal={closeModal} />,
             })
           }}
         >
