@@ -1,7 +1,7 @@
 import { Control, Controller, UseFormRegister } from 'react-hook-form'
 import { CreateServerForm } from '../feature/create-server-feature'
 import { BaseSyntheticEvent } from 'react'
-import { Button, InputText } from '@beep/ui'
+import { Button, InputText, InputTextArea } from '@beep/ui'
 
 interface CreateServerModalProps {
   register: UseFormRegister<CreateServerForm>
@@ -56,9 +56,8 @@ export default function CreateServerModal({
           }}
           control={control}
           render={({ field, fieldState: { error } }) => (
-            <InputText
+            <InputTextArea
               label="Description"
-              type="text"
               name="description"
               className="w-full !rounded-lg min-h-[40px]"
               value={field.value}
