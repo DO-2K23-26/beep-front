@@ -34,13 +34,27 @@ import {
 import { ServerEntity } from '@beep/contracts'
 import { useState } from 'react'
 import { SettingsModal } from '@beep/settings'
-import { subSetting } from '../feature/server-settings-feature'
+import { OverviewSettingsServer } from './overview-settings-server'
+import { SubSettings } from 'libs/pages/settings/src/lib/models/setting-navigation-models'
 
 interface ServerDropDownMenuProps {
   server?: ServerEntity
 }
 export function ServerDropdownMenu({ server }: ServerDropDownMenuProps) {
   const [isSettingsModalOpen, setIsSettingsModalOpen] = useState(false)
+
+
+  const subSetting: SubSettings = {
+    subGroupSettingTitle: 'Server',
+    settings: [
+      {
+        title: 'Overview',
+        settingComponent: <OverviewSettingsServer server={server!} />,
+      },
+      // { title: 'voice', settingComponent: <Input /> },
+      // { title: 'text', settingComponent: <Input /> },
+    ],
+  }
 
   const handleSettingsClick = () => {
     setIsSettingsModalOpen(true)
