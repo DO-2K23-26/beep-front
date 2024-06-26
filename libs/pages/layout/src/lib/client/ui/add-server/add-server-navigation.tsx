@@ -1,4 +1,7 @@
-import { AddServerStep, ServerStepsRender } from '../feature/add-server-feature'
+import {
+  AddServerStep,
+  ServerStepsRender,
+} from '../../feature/add-server-feature'
 
 interface AddServerNavigationProps {
   closeModal: () => void

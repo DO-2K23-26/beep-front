@@ -2,6 +2,7 @@ import { SubmitHandler, useForm } from 'react-hook-form'
 import { useState } from 'react'
 import AddServerNavigation from '../ui/add-server/add-server-navigation'
 import CreateServerModal from '../ui/add-server/create-server-modal'
+import AddServerModal from '../ui/add-server/add-server-modal'
 
 export interface CreateServerForm {
   serverName: string
@@ -13,7 +14,7 @@ export interface AddServerFeatureProps {
   closeModal: () => void
 }
 
-export type AddServerStep = 'private' | 'public' | 'invite'
+export type AddServerStep = 'private' | 'public' | 'invite' | 'create'
 
 export interface ServerStepsRender {
   private: JSX.Element
@@ -53,8 +54,15 @@ export default function AddServerFeature({
         visibility="public"
       />
     ),
-    undefined: <div>Undefined</div>,
+    undefined: (
+      <AddServerModal
+        goToCreateServer={() => setServerStep('create')}
+        goToJoinServer={() => setServerStep('invite')}
+      />
+    ),
+    //TODO: Dorian - Add the Invite components
     invite: <div>Invite</div>,
+    create: <div>Create</div>,
   }
 
   return (

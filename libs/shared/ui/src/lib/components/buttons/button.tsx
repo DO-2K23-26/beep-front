@@ -39,6 +39,7 @@ export interface ButtonProps {
   external?: boolean
   loading?: boolean
   dataTestId?: string
+  resize?: boolean
 }
 
 export function Button(props: ButtonProps) {
@@ -57,13 +58,15 @@ export function Button(props: ButtonProps) {
     loading = false,
     iconRightClassName = '',
     iconLeftClassName = '',
+    resize = false,
   } = props
 
   function content() {
     return !loading ? (
       <>
         {iconLeft && <Icon name={iconLeft} className={iconLeftClassName} />}
-        <span>{children}</span>
+        {resize ? <span className="flex-grow">{children}</span> : ''}
+        {!resize && children && <span>{children}</span>}
         {iconRight && <Icon name={iconRight} className={iconRightClassName} />}
       </>
     ) : (
