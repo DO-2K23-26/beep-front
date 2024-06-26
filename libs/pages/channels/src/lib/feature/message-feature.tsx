@@ -191,6 +191,7 @@ export default function MessageFeature({
         replaceTagEntity={replaceTagEntity}
         isHighlighted={message.content.includes('@$' + payload?.sub)}
         selectedTaggedUser={selectedTaggedUser}
+        setSelectedTaggedUser={setSelectedTaggedUser}
         onPin={onPin}
         isPinned={isPinned}
       />
