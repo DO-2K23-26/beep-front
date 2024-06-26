@@ -111,13 +111,14 @@ export const serverApi = createApi({
     getUsersByServerId: builder.query<UserDisplayedEntity[], string>({
       query: (serverId) => `servers/${serverId}/users`,
       providesTags: (result, error, serverId) =>
-        result
-          ? [
-              ...result.map(({ id }) => ({ type: 'users' as const, id })),
-              { type: 'users', id: `LIST-${serverId}` },
-            ]
-          : [{ type: 'users', id: `LIST-${serverId}` }],
-    }),
+        result ?
+          [
+            ...result.map(({ id }) => ({ type: 'users' as const, id })),
+            { type: 'users', id: `LIST-${serverId}` },
+          ] : [
+            { type: 'users', id: `LIST-${serverId}` }
+          ]
+    })
   }),
 })
 

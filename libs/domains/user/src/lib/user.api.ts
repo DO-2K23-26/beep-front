@@ -1,6 +1,6 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 // eslint-disable-next-line @nx/enforce-module-boundaries
-import { backendUrl, ConfirmEmailRequest, LoginRequest, LoginResponse, RefreshRequest, RefreshResponse, RegisterResponse, UpdateUserResponse, UserConnectedEntity, UserEntity } from '@beep/contracts';
+import { backendUrl, ConfirmEmailRequest, LoginRequest, LoginResponse, RefreshRequest, RefreshResponse, RegisterResponse, UpdateUserResponse, UserConnectedEntity, UserDisplayedEntity, UserEntity } from '@beep/contracts';
 import { RootState } from '@beep/store';
 
 export const userApi = createApi({
@@ -94,6 +94,10 @@ export const userApi = createApi({
         method: 'POST',
         body: data
       })
+    }),
+    getUserById: builder.query<UserDisplayedEntity, string>({
+      query: (id) => `/users/${id}`,
+      providesTags: ['users']
     })
   })
 });
@@ -110,4 +114,5 @@ export const {
   useFetchAllUsersConnectedQuery,
   useSendEmailMutation,
   useVerifyEmailMutation,
+  useGetUserByIdQuery
 } = userApi;

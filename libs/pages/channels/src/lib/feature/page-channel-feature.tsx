@@ -16,6 +16,7 @@ import { useParams } from 'react-router'
 import { PageChannel } from '../ui/page-channel'
 import { DynamicSelectorFeature } from './dynamic-selector-item-feature'
 import { TransmitSingleton } from '@beep/utils'
+import { useGetUserByIdQuery } from '@beep/user'
 
 export function PageChannelFeature() {
   const { serverId = '', channelId = '' } = useParams<{ serverId: string, channelId: string }>()
@@ -124,7 +125,15 @@ export function PageChannelFeature() {
 
   const findUserForTag = (tag: string): UserDisplayedEntity | undefined => {
     if (usersServer) {
-      return usersServer.find(u => u.id === tag.slice(2))
+      const user = usersServer.find(u => u.id === tag.slice(2))
+      if (user) {
+        return user
+      }
+    }
+
+    const responseUser = useGetUserByIdQuery(tag.slice(2))
+    if (responseUser.data) {
+      return responseUser.data
     }
 
     return undefined

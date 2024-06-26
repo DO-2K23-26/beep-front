@@ -81,7 +81,7 @@ export default function Message({
   }));
 
   return (
-    <div className={"flex flex-col gap-2 hover:bg-violet-300 p-3 rounded-xl group" + (isHighlighted ? ' bg-green-100/60 hover:bg-green-100' : '')}>
+    <div className={"flex flex-col gap-2 p-3 rounded-xl group" + (isHighlighted ? ' bg-green-100/60 hover:bg-green-100' : ' hover:bg-violet-300')}>
       <div className="flex flex-row justify-between">
         <div className="flex flex-row gap-4 items-center">
           <div className="flex flex-row gap-3 items-center overflow-hidden">
