@@ -86,7 +86,9 @@ export default function CreateServerModal({
               onClick={closeModal}
               className="!bg-violet-50 group hover:!bg-slate-900 w-full !rounded-lg min-h-[40px] !border-slate-300 hover:!border-slate-900 border-2"
             >
-              <p className="text-slate-900 group-hover:text-violet-50">Back</p>
+              <p className="text-slate-900 group-hover:text-violet-50">
+                Cancel
+              </p>
             </Button>
           </div>
 

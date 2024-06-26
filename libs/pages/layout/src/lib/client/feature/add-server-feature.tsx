@@ -3,6 +3,7 @@ import { useState } from 'react'
 import AddServerNavigation from '../ui/add-server/add-server-navigation'
 import CreateServerModal from '../ui/add-server/create-server-modal'
 import AddServerModal from '../ui/add-server/add-server-modal'
+import SelectVisibilityModal from '../ui/add-server/select-visibility-modal'
 
 export interface CreateServerForm {
   serverName: string
@@ -62,12 +63,17 @@ export default function AddServerFeature({
     ),
     //TODO: Dorian - Add the Invite components
     invite: <div>Invite</div>,
-    create: <div>Create</div>,
+    create: (
+      <SelectVisibilityModal
+        createPrivateServer={() => setServerStep('private')}
+        createPublicServer={() => setServerStep('public')}
+      />
+    ),
   }
 
   return (
     <AddServerNavigation
-      closeModal={closeModal}
+      closeModal={() => setServerStep('create')}
       onCreateServer={() => setServerStep('private')}
       onJoinServer={(serverId) => console.log(serverId)}
       serverStep={serverStep}
