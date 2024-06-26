@@ -133,7 +133,7 @@ export default function MessageFeature({
         text.replace(regex, (match, offset) => {
             const user = findUserForTag(match);
             parts.push(text.slice(lastIndex, offset));
-            parts.push(<span key={offset} className='bg-violet-300 p-1 rounded cursor-pointer'>{user ? '@' + user.username : 'undefined user'}</span>);
+            parts.push(<span key={offset} className={'bg-violet-300 p-1 rounded ' + (user ? 'cursor-pointer' : '')}>{user ? '@' + user.username : 'undefined user'}</span>);
             lastIndex = offset + match.length;
             return match;
         });
@@ -155,7 +155,7 @@ export default function MessageFeature({
     };
 
     return recurseChildren(message);
-};
+  };
 
   return (
     <FormProvider {...methods}>
