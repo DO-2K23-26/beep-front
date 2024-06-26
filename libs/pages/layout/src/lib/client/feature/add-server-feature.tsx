@@ -37,7 +37,7 @@ export default function AddServerFeature({
   const render = {
     private: (
       <CreateServerModal
-        closeModal={closeModal}
+        closeModal={() => setServerStep('create')}
         onSubmit={handleSubmit(onSubmit)}
         register={register}
         control={control}
@@ -47,7 +47,7 @@ export default function AddServerFeature({
     ),
     public: (
       <CreateServerModal
-        closeModal={closeModal}
+        closeModal={() => setServerStep('create')}
         onSubmit={handleSubmit(onSubmit)}
         register={register}
         control={control}

@@ -1,45 +1,36 @@
 import { classNames } from '@beep/utils'
 import { RefObject, useEffect, useRef, useState } from 'react'
 import { Icon } from '../icons/icon'
+import { UseFormRegister } from 'react-hook-form'
+
+interface WithIcon {
+  icon: File
+  [key: string]: unknown
+}
 
 export interface InputPictureProps {
   label: string
-  name: string
   disabled?: boolean
   className?: string
   customRef?: RefObject<HTMLInputElement>
+  onChange?: (e: any) => void
+  value: File | null
 }
 
 export function InputPicture({
   label,
   disabled = false,
   className = '',
-  name,
+  onChange,
+  value,
 }: InputPictureProps): JSX.Element {
   const inputRef = useRef<HTMLInputElement>(null)
-  const [previewImage, setPreviewImage] = useState<string | ArrayBuffer | null>(
-    null
-  )
   const isDisabled = disabled ? 'input--disabled' : ''
   const uuid = Math.random().toString(36).substring(7)
 
-  const activated = previewImage ? true : false
+  const activated = value ? true : false
 
-  useEffect(() => {
-    if (inputRef.current) {
-      inputRef.current.addEventListener('change', () => {
-        if (inputRef.current?.files) {
-          const file = inputRef.current.files[0]
-          const reader = new FileReader()
-          reader.onload = (e) => {
-            const image = e.target?.result
-            if (image) setPreviewImage(image)
-          }
-          reader.readAsDataURL(file)
-        }
-      })
-    }
-  }, [])
+  const previewImage = value ? URL.createObjectURL(value) : null
 
   return (
     <label
@@ -76,11 +67,11 @@ export function InputPicture({
           <Icon name="lucide:image-plus" className="h-5 w-5" />
         )}
         <input
-          ref={inputRef}
           className="hidden"
           type="file"
-          name={name}
           id={uuid.toString()}
+          ref={inputRef}
+          onChange={onChange}
         />
       </div>
       <label

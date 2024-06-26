@@ -1,5 +1,5 @@
 import { Control, Controller, UseFormRegister } from 'react-hook-form'
-import { BaseSyntheticEvent } from 'react'
+import { BaseSyntheticEvent, ChangeEvent } from 'react'
 import { Button, InputPicture, InputText, InputTextArea } from '@beep/ui'
 import { CreateServerForm } from '../../feature/add-server-feature'
 
@@ -22,14 +22,24 @@ export default function CreateServerModal({
 }: CreateServerModalProps): JSX.Element {
   return (
     <div className="p-7 flex flex-col gap-3">
-      <h3 className="font-bold">Build your server</h3>
+      <h3 className="font-bold">Build your {visibility} server</h3>
       <p>
         Let's give your server some juice ! Keep in mind that you can edit your
         server later.
       </p>
       <form onSubmit={onSubmit} className="flex flex-col gap-6">
         <span className="flex items-center justify-center">
-          <InputPicture name="picture" label="Add a picture." />
+          <Controller
+            name="icon"
+            control={control}
+            render={({ field }) => (
+              <InputPicture
+                value={field.value}
+                onChange={(e) => field.onChange(e.target.files[0])}
+                label="Add a picture."
+              />
+            )}
+          />
         </span>
         <Controller
           name="serverName"
