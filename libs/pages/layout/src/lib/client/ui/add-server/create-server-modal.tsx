@@ -83,11 +83,6 @@ export default function CreateServerModal({
             />
           )}
         ></Controller>
-        {visibility === 'private' ? (
-          <input type="hidden" name="visibility" value="private" />
-        ) : (
-          <input type="hidden" name="visibility" value="public" />
-        )}
 
         <div className="flex flex-row items-center justify-between">
           <div className="flex flex-col w-1/4">

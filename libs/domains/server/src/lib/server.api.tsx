@@ -3,6 +3,7 @@ import {
   ChannelEntity,
   CreateChannelRequest,
   CreateChannelResponse,
+  CreateServerRequest,
   OccupiedChannelEntity,
   ServerEntity,
   UserDisplayedEntity,
@@ -29,12 +30,16 @@ export const serverApi = createApi({
       query: (params) => `/servers`,
       providesTags: ['servers'],
     }),
-    createServer: builder.mutation<void, string>({
-      query: (serverId) => ({
+    createServer: builder.mutation<string, CreateServerRequest>({
+      query: (request: CreateServerRequest) => ({
         url: `/servers`,
         method: 'POST',
+        formData: true,
         body: {
-          name: serverId,
+          name: request.name,
+          visibility: request.visibility,
+          description: request.description,
+          icon: request.icon,
         },
       }),
       invalidatesTags: ['servers'],
@@ -88,15 +93,13 @@ export const serverApi = createApi({
     getUsersByServerId: builder.query<UserDisplayedEntity[], string>({
       query: (serverId) => `servers/${serverId}/users`,
       providesTags: (result, error, serverId) =>
-        result ?
-          [
-            ...result.map(({ id }) => ({ type: 'users' as const, id })),
-            { type: 'users', id: `LIST-${serverId}` },
-          ] : [
-            { type: 'users', id: `LIST-${serverId}` }
-          ]
-    })
-    
+        result
+          ? [
+              ...result.map(({ id }) => ({ type: 'users' as const, id })),
+              { type: 'users', id: `LIST-${serverId}` },
+            ]
+          : [{ type: 'users', id: `LIST-${serverId}` }],
+    }),
   }),
 })
 
@@ -109,5 +112,5 @@ export const {
   useJoinVoiceChannelMutation,
   useLeaveVoiceChannelMutation,
   useGetCurrentStreamingUsersQuery,
-  useGetUsersByServerIdQuery
+  useGetUsersByServerIdQuery,
 } = serverApi

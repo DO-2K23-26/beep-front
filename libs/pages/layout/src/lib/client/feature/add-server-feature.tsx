@@ -4,11 +4,13 @@ import AddServerNavigation from '../ui/add-server/add-server-navigation'
 import CreateServerModal from '../ui/add-server/create-server-modal'
 import AddServerModal from '../ui/add-server/add-server-modal'
 import SelectVisibilityModal from '../ui/add-server/select-visibility-modal'
+import { useCreateServerMutation } from '@beep/server'
 
 export interface CreateServerForm {
   serverName: string
   description: string
   icon: File
+  visibility: 'private' | 'public'
 }
 
 export interface AddServerFeatureProps {
@@ -32,7 +34,24 @@ export default function AddServerFeature({
   const [serverStep, setServerStep] = useState<AddServerStep | undefined>(
     undefined
   )
-  const onSubmit: SubmitHandler<CreateServerForm> = (data) => console.log(data)
+
+  const [createServer, result] = useCreateServerMutation()
+
+  const onSubmit: SubmitHandler<CreateServerForm> = (data) => {
+    setLoading(true)
+    const payload = {
+      name: data.serverName,
+      description: data.description,
+      icon: data.icon,
+      visibility: serverStep === 'private' ? 'private' : 'public',
+    }
+    createServer(payload)
+      .unwrap()
+      .then(() => {
+        setLoading(false)
+        closeModal()
+      })
+  }
 
   const render = {
     private: (
