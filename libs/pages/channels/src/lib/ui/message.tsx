@@ -163,9 +163,6 @@ export default function Message({
               </div>
               {
                 selectedTaggedUser && selectedTaggedUser.messageId === message.id ? (
-                  // <div className="flex items-center">
-                  //   <TaggedUserProfileFeature user={{ id: selectedTaggedUser.user.id, username: selectedTaggedUser.user.username }} />
-                  // </div>
                   <UserInformationsFeature user={{ id: selectedTaggedUser.user.id, username: selectedTaggedUser.user.username }} onClose={() => setSelectedTaggedUser(undefined)} />
                 ) : (
                 <></>
