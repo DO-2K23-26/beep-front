@@ -8,15 +8,15 @@ export interface CreateServerForm {
   icon: File
 }
 
-export interface CreateServerFeatureProps {
+export interface AddServerFeatureProps {
   closeModal: () => void
 }
 
 export type CreateServerStep = 'private' | 'public' | 'invite'
 
-export default function CreateServerFeature({
+export default function AddServerFeature({
   closeModal,
-}: CreateServerFeatureProps) {
+}: AddServerFeatureProps) {
   const { register, handleSubmit, control } = useForm<CreateServerForm>()
   const [loading, setLoading] = useState<boolean>(false)
   const [serverStep, setServerStep] = useState<CreateServerStep | undefined>(

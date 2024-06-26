@@ -8,7 +8,7 @@ import {
   useFormContext,
 } from 'react-hook-form'
 import { useState } from 'react'
-import CreateServerFeature from '../feature/create-server-feature'
+import AddServerFeature from '../feature/add-server-feature'
 
 interface ServersNavigationProps {
   servers: ServerEntity[] | undefined
@@ -49,7 +49,7 @@ export default function ServersNavigation({
           className="!bg-violet-50"
           onClick={() => {
             openModal({
-              content: <CreateServerFeature closeModal={closeModal} />,
+              content: <AddServerFeature closeModal={closeModal} />,
             })
           }}
         >

@@ -1,5 +1,5 @@
 import { Control, Controller, UseFormRegister } from 'react-hook-form'
-import { CreateServerForm } from '../feature/create-server-feature'
+import { CreateServerForm } from '../feature/add-server-feature'
 import { BaseSyntheticEvent } from 'react'
 import { Button, InputPicture, InputText, InputTextArea } from '@beep/ui'
 
