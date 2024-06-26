@@ -4,18 +4,17 @@ import {
   useGetChannelQuery,
   useGetMessagesByChannelIdQuery
 } from '@beep/channel'
-import { ChannelType, UserDisplayedEntity, backendUrl } from '@beep/contracts'
+import { ChannelType, backendUrl } from '@beep/contracts'
 import { responsiveActions } from '@beep/responsive'
+import { useGetUsersByServerIdQuery } from '@beep/server'
 import { AppDispatch } from '@beep/store'
+import { DynamicSelectorProps } from '@beep/ui'
 import { useEffect, useRef, useState } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
 import toast from 'react-hot-toast'
 import { useDispatch } from 'react-redux'
 import { useParams } from 'react-router'
 import { PageChannel } from '../ui/page-channel'
-import { DynamicSelectorProps } from '@beep/ui'
-import { useGetUsersByServerIdQuery } from '@beep/server'
-import { useFetchProfilePictureQuery } from '@beep/user'
 import { DynamicSelectorFeature } from './dynamic-selector-item-feature'
 
 export function PageChannelFeature() {
@@ -56,9 +55,9 @@ export function PageChannelFeature() {
 
     const text: string = message.slice(startWordIndex, endWordIndex).trim();
     if (nonUserTagRegex.test(text)) {
-      const elements = usersServer ? usersServer.filter(u => u.username.toLowerCase().includes(text.slice(1).toLowerCase()) || text.slice(1) === '').map(u => ({
-        id: u.id,
-        content: <DynamicSelectorFeature user={u} />
+      const elements = usersServer ? usersServer.filter(u => u.username.toLowerCase().includes(text.slice(1).toLowerCase()) || text.slice(1) === '').map(user => ({
+        id: user.id,
+        content: <DynamicSelectorFeature user={user} />
       })) : []
 
       if (elements.length === 0) {
