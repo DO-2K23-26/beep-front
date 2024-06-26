@@ -28,7 +28,8 @@ export function PageChannelFeature() {
   const [previewUrls, setPreviewUrls] = useState<{ content: string | null }[]>(
     []
   )
-  const inputRef = useRef<HTMLInputElement>(null)
+  const inputRef = useRef<HTMLInputElement>(null);
+  const [selectedTaggedUser, setSelectedTaggedUser] = useState<{ user: UserDisplayedEntity, messageId: string } | undefined>(undefined)
 
   const [createMessage] = useCreateMessageMutation()
 
@@ -244,6 +245,8 @@ export function PageChannelFeature() {
           onCursorChange={handleCursorChange}
           dynamicSelector={dynamicSelector}
           findUserForTag={findUserForTag}
+          selectedTaggedUser={selectedTaggedUser}
+          setSelectedTaggedUser={setSelectedTaggedUser}
         />
       </FormProvider>
     ) : (

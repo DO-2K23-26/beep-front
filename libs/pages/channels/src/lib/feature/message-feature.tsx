@@ -21,6 +21,8 @@ interface MessageFeatureProps {
   isPinned: boolean
   control?: any
   findUserForTag?: (value: string) => UserDisplayedEntity | undefined
+  selectedTaggedUser: { user: UserDisplayedEntity, messageId: string } | undefined
+  setSelectedTaggedUser: React.Dispatch<React.SetStateAction<{ user: UserDisplayedEntity, messageId: string } | undefined>>
 }
 
 export default function MessageFeature({
@@ -36,7 +38,9 @@ export default function MessageFeature({
   setEditingMessageId,
   isPinned,
   control,
-  findUserForTag
+  findUserForTag,
+  selectedTaggedUser,
+  setSelectedTaggedUser
 }: MessageFeatureProps) {
   const [pinMessage, result] = usePinMessageMutation()
   const [createMessage] = useCreateMessageMutation()
@@ -133,7 +137,15 @@ export default function MessageFeature({
         text.replace(regex, (match, offset) => {
             const user = findUserForTag(match);
             parts.push(text.slice(lastIndex, offset));
-            parts.push(<span key={offset} className={'bg-violet-300 p-1 rounded ' + (user ? 'cursor-pointer' : '')}>{user ? '@' + user.username : 'undefined user'}</span>);
+            parts.push(
+              <span
+              key={offset}
+              className={'bg-violet-300 p-1 rounded ' + (user ? 'cursor-pointer' : '')}
+              onClick={() => user && onClickTag(user)}
+              >
+                {user ? '@' + user.username : 'undefined user'}
+              </span>
+            );
             lastIndex = offset + match.length;
             return match;
         });
@@ -157,6 +169,12 @@ export default function MessageFeature({
     return recurseChildren(message);
   };
 
+  const onClickTag = (user: UserDisplayedEntity) => {
+    !selectedTaggedUser || selectedTaggedUser && (selectedTaggedUser.user.id !== user.id || selectedTaggedUser.messageId !== message.id) ?
+      setSelectedTaggedUser({ user: user, messageId: message.id }) :
+      setSelectedTaggedUser(undefined)
+  }
+
   return (
     <FormProvider {...methods}>
       <Message
@@ -169,14 +187,13 @@ export default function MessageFeature({
         cancelEditing={cancelEditing}
         onUpdateMessage={onUpdateMessageSubmit}
         createdAt={createdAt}
-        payload={payload}
         control={control}
         replaceTagEntity={replaceTagEntity}
         isHighlighted={message.content.includes('@$' + payload?.sub)}
+        selectedTaggedUser={selectedTaggedUser}
         onPin={onPin}
         isPinned={isPinned}
       />
     </FormProvider>
-      
   )
 }

@@ -25,6 +25,8 @@ export interface PageChannelProps {
   onCursorChange?: () => void
   dynamicSelector?: DynamicSelectorProps
   findUserForTag?: (value: string) => UserDisplayedEntity | undefined
+  selectedTaggedUser: { user: UserDisplayedEntity, messageId: string } | undefined
+  setSelectedTaggedUser: React.Dispatch<React.SetStateAction<{ user: UserDisplayedEntity, messageId: string } | undefined>>
 }
 
 export const PageChannel = ({
@@ -43,6 +45,8 @@ export const PageChannel = ({
   onCursorChange,
   dynamicSelector,
   findUserForTag,
+  selectedTaggedUser,
+  setSelectedTaggedUser,
 }: PageChannelProps) => {
   const { control } = useFormContext()
 
@@ -78,7 +82,7 @@ export const PageChannel = ({
         </Button>
       </div>
       {/* Message list */}
-      <ListMessages messages={messages} onUpdateMessage={onUpdateMessage} control={control} findUserForTag={findUserForTag} />
+      <ListMessages messages={messages} onUpdateMessage={onUpdateMessage} control={control} findUserForTag={findUserForTag} selectedTaggedUser={selectedTaggedUser} setSelectedTaggedUser={setSelectedTaggedUser} />
       {/* Message input + bouttons + files */}
       <div className='flex flex-col w-full gap-3'>
         {/* files */}

@@ -7,9 +7,11 @@ interface ListMessagesProps {
   onUpdateMessage: (messageId: string, newContent: string) => void
   control: any
   findUserForTag?: (value: string) => UserDisplayedEntity | undefined
+  selectedTaggedUser: { user: UserDisplayedEntity, messageId: string } | undefined
+  setSelectedTaggedUser: React.Dispatch<React.SetStateAction<{ user: UserDisplayedEntity, messageId: string } | undefined>>
 }
 
-export default function ListMessages({ messages, onUpdateMessage, control, findUserForTag }: ListMessagesProps) {
+export default function ListMessages({ messages, onUpdateMessage, control, findUserForTag, selectedTaggedUser, setSelectedTaggedUser }: ListMessagesProps) {
   const [editingMessageId, setEditingMessageId] = useState<string | null>(null)
   return (
     <div className="flex flex-col-reverse gap-6 overflow-y-scroll no-scrollbar scroll-smooth h-full">
@@ -28,6 +30,8 @@ export default function ListMessages({ messages, onUpdateMessage, control, findU
               setEditingMessageId={setEditingMessageId}
               isPinned= {false}
               findUserForTag={findUserForTag}
+              selectedTaggedUser={selectedTaggedUser}
+              setSelectedTaggedUser={setSelectedTaggedUser}
             />
           ))}
     </div>

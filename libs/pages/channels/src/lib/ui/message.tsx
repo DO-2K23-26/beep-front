@@ -1,11 +1,12 @@
 import React, { ReactNode, useEffect } from "react";
-import { MessageEntity, UserEntity } from '@beep/contracts'
+import { MessageEntity, UserDisplayedEntity, UserEntity } from '@beep/contracts'
 import { Button, ButtonStyle, Icon, Input } from '@beep/ui'
 import { Controller } from 'react-hook-form'
 import AttachmentFeature from '../feature/attachment-feature'
-import Markdoc from "@markdoc/markdoc"
-import { config, markdownComponents } from "../utils/markdown-config"
-import { preprocessMarkdown } from "../utils/markdown-parser"
+import Markdoc from "@markdoc/markdoc";
+import { config, markdownComponents } from "../utils/markdown-config";
+import { preprocessMarkdown } from "../utils/markdown-parser";
+import { TaggedUserProfileFeature } from "../feature/tagged-user-profile-feature";
 
 interface MessageProps {
   message: MessageEntity
@@ -27,6 +28,7 @@ interface MessageProps {
   control?: any
   replaceTagEntity: (message: ReactNode) => ReactNode
   isHighlighted: boolean
+  selectedTaggedUser: { user: UserDisplayedEntity, messageId: string } | undefined
 }
 
 export default function Message({
@@ -48,7 +50,8 @@ export default function Message({
   isPinned,
   control,
   replaceTagEntity,
-  isHighlighted
+  isHighlighted,
+  selectedTaggedUser
 }: Readonly<MessageProps>) {
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
@@ -122,10 +125,11 @@ export default function Message({
         )}
       </div>
       <div className="flex flex-row gap-2">
-        {isEditing ? (
-          <div className="flex flex-row justify-between items-center gap-3">
-            <Controller
-              name="message"
+        {
+          isEditing && switchEditing && control ? (
+            <div className='flex flex-row justify-between items-center gap-3'>
+              <Controller
+              name={'message-' + message.id}
               control={control}
               defaultValue={message.content || ''}
               render={({ field }) => (
@@ -142,16 +146,31 @@ export default function Message({
               )}
             />
           </div>
-        ) : (
-          <div className="bg-violet-50 rounded-xl rounded-tl-none p-6 flex flex-col gap-3">
-            <div className="text-xs font-semibold break-all">
-              {renderedMessage}
+          ) : (
+            <>
+            <div className="bg-violet-50 rounded-xl rounded-tl-none p-6 flex flex-col gap-3">
+              <div className="text-xs font-semibold break-all">
+                {renderedMessage}
+              </div>
+              {
+                message.attachments ?
+                  message.attachments.map((attachment, i) => {
+                    return <AttachmentFeature attachment={attachment} key={i} />
+                  }) : <></>
+              }
             </div>
-            {message.attachments && message.attachments.map((attachment, i) => (
-              <AttachmentFeature attachment={attachment} key={i} />
-            ))}
-          </div>
-        )}
+            {
+              selectedTaggedUser && selectedTaggedUser.messageId === message.id ? (
+                <div className="flex items-center">
+                  <TaggedUserProfileFeature user={{ id: selectedTaggedUser.user.id, username: selectedTaggedUser.user.username }} />
+                </div>
+              ) : (
+                <></>
+              )
+            }
+            </>
+          )
+        }
       </div>
     </div>
   )
