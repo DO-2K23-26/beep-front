@@ -1,7 +1,7 @@
 import { Control, Controller, UseFormRegister } from 'react-hook-form'
-import { CreateServerForm } from '../feature/add-server-feature'
 import { BaseSyntheticEvent } from 'react'
 import { Button, InputPicture, InputText, InputTextArea } from '@beep/ui'
+import { CreateServerForm } from '../../feature/add-server-feature'
 
 interface CreateServerModalProps {
   register: UseFormRegister<CreateServerForm>
@@ -9,6 +9,7 @@ interface CreateServerModalProps {
   onSubmit: (e: BaseSyntheticEvent) => Promise<void>
   loading: boolean
   closeModal: () => void
+  visibility: 'private' | 'public'
 }
 
 export default function CreateServerModal({
@@ -17,6 +18,7 @@ export default function CreateServerModal({
   control,
   loading,
   closeModal,
+  visibility,
 }: CreateServerModalProps): JSX.Element {
   return (
     <div className="p-7 flex flex-col gap-3">
@@ -71,6 +73,12 @@ export default function CreateServerModal({
             />
           )}
         ></Controller>
+        {visibility === 'private' ? (
+          <input type="hidden" name="visibility" value="private" />
+        ) : (
+          <input type="hidden" name="visibility" value="public" />
+        )}
+
         <div className="flex flex-row items-center justify-between">
           <div className="flex flex-col w-1/4">
             <Button

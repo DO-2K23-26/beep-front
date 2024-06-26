@@ -1,6 +1,6 @@
-import { ChannelType } from "@beep/contracts";
-import { Button, ButtonStyle, InputText } from "@beep/ui";
-import { Controller, UseFormReturn, useFormContext } from "react-hook-form";
+import { ChannelType } from '@beep/contracts'
+import { Button, ButtonStyle, InputText } from '@beep/ui'
+import { Controller, UseFormReturn, useFormContext } from 'react-hook-form'
 
 interface CreateChannelModalProps {
   closeModal: () => void
