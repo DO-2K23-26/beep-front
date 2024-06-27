@@ -3011,3 +3011,317 @@
 [NX Daemon Server] - 2024-06-29T12:41:33.310Z - Done responding to the client project-graph
 [NX Daemon Server] - 2024-06-29T12:41:33.310Z - Handled REQUEST_PROJECT_GRAPH. Handling time: 1. Response time: 5.
 [NX Daemon Server] - 2024-06-29T12:41:33.322Z - Established a connection. Number of open connections: 3
+[NX Daemon Server] - 2024-06-30T16:31:33.608Z - Started listening on: /tmp/a79bf436bb256c6fccd5/d.sock
+[NX Daemon Server] - 2024-06-30T16:31:33.611Z - [WATCHER]: Subscribed to changes within: /home/mihai/Projets/Beep/front (native)
+[NX Daemon Server] - 2024-06-30T16:31:33.616Z - Established a connection. Number of open connections: 1
+[NX Daemon Server] - 2024-06-30T16:31:33.617Z - Established a connection. Number of open connections: 2
+[NX Daemon Server] - 2024-06-30T16:31:33.621Z - [REQUEST]: Client Request for Project Graph Received
+[NX Daemon Server] - 2024-06-30T16:31:33.746Z - [REQUEST]: Updated workspace context based on watched changes, recomputing project graph...
+[NX Daemon Server] - 2024-06-30T16:31:33.746Z - [REQUEST]: 
+[NX Daemon Server] - 2024-06-30T16:31:33.746Z - [REQUEST]: 
+[NX Daemon Server] - 2024-06-30T16:31:36.552Z - Time taken for 'Load Nx Plugin: /home/mihai/Projets/Beep/front/node_modules/.pnpm/nx@19.3.2_@swc-node+register@1.9.2_@swc+core@1.5.7_@swc+helpers@0.5.11__@swc+types@0.1.7_type_n5pexknj54x4762oj5yxzci6tq/node_modules/nx/src/plugins/project-json/build-nodes/package-json-next-to-project-json' 122.46592500805855ms
+[NX Daemon Server] - 2024-06-30T16:31:36.552Z - Closed a connection. Number of open connections: 1
+▲ [WARNING] Duplicate key "lucide-react" in object literal [duplicate-object-key]
+
+    package.json:37:4:
+      37 │     "lucide-react": "^0.396.0",
+         ╵     ~~~~~~~~~~~~~~
+
+  The original key "lucide-react" is here:
+
+    package.json:34:4:
+      34 │     "lucide-react": "^0.396.0",
+         ╵     ~~~~~~~~~~~~~~
+
+▲ [WARNING] Duplicate key "lucide-react" in object literal [duplicate-object-key]
+
+    package.json:37:4:
+      37 │     "lucide-react": "^0.396.0",
+         ╵     ~~~~~~~~~~~~~~
+
+  The original key "lucide-react" is here:
+
+    package.json:34:4:
+      34 │     "lucide-react": "^0.396.0",
+         ╵     ~~~~~~~~~~~~~~
+
+▲ [WARNING] Duplicate key "lucide-react" in object literal [duplicate-object-key]
+
+    package.json:37:4:
+      37 │     "lucide-react": "^0.396.0",
+         ╵     ~~~~~~~~~~~~~~
+
+  The original key "lucide-react" is here:
+
+    package.json:34:4:
+      34 │     "lucide-react": "^0.396.0",
+         ╵     ~~~~~~~~~~~~~~
+
+▲ [WARNING] Duplicate key "lucide-react" in object literal [duplicate-object-key]
+
+    package.json:37:4:
+      37 │     "lucide-react": "^0.396.0",
+         ╵     ~~~~~~~~~~~~~~
+
+  The original key "lucide-react" is here:
+
+    package.json:34:4:
+      34 │     "lucide-react": "^0.396.0",
+         ╵     ~~~~~~~~~~~~~~
+
+▲ [WARNING] Duplicate key "lucide-react" in object literal [duplicate-object-key]
+
+    package.json:37:4:
+      37 │     "lucide-react": "^0.396.0",
+         ╵     ~~~~~~~~~~~~~~
+
+  The original key "lucide-react" is here:
+
+    package.json:34:4:
+      34 │     "lucide-react": "^0.396.0",
+         ╵     ~~~~~~~~~~~~~~
+
+▲ [WARNING] Duplicate key "lucide-react" in object literal [duplicate-object-key]
+
+    package.json:37:4:
+      37 │     "lucide-react": "^0.396.0",
+         ╵     ~~~~~~~~~~~~~~
+
+  The original key "lucide-react" is here:
+
+    package.json:34:4:
+      34 │     "lucide-react": "^0.396.0",
+         ╵     ~~~~~~~~~~~~~~
+
+▲ [WARNING] Duplicate key "lucide-react" in object literal [duplicate-object-key]
+
+    package.json:37:4:
+      37 │     "lucide-react": "^0.396.0",
+         ╵     ~~~~~~~~~~~~~~
+
+  The original key "lucide-react" is here:
+
+    package.json:34:4:
+      34 │     "lucide-react": "^0.396.0",
+         ╵     ~~~~~~~~~~~~~~
+
+▲ [WARNING] Duplicate key "lucide-react" in object literal [duplicate-object-key]
+
+    package.json:37:4:
+      37 │     "lucide-react": "^0.396.0",
+         ╵     ~~~~~~~~~~~~~~
+
+  The original key "lucide-react" is here:
+
+    package.json:34:4:
+      34 │     "lucide-react": "^0.396.0",
+         ╵     ~~~~~~~~~~~~~~
+
+▲ [WARNING] Duplicate key "lucide-react" in object literal [duplicate-object-key]
+
+    package.json:37:4:
+      37 │     "lucide-react": "^0.396.0",
+         ╵     ~~~~~~~~~~~~~~
+
+  The original key "lucide-react" is here:
+
+    package.json:34:4:
+      34 │     "lucide-react": "^0.396.0",
+         ╵     ~~~~~~~~~~~~~~
+
+▲ [WARNING] Duplicate key "lucide-react" in object literal [duplicate-object-key]
+
+    package.json:37:4:
+      37 │     "lucide-react": "^0.396.0",
+         ╵     ~~~~~~~~~~~~~~
+
+  The original key "lucide-react" is here:
+
+    package.json:34:4:
+      34 │     "lucide-react": "^0.396.0",
+         ╵     ~~~~~~~~~~~~~~
+
+▲ [WARNING] Duplicate key "lucide-react" in object literal [duplicate-object-key]
+
+    package.json:37:4:
+      37 │     "lucide-react": "^0.396.0",
+         ╵     ~~~~~~~~~~~~~~
+
+  The original key "lucide-react" is here:
+
+    package.json:34:4:
+      34 │     "lucide-react": "^0.396.0",
+         ╵     ~~~~~~~~~~~~~~
+
+▲ [WARNING] Duplicate key "lucide-react" in object literal [duplicate-object-key]
+
+    package.json:37:4:
+      37 │     "lucide-react": "^0.396.0",
+         ╵     ~~~~~~~~~~~~~~
+
+  The original key "lucide-react" is here:
+
+    package.json:34:4:
+      34 │     "lucide-react": "^0.396.0",
+         ╵     ~~~~~~~~~~~~~~
+
+▲ [WARNING] Duplicate key "lucide-react" in object literal [duplicate-object-key]
+
+    package.json:37:4:
+      37 │     "lucide-react": "^0.396.0",
+         ╵     ~~~~~~~~~~~~~~
+
+  The original key "lucide-react" is here:
+
+    package.json:34:4:
+      34 │     "lucide-react": "^0.396.0",
+         ╵     ~~~~~~~~~~~~~~
+
+▲ [WARNING] Duplicate key "lucide-react" in object literal [duplicate-object-key]
+
+    package.json:37:4:
+      37 │     "lucide-react": "^0.396.0",
+         ╵     ~~~~~~~~~~~~~~
+
+  The original key "lucide-react" is here:
+
+    package.json:34:4:
+      34 │     "lucide-react": "^0.396.0",
+         ╵     ~~~~~~~~~~~~~~
+
+▲ [WARNING] Duplicate key "lucide-react" in object literal [duplicate-object-key]
+
+    package.json:37:4:
+      37 │     "lucide-react": "^0.396.0",
+         ╵     ~~~~~~~~~~~~~~
+
+  The original key "lucide-react" is here:
+
+    package.json:34:4:
+      34 │     "lucide-react": "^0.396.0",
+         ╵     ~~~~~~~~~~~~~~
+
+▲ [WARNING] Duplicate key "lucide-react" in object literal [duplicate-object-key]
+
+    package.json:37:4:
+      37 │     "lucide-react": "^0.396.0",
+         ╵     ~~~~~~~~~~~~~~
+
+  The original key "lucide-react" is here:
+
+    package.json:34:4:
+      34 │     "lucide-react": "^0.396.0",
+         ╵     ~~~~~~~~~~~~~~
+
+[33mThe CJS build of Vite's Node API is deprecated. See https://vitejs.dev/guide/troubleshooting.html#vite-cjs-node-api-deprecated for more details.[39m
+
+[vite:dts] You are building a library that may not need to generate declaration files.
+
+
+[vite:dts] You are building a library that may not need to generate declaration files.
+
+
+[vite:dts] You are building a library that may not need to generate declaration files.
+
+
+[vite:dts] You are building a library that may not need to generate declaration files.
+
+
+[vite:dts] You are building a library that may not need to generate declaration files.
+
+
+[vite:dts] You are building a library that may not need to generate declaration files.
+
+
+[vite:dts] You are building a library that may not need to generate declaration files.
+
+
+[vite:dts] You are building a library that may not need to generate declaration files.
+
+
+[vite:dts] You are building a library that may not need to generate declaration files.
+
+
+[vite:dts] You are building a library that may not need to generate declaration files.
+
+
+[vite:dts] You are building a library that may not need to generate declaration files.
+
+
+[vite:dts] You are building a library that may not need to generate declaration files.
+
+
+[vite:dts] You are building a library that may not need to generate declaration files.
+
+[NX Daemon Server] - 2024-06-30T16:31:37.586Z - [REQUEST]: Responding to the client. project-graph
+[NX Daemon Server] - 2024-06-30T16:31:37.589Z - Time taken for 'total for creating and serializing project graph' 3965.69493599236ms
+[NX Daemon Server] - 2024-06-30T16:31:37.593Z - Done responding to the client project-graph
+[NX Daemon Server] - 2024-06-30T16:31:37.593Z - Handled REQUEST_PROJECT_GRAPH. Handling time: 3966. Response time: 7.
+[NX Daemon Server] - 2024-06-30T16:31:37.807Z - [REQUEST]: Responding to the client. handleContextFileData
+[NX Daemon Server] - 2024-06-30T16:31:37.807Z - Done responding to the client handleContextFileData
+[NX Daemon Server] - 2024-06-30T16:31:37.808Z - Handled GET_CONTEXT_FILE_DATA. Handling time: 0. Response time: 0.
+[NX Daemon Server] - 2024-06-30T16:31:37.809Z - Closed a connection. Number of open connections: 0
+[NX Daemon Server] - 2024-06-30T16:31:37.821Z - Established a connection. Number of open connections: 1
+[NX Daemon Server] - 2024-06-30T16:31:37.821Z - Established a connection. Number of open connections: 2
+[NX Daemon Server] - 2024-06-30T16:31:37.823Z - [REQUEST]: Client Request for Project Graph Received
+[NX Daemon Server] - 2024-06-30T16:31:37.823Z - [REQUEST]: Responding to the client. project-graph
+[NX Daemon Server] - 2024-06-30T16:31:37.825Z - Time taken for 'total for creating and serializing project graph' 0.35958799719810486ms
+[NX Daemon Server] - 2024-06-30T16:31:37.825Z - Closed a connection. Number of open connections: 1
+[NX Daemon Server] - 2024-06-30T16:31:37.826Z - Done responding to the client project-graph
+[NX Daemon Server] - 2024-06-30T16:31:37.826Z - Handled REQUEST_PROJECT_GRAPH. Handling time: 0. Response time: 3.
+[NX Daemon Server] - 2024-06-30T16:31:37.832Z - [REQUEST]: Client Request for Project Graph Received
+[NX Daemon Server] - 2024-06-30T16:31:37.833Z - [REQUEST]: Responding to the client. project-graph
+[NX Daemon Server] - 2024-06-30T16:31:37.835Z - Time taken for 'total for creating and serializing project graph' 0.3588529974222183ms
+[NX Daemon Server] - 2024-06-30T16:31:37.836Z - Done responding to the client project-graph
+[NX Daemon Server] - 2024-06-30T16:31:37.836Z - Handled REQUEST_PROJECT_GRAPH. Handling time: 1. Response time: 3.
+[NX Daemon Server] - 2024-06-30T16:31:37.841Z - Established a connection. Number of open connections: 2
+[NX Daemon Server] - 2024-06-30T16:32:03.976Z - [WATCHER]: libs/shared/contracts/src/lib/request/index.ts was modified
+[NX Daemon Server] - 2024-06-30T16:32:03.977Z - [REQUEST]: Responding to the client. File watch changed
+[NX Daemon Server] - 2024-06-30T16:32:03.977Z - Done responding to the client File watch changed
+[NX Daemon Server] - 2024-06-30T16:32:03.977Z - Handled FILE-WATCH-CHANGED. Handling time: 0. Response time: 0.
+[NX Daemon Server] - 2024-06-30T16:32:03.977Z - [WATCHER]: Processing file changes in outputs
+[NX Daemon Server] - 2024-06-30T16:32:03.978Z - Time taken for 'changed-projects' 0.2526420056819916ms
+[NX Daemon Server] - 2024-06-30T16:32:04.078Z - [REQUEST]: Updated workspace context based on watched changes, recomputing project graph...
+[NX Daemon Server] - 2024-06-30T16:32:04.078Z - [REQUEST]: libs/shared/contracts/src/lib/request/index.ts
+[NX Daemon Server] - 2024-06-30T16:32:04.078Z - [REQUEST]: 
+[NX Daemon Server] - 2024-06-30T16:32:04.180Z - Time taken for 'hash changed files from watcher' 0.4491100013256073ms
+▲ [WARNING] Duplicate key "lucide-react" in object literal [duplicate-object-key]
+
+    package.json:37:4:
+      37 │     "lucide-react": "^0.396.0",
+         ╵     ~~~~~~~~~~~~~~
+
+  The original key "lucide-react" is here:
+
+    package.json:34:4:
+      34 │     "lucide-react": "^0.396.0",
+         ╵     ~~~~~~~~~~~~~~
+
+
+[vite:dts] You are building a library that may not need to generate declaration files.
+
+[NX Daemon Server] - 2024-06-30T16:32:04.346Z - Time taken for 'build-project-configs' 115.15810599923134ms
+[NX Daemon Server] - 2024-06-30T16:32:04.981Z - [REQUEST]: Client Request for Project Graph Received
+[NX Daemon Server] - 2024-06-30T16:32:04.981Z - [REQUEST]: Responding to the client. project-graph
+[NX Daemon Server] - 2024-06-30T16:32:04.982Z - Time taken for 'total for creating and serializing project graph' 0.22029700875282288ms
+[NX Daemon Server] - 2024-06-30T16:32:04.982Z - Done responding to the client project-graph
+[NX Daemon Server] - 2024-06-30T16:32:04.982Z - Handled REQUEST_PROJECT_GRAPH. Handling time: 0. Response time: 1.
+[NX Daemon Server] - 2024-06-30T16:32:04.989Z - [REQUEST]: Responding to the client. handleContextFileData
+[NX Daemon Server] - 2024-06-30T16:32:04.989Z - Done responding to the client handleContextFileData
+[NX Daemon Server] - 2024-06-30T16:32:04.989Z - Handled GET_CONTEXT_FILE_DATA. Handling time: 1. Response time: 0.
+[NX Daemon Server] - 2024-06-30T16:32:04.990Z - Closed a connection. Number of open connections: 1
+[NX Daemon Server] - 2024-06-30T16:32:04.995Z - Closed a connection. Number of open connections: 0
+[NX Daemon Server] - 2024-06-30T16:32:04.995Z - Established a connection. Number of open connections: 1
+[NX Daemon Server] - 2024-06-30T16:32:04.996Z - Established a connection. Number of open connections: 2
+[NX Daemon Server] - 2024-06-30T16:32:04.997Z - [REQUEST]: Client Request for Project Graph Received
+[NX Daemon Server] - 2024-06-30T16:32:04.997Z - [REQUEST]: Responding to the client. project-graph
+[NX Daemon Server] - 2024-06-30T16:32:04.999Z - Time taken for 'total for creating and serializing project graph' 0.3299179971218109ms
+[NX Daemon Server] - 2024-06-30T16:32:04.999Z - Closed a connection. Number of open connections: 1
+[NX Daemon Server] - 2024-06-30T16:32:04.999Z - Done responding to the client project-graph
+[NX Daemon Server] - 2024-06-30T16:32:04.999Z - Handled REQUEST_PROJECT_GRAPH. Handling time: 0. Response time: 2.
+[NX Daemon Server] - 2024-06-30T16:32:05.005Z - [REQUEST]: Client Request for Project Graph Received
+[NX Daemon Server] - 2024-06-30T16:32:05.005Z - [REQUEST]: Responding to the client. project-graph
+[NX Daemon Server] - 2024-06-30T16:32:05.006Z - Time taken for 'total for creating and serializing project graph' 0.18603700399398804ms
+[NX Daemon Server] - 2024-06-30T16:32:05.007Z - Done responding to the client project-graph
+[NX Daemon Server] - 2024-06-30T16:32:05.007Z - Handled REQUEST_PROJECT_GRAPH. Handling time: 0. Response time: 2.
+[NX Daemon Server] - 2024-06-30T16:32:05.012Z - Established a connection. Number of open connections: 2

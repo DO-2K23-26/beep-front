@@ -19,13 +19,10 @@ import { useState } from 'react'
 interface GenerateCodePrivateInvitationProps {
   isDateInPast: boolean
   isButtonDisabled: boolean
-  date: Date | undefined
+  date: Date
   selectedOption: string
-  onGenerateCode: (
-    uniqueCode: boolean,
-    expirationDate: Date | undefined
-  ) => void
-  setDate: (date: Date | undefined) => void
+  onGenerateCode: (uniqueCode: boolean, expirationDate: Date) => void
+  setDate: (date: Date) => void
   handleSelectChange: (value: string) => void
 }
 
@@ -50,7 +47,11 @@ export function GenerateCodePrivateInvitation({
           isButtonDisabled ? 'bg-violet-200' : 'bg-violet-400'
         }`}
         disabled={isButtonDisabled}
-        onClick={() => onGenerateCode(isUniqueCode, date)}
+        onClick={() => {
+          if (date) {
+            onGenerateCode(isUniqueCode, date)
+          }
+        }}
       >
         <div className="text-violet-50">Generate invitation link</div>
       </ButtonShadCn>
@@ -94,18 +95,14 @@ export function GenerateCodePrivateInvitation({
               }`}
             >
               <CalendarIcon className="mr-2 h-4 w-4" />
-              {date ? (
-                format(date, 'PPP')
-              ) : (
-                <span>Pick an expiration date</span>
-              )}
+              {date ? format(date, 'PPP') : <span>Pick a date</span>}
             </ButtonShadCn>
           </PopoverTrigger>
           <PopoverContent className="w-auto p-0 bg-white">
             <Calendar
               mode="single"
               selected={date}
-              onSelect={setDate}
+              onSelect={(d) => setDate(d as Date)}
               initialFocus
             />
           </PopoverContent>

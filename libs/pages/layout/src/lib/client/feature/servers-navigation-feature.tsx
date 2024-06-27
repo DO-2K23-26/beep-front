@@ -1,7 +1,7 @@
 import {
   useCreateServerMutation,
   useGetServersQuery,
-  useJoinServerMutation
+  useJoinPublicServerMutation
 } from '@beep/server'
 import { AppDispatch } from '@beep/store'
 import { useModal } from '@beep/ui'
@@ -19,7 +19,7 @@ const onPrivateMessage = (navigation: NavigateFunction) => {
 export default function ServersNavigationFeature() {
   const { data: servers } = useGetServersQuery()
   const [createServer] = useCreateServerMutation()
-  const [joinServer] = useJoinServerMutation()
+  const [joinServer] = useJoinPublicServerMutation()
   const { openModal, closeModal } = useModal()
   const dispatch = useDispatch<AppDispatch>()
 

@@ -4,6 +4,8 @@ import {
   CreateChannelRequest,
   CreateChannelResponse,
   CreateServerRequest,
+  CreateInvitationRequest,
+  CreateInvitationResponse,
   OccupiedChannelEntity,
   ServerEntity,
   UserDisplayedEntity,
@@ -27,7 +29,7 @@ export const serverApi = createApi({
   tagTypes: ['servers', 'channels', 'streamingUsers', 'users'],
   endpoints: (builder) => ({
     getServers: builder.query<ServerEntity[], void>({
-      query: (params) => `/servers`,
+      query: () => `/servers`,
       providesTags: ['servers'],
     }),
     createServer: builder.mutation<string, FormData>({
@@ -39,7 +41,27 @@ export const serverApi = createApi({
       }),
       invalidatesTags: ['servers'],
     }),
-    joinServer: builder.mutation<void, string>({
+    createInvitation: builder.mutation<
+      CreateInvitationResponse,
+      CreateInvitationRequest
+    >({
+      query: (request) => ({
+        url: `/servers/${request.serverId}/invitation`,
+        method: 'POST',
+        body: {
+          isUnique: request.isUnique,
+          expiration: request.expiration,
+        },
+      }),
+    }),
+    joinPrivateServer: builder.mutation<void, string>({
+      query: (inviteId) => ({
+        url: `/servers/join/${inviteId}`,
+        method: 'POST',
+      }),
+      invalidatesTags: ['servers'],
+    }),
+    joinPublicServer: builder.mutation<void, string>({
       query: (serverId) => ({
         url: `/servers/${serverId}/join`,
         method: 'POST',
@@ -100,7 +122,9 @@ export const serverApi = createApi({
 
 export const {
   useGetServersQuery,
-  useJoinServerMutation,
+  useCreateInvitationMutation,
+  useJoinPublicServerMutation,
+  useJoinPrivateServerMutation,
   useCreateServerMutation,
   useGetServerChannelsQuery,
   useCreateChannelInServerMutation,

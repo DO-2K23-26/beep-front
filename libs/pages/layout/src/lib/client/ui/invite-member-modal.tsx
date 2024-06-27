@@ -1,17 +1,15 @@
-import React, { useEffect, useState } from 'react'
-import { isBefore, isToday } from 'date-fns'
+import { useEffect, useState } from 'react'
+import { DateTime } from 'luxon'
 import { GenerateCodePrivateInvitation } from './generate-code-private-invitation'
 import { GeneratedCodePrivateInvitation } from './generated-code-private-invitation'
 import { IdCodePublicInvitation } from './id-code-public-invitation'
+import { addDays, addHours, addWeeks } from 'date-fns'
 
 interface InviteMemberModalProps {
   serverInviteCode: string | undefined
   serverVisibility: string | undefined
   serverId: string | undefined
-  onGenerateCode: (
-    uniqueCode: boolean,
-    expirationDate: Date | undefined
-  ) => void
+  onGenerateCode: (uniqueCode: boolean, expirationDate: Date) => void
   onGenerateNewCode: () => void
   copyToClipboard: (copiedText: string, toastText: string) => void
 }
@@ -24,19 +22,36 @@ export function InviteMemberModal({
   onGenerateNewCode,
   copyToClipboard,
 }: InviteMemberModalProps) {
-  const [date, setDate] = useState<Date>()
+  const [date, setDate] = useState<Date>(new Date())
   const [selectedOption, setSelectedOption] = useState('')
   const [isDatePassed, setIsDatePassed] = useState(false)
   const [isButtonDisabled, setIsButtonDisabled] = useState<boolean>(true)
 
   const handleSelectChange = (value: string) => {
     setSelectedOption(value)
+    let newDate: Date  = new Date()
+    const now = new Date()
+
+    switch (value) {
+      case 'hour':
+        newDate = addHours(now, 1)
+        break
+      case 'day':
+        newDate = addDays(now, 1)
+        break
+      case 'week':
+        newDate = addWeeks(now, 1)
+        break
+    }
+
+    setDate(newDate)
   }
 
   useEffect(() => {
     if (date) {
-      const today = new Date()
-      setIsDatePassed(isBefore(date, today) && !isToday(date))
+      const today = DateTime.now()
+      const dateTime = DateTime.fromJSDate(date)
+      setIsDatePassed(dateTime < today && !dateTime.hasSame(today, 'day'))
     }
   }, [date])
 
@@ -51,7 +66,6 @@ export function InviteMemberModal({
     onGenerateNewCode()
     setIsButtonDisabled(true)
     setSelectedOption('')
-    setDate(undefined)
   }
 
   function ModalHeader({ text }: { text: string }) {

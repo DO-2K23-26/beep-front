@@ -111,7 +111,7 @@ function CreateServerModalOld({
           checked={option === 'join'}
           onChange={() => setOption('join')}
         />
-        Join Server
+        Join Public Server
       </div>
       {option === 'create' && (
         <>
@@ -166,7 +166,7 @@ function CreateServerModalOld({
             render={({ field, fieldState: { error } }) => (
               <InputText
                 className="w-full !rounded-lg min-h-[40px] mb-4"
-                label={'Server ID'}
+                label={'Public Server ID'}
                 name="serverId"
                 type="text"
                 onChange={field.onChange}

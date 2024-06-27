@@ -1,32 +1,29 @@
 import { useDispatch, useSelector } from 'react-redux'
 import { InviteMemberModal } from '../ui/invite-member-modal'
 import { AppDispatch } from '@beep/store'
-import { getServersState, serverActions } from '@beep/server'
-import { getUserState } from '@beep/user'
+import {
+  getServersState,
+  serverActions,
+  useCreateInvitationMutation,
+} from '@beep/server'
 import toast from 'react-hot-toast'
+import { DateTime } from 'luxon'
+import { useLocation } from 'react-router'
 
 export default function InviteMemberModalFeature() {
   const dispatch = useDispatch<AppDispatch>()
-
-  const { payload } = useSelector(getUserState)
+  const url = window.location.origin.replace(useLocation().pathname, '')
+  const [createInvitation] = useCreateInvitationMutation()
   const { server } = useSelector(getServersState)
 
-  const onGenerateCode = (
-    uniqueCode: boolean,
-    expirationDate: Date | undefined
-  ) => {
-    // Appeler l'API pour générer le code ici et retourner le code
-
-    const generatedCode = 'code returned from api' // Placeholder pour le code généré
-
-    dispatch(serverActions.setInviteCode(generatedCode))
+  const onGenerateCode = async (uniqueCode: boolean, expirationDate: Date) => {
+    const response = await createInvitation({
+      isUnique: uniqueCode,
+      expiration: DateTime.fromJSDate(expirationDate),
+      serverId: server?.id || '',
+    })
+    dispatch(serverActions.setInviteCode(url + '/servers/invite/' + response.data?.id))
     toast.success('Code generated successfully')
-
-    // console.log('=== Generate code ===')
-    // console.log('Server id: ', server?.id)
-    // console.log('User id:', payload?.sub)
-    // console.log('Unique code: ', uniqueCode)
-    // console.log('Expiration date:', expirationDate)
   }
 
   const onGenerateNewCode = () => {
