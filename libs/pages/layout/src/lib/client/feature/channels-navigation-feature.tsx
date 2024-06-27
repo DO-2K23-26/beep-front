@@ -1,9 +1,8 @@
 import { voiceChannelActions } from '@beep/channel'
 import {
-  backendUrl,
   ChannelEntity,
   ChannelType,
-  CreateChannelRequest,
+  CreateChannelRequest
 } from '@beep/contracts'
 import { responsiveActions } from '@beep/responsive'
 import {
@@ -16,6 +15,7 @@ import {
   useLeaveVoiceChannelMutation,
 } from '@beep/server'
 import { AppDispatch, RootState } from '@beep/store'
+import { TransmitSingleton } from '@beep/transmit'
 import { useModal } from '@beep/ui'
 import { skipToken } from '@reduxjs/toolkit/query'
 import { useEffect } from 'react'
@@ -23,7 +23,6 @@ import { useForm } from 'react-hook-form'
 import { toast } from 'react-hot-toast'
 import { useDispatch, useSelector } from 'react-redux'
 import ChannelsNavigation from '../ui/channels-navigation'
-import { Transmit } from '@adonisjs/transmit-client'
 
 export default function ChannelsNavigationFeature() {
   const server = useSelector((state: RootState) => state.servers.server)
@@ -33,6 +32,7 @@ export default function ChannelsNavigationFeature() {
   const dispatch = useDispatch<AppDispatch>()
   const { openModal, closeModal } = useModal()
   const { data: servers } = useGetServersQuery()
+  const { data: channels } = useGetServerChannelsQuery(server?.id ?? skipToken)
 
   useEffect(() => {
     if (!server && servers && servers.length > 0) {
@@ -42,7 +42,6 @@ export default function ChannelsNavigationFeature() {
 
   const [createChannel, resultCreatedChannel] =
     useCreateChannelInServerMutation()
-  const { data: channels } = useGetServerChannelsQuery(server?.id ?? skipToken)
   useEffect(() => {
     if (
       resultCreatedChannel.isSuccess &&
@@ -56,17 +55,19 @@ export default function ChannelsNavigationFeature() {
 
   const { refetch } = useGetCurrentStreamingUsersQuery(server?.id ?? '')
   useEffect(() => {
-    const transmit = new Transmit({
-      baseUrl: backendUrl,
-    })
     if (!server?.id) return
-    const subscription = transmit.subscription(`servers/${server?.id}/movement`)
-    subscription.create()
-    subscription.onMessage((message) => {
-      console.log('message', message)
+    const subscription = TransmitSingleton.getSubscription(`servers/${server?.id}/movement`)
+    const unsubscribe = TransmitSingleton.getUnsubscribe(`servers/${server?.id}/movement`)
+    if (unsubscribe) {
+      unsubscribe()
+    }
+    console.log(subscription)
+    const newUnsubscribe = subscription?.onMessage((message) => {
       refetch()
+      console.log('Movement message received', message)
     })
-  }, [refetch, server?.id])
+    TransmitSingleton.setUnsubscribe(`servers/${server?.id}/movement`, newUnsubscribe)
+  }, [refetch, server])
 
   const methodsAddChannel = useForm({
     mode: 'onChange',
