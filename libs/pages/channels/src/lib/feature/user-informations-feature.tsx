@@ -14,7 +14,7 @@ export const UserInformationsFeature = ({ user, onClose }: UserInformationsFeatu
 
     return (
         <div className="fixed right-0 left-0 top-0 bottom-0 bg-[#101420]/50" onClick={() => onClose()}>
-            <div className="fixed h-full w-[300px] bg-white right-0 rounded-l-lg p-4 transition-all" onClick={(e) => e.stopPropagation()}>
+            <div className="fixed h-full w-[300px] bg-white right-0 rounded-l-lg p-4 animate-slideIn" onClick={(e) => e.stopPropagation()}>
                 <div className="flex justify-between items-center mb-2">
                     <p>User informations</p>
                     <div>
