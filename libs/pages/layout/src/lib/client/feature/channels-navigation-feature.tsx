@@ -56,15 +56,7 @@ export default function ChannelsNavigationFeature() {
   const { refetch } = useGetCurrentStreamingUsersQuery(server?.id ?? '')
   useEffect(() => {
     if (!server?.id) return
-    const subscription = TransmitSingleton.getSubscription(`servers/${server?.id}/movement`)
-    const unsubscribe = TransmitSingleton.getUnsubscribe(`servers/${server?.id}/movement`)
-    if (unsubscribe) {
-      unsubscribe()
-    }
-    const newUnsubscribe = subscription?.onMessage((message) => {
-      refetch()
-    })
-    TransmitSingleton.setUnsubscribe(`servers/${server?.id}/movement`, newUnsubscribe)
+    TransmitSingleton.subscribe(`servers/${server?.id}/movement`, (message) => { refetch() })
   }, [refetch, server])
 
   const methodsAddChannel = useForm({

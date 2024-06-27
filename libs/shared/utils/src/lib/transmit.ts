@@ -23,21 +23,13 @@ export class TransmitSingleton {
         return TransmitSingleton.instance;
     }
 
-    public static getSubscription(channel: string) : Subscription | undefined {
+    public static subscribe(channel: string, callback: (data: any) => void) {
         if (!TransmitSingleton.subscriptions.get(channel)) {
             const subscription = TransmitSingleton.getInstance().subscription(channel);
             subscription.create();
             TransmitSingleton.subscriptions.set(channel, subscription);
         }
-        return TransmitSingleton.subscriptions.get(channel);
+        if (TransmitSingleton.unsubscribe.get(channel)) TransmitSingleton.unsubscribe.get(channel)?.();
+        TransmitSingleton.unsubscribe.set(channel, TransmitSingleton.subscriptions.get(channel)?.onMessage(callback));
     }
-
-    public static getUnsubscribe(channel: string): (() => void) | undefined {
-        return TransmitSingleton.unsubscribe.get(channel);
-    }
-
-    public static setUnsubscribe(channel: string, unsubscribe: (() => void) | undefined) {
-        TransmitSingleton.unsubscribe.set(channel, unsubscribe);
-    }
-
 }
