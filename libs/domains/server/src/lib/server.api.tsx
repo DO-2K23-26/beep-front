@@ -63,6 +63,12 @@ export const serverApi = createApi({
       invalidatesTags: ['servers'],
     }),
     joinPublicServer: builder.mutation<void, string>({
+      query: (serverId) => ({
+        url: `/servers/${serverId}/join`,
+        method: 'POST',
+      }),
+      invalidatesTags: ['servers'],
+    }),
     deleteServer: builder.mutation<string, string>({
       query: (serverId) => ({
         url: `/servers/${serverId}`,
@@ -70,13 +76,7 @@ export const serverApi = createApi({
       }),
       invalidatesTags: ['servers'],
     }),
-    joinServer: builder.mutation<void, string>({
-      query: (serverId) => ({
-        url: `/servers/${serverId}/join`,
-        method: 'POST',
-      }),
-      invalidatesTags: ['servers'],
-    }),
+
     createChannelInServer: builder.mutation<
       CreateChannelResponse,
       CreateChannelRequest

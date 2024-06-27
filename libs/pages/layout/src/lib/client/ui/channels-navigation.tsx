@@ -44,6 +44,9 @@ import { OverviewSettingsServer } from './overview-settings-server'
 import { getUserState } from '@beep/user'
 import { useEffect, useState } from 'react'
 
+import { warn } from 'console'
+import DestroyServerFeature from '../feature/destroy-server-feature'
+
 export interface ChannelsNavigationProps {
   textChannels?: ChannelEntity[]
   voiceChannels?: ChannelEntity[]
@@ -185,18 +188,20 @@ export default function ChannelsNavigation({
                 iconName="charm:sign-out"
                 warning
               /> */}
-                {/* {isAdmin && (
-                <DropdownMenuItemCustom
-                  label="Destroy server"
-                  iconName="lucide:trash-2"
-                  warning
-                  onClick={() => {
-                    openModal({
-                      content: <DestroyServerFeature closeModal={closeModal} />,
-                    })
-                  }}
-                />
-              )} */}
+                {isAdmin && (
+                  <DropdownMenuItemCustom
+                    label="Destroy server"
+                    iconName="lucide:trash-2"
+                    warning
+                    onClick={() => {
+                      openModal({
+                        content: (
+                          <DestroyServerFeature closeModal={closeModal} />
+                        ),
+                      })
+                    }}
+                  />
+                )}
               </DropdownMenuContent>
             </DropdownMenu>
 
