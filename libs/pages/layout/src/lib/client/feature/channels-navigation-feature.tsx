@@ -61,10 +61,8 @@ export default function ChannelsNavigationFeature() {
     if (unsubscribe) {
       unsubscribe()
     }
-    console.log(subscription)
     const newUnsubscribe = subscription?.onMessage((message) => {
       refetch()
-      console.log('Movement message received', message)
     })
     TransmitSingleton.setUnsubscribe(`servers/${server?.id}/movement`, newUnsubscribe)
   }, [refetch, server])
