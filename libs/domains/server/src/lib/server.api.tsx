@@ -63,6 +63,14 @@ export const serverApi = createApi({
       invalidatesTags: ['servers'],
     }),
     joinPublicServer: builder.mutation<void, string>({
+    deleteServer: builder.mutation<string, string>({
+      query: (serverId) => ({
+        url: `/servers/${serverId}`,
+        method: 'DELETE',
+      }),
+      invalidatesTags: ['servers'],
+    }),
+    joinServer: builder.mutation<void, string>({
       query: (serverId) => ({
         url: `/servers/${serverId}/join`,
         method: 'POST',
@@ -205,4 +213,5 @@ export const {
   useUpdatePictureMutation,
   useTransmitBannerQuery,
   useTransmitPictureQuery,
+  useDeleteServerMutation,
 } = serverApi
