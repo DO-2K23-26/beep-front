@@ -29,7 +29,7 @@ export function PageChannelFeature() {
     []
   )
   const inputRef = useRef<HTMLInputElement>(null);
-  const [selectedTaggedUser, setSelectedTaggedUser] = useState<{ user: UserDisplayedEntity, messageId: string } | undefined>(undefined)
+  const [selectedTaggedUser, setSelectedTaggedUser] = useState<UserDisplayedEntity | undefined>(undefined)
 
   const [createMessage] = useCreateMessageMutation()
 

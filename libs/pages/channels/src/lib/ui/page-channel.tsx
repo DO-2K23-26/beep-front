@@ -3,6 +3,7 @@ import { Button, ButtonStyle, DynamicSelector, DynamicSelectorProps, Icon, Input
 import { Controller, useFormContext } from 'react-hook-form'
 import ListMessages from './list-messages'
 import DisplayPinned from './display-pinned'
+import { UserInformationsFeature } from '../feature/user-informations-feature'
 
 export type MessageFormValues = {
   content: string
@@ -25,8 +26,8 @@ export interface PageChannelProps {
   onCursorChange?: () => void
   dynamicSelector?: DynamicSelectorProps
   findUserForTag?: (value: string) => UserDisplayedEntity | undefined
-  selectedTaggedUser: { user: UserDisplayedEntity, messageId: string } | undefined
-  setSelectedTaggedUser: React.Dispatch<React.SetStateAction<{ user: UserDisplayedEntity, messageId: string } | undefined>>
+  selectedTaggedUser: UserDisplayedEntity | undefined
+  setSelectedTaggedUser: React.Dispatch<React.SetStateAction<UserDisplayedEntity | undefined>>
 }
 
 export const PageChannel = ({
@@ -83,6 +84,13 @@ export const PageChannel = ({
       </div>
       {/* Message list */}
       <ListMessages messages={messages} onUpdateMessage={onUpdateMessage} control={control} findUserForTag={findUserForTag} selectedTaggedUser={selectedTaggedUser} setSelectedTaggedUser={setSelectedTaggedUser} />
+      {
+          selectedTaggedUser ? (
+            <UserInformationsFeature user={{ id: selectedTaggedUser.id, username: selectedTaggedUser.username }} onClose={() => setSelectedTaggedUser(undefined)} />
+          ) : (
+          <></>
+        )
+      }
       {/* Message input + bouttons + files */}
       <div className='flex flex-col w-full gap-3'>
         {/* files */}

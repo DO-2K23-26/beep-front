@@ -7,8 +7,8 @@ interface ListMessagesProps {
   onUpdateMessage: (messageId: string, newContent: string) => void
   control: any
   findUserForTag?: (value: string) => UserDisplayedEntity | undefined
-  selectedTaggedUser: { user: UserDisplayedEntity, messageId: string } | undefined
-  setSelectedTaggedUser: React.Dispatch<React.SetStateAction<{ user: UserDisplayedEntity, messageId: string } | undefined>>
+  selectedTaggedUser: UserDisplayedEntity | undefined
+  setSelectedTaggedUser: React.Dispatch<React.SetStateAction<UserDisplayedEntity | undefined>>
 }
 
 export default function ListMessages({ messages, onUpdateMessage, control, findUserForTag, selectedTaggedUser, setSelectedTaggedUser }: ListMessagesProps) {

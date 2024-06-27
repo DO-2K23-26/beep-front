@@ -6,7 +6,6 @@ import AttachmentFeature from '../feature/attachment-feature'
 import Markdoc from "@markdoc/markdoc";
 import { config, markdownComponents } from "../utils/markdown-config";
 import { preprocessMarkdown } from "../utils/markdown-parser";
-import { UserInformationsFeature } from "../feature/user-informations-feature";
 
 interface MessageProps {
   message: MessageEntity
@@ -28,8 +27,6 @@ interface MessageProps {
   control?: any
   replaceTagEntity: (message: ReactNode) => ReactNode
   isHighlighted: boolean
-  selectedTaggedUser: { user: UserDisplayedEntity, messageId: string } | undefined
-  setSelectedTaggedUser: React.Dispatch<React.SetStateAction<{ user: UserDisplayedEntity, messageId: string } | undefined>>
 }
 
 export default function Message({
@@ -51,9 +48,7 @@ export default function Message({
   isPinned,
   control,
   replaceTagEntity,
-  isHighlighted,
-  selectedTaggedUser,
-  setSelectedTaggedUser
+  isHighlighted
 }: Readonly<MessageProps>) {
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
@@ -149,26 +144,17 @@ export default function Message({
             />
           </div>
           ) : (
-            <>
-              <div className="bg-violet-50 rounded-xl rounded-tl-none p-6 flex flex-col gap-3">
-                <div className="text-xs font-semibold break-all">
-                  {renderedMessage}
-                </div>
-                {
-                  message.attachments ?
-                    message.attachments.map((attachment, i) => {
-                      return <AttachmentFeature attachment={attachment} key={i} />
-                    }) : <></>
-                }
+            <div className="bg-violet-50 rounded-xl rounded-tl-none p-6 flex flex-col gap-3">
+              <div className="text-xs font-semibold break-all">
+                {renderedMessage}
               </div>
               {
-                selectedTaggedUser && selectedTaggedUser.messageId === message.id ? (
-                  <UserInformationsFeature user={{ id: selectedTaggedUser.user.id, username: selectedTaggedUser.user.username }} onClose={() => setSelectedTaggedUser(undefined)} />
-                ) : (
-                <></>
-              )
-            }
-            </>
+                message.attachments ?
+                  message.attachments.map((attachment, i) => {
+                    return <AttachmentFeature attachment={attachment} key={i} />
+                  }) : <></>
+              }
+            </div>
           )
         }
       </div>

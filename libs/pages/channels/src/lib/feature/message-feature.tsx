@@ -21,8 +21,8 @@ interface MessageFeatureProps {
   isPinned: boolean
   control?: any
   findUserForTag?: (value: string) => UserDisplayedEntity | undefined
-  selectedTaggedUser: { user: UserDisplayedEntity, messageId: string } | undefined
-  setSelectedTaggedUser: React.Dispatch<React.SetStateAction<{ user: UserDisplayedEntity, messageId: string } | undefined>>
+  selectedTaggedUser: UserDisplayedEntity | undefined
+  setSelectedTaggedUser: React.Dispatch<React.SetStateAction<UserDisplayedEntity | undefined>>
 }
 
 export default function MessageFeature({
@@ -170,8 +170,8 @@ export default function MessageFeature({
   };
 
   const onClickTag = (user: UserDisplayedEntity) => {
-    !selectedTaggedUser || selectedTaggedUser && (selectedTaggedUser.user.id !== user.id || selectedTaggedUser.messageId !== message.id) ?
-      setSelectedTaggedUser({ user: user, messageId: message.id }) :
+    !selectedTaggedUser || selectedTaggedUser && (selectedTaggedUser.id !== user.id) ?
+      setSelectedTaggedUser(user) :
       setSelectedTaggedUser(undefined)
   }
 
