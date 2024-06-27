@@ -30,17 +30,12 @@ export const serverApi = createApi({
       query: (params) => `/servers`,
       providesTags: ['servers'],
     }),
-    createServer: builder.mutation<string, CreateServerRequest>({
-      query: (request: CreateServerRequest) => ({
+    createServer: builder.mutation<string, FormData>({
+      query: (request: FormData) => ({
         url: `/servers`,
         method: 'POST',
         formData: true,
-        body: {
-          name: request.name,
-          visibility: request.visibility,
-          description: request.description,
-          icon: request.icon,
-        },
+        body: request,
       }),
       invalidatesTags: ['servers'],
     }),

@@ -6,6 +6,7 @@ import AddServerModal from '../ui/add-server/add-server-modal'
 import SelectVisibilityModal from '../ui/add-server/select-visibility-modal'
 import { useCreateServerMutation } from '@beep/server'
 import toast from 'react-hot-toast'
+import { CreateServerRequest } from '@beep/contracts'
 
 export interface CreateServerForm {
   serverName: string
@@ -40,20 +41,26 @@ export default function AddServerFeature({
 
   const onSubmit: SubmitHandler<CreateServerForm> = (data) => {
     setLoading(true)
-    const payload = {
+    const payload: CreateServerRequest = {
       name: data.serverName,
       description: data.description,
       icon: data.icon,
       visibility: serverStep === 'private' ? 'private' : 'public',
     }
-    createServer(payload)
+    const request: FormData = new FormData()
+    request.append('name', payload.name)
+    request.append('description', payload.description)
+    request.append('visibility', payload.visibility)
+    request.append('icon', payload.icon)
+    createServer(request)
       .unwrap()
       .then(() => {
         setLoading(false)
         closeModal()
       })
-      .catch(() => {
+      .catch((e) => {
         setLoading(false)
+        console.error(e)
         toast.error('An error occurred while creating the server')
       })
   }
