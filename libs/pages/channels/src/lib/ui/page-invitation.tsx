@@ -12,7 +12,7 @@ export function PageInvitation() {
     if (inviteId) {
       joinPrivateServer(inviteId)
     }
-  }, [inviteId, joinPrivateServer])
+  }, [inviteId])
 
   useEffect(() => {
     if (isError) {

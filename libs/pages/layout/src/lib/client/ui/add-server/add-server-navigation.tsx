@@ -6,7 +6,6 @@ import {
 interface AddServerNavigationProps {
   closeModal: () => void
   onCreateServer: () => void
-  onJoinServer: (serverId: string) => void
   serverStep: AddServerStep | undefined
   setServerStep: (nextStep: AddServerStep) => void
   render: ServerStepsRender
@@ -15,7 +14,6 @@ interface AddServerNavigationProps {
 export default function AddServerNavigation({
   closeModal,
   onCreateServer,
-  onJoinServer,
   serverStep,
   setServerStep,
   render,

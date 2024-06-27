@@ -4,9 +4,13 @@ import AddServerNavigation from '../ui/add-server/add-server-navigation'
 import CreateServerModal from '../ui/add-server/create-server-modal'
 import AddServerModal from '../ui/add-server/add-server-modal'
 import SelectVisibilityModal from '../ui/add-server/select-visibility-modal'
-import { useCreateServerMutation } from '@beep/server'
+import {
+  useCreateServerMutation,
+  useJoinPublicServerMutation,
+} from '@beep/server'
 import toast from 'react-hot-toast'
 import { CreateServerRequest } from '@beep/contracts'
+import { JoinServerModal } from '../ui/add-server/join-server-modal'
 
 export interface CreateServerForm {
   serverName: string
@@ -15,11 +19,22 @@ export interface CreateServerForm {
   visibility: 'private' | 'public'
 }
 
+export interface JoinServerForm {
+  serverId: string
+}
+
+export interface AddServerForm extends CreateServerForm, JoinServerForm {}
+
 export interface AddServerFeatureProps {
   closeModal: () => void
 }
 
-export type AddServerStep = 'private' | 'public' | 'invite' | 'create'
+export type AddServerStep =
+  | 'undefined'
+  | 'private'
+  | 'public'
+  | 'invite'
+  | 'create'
 
 export interface ServerStepsRender {
   private: JSX.Element
@@ -31,18 +46,19 @@ export interface ServerStepsRender {
 export default function AddServerFeature({
   closeModal,
 }: AddServerFeatureProps) {
-  const { register, handleSubmit, control } = useForm<CreateServerForm>()
+  const { register, handleSubmit, control } = useForm<AddServerForm>()
   const [loading, setLoading] = useState<boolean>(false)
   const [serverStep, setServerStep] = useState<AddServerStep | undefined>(
     undefined
   )
+  const [joinPublicServer] = useJoinPublicServerMutation()
 
   const [createServer, result] = useCreateServerMutation()
 
-  const onSubmit: SubmitHandler<CreateServerForm> = (data) => {
+  const onCreateServer = (data: CreateServerRequest) => {
     setLoading(true)
     const payload: CreateServerRequest = {
-      name: data.serverName,
+      name: data.name,
       description: data.description,
       icon: data.icon,
       visibility: serverStep === 'private' ? 'private' : 'public',
@@ -63,6 +79,25 @@ export default function AddServerFeature({
         console.error(e)
         toast.error('An error occurred while creating the server')
       })
+  }
+
+  const onSubmit: SubmitHandler<AddServerForm> = (data) => {
+    if (data.serverId) {
+      onJoinServer(data.serverId)
+    } else {
+      const createServerRequest: CreateServerRequest = {
+        name: data.serverName,
+        description: data.description,
+        icon: data.icon,
+        visibility: data.visibility,
+      }
+      onCreateServer(createServerRequest)
+    }
+  }
+
+  const onJoinServer = (serverId: string) => {
+    joinPublicServer(serverId)
+    closeModal()
   }
 
   const render = {
@@ -93,7 +128,14 @@ export default function AddServerFeature({
       />
     ),
     //TODO: Dorian - Add the Invite components
-    invite: <div>Invite</div>,
+    invite: (
+      <JoinServerModal
+        onSubmit={handleSubmit(onSubmit)}
+        control={control}
+        loading={loading}
+        closeModal={() => setServerStep('undefined')}
+      />
+    ),
     create: (
       <SelectVisibilityModal
         createPrivateServer={() => setServerStep('private')}
@@ -106,7 +148,6 @@ export default function AddServerFeature({
     <AddServerNavigation
       closeModal={() => setServerStep('create')}
       onCreateServer={() => setServerStep('private')}
-      onJoinServer={(serverId) => console.log(serverId)}
       serverStep={serverStep}
       setServerStep={setServerStep}
       render={render}
