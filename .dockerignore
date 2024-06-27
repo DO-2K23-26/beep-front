@@ -1,0 +1,9 @@
+!apps/
+!libs/
+!package.json
+!pnpm-lock.yaml
+!nginx.conf
+!nx.json
+!vitest.workspace.ts
+!tsconfig.base.json
+!tailwind-workspace-preset.js

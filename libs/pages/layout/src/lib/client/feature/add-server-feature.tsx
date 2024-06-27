@@ -5,6 +5,7 @@ import CreateServerModal from '../ui/add-server/create-server-modal'
 import AddServerModal from '../ui/add-server/add-server-modal'
 import SelectVisibilityModal from '../ui/add-server/select-visibility-modal'
 import { useCreateServerMutation } from '@beep/server'
+import toast from 'react-hot-toast'
 
 export interface CreateServerForm {
   serverName: string
@@ -50,6 +51,10 @@ export default function AddServerFeature({
       .then(() => {
         setLoading(false)
         closeModal()
+      })
+      .catch(() => {
+        setLoading(false)
+        toast.error('An error occurred while creating the server')
       })
   }
 
