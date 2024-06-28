@@ -1,4 +1,5 @@
 {
+<<<<<<< HEAD
   "7469940363907735463": {
     "targets": {
       "e2e": {
@@ -333,6 +334,9 @@
     }
   },
   "18298355647837833849": {
+=======
+  "9479683178811292289": {
+>>>>>>> 6fdc29c (feat(delete-server): fixed packaging for build)
     "targets": {
       "e2e": {
         "command": "cypress run",

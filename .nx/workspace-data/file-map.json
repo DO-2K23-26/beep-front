@@ -5,26 +5,40 @@
     "@adonisjs/transmit-client": "^1.0.0",
     "@iconify/react": "^4.1.1",
     "@markdoc/markdoc": "^0.4.0",
+<<<<<<< HEAD
     "@radix-ui/react-checkbox": "^1.1.0",
     "@radix-ui/react-dialog": "^1.0.5",
+=======
+    "@radix-ui/react-dialog": "^1.0.5",
+    "@radix-ui/react-dropdown-menu": "^2.1.1",
+>>>>>>> 6fdc29c (feat(delete-server): fixed packaging for build)
     "@radix-ui/react-icons": "^1.3.0",
     "@radix-ui/react-label": "^2.0.2",
     "@radix-ui/react-popover": "^1.0.7",
     "@radix-ui/react-select": "^2.0.0",
     "@radix-ui/react-separator": "^1.0.3",
     "@radix-ui/react-slot": "^1.0.2",
+<<<<<<< HEAD
     "@radix-ui/react-switch": "^1.0.3",
+=======
+>>>>>>> 6fdc29c (feat(delete-server): fixed packaging for build)
     "@radix-ui/react-tooltip": "^1.0.7",
     "@reduxjs/toolkit": "^2.2.3",
     "@szhsin/react-menu": "^4.1.0",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.0",
+<<<<<<< HEAD
     "framer-motion": "^11.2.12",
     "date-fns": "^3.6.0",
     "lucide-react": "^0.396.0",
     "luxon": "^3.4.4",
     "react": "18.3.1",
     "react-day-picker": "^8.10.1",
+=======
+    "lucide-react": "^0.397.0",
+    "luxon": "^3.4.4",
+    "react": "18.3.1",
+>>>>>>> 6fdc29c (feat(delete-server): fixed packaging for build)
     "react-dom": "18.3.1",
     "react-draggable": "^4.4.6",
     "react-hook-form": "^7.51.3",
@@ -64,7 +78,10 @@
     "@swc/helpers": "0.5.11",
     "@testing-library/react": "15.0.6",
     "@types/jest": "^29.4.0",
+<<<<<<< HEAD
     "@types/luxon": "^3.4.2",
+=======
+>>>>>>> 6fdc29c (feat(delete-server): fixed packaging for build)
     "@types/node": "18.16.9",
     "@types/react": "18.3.1",
     "@types/react-dom": "18.3.0",
@@ -111,6 +128,12 @@
     "@beep/contracts": [
       "libs/shared/contracts/src/index.ts"
     ],
+<<<<<<< HEAD
+=======
+    "@beep/events": [
+      "libs/shared/events/src/index.ts"
+    ],
+>>>>>>> 6fdc29c (feat(delete-server): fixed packaging for build)
     "@beep/layout": [
       "libs/pages/layout/src/index.ts"
     ],
@@ -132,9 +155,21 @@
     "@beep/server": [
       "libs/domains/server/src/index.ts"
     ],
+<<<<<<< HEAD
     "@beep/store": [
       "libs/state/store/src/index.ts"
     ],
+=======
+    "@beep/settings": [
+      "libs/pages/settings/src/index.ts"
+    ],
+    "@beep/store": [
+      "libs/state/store/src/index.ts"
+    ],
+    "@beep/transmit": [
+      "libs/shared/utils/src/index.ts"
+    ],
+>>>>>>> 6fdc29c (feat(delete-server): fixed packaging for build)
     "@beep/ui": [
       "libs/shared/ui/src/index.ts"
     ],
@@ -146,12 +181,15 @@
     ],
     "@beep/voice": [
       "libs/domains/voice/src/index.ts"
+<<<<<<< HEAD
     ],
     "@beep/transmit": [
       "libs/shared/utils/src/index.ts"
     ],
     "@beep/settings": [
       "libs/pages/settings/src/index.ts"
+=======
+>>>>>>> 6fdc29c (feat(delete-server): fixed packaging for build)
     ]
   },
   "nxJsonPlugins": [
@@ -199,6 +237,7 @@
   "fileMap": {
     "nonProjectFiles": [
       {
+<<<<<<< HEAD
         "file": ".dockerignore",
         "hash": "17255905151796420680"
       },
@@ -217,28 +256,91 @@
       {
         "file": ".gitignore",
         "hash": "6630926967944687463"
+=======
+        "file": "nx.json",
+        "hash": "6994997533239722124"
+>>>>>>> 6fdc29c (feat(delete-server): fixed packaging for build)
       },
       {
         "file": ".gitlab-ci.yml",
         "hash": "11550980783474810505"
       },
       {
+<<<<<<< HEAD
         "file": ".gitlab/issue_templates/Bug.md",
         "hash": "7319204432504743760"
       },
       {
         "file": ".gitlab/issue_templates/Default.md",
         "hash": "8184565121153877532"
+=======
+        "file": "helm/templates/service.yaml",
+        "hash": "13213917091170295688"
+      },
+      {
+        "file": "helm/templates/deployment.yaml",
+        "hash": "10284662101076725124"
+      },
+      {
+        "file": "vitest.workspace.ts",
+        "hash": "7870362608836821141"
+      },
+      {
+        "file": ".eslintignore",
+        "hash": "6625779930127276236"
+>>>>>>> 6fdc29c (feat(delete-server): fixed packaging for build)
       },
       {
         "file": ".npmrc",
         "hash": "1880664178033616490"
       },
       {
+<<<<<<< HEAD
+=======
+        "file": ".gitignore",
+        "hash": "11489671626187948807"
+      },
+      {
+        "file": "nginx.conf",
+        "hash": "7771670371142415860"
+      },
+      {
+        "file": ".eslintrc.json",
+        "hash": "14687746412462661691"
+      },
+      {
+        "file": "README.md",
+        "hash": "12884624643554565363"
+      },
+      {
+        "file": "Dockerfile",
+        "hash": "5529540702012835930"
+      },
+      {
+>>>>>>> 6fdc29c (feat(delete-server): fixed packaging for build)
         "file": ".prettierignore",
         "hash": "16448050467312557263"
       },
       {
+<<<<<<< HEAD
+=======
+        "file": "tailwind-workspace-preset.js",
+        "hash": "2605066360108051675"
+      },
+      {
+        "file": "GitVersion.yml",
+        "hash": "11859653297525228367"
+      },
+      {
+        "file": "pnpm-lock.yaml",
+        "hash": "6675810293545222088"
+      },
+      {
+        "file": "helm/Chart.yaml",
+        "hash": "1251930523993404945"
+      },
+      {
+>>>>>>> 6fdc29c (feat(delete-server): fixed packaging for build)
         "file": ".prettierrc",
         "hash": "16168323439053702593"
       },
@@ -247,6 +349,7 @@
         "hash": "1855400211933325932"
       },
       {
+<<<<<<< HEAD
         "file": "Dockerfile",
         "hash": "5529540702012835930"
       },
@@ -285,12 +388,17 @@
       {
         "file": "helm/values.yaml",
         "hash": "8223797683189297487"
+=======
+        "file": "package.json",
+        "hash": "13809050555695370392"
+>>>>>>> 6fdc29c (feat(delete-server): fixed packaging for build)
       },
       {
         "file": "jest.config.ts",
         "hash": "3544775089889764213"
       },
       {
+<<<<<<< HEAD
         "file": "jest.preset.js",
         "hash": "1560397881043866083"
       },
@@ -767,6 +875,45 @@
           ]
         }
       ],
+=======
+        "file": ".gitlab/issue_templates/Bug.md",
+        "hash": "7319204432504743760"
+      },
+      {
+        "file": "tsconfig.base.json",
+        "hash": "2475937162353139274"
+      },
+      {
+        "file": "helm/templates/ingress.yaml",
+        "hash": "7834196520100303260"
+      },
+      {
+        "file": "jest.preset.js",
+        "hash": "11039555799044607920"
+      },
+      {
+        "file": "helm/templates/_helper.tpl",
+        "hash": "9628039977089512869"
+      },
+      {
+        "file": "helm/values.yaml",
+        "hash": "8223797683189297487"
+      },
+      {
+        "file": ".editorconfig",
+        "hash": "5443105041930014821"
+      },
+      {
+        "file": ".gitlab/issue_templates/Default.md",
+        "hash": "8184565121153877532"
+      },
+      {
+        "file": "gitversion-ci-cd-plugin-extension.gitlab-ci.yml",
+        "hash": "9591808149017694014"
+      }
+    ],
+    "projectFileMap": {
+>>>>>>> 6fdc29c (feat(delete-server): fixed packaging for build)
       "layout": [
         {
           "file": "libs/pages/layout/.babelrc",
@@ -793,6 +940,7 @@
           "hash": "7259968531481413760"
         },
         {
+<<<<<<< HEAD
           "file": "libs/pages/layout/src/lib/client/feature/add-server-feature.tsx",
           "hash": "11212036610514093705",
           "deps": [
@@ -802,6 +950,8 @@
           ]
         },
         {
+=======
+>>>>>>> 6fdc29c (feat(delete-server): fixed packaging for build)
           "file": "libs/pages/layout/src/lib/client/feature/channels-navigation-feature.tsx",
           "hash": "5035181192141278086",
           "deps": [
@@ -812,12 +962,19 @@
             "store",
             "utils",
             "ui",
+<<<<<<< HEAD
+=======
+            "npm:@reduxjs/toolkit",
+            "npm:react",
+            "npm:react-hook-form",
+>>>>>>> 6fdc29c (feat(delete-server): fixed packaging for build)
             "npm:react-hot-toast",
             "npm:react-redux"
           ]
         },
         {
           "file": "libs/pages/layout/src/lib/client/feature/current-user-feature.tsx",
+<<<<<<< HEAD
           "hash": "2533163699666190962",
           "deps": [
             "contracts",
@@ -826,6 +983,30 @@
             "voice",
             "npm:react-hot-toast",
             "npm:react-redux"
+=======
+          "hash": "884613095802535653",
+          "deps": [
+            "contracts",
+            "ui",
+            "npm:react-hook-form",
+            "npm:react-hot-toast",
+            "npm:react-redux",
+            "user",
+            "npm:react",
+            "voice"
+          ]
+        },
+        {
+          "file": "libs/pages/layout/src/lib/client/feature/destroy-server-feature.tsx",
+          "hash": "17096228292345196739",
+          "deps": [
+            "domains-server",
+            "npm:react",
+            "npm:react-redux",
+            "npm:react-router",
+            "contracts",
+            "npm:react-hot-toast"
+>>>>>>> 6fdc29c (feat(delete-server): fixed packaging for build)
           ]
         },
         {
@@ -833,7 +1014,12 @@
           "hash": "18081764937112769126",
           "deps": [
             "contracts",
+<<<<<<< HEAD
             "npm:react-hot-toast"
+=======
+            "npm:react-hot-toast",
+            "npm:react-router-dom"
+>>>>>>> 6fdc29c (feat(delete-server): fixed packaging for build)
           ]
         },
         {
@@ -841,7 +1027,12 @@
           "hash": "13636762256872405147",
           "deps": [
             "contracts",
+<<<<<<< HEAD
             "npm:react-hot-toast"
+=======
+            "npm:react-hot-toast",
+            "npm:react-router-dom"
+>>>>>>> 6fdc29c (feat(delete-server): fixed packaging for build)
           ]
         },
         {
@@ -854,11 +1045,16 @@
         },
         {
           "file": "libs/pages/layout/src/lib/client/feature/display-server-feature.tsx",
+<<<<<<< HEAD
           "hash": "18226704310777467293",
+=======
+          "hash": "12319409797230210432",
+>>>>>>> 6fdc29c (feat(delete-server): fixed packaging for build)
           "deps": [
             "contracts",
             "domains-server",
             "npm:react-redux",
+<<<<<<< HEAD
             "store"
           ]
         },
@@ -871,6 +1067,10 @@
             "domains-server",
             "npm:react-hot-toast",
             "npm:luxon"
+=======
+            "store",
+            "npm:react-router-dom"
+>>>>>>> 6fdc29c (feat(delete-server): fixed packaging for build)
           ]
         },
         {
@@ -879,29 +1079,52 @@
           "deps": [
             "responsive",
             "store",
+<<<<<<< HEAD
+=======
+            "npm:react",
+>>>>>>> 6fdc29c (feat(delete-server): fixed packaging for build)
             "npm:react-redux"
           ]
         },
         {
           "file": "libs/pages/layout/src/lib/client/feature/members-navigation-feature.tsx",
+<<<<<<< HEAD
           "hash": "6511179471874708624",
           "deps": [
             "ui",
             "user",
+=======
+          "hash": "219673260595660421",
+          "deps": [
+            "ui",
+            "user",
+            "npm:react",
+>>>>>>> 6fdc29c (feat(delete-server): fixed packaging for build)
             "contracts",
             "npm:@adonisjs/transmit-client"
           ]
         },
         {
           "file": "libs/pages/layout/src/lib/client/feature/servers-navigation-feature.tsx",
+<<<<<<< HEAD
           "hash": "9156610426686719384",
+=======
+          "hash": "13030264096896739010",
+>>>>>>> 6fdc29c (feat(delete-server): fixed packaging for build)
           "deps": [
             "domains-server",
             "store",
             "ui",
             "user",
+<<<<<<< HEAD
             "npm:react-hot-toast",
             "npm:react-redux"
+=======
+            "npm:react-hook-form",
+            "npm:react-hot-toast",
+            "npm:react-redux",
+            "npm:react-router-dom"
+>>>>>>> 6fdc29c (feat(delete-server): fixed packaging for build)
           ]
         },
         {
@@ -913,6 +1136,7 @@
           ]
         },
         {
+<<<<<<< HEAD
           "file": "libs/pages/layout/src/lib/client/ui/add-server/add-server-modal.tsx",
           "hash": "5632721141011224648",
           "deps": [
@@ -951,13 +1175,25 @@
         {
           "file": "libs/pages/layout/src/lib/client/ui/channels-navigation.tsx",
           "hash": "4798553523066277347",
+=======
+          "file": "libs/pages/layout/src/lib/client/ui/channels-navigation.tsx",
+          "hash": "7349284454645853539",
+>>>>>>> 6fdc29c (feat(delete-server): fixed packaging for build)
           "deps": [
             "contracts",
             "ui",
             "channel",
             "responsive",
+<<<<<<< HEAD
             "npm:react-redux",
             "domains-server"
+=======
+            "npm:react-hook-form",
+            "npm:react-redux",
+            "domains-server",
+            "npm:@radix-ui/react-dropdown-menu",
+            "user"
+>>>>>>> 6fdc29c (feat(delete-server): fixed packaging for build)
           ]
         },
         {
@@ -976,19 +1212,38 @@
         },
         {
           "file": "libs/pages/layout/src/lib/client/ui/create-channel-modal.tsx",
+<<<<<<< HEAD
           "hash": "2401560002073925067",
           "deps": [
             "contracts",
             "ui"
+=======
+          "hash": "3242655871781508674",
+          "deps": [
+            "contracts",
+            "ui",
+            "npm:react-hook-form"
+>>>>>>> 6fdc29c (feat(delete-server): fixed packaging for build)
           ]
         },
         {
           "file": "libs/pages/layout/src/lib/client/ui/current-user.tsx",
+<<<<<<< HEAD
           "hash": "10834667424540813461",
           "deps": [
             "contracts",
             "settings",
             "ui"
+=======
+          "hash": "7448186303126414908",
+          "deps": [
+            "contracts",
+            "settings",
+            "ui",
+            "voice",
+            "npm:react-hook-form",
+            "npm:react-redux"
+>>>>>>> 6fdc29c (feat(delete-server): fixed packaging for build)
           ]
         },
         {
@@ -1001,7 +1256,11 @@
         },
         {
           "file": "libs/pages/layout/src/lib/client/ui/display-member.tsx",
+<<<<<<< HEAD
           "hash": "6490815056665021508",
+=======
+          "hash": "3678099320790783461",
+>>>>>>> 6fdc29c (feat(delete-server): fixed packaging for build)
           "deps": [
             "contracts",
             "ui"
@@ -1016,6 +1275,7 @@
           ]
         },
         {
+<<<<<<< HEAD
           "file": "libs/pages/layout/src/lib/client/ui/generate-code-private-invitation.tsx",
           "hash": "3719414641585815268",
           "deps": [
@@ -1049,11 +1309,17 @@
           ]
         },
         {
+=======
+>>>>>>> 6fdc29c (feat(delete-server): fixed packaging for build)
           "file": "libs/pages/layout/src/lib/client/ui/layout-page.tsx",
           "hash": "7033431460391551409",
           "deps": [
             "responsive",
             "ui",
+<<<<<<< HEAD
+=======
+            "npm:react",
+>>>>>>> 6fdc29c (feat(delete-server): fixed packaging for build)
             "npm:react-redux"
           ]
         },
@@ -1087,7 +1353,11 @@
         },
         {
           "file": "libs/pages/layout/src/lib/client/ui/list-servers.tsx",
+<<<<<<< HEAD
           "hash": "4735448182225854212",
+=======
+          "hash": "7447013168628066033",
+>>>>>>> 6fdc29c (feat(delete-server): fixed packaging for build)
           "deps": [
             "contracts"
           ]
@@ -1101,16 +1371,37 @@
         },
         {
           "file": "libs/pages/layout/src/lib/client/ui/members-navigation.tsx",
+<<<<<<< HEAD
           "hash": "2822670545177315096",
           "deps": [
             "contracts",
             "ui",
             "npm:react-redux",
             "responsive"
+=======
+          "hash": "6294722194292491058",
+          "deps": [
+            "contracts",
+            "ui",
+            "npm:react",
+            "npm:react-hot-toast",
+            "npm:react-redux",
+            "responsive",
+            "settings"
+          ]
+        },
+        {
+          "file": "libs/pages/layout/src/lib/client/ui/server-settings-modal/delete-server-modal.tsx",
+          "hash": "1361496431849408129",
+          "deps": [
+            "ui",
+            "npm:react"
+>>>>>>> 6fdc29c (feat(delete-server): fixed packaging for build)
           ]
         },
         {
           "file": "libs/pages/layout/src/lib/client/ui/servers-navigation.tsx",
+<<<<<<< HEAD
           "hash": "1568388291598985920",
           "deps": [
             "contracts",
@@ -1125,6 +1416,14 @@
             "ui",
             "voice",
             "npm:react-redux"
+=======
+          "hash": "4440937531077551122",
+          "deps": [
+            "contracts",
+            "ui",
+            "npm:react-hook-form",
+            "npm:react"
+>>>>>>> 6fdc29c (feat(delete-server): fixed packaging for build)
           ]
         },
         {
@@ -1144,7 +1443,248 @@
           "hash": "972428668216636777",
           "deps": [
             "npm:vite",
+<<<<<<< HEAD
             "npm:vite-plugin-dts"
+=======
+            "npm:@vitejs/plugin-react",
+            "npm:vite-plugin-dts",
+            "npm:@nx/vite"
+          ]
+        }
+      ],
+      "store": [
+        {
+          "file": "libs/state/store/.babelrc",
+          "hash": "2946678488919325452"
+        },
+        {
+          "file": "libs/state/store/.eslintrc.json",
+          "hash": "15946965712701950674"
+        },
+        {
+          "file": "libs/state/store/README.md",
+          "hash": "9409316085282775679"
+        },
+        {
+          "file": "libs/state/store/package.json",
+          "hash": "12690799260456417903"
+        },
+        {
+          "file": "libs/state/store/project.json",
+          "hash": "1576328648683857258"
+        },
+        {
+          "file": "libs/state/store/src/index.ts",
+          "hash": "4594961145768460613"
+        },
+        {
+          "file": "libs/state/store/src/lib/root.ts",
+          "hash": "170833686566933077",
+          "deps": [
+            "channel",
+            "responsive",
+            "domains-server",
+            "user",
+            "voice",
+            "npm:@reduxjs/toolkit"
+          ]
+        },
+        {
+          "file": "libs/state/store/tsconfig.json",
+          "hash": "8945200214589149969"
+        },
+        {
+          "file": "libs/state/store/tsconfig.lib.json",
+          "hash": "920925512994609163"
+        },
+        {
+          "file": "libs/state/store/tsconfig.spec.json",
+          "hash": "6227144360273957678"
+        },
+        {
+          "file": "libs/state/store/vite.config.ts",
+          "hash": "6894948901395684371",
+          "deps": [
+            "npm:vite",
+            "npm:@vitejs/plugin-react",
+            "npm:vite-plugin-dts",
+            "npm:@nx/vite"
+          ]
+        }
+      ],
+      "responsive": [
+        {
+          "file": "libs/domains/responsive/.babelrc",
+          "hash": "2946678488919325452"
+        },
+        {
+          "file": "libs/domains/responsive/.eslintrc.json",
+          "hash": "15946965712701950674"
+        },
+        {
+          "file": "libs/domains/responsive/README.md",
+          "hash": "3579897398864890324"
+        },
+        {
+          "file": "libs/domains/responsive/package.json",
+          "hash": "1466722406669276808"
+        },
+        {
+          "file": "libs/domains/responsive/project.json",
+          "hash": "16782955579790008595"
+        },
+        {
+          "file": "libs/domains/responsive/src/index.ts",
+          "hash": "3135142090726015620"
+        },
+        {
+          "file": "libs/domains/responsive/src/lib/responsive.slice.ts",
+          "hash": "8265361689242931288",
+          "deps": [
+            "contracts",
+            "store",
+            "npm:@reduxjs/toolkit"
+          ]
+        },
+        {
+          "file": "libs/domains/responsive/tsconfig.json",
+          "hash": "8945200214589149969"
+        },
+        {
+          "file": "libs/domains/responsive/tsconfig.lib.json",
+          "hash": "920925512994609163"
+        },
+        {
+          "file": "libs/domains/responsive/tsconfig.spec.json",
+          "hash": "6227144360273957678"
+        },
+        {
+          "file": "libs/domains/responsive/vite.config.ts",
+          "hash": "8566580238702779171",
+          "deps": [
+            "npm:vite",
+            "npm:@vitejs/plugin-react",
+            "npm:vite-plugin-dts",
+            "npm:@nx/vite"
+          ]
+        }
+      ],
+      "events": [
+        {
+          "file": "libs/shared/events/.babelrc",
+          "hash": "2946678488919325452"
+        },
+        {
+          "file": "libs/shared/events/.eslintrc.json",
+          "hash": "15946965712701950674"
+        },
+        {
+          "file": "libs/shared/events/README.md",
+          "hash": "15300368491624804220"
+        },
+        {
+          "file": "libs/shared/events/project.json",
+          "hash": "17410532632660337228"
+        },
+        {
+          "file": "libs/shared/events/src/index.ts",
+          "hash": "13130398535595000894"
+        },
+        {
+          "file": "libs/shared/events/src/lib/event.tsx",
+          "hash": "4253744578596162696",
+          "deps": [
+            "npm:react"
+          ]
+        },
+        {
+          "file": "libs/shared/events/src/lib/events.tsx",
+          "hash": "9934183415816488222",
+          "deps": [
+            "npm:react",
+            "utils",
+            "npm:socket.io-client"
+          ]
+        },
+        {
+          "file": "libs/shared/events/tsconfig.json",
+          "hash": "5803453740373313970"
+        },
+        {
+          "file": "libs/shared/events/tsconfig.lib.json",
+          "hash": "15322717985845125222"
+        },
+        {
+          "file": "libs/shared/events/tsconfig.spec.json",
+          "hash": "6227144360273957678"
+        },
+        {
+          "file": "libs/shared/events/vite.config.ts",
+          "hash": "8057284132228746010",
+          "deps": [
+            "npm:vite",
+            "npm:@vitejs/plugin-react",
+            "npm:@nx/vite"
+          ]
+        }
+      ],
+      "settings": [
+        {
+          "file": "libs/pages/settings/.babelrc",
+          "hash": "2946678488919325452"
+        },
+        {
+          "file": "libs/pages/settings/.eslintrc.json",
+          "hash": "15946965712701950674"
+        },
+        {
+          "file": "libs/pages/settings/README.md",
+          "hash": "3789840470215118436"
+        },
+        {
+          "file": "libs/pages/settings/package.json",
+          "hash": "6042713515014116499"
+        },
+        {
+          "file": "libs/pages/settings/project.json",
+          "hash": "4682455515795802593"
+        },
+        {
+          "file": "libs/pages/settings/src/index.ts",
+          "hash": "15283529561844392515"
+        },
+        {
+          "file": "libs/pages/settings/src/lib/buttons/setting-navigation-button.tsx",
+          "hash": "2200872225556702025",
+          "deps": [
+            "ui"
+          ]
+        },
+        {
+          "file": "libs/pages/settings/src/lib/modal/setting-modal.tsx",
+          "hash": "15926199246324723989"
+        },
+        {
+          "file": "libs/pages/settings/tsconfig.json",
+          "hash": "8945200214589149969"
+        },
+        {
+          "file": "libs/pages/settings/tsconfig.lib.json",
+          "hash": "920925512994609163"
+        },
+        {
+          "file": "libs/pages/settings/tsconfig.spec.json",
+          "hash": "6227144360273957678"
+        },
+        {
+          "file": "libs/pages/settings/vite.config.ts",
+          "hash": "10893821605293521456",
+          "deps": [
+            "npm:vite",
+            "npm:@vitejs/plugin-react",
+            "npm:vite-plugin-dts",
+            "npm:@nx/vite"
+>>>>>>> 6fdc29c (feat(delete-server): fixed packaging for build)
           ]
         }
       ],
@@ -1190,6 +1730,7 @@
           "hash": "10740392072068377465"
         }
       ],
+<<<<<<< HEAD
       "events": [
         {
           "file": "libs/shared/events/.babelrc",
@@ -1214,11 +1755,42 @@
         {
           "file": "libs/shared/events/src/lib/event.tsx",
           "hash": "4253744578596162696",
+=======
+      "routes": [
+        {
+          "file": "libs/shared/routes/.babelrc",
+          "hash": "2946678488919325452"
+        },
+        {
+          "file": "libs/shared/routes/.eslintrc.json",
+          "hash": "15946965712701950674"
+        },
+        {
+          "file": "libs/shared/routes/README.md",
+          "hash": "2131638500356004687"
+        },
+        {
+          "file": "libs/shared/routes/package.json",
+          "hash": "11731751259747212475"
+        },
+        {
+          "file": "libs/shared/routes/project.json",
+          "hash": "16162467695791069362"
+        },
+        {
+          "file": "libs/shared/routes/src/index.ts",
+          "hash": "1319631043369666246"
+        },
+        {
+          "file": "libs/shared/routes/src/lib/router.tsx",
+          "hash": "14702602826950794599",
+>>>>>>> 6fdc29c (feat(delete-server): fixed packaging for build)
           "deps": [
             "npm:react"
           ]
         },
         {
+<<<<<<< HEAD
           "file": "libs/shared/events/src/lib/events.tsx",
           "hash": "9934183415816488222",
           "deps": [
@@ -1243,6 +1815,165 @@
           "hash": "8057284132228746010",
           "deps": [
             "npm:vite"
+=======
+          "file": "libs/shared/routes/src/lib/sub-router/login.router.ts",
+          "hash": "1267140428767931409"
+        },
+        {
+          "file": "libs/shared/routes/tsconfig.json",
+          "hash": "8945200214589149969"
+        },
+        {
+          "file": "libs/shared/routes/tsconfig.lib.json",
+          "hash": "920925512994609163"
+        },
+        {
+          "file": "libs/shared/routes/tsconfig.spec.json",
+          "hash": "6227144360273957678"
+        },
+        {
+          "file": "libs/shared/routes/vite.config.ts",
+          "hash": "2735389976405881496",
+          "deps": [
+            "npm:vite",
+            "npm:@vitejs/plugin-react",
+            "npm:vite-plugin-dts",
+            "npm:@nx/vite"
+          ]
+        }
+      ],
+      "user": [
+        {
+          "file": "libs/domains/user/.babelrc",
+          "hash": "2946678488919325452"
+        },
+        {
+          "file": "libs/domains/user/.eslintrc.json",
+          "hash": "15946965712701950674"
+        },
+        {
+          "file": "libs/domains/user/README.md",
+          "hash": "14920626267761135910"
+        },
+        {
+          "file": "libs/domains/user/package.json",
+          "hash": "3355590674491797815"
+        },
+        {
+          "file": "libs/domains/user/project.json",
+          "hash": "13832514799948405828"
+        },
+        {
+          "file": "libs/domains/user/src/index.ts",
+          "hash": "6700654078048103507"
+        },
+        {
+          "file": "libs/domains/user/src/lib/user.api.ts",
+          "hash": "15340334096512759766",
+          "deps": [
+            "npm:@reduxjs/toolkit",
+            "store",
+            "contracts"
+          ]
+        },
+        {
+          "file": "libs/domains/user/src/lib/user.slice.ts",
+          "hash": "15865593281912464779",
+          "deps": [
+            "npm:@reduxjs/toolkit",
+            "contracts",
+            "store"
+          ]
+        },
+        {
+          "file": "libs/domains/user/tsconfig.json",
+          "hash": "8945200214589149969"
+        },
+        {
+          "file": "libs/domains/user/tsconfig.lib.json",
+          "hash": "920925512994609163"
+        },
+        {
+          "file": "libs/domains/user/tsconfig.spec.json",
+          "hash": "6227144360273957678"
+        },
+        {
+          "file": "libs/domains/user/vite.config.ts",
+          "hash": "9586463081089677674",
+          "deps": [
+            "npm:vite",
+            "npm:@vitejs/plugin-react",
+            "npm:vite-plugin-dts",
+            "npm:@nx/vite"
+          ]
+        }
+      ],
+      "channel": [
+        {
+          "file": "libs/domains/channel/.babelrc",
+          "hash": "2946678488919325452"
+        },
+        {
+          "file": "libs/domains/channel/.eslintrc.json",
+          "hash": "15946965712701950674"
+        },
+        {
+          "file": "libs/domains/channel/README.md",
+          "hash": "16711655657200289493"
+        },
+        {
+          "file": "libs/domains/channel/package.json",
+          "hash": "10028187777555311442"
+        },
+        {
+          "file": "libs/domains/channel/project.json",
+          "hash": "13856292354616517925"
+        },
+        {
+          "file": "libs/domains/channel/src/index.ts",
+          "hash": "4386558192927751266"
+        },
+        {
+          "file": "libs/domains/channel/src/lib/channel.api.ts",
+          "hash": "13649521324353839081",
+          "deps": [
+            "npm:@reduxjs/toolkit",
+            "contracts",
+            "store",
+            "user"
+          ]
+        },
+        {
+          "file": "libs/domains/channel/src/lib/channel.slice.ts",
+          "hash": "14267413878399865510",
+          "deps": [
+            "contracts",
+            "store",
+            "npm:@reduxjs/toolkit",
+            "domains-server"
+          ]
+        },
+        {
+          "file": "libs/domains/channel/tsconfig.json",
+          "hash": "8945200214589149969"
+        },
+        {
+          "file": "libs/domains/channel/tsconfig.lib.json",
+          "hash": "920925512994609163"
+        },
+        {
+          "file": "libs/domains/channel/tsconfig.spec.json",
+          "hash": "6227144360273957678"
+        },
+        {
+          "file": "libs/domains/channel/vite.config.ts",
+          "hash": "18340154902239170709",
+          "deps": [
+            "npm:vite",
+            "npm:@vitejs/plugin-react",
+            "npm:vite-plugin-dts",
+            "npm:@nx/vite"
+>>>>>>> 6fdc29c (feat(delete-server): fixed packaging for build)
           ]
         }
       ],
@@ -1282,12 +2013,17 @@
           "file": "libs/pages/auth/src/lib/feature/page-confirm-email-feature.tsx",
           "hash": "5688431697930006681",
           "deps": [
+<<<<<<< HEAD
+=======
+            "npm:react-router-dom",
+>>>>>>> 6fdc29c (feat(delete-server): fixed packaging for build)
             "store",
             "npm:react-redux",
             "user"
           ]
         },
         {
+<<<<<<< HEAD
           "file": "libs/pages/auth/src/lib/feature/page-email-update-confirmation-feature.tsx",
           "hash": "537003821662787335",
           "deps": [
@@ -1299,6 +2035,14 @@
           "file": "libs/pages/auth/src/lib/feature/page-signin-feature.tsx",
           "hash": "9877877374514214626",
           "deps": [
+=======
+          "file": "libs/pages/auth/src/lib/feature/page-signin-feature.tsx",
+          "hash": "9877877374514214626",
+          "deps": [
+            "npm:react",
+            "npm:react-hook-form",
+            "npm:react-router-dom",
+>>>>>>> 6fdc29c (feat(delete-server): fixed packaging for build)
             "contracts",
             "store",
             "npm:react-redux",
@@ -1307,9 +2051,18 @@
         },
         {
           "file": "libs/pages/auth/src/lib/feature/page-signup-feature.tsx",
+<<<<<<< HEAD
           "hash": "2748059628692137114",
           "deps": [
             "contracts",
+=======
+          "hash": "3378426219590833615",
+          "deps": [
+            "contracts",
+            "npm:react",
+            "npm:react-hook-form",
+            "npm:react-router-dom",
+>>>>>>> 6fdc29c (feat(delete-server): fixed packaging for build)
             "user"
           ]
         },
@@ -1317,7 +2070,13 @@
           "file": "libs/pages/auth/src/lib/feature/page-verify-feature.tsx",
           "hash": "14975221900233095504",
           "deps": [
+<<<<<<< HEAD
             "user"
+=======
+            "npm:react-router",
+            "user",
+            "npm:react"
+>>>>>>> 6fdc29c (feat(delete-server): fixed packaging for build)
           ]
         },
         {
@@ -1329,7 +2088,11 @@
         },
         {
           "file": "libs/pages/auth/src/lib/router.tsx",
+<<<<<<< HEAD
           "hash": "11838889816585470880",
+=======
+          "hash": "8094065758053201574",
+>>>>>>> 6fdc29c (feat(delete-server): fixed packaging for build)
           "deps": [
             "routes"
           ]
@@ -1349,6 +2112,7 @@
           ]
         },
         {
+<<<<<<< HEAD
           "file": "libs/pages/auth/src/lib/ui/page-email-update-confirmation.tsx",
           "hash": "1121777609388599982"
         },
@@ -1357,20 +2121,37 @@
           "hash": "1616093515600949858",
           "deps": [
             "ui"
+=======
+          "file": "libs/pages/auth/src/lib/ui/page-signin.tsx",
+          "hash": "1616093515600949858",
+          "deps": [
+            "ui",
+            "npm:react-hook-form"
+>>>>>>> 6fdc29c (feat(delete-server): fixed packaging for build)
           ]
         },
         {
           "file": "libs/pages/auth/src/lib/ui/page-signup.tsx",
           "hash": "1976135653011438519",
           "deps": [
+<<<<<<< HEAD
             "ui"
+=======
+            "ui",
+            "npm:react-hook-form"
+>>>>>>> 6fdc29c (feat(delete-server): fixed packaging for build)
           ]
         },
         {
           "file": "libs/pages/auth/src/lib/ui/page-verify.tsx",
           "hash": "1930641470556637733",
           "deps": [
+<<<<<<< HEAD
             "ui"
+=======
+            "ui",
+            "npm:react-router"
+>>>>>>> 6fdc29c (feat(delete-server): fixed packaging for build)
           ]
         },
         {
@@ -1390,7 +2171,13 @@
           "hash": "13942266140191541494",
           "deps": [
             "npm:vite",
+<<<<<<< HEAD
             "npm:vite-plugin-dts"
+=======
+            "npm:@vitejs/plugin-react",
+            "npm:vite-plugin-dts",
+            "npm:@nx/vite"
+>>>>>>> 6fdc29c (feat(delete-server): fixed packaging for build)
           ]
         }
       ],
@@ -1417,7 +2204,11 @@
         },
         {
           "file": "libs/shared/contracts/src/index.ts",
+<<<<<<< HEAD
           "hash": "14694764281983757560"
+=======
+          "hash": "472623659916848873"
+>>>>>>> 6fdc29c (feat(delete-server): fixed packaging for build)
         },
         {
           "file": "libs/shared/contracts/src/lib/entities/attachment.entity.ts",
@@ -1433,7 +2224,11 @@
         },
         {
           "file": "libs/shared/contracts/src/lib/entities/index.ts",
+<<<<<<< HEAD
           "hash": "7590172974115879710"
+=======
+          "hash": "14740610823575062079"
+>>>>>>> 6fdc29c (feat(delete-server): fixed packaging for build)
         },
         {
           "file": "libs/shared/contracts/src/lib/entities/ivoice.entity.ts",
@@ -1445,7 +2240,11 @@
         },
         {
           "file": "libs/shared/contracts/src/lib/entities/message.entity.ts",
+<<<<<<< HEAD
           "hash": "5191383692513818906"
+=======
+          "hash": "2828188680145800161"
+>>>>>>> 6fdc29c (feat(delete-server): fixed packaging for build)
         },
         {
           "file": "libs/shared/contracts/src/lib/entities/occupied-channel.entity.ts",
@@ -1453,7 +2252,11 @@
         },
         {
           "file": "libs/shared/contracts/src/lib/entities/server.entity.ts",
+<<<<<<< HEAD
           "hash": "10075961808196269365"
+=======
+          "hash": "2275093738608314112"
+>>>>>>> 6fdc29c (feat(delete-server): fixed packaging for build)
         },
         {
           "file": "libs/shared/contracts/src/lib/entities/user-connected.entity.ts",
@@ -1485,6 +2288,7 @@
         },
         {
           "file": "libs/shared/contracts/src/lib/request/channel/join-voice-channel.request.ts",
+<<<<<<< HEAD
           "hash": "17212617889782156150"
         },
         {
@@ -1497,6 +2301,13 @@
           "deps": [
             "npm:luxon"
           ]
+=======
+          "hash": "16027291283804889909"
+        },
+        {
+          "file": "libs/shared/contracts/src/lib/request/index.ts",
+          "hash": "836000635587039394"
+>>>>>>> 6fdc29c (feat(delete-server): fixed packaging for build)
         },
         {
           "file": "libs/shared/contracts/src/lib/request/message/create-message.request.ts",
@@ -1511,22 +2322,30 @@
           "hash": "17305279995619969724"
         },
         {
+<<<<<<< HEAD
           "file": "libs/shared/contracts/src/lib/request/message/pin-message.request.ts",
           "hash": "11163268096605536378"
         },
         {
+=======
+>>>>>>> 6fdc29c (feat(delete-server): fixed packaging for build)
           "file": "libs/shared/contracts/src/lib/request/message/show-message.request.ts",
           "hash": "7621622265147449180"
         },
         {
           "file": "libs/shared/contracts/src/lib/request/message/update-message.request.ts",
+<<<<<<< HEAD
           "hash": "15406934984052116912"
+=======
+          "hash": "13864466167799578344"
+>>>>>>> 6fdc29c (feat(delete-server): fixed packaging for build)
         },
         {
           "file": "libs/shared/contracts/src/lib/request/refresh.request.ts",
           "hash": "2448972938278733391"
         },
         {
+<<<<<<< HEAD
           "file": "libs/shared/contracts/src/lib/request/server/create-server.request.ts",
           "hash": "216744739742622529"
         },
@@ -1535,6 +2354,8 @@
           "hash": "10552184469040997522"
         },
         {
+=======
+>>>>>>> 6fdc29c (feat(delete-server): fixed packaging for build)
           "file": "libs/shared/contracts/src/lib/request/user/login.request.ts",
           "hash": "9309549140264876274"
         },
@@ -1543,15 +2364,19 @@
           "hash": "12397282443028671784"
         },
         {
+<<<<<<< HEAD
           "file": "libs/shared/contracts/src/lib/request/user/update.request.ts",
           "hash": "10938460905205920561"
         },
         {
+=======
+>>>>>>> 6fdc29c (feat(delete-server): fixed packaging for build)
           "file": "libs/shared/contracts/src/lib/response/channel/create-channel.response.ts",
           "hash": "12370991290105295695"
         },
         {
           "file": "libs/shared/contracts/src/lib/response/index.ts",
+<<<<<<< HEAD
           "hash": "14023775771345976171"
         },
         {
@@ -1561,6 +2386,9 @@
         {
           "file": "libs/shared/contracts/src/lib/response/invitation/join-private-server.response.ts",
           "hash": "2024986457963358842"
+=======
+          "hash": "9871690234897652164"
+>>>>>>> 6fdc29c (feat(delete-server): fixed packaging for build)
         },
         {
           "file": "libs/shared/contracts/src/lib/response/message/get-messages.response.ts",
@@ -1579,10 +2407,13 @@
           "hash": "7013948610265185427"
         },
         {
+<<<<<<< HEAD
           "file": "libs/shared/contracts/src/lib/response/user/update.response.ts",
           "hash": "8353148179238259477"
         },
         {
+=======
+>>>>>>> 6fdc29c (feat(delete-server): fixed packaging for build)
           "file": "libs/shared/contracts/src/lib/state/channel.state.ts",
           "hash": "174411592170485931"
         },
@@ -1600,7 +2431,11 @@
         },
         {
           "file": "libs/shared/contracts/src/lib/state/user.state.ts",
+<<<<<<< HEAD
           "hash": "8960647996115495776"
+=======
+          "hash": "14235484088455025713"
+>>>>>>> 6fdc29c (feat(delete-server): fixed packaging for build)
         },
         {
           "file": "libs/shared/contracts/src/lib/value.interface.ts",
@@ -1626,6 +2461,7 @@
           "hash": "4837050682530425428",
           "deps": [
             "npm:vite",
+<<<<<<< HEAD
             "npm:vite-plugin-dts"
           ]
         }
@@ -1663,10 +2499,182 @@
             "responsive",
             "domains-server",
             "user",
+=======
+            "npm:@vitejs/plugin-react",
+            "npm:vite-plugin-dts",
+            "npm:@nx/vite"
+          ]
+        }
+      ],
+      "voice": [
+        {
+          "file": "libs/domains/voice/.babelrc",
+          "hash": "2946678488919325452"
+        },
+        {
+          "file": "libs/domains/voice/.eslintrc.json",
+          "hash": "15946965712701950674"
+        },
+        {
+          "file": "libs/domains/voice/README.md",
+          "hash": "8645407144093774799"
+        },
+        {
+          "file": "libs/domains/voice/package.json",
+          "hash": "7021859894756103083"
+        },
+        {
+          "file": "libs/domains/voice/project.json",
+          "hash": "3112085845966864773"
+        },
+        {
+          "file": "libs/domains/voice/src/index.ts",
+          "hash": "11568561696195002333"
+        },
+        {
+          "file": "libs/domains/voice/src/lib/voice.api.ts",
+          "hash": "16917028773067363618"
+        },
+        {
+          "file": "libs/domains/voice/src/lib/voice.slice.ts",
+          "hash": "8485114890428683327",
+          "deps": [
+            "contracts",
+            "store",
+            "npm:@reduxjs/toolkit"
+          ]
+        },
+        {
+          "file": "libs/domains/voice/tsconfig.json",
+          "hash": "2231839231104708401"
+        },
+        {
+          "file": "libs/domains/voice/tsconfig.lib.json",
+          "hash": "920925512994609163"
+        },
+        {
+          "file": "libs/domains/voice/tsconfig.spec.json",
+          "hash": "6227144360273957678"
+        },
+        {
+          "file": "libs/domains/voice/vite.config.ts",
+          "hash": "6989859277227038884",
+          "deps": [
+            "npm:vite",
+            "npm:@vitejs/plugin-react",
+            "npm:vite-plugin-dts",
+            "npm:@nx/vite"
+          ]
+        }
+      ],
+      "channels": [
+        {
+          "file": "libs/pages/channels/.babelrc",
+          "hash": "2946678488919325452"
+        },
+        {
+          "file": "libs/pages/channels/.eslintrc.json",
+          "hash": "15946965712701950674"
+        },
+        {
+          "file": "libs/pages/channels/README.md",
+          "hash": "6291834631108690003"
+        },
+        {
+          "file": "libs/pages/channels/package-lock.json",
+          "hash": "11956875320965963705"
+        },
+        {
+          "file": "libs/pages/channels/package.json",
+          "hash": "12992375632990666301"
+        },
+        {
+          "file": "libs/pages/channels/project.json",
+          "hash": "11443496361317174123"
+        },
+        {
+          "file": "libs/pages/channels/src/index.ts",
+          "hash": "4935891016516273600"
+        },
+        {
+          "file": "libs/pages/channels/src/lib/feature/attachment-feature.tsx",
+          "hash": "13952445497333900811",
+          "deps": [
+            "npm:react-redux",
+            "user",
+            "channel",
+            "contracts",
+            "npm:react",
+            "ui"
+          ]
+        },
+        {
+          "file": "libs/pages/channels/src/lib/feature/dynamic-selector-item-feature.tsx",
+          "hash": "9811999567745771836",
+          "deps": [
+            "contracts",
+            "user"
+          ]
+        },
+        {
+          "file": "libs/pages/channels/src/lib/feature/local-feed.tsx",
+          "hash": "4377068579423957388",
+          "deps": [
+            "npm:react-redux",
+            "voice",
+            "npm:react"
+          ]
+        },
+        {
+          "file": "libs/pages/channels/src/lib/feature/message-feature.tsx",
+          "hash": "9536396970101266337",
+          "deps": [
+            "contracts",
+            "npm:react",
+            "npm:react-redux",
+            "user",
+            "npm:react-hook-form"
+          ]
+        },
+        {
+          "file": "libs/pages/channels/src/lib/feature/page-channel-feature.tsx",
+          "hash": "11731783298652638079",
+          "deps": [
+            "npm:@adonisjs/transmit-client",
+            "channel",
+            "contracts",
+            "responsive",
+            "domains-server",
+            "store",
+            "ui",
+            "npm:react",
+            "npm:react-hook-form",
+            "npm:react-hot-toast",
+            "npm:react-redux",
+            "npm:react-router"
+          ]
+        },
+        {
+          "file": "libs/pages/channels/src/lib/feature/page-me-general-feature.tsx",
+          "hash": "10779298278221951175",
+          "deps": [
+            "npm:react-redux",
+            "responsive",
+            "store"
+          ]
+        },
+        {
+          "file": "libs/pages/channels/src/lib/hooks/local-media-stream.ts",
+          "hash": "15879556345925873400",
+          "deps": [
+            "npm:react",
+            "npm:react-redux",
+>>>>>>> 6fdc29c (feat(delete-server): fixed packaging for build)
             "voice"
           ]
         },
         {
+<<<<<<< HEAD
           "file": "libs/state/store/tsconfig.json",
           "hash": "8945200214589149969"
         },
@@ -1684,6 +2692,109 @@
           "deps": [
             "npm:vite",
             "npm:vite-plugin-dts"
+=======
+          "file": "libs/pages/channels/src/lib/page-channels.tsx",
+          "hash": "10577303829064430915",
+          "deps": [
+            "npm:react-router-dom"
+          ]
+        },
+        {
+          "file": "libs/pages/channels/src/lib/router.tsx",
+          "hash": "4716202752870454098",
+          "deps": [
+            "routes"
+          ]
+        },
+        {
+          "file": "libs/pages/channels/src/lib/types.ts",
+          "hash": "15088719449319993193"
+        },
+        {
+          "file": "libs/pages/channels/src/lib/ui/custom-markdown/Callout.tsx",
+          "hash": "15379973696667743341",
+          "deps": [
+            "npm:react"
+          ]
+        },
+        {
+          "file": "libs/pages/channels/src/lib/ui/custom-markdown/Subscript.tsx",
+          "hash": "7995922014421527915"
+        },
+        {
+          "file": "libs/pages/channels/src/lib/ui/list-messages.tsx",
+          "hash": "9084764863891482819",
+          "deps": [
+            "contracts"
+          ]
+        },
+        {
+          "file": "libs/pages/channels/src/lib/ui/media.tsx",
+          "hash": "16176971845030558804",
+          "deps": [
+            "npm:react",
+            "npm:react-draggable"
+          ]
+        },
+        {
+          "file": "libs/pages/channels/src/lib/ui/message.tsx",
+          "hash": "2568189489366105363",
+          "deps": [
+            "npm:react",
+            "contracts",
+            "ui",
+            "npm:react-hook-form",
+            "npm:@markdoc/markdoc"
+          ]
+        },
+        {
+          "file": "libs/pages/channels/src/lib/ui/page-channel.tsx",
+          "hash": "15720957715612645270",
+          "deps": [
+            "contracts",
+            "ui",
+            "npm:react-hook-form"
+          ]
+        },
+        {
+          "file": "libs/pages/channels/src/lib/ui/page-me-general.tsx",
+          "hash": "7180127455937156491",
+          "deps": [
+            "ui"
+          ]
+        },
+        {
+          "file": "libs/pages/channels/src/lib/utils/markdown-config.tsx",
+          "hash": "6318670646327962602",
+          "deps": [
+            "npm:@markdoc/markdoc"
+          ]
+        },
+        {
+          "file": "libs/pages/channels/src/lib/utils/markdown-parser.tsx",
+          "hash": "3511092051806438006"
+        },
+        {
+          "file": "libs/pages/channels/tsconfig.json",
+          "hash": "8945200214589149969"
+        },
+        {
+          "file": "libs/pages/channels/tsconfig.lib.json",
+          "hash": "920925512994609163"
+        },
+        {
+          "file": "libs/pages/channels/tsconfig.spec.json",
+          "hash": "6227144360273957678"
+        },
+        {
+          "file": "libs/pages/channels/vite.config.ts",
+          "hash": "11401521523036165575",
+          "deps": [
+            "npm:vite",
+            "npm:@vitejs/plugin-react",
+            "npm:vite-plugin-dts",
+            "npm:@nx/vite"
+>>>>>>> 6fdc29c (feat(delete-server): fixed packaging for build)
           ]
         }
       ],
@@ -1707,7 +2818,13 @@
           "file": "libs/shared/ui/.storybook/preview.tsx",
           "hash": "16089820282696352096",
           "deps": [
+<<<<<<< HEAD
             "npm:@storybook/react"
+=======
+            "npm:@radix-ui/react-tooltip",
+            "npm:@storybook/react",
+            "npm:react-router"
+>>>>>>> 6fdc29c (feat(delete-server): fixed packaging for build)
           ]
         },
         {
@@ -1753,6 +2870,7 @@
         },
         {
           "file": "libs/shared/ui/src/lib/components/badge/badge.tsx",
+<<<<<<< HEAD
           "hash": "16862529498993815551"
         },
         {
@@ -1763,6 +2881,9 @@
             "npm:class-variance-authority",
             "utils"
           ]
+=======
+          "hash": "8994774822162414443"
+>>>>>>> 6fdc29c (feat(delete-server): fixed packaging for build)
         },
         {
           "file": "libs/shared/ui/src/lib/components/buttons/button.stories.tsx",
@@ -1773,7 +2894,11 @@
         },
         {
           "file": "libs/shared/ui/src/lib/components/buttons/button.tsx",
+<<<<<<< HEAD
           "hash": "17631866284961782581",
+=======
+          "hash": "8930960930900590885",
+>>>>>>> 6fdc29c (feat(delete-server): fixed packaging for build)
           "deps": [
             "npm:react",
             "npm:react-router-dom"
@@ -1784,6 +2909,7 @@
           "hash": "9194926357233691967"
         },
         {
+<<<<<<< HEAD
           "file": "libs/shared/ui/src/lib/components/calendar/calendar.tsx",
           "hash": "6512035890212597508",
           "deps": [
@@ -1793,10 +2919,13 @@
           ]
         },
         {
+=======
+>>>>>>> 6fdc29c (feat(delete-server): fixed packaging for build)
           "file": "libs/shared/ui/src/lib/components/callout/callout.tsx",
           "hash": "1053258050066444950",
           "deps": [
             "npm:class-variance-authority",
+<<<<<<< HEAD
             "utils"
           ]
         },
@@ -1806,6 +2935,9 @@
           "deps": [
             "npm:@radix-ui/react-checkbox",
             "npm:@radix-ui/react-icons",
+=======
+            "npm:react",
+>>>>>>> 6fdc29c (feat(delete-server): fixed packaging for build)
             "utils"
           ]
         },
@@ -1830,17 +2962,26 @@
         },
         {
           "file": "libs/shared/ui/src/lib/components/index.ts",
+<<<<<<< HEAD
           "hash": "14667534444426313249"
         },
         {
           "file": "libs/shared/ui/src/lib/components/inputs/index.ts",
           "hash": "16337066615907680312"
+=======
+          "hash": "5581680549555140773"
+        },
+        {
+          "file": "libs/shared/ui/src/lib/components/inputs/index.ts",
+          "hash": "3885107042606906771"
+>>>>>>> 6fdc29c (feat(delete-server): fixed packaging for build)
         },
         {
           "file": "libs/shared/ui/src/lib/components/inputs/input-number.tsx",
           "hash": "15472538888542854454"
         },
         {
+<<<<<<< HEAD
           "file": "libs/shared/ui/src/lib/components/inputs/input-picture.stories.tsx",
           "hash": "6992264469201183719",
           "deps": [
@@ -1858,6 +2999,12 @@
           "file": "libs/shared/ui/src/lib/components/inputs/input-radio-box.stories.tsx",
           "hash": "6956755380447870520",
           "deps": [
+=======
+          "file": "libs/shared/ui/src/lib/components/inputs/input-radio-box.stories.tsx",
+          "hash": "6956755380447870520",
+          "deps": [
+            "npm:react",
+>>>>>>> 6fdc29c (feat(delete-server): fixed packaging for build)
             "npm:@storybook/react"
           ]
         },
@@ -1872,6 +3019,10 @@
           "file": "libs/shared/ui/src/lib/components/inputs/input-radio.stories.tsx",
           "hash": "16644606943280029733",
           "deps": [
+<<<<<<< HEAD
+=======
+            "npm:react",
+>>>>>>> 6fdc29c (feat(delete-server): fixed packaging for build)
             "npm:@storybook/react"
           ]
         },
@@ -1886,6 +3037,10 @@
           "file": "libs/shared/ui/src/lib/components/inputs/input-search.stories.tsx",
           "hash": "4694105079584264396",
           "deps": [
+<<<<<<< HEAD
+=======
+            "npm:react",
+>>>>>>> 6fdc29c (feat(delete-server): fixed packaging for build)
             "npm:@storybook/react"
           ]
         },
@@ -1893,13 +3048,22 @@
           "file": "libs/shared/ui/src/lib/components/inputs/input-search.tsx",
           "hash": "10992389711204023006",
           "deps": [
+<<<<<<< HEAD
             "utils"
+=======
+            "utils",
+            "npm:react"
+>>>>>>> 6fdc29c (feat(delete-server): fixed packaging for build)
           ]
         },
         {
           "file": "libs/shared/ui/src/lib/components/inputs/input-select-small.stories.tsx",
           "hash": "9157853851610784825",
           "deps": [
+<<<<<<< HEAD
+=======
+            "npm:react",
+>>>>>>> 6fdc29c (feat(delete-server): fixed packaging for build)
             "npm:@storybook/react"
           ]
         },
@@ -1908,6 +3072,10 @@
           "hash": "14636311773012363198",
           "deps": [
             "utils",
+<<<<<<< HEAD
+=======
+            "npm:react",
+>>>>>>> 6fdc29c (feat(delete-server): fixed packaging for build)
             "contracts"
           ]
         },
@@ -1915,6 +3083,10 @@
           "file": "libs/shared/ui/src/lib/components/inputs/input-select.stories.tsx",
           "hash": "2250325266036093790",
           "deps": [
+<<<<<<< HEAD
+=======
+            "npm:react",
+>>>>>>> 6fdc29c (feat(delete-server): fixed packaging for build)
             "npm:@storybook/react"
           ]
         },
@@ -1922,6 +3094,10 @@
           "file": "libs/shared/ui/src/lib/components/inputs/input-select.tsx",
           "hash": "1582129532441208214",
           "deps": [
+<<<<<<< HEAD
+=======
+            "npm:react",
+>>>>>>> 6fdc29c (feat(delete-server): fixed packaging for build)
             "npm:react-select",
             "contracts"
           ]
@@ -1930,6 +3106,10 @@
           "file": "libs/shared/ui/src/lib/components/inputs/input-text-area.stories.tsx",
           "hash": "1233397005316804345",
           "deps": [
+<<<<<<< HEAD
+=======
+            "npm:react",
+>>>>>>> 6fdc29c (feat(delete-server): fixed packaging for build)
             "npm:@storybook/react"
           ]
         },
@@ -1965,6 +3145,10 @@
           "file": "libs/shared/ui/src/lib/components/inputs/input.tsx",
           "hash": "3990147569767962412",
           "deps": [
+<<<<<<< HEAD
+=======
+            "npm:react",
+>>>>>>> 6fdc29c (feat(delete-server): fixed packaging for build)
             "utils"
           ]
         },
@@ -1987,9 +3171,26 @@
           "hash": "3501625422513661207"
         },
         {
+<<<<<<< HEAD
           "file": "libs/shared/ui/src/lib/components/menu/menu-group.tsx",
           "hash": "2359289652716902683",
           "deps": [
+=======
+          "file": "libs/shared/ui/src/lib/components/menu-shadcn/menu-shadcn.tsx",
+          "hash": "10840819534690503043",
+          "deps": [
+            "npm:react",
+            "npm:@radix-ui/react-dropdown-menu",
+            "npm:@radix-ui/react-icons",
+            "utils"
+          ]
+        },
+        {
+          "file": "libs/shared/ui/src/lib/components/menu/menu-group.tsx",
+          "hash": "2359289652716902683",
+          "deps": [
+            "npm:react",
+>>>>>>> 6fdc29c (feat(delete-server): fixed packaging for build)
             "utils",
             "npm:@szhsin/react-menu"
           ]
@@ -1999,7 +3200,13 @@
           "hash": "11849865736634720553",
           "deps": [
             "utils",
+<<<<<<< HEAD
             "npm:@szhsin/react-menu"
+=======
+            "npm:@szhsin/react-menu",
+            "npm:react",
+            "npm:react-router-dom"
+>>>>>>> 6fdc29c (feat(delete-server): fixed packaging for build)
           ]
         },
         {
@@ -2014,6 +3221,7 @@
           "hash": "8521947396100246430",
           "deps": [
             "npm:@szhsin/react-menu",
+<<<<<<< HEAD
             "utils"
           ]
         },
@@ -2029,6 +3237,9 @@
           "hash": "7605920008478535638",
           "deps": [
             "npm:lucide-react",
+=======
+            "npm:react",
+>>>>>>> 6fdc29c (feat(delete-server): fixed packaging for build)
             "utils"
           ]
         },
@@ -2036,20 +3247,33 @@
           "file": "libs/shared/ui/src/lib/components/modals/full-screen-modal/full-screen-dialog.tsx",
           "hash": "13079935639252764660",
           "deps": [
+<<<<<<< HEAD
+=======
+            "npm:react",
+            "npm:@radix-ui/react-dialog",
+>>>>>>> 6fdc29c (feat(delete-server): fixed packaging for build)
             "npm:lucide-react",
             "utils"
           ]
         },
         {
           "file": "libs/shared/ui/src/lib/components/modals/full-screen-modal/full-screen-modal.tsx",
+<<<<<<< HEAD
           "hash": "10553393374598797484",
+=======
+          "hash": "17831493634169074318",
+>>>>>>> 6fdc29c (feat(delete-server): fixed packaging for build)
           "deps": [
             "npm:react"
           ]
         },
         {
           "file": "libs/shared/ui/src/lib/components/modals/index.ts",
+<<<<<<< HEAD
           "hash": "17424431824408049672"
+=======
+          "hash": "5691052707017967777"
+>>>>>>> 6fdc29c (feat(delete-server): fixed packaging for build)
         },
         {
           "file": "libs/shared/ui/src/lib/components/modals/modal-alert/modal-alert.tsx",
@@ -2116,7 +3340,11 @@
         },
         {
           "file": "libs/shared/ui/src/lib/components/modals/modal/modal.tsx",
+<<<<<<< HEAD
           "hash": "9030578507002711592",
+=======
+          "hash": "8364502423593145908",
+>>>>>>> 6fdc29c (feat(delete-server): fixed packaging for build)
           "deps": [
             "npm:react",
             "npm:@radix-ui/react-dialog"
@@ -2131,6 +3359,7 @@
         },
         {
           "file": "libs/shared/ui/src/lib/components/popover/popover.tsx",
+<<<<<<< HEAD
           "hash": "16258596845424480236",
           "deps": [
             "utils"
@@ -2141,12 +3370,25 @@
           "hash": "8105423510769703257",
           "deps": [
             "npm:@radix-ui/react-icons",
+=======
+          "hash": "16407712873051342144",
+          "deps": [
+            "npm:@radix-ui/react-popover",
+            "npm:react",
+>>>>>>> 6fdc29c (feat(delete-server): fixed packaging for build)
             "utils"
           ]
         },
         {
           "file": "libs/shared/ui/src/lib/components/selectors/dynamic-selector/dynamic-selector.stories.tsx",
+<<<<<<< HEAD
           "hash": "3244421341483603138"
+=======
+          "hash": "13728659500077371525",
+          "deps": [
+            "npm:@storybook/react"
+          ]
+>>>>>>> 6fdc29c (feat(delete-server): fixed packaging for build)
         },
         {
           "file": "libs/shared/ui/src/lib/components/selectors/dynamic-selector/dynamic-selector.tsx",
@@ -2164,6 +3406,7 @@
           "hash": "14588602400083436487"
         },
         {
+<<<<<<< HEAD
           "file": "libs/shared/ui/src/lib/components/switch/switch.tsx",
           "hash": "5432155596935186439",
           "deps": [
@@ -2175,6 +3418,13 @@
           "file": "libs/shared/ui/src/lib/components/tooltip/tooltip.tsx",
           "hash": "7335193123276105580",
           "deps": [
+=======
+          "file": "libs/shared/ui/src/lib/components/tooltip/tooltip.tsx",
+          "hash": "7335193123276105580",
+          "deps": [
+            "npm:react",
+            "npm:@radix-ui/react-tooltip",
+>>>>>>> 6fdc29c (feat(delete-server): fixed packaging for build)
             "utils"
           ]
         },
@@ -2242,7 +3492,13 @@
           "hash": "12253098023201608697",
           "deps": [
             "npm:vite",
+<<<<<<< HEAD
             "npm:vite-plugin-dts"
+=======
+            "npm:@vitejs/plugin-react",
+            "npm:vite-plugin-dts",
+            "npm:@nx/vite"
+>>>>>>> 6fdc29c (feat(delete-server): fixed packaging for build)
           ]
         }
       ],
@@ -2311,6 +3567,7 @@
           "hash": "9658428637340538836",
           "deps": [
             "npm:vite",
+<<<<<<< HEAD
             "npm:vite-plugin-dts"
           ]
         }
@@ -2490,6 +3747,118 @@
           "deps": [
             "npm:vite",
             "npm:vite-plugin-dts"
+=======
+            "npm:@vitejs/plugin-react",
+            "npm:vite-plugin-dts",
+            "npm:@nx/vite"
+          ]
+        }
+      ],
+      "client": [
+        {
+          "file": "apps/client/.eslintrc.json",
+          "hash": "11012487992710232822"
+        },
+        {
+          "file": "apps/client/index.html",
+          "hash": "11894711381856016959"
+        },
+        {
+          "file": "apps/client/postcss.config.js",
+          "hash": "2759402739052110475"
+        },
+        {
+          "file": "apps/client/project.json",
+          "hash": "13295485801002351687"
+        },
+        {
+          "file": "apps/client/public/418.jpg",
+          "hash": "15424226834291631998"
+        },
+        {
+          "file": "apps/client/public/background.svg",
+          "hash": "8640407778279034748"
+        },
+        {
+          "file": "apps/client/public/favicon.png",
+          "hash": "14654928139974480579"
+        },
+        {
+          "file": "apps/client/public/picture.svg",
+          "hash": "13628051353388897365"
+        },
+        {
+          "file": "apps/client/src/app/app.tsx",
+          "hash": "13430646195698356518",
+          "deps": [
+            "user",
+            "npm:react",
+            "npm:react-redux",
+            "layout",
+            "npm:react-router-dom",
+            "npm:ts-pattern",
+            "npm:react-hot-toast",
+            "store",
+            "ui"
+          ]
+        },
+        {
+          "file": "apps/client/src/app/router.main.tsx",
+          "hash": "7347775454565579004",
+          "deps": [
+            "npm:react",
+            "auth",
+            "channels"
+          ]
+        },
+        {
+          "file": "apps/client/src/assets/.gitkeep",
+          "hash": "3244421341483603138"
+        },
+        {
+          "file": "apps/client/src/main.tsx",
+          "hash": "10030377039250252570",
+          "deps": [
+            "npm:react",
+            "npm:react-dom",
+            "store",
+            "ui",
+            "npm:react-redux",
+            "npm:react-router-dom",
+            "npm:@radix-ui/react-tooltip"
+          ]
+        },
+        {
+          "file": "apps/client/src/styles.scss",
+          "hash": "9540575453073076294"
+        },
+        {
+          "file": "apps/client/tailwind.config.js",
+          "hash": "9718720026169561880",
+          "deps": [
+            "npm:@nx/react"
+          ]
+        },
+        {
+          "file": "apps/client/tsconfig.app.json",
+          "hash": "7232119452847825095"
+        },
+        {
+          "file": "apps/client/tsconfig.json",
+          "hash": "11166545116916107487"
+        },
+        {
+          "file": "apps/client/tsconfig.spec.json",
+          "hash": "9472099605191632308"
+        },
+        {
+          "file": "apps/client/vite.config.ts",
+          "hash": "70425939032685778",
+          "deps": [
+            "npm:vite",
+            "npm:@vitejs/plugin-react",
+            "npm:@nx/vite"
+>>>>>>> 6fdc29c (feat(delete-server): fixed packaging for build)
           ]
         }
       ],
@@ -2520,16 +3889,29 @@
         },
         {
           "file": "libs/domains/server/src/lib/server.api.tsx",
+<<<<<<< HEAD
           "hash": "12025855368376536181",
           "deps": [
             "contracts",
+=======
+          "hash": "16553070824704691796",
+          "deps": [
+            "contracts",
+            "npm:@reduxjs/toolkit",
+>>>>>>> 6fdc29c (feat(delete-server): fixed packaging for build)
             "store"
           ]
         },
         {
           "file": "libs/domains/server/src/lib/server.slice.tsx",
+<<<<<<< HEAD
           "hash": "17166927959411575598",
           "deps": [
+=======
+          "hash": "10184134811643187246",
+          "deps": [
+            "npm:@reduxjs/toolkit",
+>>>>>>> 6fdc29c (feat(delete-server): fixed packaging for build)
             "contracts",
             "store"
           ]
@@ -2551,6 +3933,7 @@
           "hash": "9199294019793182299",
           "deps": [
             "npm:vite",
+<<<<<<< HEAD
             "npm:vite-plugin-dts"
           ]
         }
@@ -2681,6 +4064,11 @@
           "deps": [
             "npm:vite",
             "npm:vite-plugin-dts"
+=======
+            "npm:@vitejs/plugin-react",
+            "npm:vite-plugin-dts",
+            "npm:@nx/vite"
+>>>>>>> 6fdc29c (feat(delete-server): fixed packaging for build)
           ]
         }
       ]

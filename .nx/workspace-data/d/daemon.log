@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 [NX Daemon Server] - 2024-06-28T19:38:09.800Z - Started listening on: /tmp/3599115d36ab07ee42f9/d.sock
 [NX Daemon Server] - 2024-06-28T19:38:09.802Z - [WATCHER]: Subscribed to changes within: /home/hugo/Bureau/cours/fil_rouge/beep-current/front (native)
 [NX Daemon Server] - 2024-06-28T19:38:09.807Z - Established a connection. Number of open connections: 1
@@ -8,6 +9,18 @@
 [NX Daemon Server] - 2024-06-28T19:38:09.908Z - [REQUEST]: 
 [NX Daemon Server] - 2024-06-28T19:38:11.633Z - Time taken for 'Load Nx Plugin: /home/hugo/Bureau/cours/fil_rouge/beep-current/front/node_modules/.pnpm/nx@19.3.2_@swc-node+register@1.9.2_@swc+core@1.5.7_@swc+helpers@0.5.11__@swc+types@0.1.7_type_n5pexknj54x4762oj5yxzci6tq/node_modules/nx/src/plugins/project-json/build-nodes/package-json-next-to-project-json' 96.12667100000544ms
 [NX Daemon Server] - 2024-06-28T19:38:11.633Z - Closed a connection. Number of open connections: 1
+=======
+[NX Daemon Server] - 2024-06-28T13:36:26.180Z - Started listening on: /tmp/a79bf436bb256c6fccd5/d.sock
+[NX Daemon Server] - 2024-06-28T13:36:26.182Z - [WATCHER]: Subscribed to changes within: /home/mihai/Projets/Beep/front (native)
+[NX Daemon Server] - 2024-06-28T13:36:26.183Z - Established a connection. Number of open connections: 1
+[NX Daemon Server] - 2024-06-28T13:36:26.183Z - Established a connection. Number of open connections: 2
+[NX Daemon Server] - 2024-06-28T13:36:26.184Z - Closed a connection. Number of open connections: 1
+[NX Daemon Server] - 2024-06-28T13:36:26.185Z - [REQUEST]: Client Request for Project Graph Received
+[NX Daemon Server] - 2024-06-28T13:36:26.271Z - [REQUEST]: Updated workspace context based on watched changes, recomputing project graph...
+[NX Daemon Server] - 2024-06-28T13:36:26.271Z - [REQUEST]: 
+[NX Daemon Server] - 2024-06-28T13:36:26.271Z - [REQUEST]: 
+[NX Daemon Server] - 2024-06-28T13:36:27.920Z - Time taken for 'Load Nx Plugin: /home/mihai/Projets/Beep/front/node_modules/.pnpm/nx@19.3.2_@swc-node+register@1.9.2_@swc+core@1.5.7_@swc+helpers@0.5.11__@swc+types@0.1.7_type_n5pexknj54x4762oj5yxzci6tq/node_modules/nx/src/plugins/project-json/build-nodes/package-json-next-to-project-json' 83.49380000000001ms
+>>>>>>> 6fdc29c (feat(delete-server): fixed packaging for build)
 [33mThe CJS build of Vite's Node API is deprecated. See https://vitejs.dev/guide/troubleshooting.html#vite-cjs-node-api-deprecated for more details.[39m
 
 [vite:dts] You are building a library that may not need to generate declaration files.
@@ -48,6 +61,7 @@
 
 [vite:dts] You are building a library that may not need to generate declaration files.
 
+<<<<<<< HEAD
 [NX Daemon Server] - 2024-06-28T19:38:12.233Z - [REQUEST]: Responding to the client. project-graph
 [NX Daemon Server] - 2024-06-28T19:38:12.235Z - Time taken for 'total for creating and serializing project graph' 2423.807142000005ms
 [NX Daemon Server] - 2024-06-28T19:38:12.395Z - Done responding to the client project-graph
@@ -3499,3 +3513,303 @@
 [NX Daemon Server] - 2024-06-30T16:48:22.379Z - Done responding to the client recordOutputsHash
 [NX Daemon Server] - 2024-06-30T16:48:22.379Z - Handled RECORD_OUTPUTS_HASH. Handling time: 1. Response time: 0.
 [NX Daemon Server] - 2024-06-30T16:48:22.400Z - Closed a connection. Number of open connections: 0
+=======
+
+[vite:dts] You are building a library that may not need to generate declaration files.
+
+[NX Daemon Server] - 2024-06-28T13:36:28.494Z - [REQUEST]: Responding to the client. project-graph
+[NX Daemon Server] - 2024-06-28T13:36:28.495Z - Time taken for 'total for creating and serializing project graph' 2309.0922109999997ms
+[NX Daemon Server] - 2024-06-28T13:36:28.498Z - Done responding to the client project-graph
+[NX Daemon Server] - 2024-06-28T13:36:28.498Z - Handled REQUEST_PROJECT_GRAPH. Handling time: 2309. Response time: 4.
+[NX Daemon Server] - 2024-06-28T13:36:28.671Z - [REQUEST]: Responding to the client. handleHashTasks
+[NX Daemon Server] - 2024-06-28T13:36:28.671Z - Done responding to the client handleHashTasks
+[NX Daemon Server] - 2024-06-28T13:36:28.671Z - Handled HASH_TASKS. Handling time: 19. Response time: 0.
+[NX Daemon Server] - 2024-06-28T13:36:32.190Z - [WATCHER]: Processing file changes in outputs
+[NX Daemon Server] - 2024-06-28T13:36:32.441Z - [WATCHER]: Processing file changes in outputs
+[NX Daemon Server] - 2024-06-28T13:36:32.462Z - [REQUEST]: Responding to the client. recordOutputsHash
+[NX Daemon Server] - 2024-06-28T13:36:32.462Z - Done responding to the client recordOutputsHash
+[NX Daemon Server] - 2024-06-28T13:36:32.462Z - Handled RECORD_OUTPUTS_HASH. Handling time: 2. Response time: 0.
+[NX Daemon Server] - 2024-06-28T13:36:32.494Z - Closed a connection. Number of open connections: 0
+[NX Daemon Server] - 2024-06-28T13:39:56.879Z - [WATCHER]: migrations.json was deleted
+[NX Daemon Server] - 2024-06-28T13:39:56.879Z - [WATCHER]: Processing file changes in outputs
+[NX Daemon Server] - 2024-06-28T13:39:56.982Z - [REQUEST]: Updated workspace context based on watched changes, recomputing project graph...
+[NX Daemon Server] - 2024-06-28T13:39:56.983Z - [REQUEST]: 
+[NX Daemon Server] - 2024-06-28T13:39:56.983Z - [REQUEST]: migrations.json
+[NX Daemon Server] - 2024-06-28T13:39:57.107Z - Time taken for 'hash changed files from watcher' 1.1462770000216551ms
+[NX Daemon Server] - 2024-06-28T13:41:00.581Z - [WATCHER]: 1 file(s) created or restored, 0 file(s) modified, 1 file(s) deleted
+[NX Daemon Server] - 2024-06-28T13:41:00.582Z - [WATCHER]: Processing file changes in outputs
+[NX Daemon Server] - 2024-06-28T13:41:00.684Z - [REQUEST]: Updated workspace context based on watched changes, recomputing project graph...
+[NX Daemon Server] - 2024-06-28T13:41:00.685Z - [REQUEST]: .gitignore.swp
+[NX Daemon Server] - 2024-06-28T13:41:00.685Z - [REQUEST]: .gitignore.swx
+[NX Daemon Server] - 2024-06-28T13:41:00.785Z - Time taken for 'hash changed files from watcher' 1.629330999974627ms
+[NX Daemon Server] - 2024-06-28T13:41:08.502Z - [WATCHER]: .gitignore.swp was deleted
+[NX Daemon Server] - 2024-06-28T13:41:08.502Z - [WATCHER]: Processing file changes in outputs
+[NX Daemon Server] - 2024-06-28T13:41:08.703Z - [REQUEST]: Updated workspace context based on watched changes, recomputing project graph...
+[NX Daemon Server] - 2024-06-28T13:41:08.703Z - [REQUEST]: 
+[NX Daemon Server] - 2024-06-28T13:41:08.703Z - [REQUEST]: .gitignore.swp
+[NX Daemon Server] - 2024-06-28T13:41:08.790Z - Time taken for 'hash changed files from watcher' 0.3105890000006184ms
+[NX Daemon Server] - 2024-06-28T21:10:11.959Z - Started listening on: /tmp/a79bf436bb256c6fccd5/d.sock
+[NX Daemon Server] - 2024-06-28T21:10:11.962Z - [WATCHER]: Subscribed to changes within: /home/mihai/Projets/Beep/front (native)
+[NX Daemon Server] - 2024-06-28T21:10:11.969Z - Established a connection. Number of open connections: 1
+[NX Daemon Server] - 2024-06-28T21:10:11.971Z - Established a connection. Number of open connections: 2
+[NX Daemon Server] - 2024-06-28T21:10:11.975Z - [REQUEST]: Client Request for Project Graph Received
+[NX Daemon Server] - 2024-06-28T21:10:12.326Z - [REQUEST]: Updated workspace context based on watched changes, recomputing project graph...
+[NX Daemon Server] - 2024-06-28T21:10:12.327Z - [REQUEST]: 
+[NX Daemon Server] - 2024-06-28T21:10:12.327Z - [REQUEST]: 
+[NX Daemon Server] - 2024-06-28T21:10:14.215Z - Time taken for 'Load Nx Plugin: /home/mihai/Projets/Beep/front/node_modules/.pnpm/nx@19.3.2_@swc-node+register@1.9.2_@swc+core@1.5.7_@swc+helpers@0.5.11__@swc+types@0.1.7_type_n5pexknj54x4762oj5yxzci6tq/node_modules/nx/src/plugins/project-json/build-nodes/package-json-next-to-project-json' 347.80338800046593ms
+[NX Daemon Server] - 2024-06-28T21:10:14.215Z - Closed a connection. Number of open connections: 1
+✘ [ERROR] Expected string in JSON but found "<<"
+
+    tsconfig.base.json:36:0:
+      36 │ <<<<<<< HEAD
+         ╵ ~~
+
+✘ [ERROR] Expected string in JSON but found "<<"
+
+    tsconfig.base.json:36:0:
+      36 │ <<<<<<< HEAD
+         ╵ ~~
+
+✘ [ERROR] Expected string in JSON but found "<<"
+
+    tsconfig.base.json:36:0:
+      36 │ <<<<<<< HEAD
+         ╵ ~~
+
+✘ [ERROR] Expected string in JSON but found "<<"
+
+    tsconfig.base.json:36:0:
+      36 │ <<<<<<< HEAD
+         ╵ ~~
+
+✘ [ERROR] Expected string in JSON but found "<<"
+
+    tsconfig.base.json:36:0:
+      36 │ <<<<<<< HEAD
+         ╵ ~~
+
+✘ [ERROR] Expected string in JSON but found "<<"
+
+    tsconfig.base.json:36:0:
+      36 │ <<<<<<< HEAD
+         ╵ ~~
+
+✘ [ERROR] Expected string in JSON but found "<<"
+
+    tsconfig.base.json:36:0:
+      36 │ <<<<<<< HEAD
+         ╵ ~~
+
+✘ [ERROR] Expected string in JSON but found "<<"
+
+    tsconfig.base.json:36:0:
+      36 │ <<<<<<< HEAD
+         ╵ ~~
+
+[31mfailed to load config from /home/mihai/Projets/Beep/front/libs/pages/settings/vite.config.ts[39m
+[31mfailed to load config from /home/mihai/Projets/Beep/front/libs/shared/contracts/vite.config.ts[39m
+[31mfailed to load config from /home/mihai/Projets/Beep/front/libs/pages/channels/vite.config.ts[39m
+[31mfailed to load config from /home/mihai/Projets/Beep/front/libs/shared/ui/vite.config.ts[39m
+[31mfailed to load config from /home/mihai/Projets/Beep/front/libs/pages/auth/vite.config.ts[39m
+[31mfailed to load config from /home/mihai/Projets/Beep/front/libs/pages/layout/vite.config.ts[39m
+[31mfailed to load config from /home/mihai/Projets/Beep/front/libs/domains/voice/vite.config.ts[39m
+[31mfailed to load config from /home/mihai/Projets/Beep/front/libs/domains/user/vite.config.ts[39m
+[NX Daemon Server] - 2024-06-28T21:10:14.422Z - Error detected when creating a project graph: Failed to create project graph. See above for errors
+[NX Daemon Server] - 2024-06-28T21:10:14.423Z - [REQUEST]: Responding to the client with an error. Error when preparing serialized project graph. Failed to process project graph. Run "nx reset" to fix this. Please report the issue if you keep seeing it.
+Failed to process project graph. Run "nx reset" to fix this. Please report the issue if you keep seeing it.
+  AggregateCreateNodesError: An error occurred while processing files for the @nx/storybook/plugin plugin.
+    - libs/shared/ui/.storybook/main.ts: Unable to load /home/mihai/Projets/Beep/front/tsconfig.base.json: /home/mihai/Projets/Beep/front/tsconfig.base.json is malformed JSON5: invalid character '<' at 36:1
+      at createNodesFromFiles (/home/mihai/Projets/Beep/front/node_modules/.pnpm/nx@19.3.2_@swc-node+register@1.9.2_@swc+core@1.5.7_@swc+helpers@0.5.11__@swc+types@0.1.7_type_n5pexknj54x4762oj5yxzci6tq/node_modules/nx/src/project-graph/plugins/utils.js:58:15)
+      at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+      at async LoadedNxPlugin.createNodes.<computed> (/home/mihai/Projets/Beep/front/node_modules/.pnpm/nx@19.3.2_@swc-node+register@1.9.2_@swc+core@1.5.7_@swc+helpers@0.5.11__@swc+types@0.1.7_type_n5pexknj54x4762oj5yxzci6tq/node_modules/nx/src/project-graph/plugins/internal-api.js:41:28)
+      at async Promise.all (index 4)
+      at async processFilesAndCreateAndSerializeProjectGraph (/home/mihai/Projets/Beep/front/node_modules/.pnpm/nx@19.3.2_@swc-node+register@1.9.2_@swc+core@1.5.7_@swc+helpers@0.5.11__@swc+types@0.1.7_type_n5pexknj54x4762oj5yxzci6tq/node_modules/nx/src/daemon/server/project-graph-incremental-recomputation.js:148:43)
+      at async getCachedSerializedProjectGraphPromise (/home/mihai/Projets/Beep/front/node_modules/.pnpm/nx@19.3.2_@swc-node+register@1.9.2_@swc+core@1.5.7_@swc+helpers@0.5.11__@swc+types@0.1.7_type_n5pexknj54x4762oj5yxzci6tq/node_modules/nx/src/daemon/server/project-graph-incremental-recomputation.js:46:16)
+      at async handleRequestProjectGraph (/home/mihai/Projets/Beep/front/node_modules/.pnpm/nx@19.3.2_@swc-node+register@1.9.2_@swc+core@1.5.7_@swc+helpers@0.5.11__@swc+types@0.1.7_type_n5pexknj54x4762oj5yxzci6tq/node_modules/nx/src/daemon/server/handle-request-project-graph.js:12:24)
+      at async handleResult (/home/mihai/Projets/Beep/front/node_modules/.pnpm/nx@19.3.2_@swc-node+register@1.9.2_@swc+core@1.5.7_@swc+helpers@0.5.11__@swc+types@0.1.7_type_n5pexknj54x4762oj5yxzci6tq/node_modules/nx/src/daemon/server/server.js:130:16)
+      at async handleMessage (/home/mihai/Projets/Beep/front/node_modules/.pnpm/nx@19.3.2_@swc-node+register@1.9.2_@swc+core@1.5.7_@swc+helpers@0.5.11__@swc+types@0.1.7_type_n5pexknj54x4762oj5yxzci6tq/node_modules/nx/src/daemon/server/server.js:89:9)
+      at async /home/mihai/Projets/Beep/front/node_modules/.pnpm/nx@19.3.2_@swc-node+register@1.9.2_@swc+core@1.5.7_@swc+helpers@0.5.11__@swc+types@0.1.7_type_n5pexknj54x4762oj5yxzci6tq/node_modules/nx/src/daemon/server/server.js:55:9
+AggregateCreateNodesError: An error occurred while processing files for the @nx/vite/plugin plugin.
+    - libs/pages/settings/vite.config.ts: Build failed with 1 error:
+  tsconfig.base.json:36:0: ERROR: Expected string in JSON but found "<<"
+    - libs/shared/contracts/vite.config.ts: Build failed with 1 error:
+  tsconfig.base.json:36:0: ERROR: Expected string in JSON but found "<<"
+    - libs/pages/channels/vite.config.ts: Build failed with 1 error:
+  tsconfig.base.json:36:0: ERROR: Expected string in JSON but found "<<"
+    - libs/shared/ui/vite.config.ts: Build failed with 1 error:
+  tsconfig.base.json:36:0: ERROR: Expected string in JSON but found "<<"
+    - libs/pages/auth/vite.config.ts: Build failed with 1 error:
+  tsconfig.base.json:36:0: ERROR: Expected string in JSON but found "<<"
+    - libs/pages/layout/vite.config.ts: Build failed with 1 error:
+  tsconfig.base.json:36:0: ERROR: Expected string in JSON but found "<<"
+    - libs/domains/voice/vite.config.ts: Build failed with 1 error:
+  tsconfig.base.json:36:0: ERROR: Expected string in JSON but found "<<"
+    - libs/domains/user/vite.config.ts: Build failed with 1 error:
+  tsconfig.base.json:36:0: ERROR: Expected string in JSON but found "<<"
+      at createNodesFromFiles (/home/mihai/Projets/Beep/front/node_modules/.pnpm/nx@19.3.2_@swc-node+register@1.9.2_@swc+core@1.5.7_@swc+helpers@0.5.11__@swc+types@0.1.7_type_n5pexknj54x4762oj5yxzci6tq/node_modules/nx/src/project-graph/plugins/utils.js:58:15)
+      at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+      at async Array.createNodesV2 (/home/mihai/Projets/Beep/front/node_modules/.pnpm/@nx+vite@19.3.2_@babel+traverse@7.24.7_@swc-node+register@1.9.2_@swc+core@1.5.7_@swc+helpers@_gttxiarok2rvfqvvhq4p4coeue/node_modules/@nx/vite/src/plugins/plugin.js:45:20)
+      at async LoadedNxPlugin.createNodes (/home/mihai/Projets/Beep/front/node_modules/.pnpm/nx@19.3.2_@swc-node+register@1.9.2_@swc+core@1.5.7_@swc+helpers@0.5.11__@swc+types@0.1.7_type_n5pexknj54x4762oj5yxzci6tq/node_modules/nx/src/project-graph/plugins/internal-api.js:31:36)
+      at async LoadedNxPlugin.createNodes.<computed> (/home/mihai/Projets/Beep/front/node_modules/.pnpm/nx@19.3.2_@swc-node+register@1.9.2_@swc+core@1.5.7_@swc+helpers@0.5.11__@swc+types@0.1.7_type_n5pexknj54x4762oj5yxzci6tq/node_modules/nx/src/project-graph/plugins/internal-api.js:41:28)
+      at async Promise.all (index 1)
+      at async processFilesAndCreateAndSerializeProjectGraph (/home/mihai/Projets/Beep/front/node_modules/.pnpm/nx@19.3.2_@swc-node+register@1.9.2_@swc+core@1.5.7_@swc+helpers@0.5.11__@swc+types@0.1.7_type_n5pexknj54x4762oj5yxzci6tq/node_modules/nx/src/daemon/server/project-graph-incremental-recomputation.js:148:43)
+      at async getCachedSerializedProjectGraphPromise (/home/mihai/Projets/Beep/front/node_modules/.pnpm/nx@19.3.2_@swc-node+register@1.9.2_@swc+core@1.5.7_@swc+helpers@0.5.11__@swc+types@0.1.7_type_n5pexknj54x4762oj5yxzci6tq/node_modules/nx/src/daemon/server/project-graph-incremental-recomputation.js:46:16)
+      at async handleRequestProjectGraph (/home/mihai/Projets/Beep/front/node_modules/.pnpm/nx@19.3.2_@swc-node+register@1.9.2_@swc+core@1.5.7_@swc+helpers@0.5.11__@swc+types@0.1.7_type_n5pexknj54x4762oj5yxzci6tq/node_modules/nx/src/daemon/server/handle-request-project-graph.js:12:24)
+      at async handleResult (/home/mihai/Projets/Beep/front/node_modules/.pnpm/nx@19.3.2_@swc-node+register@1.9.2_@swc+core@1.5.7_@swc+helpers@0.5.11__@swc+types@0.1.7_type_n5pexknj54x4762oj5yxzci6tq/node_modules/nx/src/daemon/server/server.js:130:16)
+The "nx/js/dependencies-and-lockfile" plugin threw an error while creating dependencies:
+    Error: InvalidSymbol in /home/mihai/Projets/Beep/front/tsconfig.base.json at 36:1
+      34 |       "@beep/user": ["libs/domains/user/src/index.ts"],
+      35 |       "@beep/utils": ["libs/shared/utils/src/index.ts"],
+    > 36 | <<<<<<< HEAD
+         | ^^^^^^^
+      37 |       "@beep/voice": ["libs/domains/voice/src/index.ts"],
+      38 |       "@beep/transmit" : ["libs/shared/utils/src/index.ts"],
+      39 |       "@beep/settings": ["libs/pages/settings/src/index.ts"]
+    
+        at parseJson (/home/mihai/Projets/Beep/front/node_modules/.pnpm/nx@19.3.2_@swc-node+register@1.9.2_@swc+core@1.5.7_@swc+helpers@0.5.11__@swc+types@0.1.7_type_n5pexknj54x4762oj5yxzci6tq/node_modules/nx/src/utils/json.js:27:15)
+        at readJsonFile (/home/mihai/Projets/Beep/front/node_modules/.pnpm/nx@19.3.2_@swc-node+register@1.9.2_@swc+core@1.5.7_@swc+helpers@0.5.11__@swc+types@0.1.7_type_n5pexknj54x4762oj5yxzci6tq/node_modules/nx/src/utils/fileutils.js:22:37)
+        at TargetProjectLocator.getRootTsConfig (/home/mihai/Projets/Beep/front/node_modules/.pnpm/nx@19.3.2_@swc-node+register@1.9.2_@swc+core@1.5.7_@swc+helpers@0.5.11__@swc+types@0.1.7_type_n5pexknj54x4762oj5yxzci6tq/node_modules/nx/src/plugins/js/project-graph/build-dependencies/target-project-locator.js:228:50)
+        at new TargetProjectLocator (/home/mihai/Projets/Beep/front/node_modules/.pnpm/nx@19.3.2_@swc-node+register@1.9.2_@swc+core@1.5.7_@swc+helpers@0.5.11__@swc+types@0.1.7_type_n5pexknj54x4762oj5yxzci6tq/node_modules/nx/src/plugins/js/project-graph/build-dependencies/target-project-locator.js:32:30)
+        at buildExplicitDependencies (/home/mihai/Projets/Beep/front/node_modules/.pnpm/nx@19.3.2_@swc-node+register@1.9.2_@swc+core@1.5.7_@swc+helpers@0.5.11__@swc+types@0.1.7_type_n5pexknj54x4762oj5yxzci6tq/node_modules/nx/src/plugins/js/project-graph/build-dependencies/build-dependencies.js:22:34)
+        at Object.createDependencies (/home/mihai/Projets/Beep/front/node_modules/.pnpm/nx@19.3.2_@swc-node+register@1.9.2_@swc+core@1.5.7_@swc+helpers@0.5.11__@swc+types@0.1.7_type_n5pexknj54x4762oj5yxzci6tq/node_modules/nx/src/plugins/js/index.js:79:92)
+        at LoadedNxPlugin.createDependencies (/home/mihai/Projets/Beep/front/node_modules/.pnpm/nx@19.3.2_@swc-node+register@1.9.2_@swc+core@1.5.7_@swc+helpers@0.5.11__@swc+types@0.1.7_type_n5pexknj54x4762oj5yxzci6tq/node_modules/nx/src/project-graph/plugins/internal-api.js:57:59)
+        at /home/mihai/Projets/Beep/front/node_modules/.pnpm/nx@19.3.2_@swc-node+register@1.9.2_@swc+core@1.5.7_@swc+helpers@0.5.11__@swc+types@0.1.7_type_n5pexknj54x4762oj5yxzci6tq/node_modules/nx/src/project-graph/build-project-graph.js:226:47
+        at Array.map (<anonymous>)
+        at updateProjectGraphWithPlugins (/home/mihai/Projets/Beep/front/node_modules/.pnpm/nx@19.3.2_@swc-node+register@1.9.2_@swc+core@1.5.7_@swc+helpers@0.5.11__@swc+types@0.1.7_type_n5pexknj54x4762oj5yxzci6tq/node_modules/nx/src/project-graph/build-project-graph.js:223:47)
+[NX Daemon Server] - 2024-06-28T21:10:14.424Z - Done responding to the client null
+[NX Daemon Server] - 2024-06-28T21:10:14.424Z - Handled REQUEST_PROJECT_GRAPH. Handling time: 2448. Response time: 1.
+[NX Daemon Server] - 2024-06-28T21:10:14.424Z - Time taken for 'build-project-configs' 2074.2552999993786ms
+[NX Daemon Server] - 2024-06-28T21:10:14.426Z - Closed a connection. Number of open connections: 0
+[NX Daemon Server] - 2024-06-28T21:10:14.472Z - Established a connection. Number of open connections: 1
+[NX Daemon Server] - 2024-06-28T21:10:14.472Z - Closed a connection. Number of open connections: 0
+[NX Daemon Server] - 2024-06-28T21:10:14.472Z - Established a connection. Number of open connections: 1
+[NX Daemon Server] - 2024-06-28T21:10:14.473Z - [REQUEST]: Client Request for Project Graph Received
+[NX Daemon Server] - 2024-06-28T21:10:14.473Z - [REQUEST]: Responding to the client with an error. Error when preparing serialized project graph. Failed to process project graph. Run "nx reset" to fix this. Please report the issue if you keep seeing it.
+Failed to process project graph. Run "nx reset" to fix this. Please report the issue if you keep seeing it.
+  AggregateCreateNodesError: An error occurred while processing files for the @nx/storybook/plugin plugin.
+    - libs/shared/ui/.storybook/main.ts: Unable to load /home/mihai/Projets/Beep/front/tsconfig.base.json: /home/mihai/Projets/Beep/front/tsconfig.base.json is malformed JSON5: invalid character '<' at 36:1
+      at createNodesFromFiles (/home/mihai/Projets/Beep/front/node_modules/.pnpm/nx@19.3.2_@swc-node+register@1.9.2_@swc+core@1.5.7_@swc+helpers@0.5.11__@swc+types@0.1.7_type_n5pexknj54x4762oj5yxzci6tq/node_modules/nx/src/project-graph/plugins/utils.js:58:15)
+      at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+      at async LoadedNxPlugin.createNodes.<computed> (/home/mihai/Projets/Beep/front/node_modules/.pnpm/nx@19.3.2_@swc-node+register@1.9.2_@swc+core@1.5.7_@swc+helpers@0.5.11__@swc+types@0.1.7_type_n5pexknj54x4762oj5yxzci6tq/node_modules/nx/src/project-graph/plugins/internal-api.js:41:28)
+      at async Promise.all (index 4)
+      at async processFilesAndCreateAndSerializeProjectGraph (/home/mihai/Projets/Beep/front/node_modules/.pnpm/nx@19.3.2_@swc-node+register@1.9.2_@swc+core@1.5.7_@swc+helpers@0.5.11__@swc+types@0.1.7_type_n5pexknj54x4762oj5yxzci6tq/node_modules/nx/src/daemon/server/project-graph-incremental-recomputation.js:148:43)
+      at async getCachedSerializedProjectGraphPromise (/home/mihai/Projets/Beep/front/node_modules/.pnpm/nx@19.3.2_@swc-node+register@1.9.2_@swc+core@1.5.7_@swc+helpers@0.5.11__@swc+types@0.1.7_type_n5pexknj54x4762oj5yxzci6tq/node_modules/nx/src/daemon/server/project-graph-incremental-recomputation.js:46:16)
+      at async handleRequestProjectGraph (/home/mihai/Projets/Beep/front/node_modules/.pnpm/nx@19.3.2_@swc-node+register@1.9.2_@swc+core@1.5.7_@swc+helpers@0.5.11__@swc+types@0.1.7_type_n5pexknj54x4762oj5yxzci6tq/node_modules/nx/src/daemon/server/handle-request-project-graph.js:12:24)
+      at async handleResult (/home/mihai/Projets/Beep/front/node_modules/.pnpm/nx@19.3.2_@swc-node+register@1.9.2_@swc+core@1.5.7_@swc+helpers@0.5.11__@swc+types@0.1.7_type_n5pexknj54x4762oj5yxzci6tq/node_modules/nx/src/daemon/server/server.js:130:16)
+      at async handleMessage (/home/mihai/Projets/Beep/front/node_modules/.pnpm/nx@19.3.2_@swc-node+register@1.9.2_@swc+core@1.5.7_@swc+helpers@0.5.11__@swc+types@0.1.7_type_n5pexknj54x4762oj5yxzci6tq/node_modules/nx/src/daemon/server/server.js:89:9)
+      at async /home/mihai/Projets/Beep/front/node_modules/.pnpm/nx@19.3.2_@swc-node+register@1.9.2_@swc+core@1.5.7_@swc+helpers@0.5.11__@swc+types@0.1.7_type_n5pexknj54x4762oj5yxzci6tq/node_modules/nx/src/daemon/server/server.js:55:9
+AggregateCreateNodesError: An error occurred while processing files for the @nx/vite/plugin plugin.
+    - libs/pages/settings/vite.config.ts: Build failed with 1 error:
+  tsconfig.base.json:36:0: ERROR: Expected string in JSON but found "<<"
+    - libs/shared/contracts/vite.config.ts: Build failed with 1 error:
+  tsconfig.base.json:36:0: ERROR: Expected string in JSON but found "<<"
+    - libs/pages/channels/vite.config.ts: Build failed with 1 error:
+  tsconfig.base.json:36:0: ERROR: Expected string in JSON but found "<<"
+    - libs/shared/ui/vite.config.ts: Build failed with 1 error:
+  tsconfig.base.json:36:0: ERROR: Expected string in JSON but found "<<"
+    - libs/pages/auth/vite.config.ts: Build failed with 1 error:
+  tsconfig.base.json:36:0: ERROR: Expected string in JSON but found "<<"
+    - libs/pages/layout/vite.config.ts: Build failed with 1 error:
+  tsconfig.base.json:36:0: ERROR: Expected string in JSON but found "<<"
+    - libs/domains/voice/vite.config.ts: Build failed with 1 error:
+  tsconfig.base.json:36:0: ERROR: Expected string in JSON but found "<<"
+    - libs/domains/user/vite.config.ts: Build failed with 1 error:
+  tsconfig.base.json:36:0: ERROR: Expected string in JSON but found "<<"
+      at createNodesFromFiles (/home/mihai/Projets/Beep/front/node_modules/.pnpm/nx@19.3.2_@swc-node+register@1.9.2_@swc+core@1.5.7_@swc+helpers@0.5.11__@swc+types@0.1.7_type_n5pexknj54x4762oj5yxzci6tq/node_modules/nx/src/project-graph/plugins/utils.js:58:15)
+      at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+      at async Array.createNodesV2 (/home/mihai/Projets/Beep/front/node_modules/.pnpm/@nx+vite@19.3.2_@babel+traverse@7.24.7_@swc-node+register@1.9.2_@swc+core@1.5.7_@swc+helpers@_gttxiarok2rvfqvvhq4p4coeue/node_modules/@nx/vite/src/plugins/plugin.js:45:20)
+      at async LoadedNxPlugin.createNodes (/home/mihai/Projets/Beep/front/node_modules/.pnpm/nx@19.3.2_@swc-node+register@1.9.2_@swc+core@1.5.7_@swc+helpers@0.5.11__@swc+types@0.1.7_type_n5pexknj54x4762oj5yxzci6tq/node_modules/nx/src/project-graph/plugins/internal-api.js:31:36)
+      at async LoadedNxPlugin.createNodes.<computed> (/home/mihai/Projets/Beep/front/node_modules/.pnpm/nx@19.3.2_@swc-node+register@1.9.2_@swc+core@1.5.7_@swc+helpers@0.5.11__@swc+types@0.1.7_type_n5pexknj54x4762oj5yxzci6tq/node_modules/nx/src/project-graph/plugins/internal-api.js:41:28)
+      at async Promise.all (index 1)
+      at async processFilesAndCreateAndSerializeProjectGraph (/home/mihai/Projets/Beep/front/node_modules/.pnpm/nx@19.3.2_@swc-node+register@1.9.2_@swc+core@1.5.7_@swc+helpers@0.5.11__@swc+types@0.1.7_type_n5pexknj54x4762oj5yxzci6tq/node_modules/nx/src/daemon/server/project-graph-incremental-recomputation.js:148:43)
+      at async getCachedSerializedProjectGraphPromise (/home/mihai/Projets/Beep/front/node_modules/.pnpm/nx@19.3.2_@swc-node+register@1.9.2_@swc+core@1.5.7_@swc+helpers@0.5.11__@swc+types@0.1.7_type_n5pexknj54x4762oj5yxzci6tq/node_modules/nx/src/daemon/server/project-graph-incremental-recomputation.js:46:16)
+      at async handleRequestProjectGraph (/home/mihai/Projets/Beep/front/node_modules/.pnpm/nx@19.3.2_@swc-node+register@1.9.2_@swc+core@1.5.7_@swc+helpers@0.5.11__@swc+types@0.1.7_type_n5pexknj54x4762oj5yxzci6tq/node_modules/nx/src/daemon/server/handle-request-project-graph.js:12:24)
+      at async handleResult (/home/mihai/Projets/Beep/front/node_modules/.pnpm/nx@19.3.2_@swc-node+register@1.9.2_@swc+core@1.5.7_@swc+helpers@0.5.11__@swc+types@0.1.7_type_n5pexknj54x4762oj5yxzci6tq/node_modules/nx/src/daemon/server/server.js:130:16)
+The "nx/js/dependencies-and-lockfile" plugin threw an error while creating dependencies:
+    Error: InvalidSymbol in /home/mihai/Projets/Beep/front/tsconfig.base.json at 36:1
+      34 |       "@beep/user": ["libs/domains/user/src/index.ts"],
+      35 |       "@beep/utils": ["libs/shared/utils/src/index.ts"],
+    > 36 | <<<<<<< HEAD
+         | ^^^^^^^
+      37 |       "@beep/voice": ["libs/domains/voice/src/index.ts"],
+      38 |       "@beep/transmit" : ["libs/shared/utils/src/index.ts"],
+      39 |       "@beep/settings": ["libs/pages/settings/src/index.ts"]
+    
+        at parseJson (/home/mihai/Projets/Beep/front/node_modules/.pnpm/nx@19.3.2_@swc-node+register@1.9.2_@swc+core@1.5.7_@swc+helpers@0.5.11__@swc+types@0.1.7_type_n5pexknj54x4762oj5yxzci6tq/node_modules/nx/src/utils/json.js:27:15)
+        at readJsonFile (/home/mihai/Projets/Beep/front/node_modules/.pnpm/nx@19.3.2_@swc-node+register@1.9.2_@swc+core@1.5.7_@swc+helpers@0.5.11__@swc+types@0.1.7_type_n5pexknj54x4762oj5yxzci6tq/node_modules/nx/src/utils/fileutils.js:22:37)
+        at TargetProjectLocator.getRootTsConfig (/home/mihai/Projets/Beep/front/node_modules/.pnpm/nx@19.3.2_@swc-node+register@1.9.2_@swc+core@1.5.7_@swc+helpers@0.5.11__@swc+types@0.1.7_type_n5pexknj54x4762oj5yxzci6tq/node_modules/nx/src/plugins/js/project-graph/build-dependencies/target-project-locator.js:228:50)
+        at new TargetProjectLocator (/home/mihai/Projets/Beep/front/node_modules/.pnpm/nx@19.3.2_@swc-node+register@1.9.2_@swc+core@1.5.7_@swc+helpers@0.5.11__@swc+types@0.1.7_type_n5pexknj54x4762oj5yxzci6tq/node_modules/nx/src/plugins/js/project-graph/build-dependencies/target-project-locator.js:32:30)
+        at buildExplicitDependencies (/home/mihai/Projets/Beep/front/node_modules/.pnpm/nx@19.3.2_@swc-node+register@1.9.2_@swc+core@1.5.7_@swc+helpers@0.5.11__@swc+types@0.1.7_type_n5pexknj54x4762oj5yxzci6tq/node_modules/nx/src/plugins/js/project-graph/build-dependencies/build-dependencies.js:22:34)
+        at Object.createDependencies (/home/mihai/Projets/Beep/front/node_modules/.pnpm/nx@19.3.2_@swc-node+register@1.9.2_@swc+core@1.5.7_@swc+helpers@0.5.11__@swc+types@0.1.7_type_n5pexknj54x4762oj5yxzci6tq/node_modules/nx/src/plugins/js/index.js:79:92)
+        at LoadedNxPlugin.createDependencies (/home/mihai/Projets/Beep/front/node_modules/.pnpm/nx@19.3.2_@swc-node+register@1.9.2_@swc+core@1.5.7_@swc+helpers@0.5.11__@swc+types@0.1.7_type_n5pexknj54x4762oj5yxzci6tq/node_modules/nx/src/project-graph/plugins/internal-api.js:57:59)
+        at /home/mihai/Projets/Beep/front/node_modules/.pnpm/nx@19.3.2_@swc-node+register@1.9.2_@swc+core@1.5.7_@swc+helpers@0.5.11__@swc+types@0.1.7_type_n5pexknj54x4762oj5yxzci6tq/node_modules/nx/src/project-graph/build-project-graph.js:226:47
+        at Array.map (<anonymous>)
+        at updateProjectGraphWithPlugins (/home/mihai/Projets/Beep/front/node_modules/.pnpm/nx@19.3.2_@swc-node+register@1.9.2_@swc+core@1.5.7_@swc+helpers@0.5.11__@swc+types@0.1.7_type_n5pexknj54x4762oj5yxzci6tq/node_modules/nx/src/project-graph/build-project-graph.js:223:47)
+[NX Daemon Server] - 2024-06-28T21:10:14.474Z - Done responding to the client null
+[NX Daemon Server] - 2024-06-28T21:10:14.474Z - Handled REQUEST_PROJECT_GRAPH. Handling time: 0. Response time: 1.
+[NX Daemon Server] - 2024-06-28T21:10:14.476Z - [REQUEST]: Client Request for Project Graph Received
+[NX Daemon Server] - 2024-06-28T21:10:14.476Z - [REQUEST]: Responding to the client with an error. Error when preparing serialized project graph. Failed to process project graph. Run "nx reset" to fix this. Please report the issue if you keep seeing it.
+Failed to process project graph. Run "nx reset" to fix this. Please report the issue if you keep seeing it.
+  AggregateCreateNodesError: An error occurred while processing files for the @nx/storybook/plugin plugin.
+    - libs/shared/ui/.storybook/main.ts: Unable to load /home/mihai/Projets/Beep/front/tsconfig.base.json: /home/mihai/Projets/Beep/front/tsconfig.base.json is malformed JSON5: invalid character '<' at 36:1
+      at createNodesFromFiles (/home/mihai/Projets/Beep/front/node_modules/.pnpm/nx@19.3.2_@swc-node+register@1.9.2_@swc+core@1.5.7_@swc+helpers@0.5.11__@swc+types@0.1.7_type_n5pexknj54x4762oj5yxzci6tq/node_modules/nx/src/project-graph/plugins/utils.js:58:15)
+      at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+      at async LoadedNxPlugin.createNodes.<computed> (/home/mihai/Projets/Beep/front/node_modules/.pnpm/nx@19.3.2_@swc-node+register@1.9.2_@swc+core@1.5.7_@swc+helpers@0.5.11__@swc+types@0.1.7_type_n5pexknj54x4762oj5yxzci6tq/node_modules/nx/src/project-graph/plugins/internal-api.js:41:28)
+      at async Promise.all (index 4)
+      at async processFilesAndCreateAndSerializeProjectGraph (/home/mihai/Projets/Beep/front/node_modules/.pnpm/nx@19.3.2_@swc-node+register@1.9.2_@swc+core@1.5.7_@swc+helpers@0.5.11__@swc+types@0.1.7_type_n5pexknj54x4762oj5yxzci6tq/node_modules/nx/src/daemon/server/project-graph-incremental-recomputation.js:148:43)
+      at async getCachedSerializedProjectGraphPromise (/home/mihai/Projets/Beep/front/node_modules/.pnpm/nx@19.3.2_@swc-node+register@1.9.2_@swc+core@1.5.7_@swc+helpers@0.5.11__@swc+types@0.1.7_type_n5pexknj54x4762oj5yxzci6tq/node_modules/nx/src/daemon/server/project-graph-incremental-recomputation.js:46:16)
+      at async handleRequestProjectGraph (/home/mihai/Projets/Beep/front/node_modules/.pnpm/nx@19.3.2_@swc-node+register@1.9.2_@swc+core@1.5.7_@swc+helpers@0.5.11__@swc+types@0.1.7_type_n5pexknj54x4762oj5yxzci6tq/node_modules/nx/src/daemon/server/handle-request-project-graph.js:12:24)
+      at async handleResult (/home/mihai/Projets/Beep/front/node_modules/.pnpm/nx@19.3.2_@swc-node+register@1.9.2_@swc+core@1.5.7_@swc+helpers@0.5.11__@swc+types@0.1.7_type_n5pexknj54x4762oj5yxzci6tq/node_modules/nx/src/daemon/server/server.js:130:16)
+      at async handleMessage (/home/mihai/Projets/Beep/front/node_modules/.pnpm/nx@19.3.2_@swc-node+register@1.9.2_@swc+core@1.5.7_@swc+helpers@0.5.11__@swc+types@0.1.7_type_n5pexknj54x4762oj5yxzci6tq/node_modules/nx/src/daemon/server/server.js:89:9)
+      at async /home/mihai/Projets/Beep/front/node_modules/.pnpm/nx@19.3.2_@swc-node+register@1.9.2_@swc+core@1.5.7_@swc+helpers@0.5.11__@swc+types@0.1.7_type_n5pexknj54x4762oj5yxzci6tq/node_modules/nx/src/daemon/server/server.js:55:9
+AggregateCreateNodesError: An error occurred while processing files for the @nx/vite/plugin plugin.
+    - libs/pages/settings/vite.config.ts: Build failed with 1 error:
+  tsconfig.base.json:36:0: ERROR: Expected string in JSON but found "<<"
+    - libs/shared/contracts/vite.config.ts: Build failed with 1 error:
+  tsconfig.base.json:36:0: ERROR: Expected string in JSON but found "<<"
+    - libs/pages/channels/vite.config.ts: Build failed with 1 error:
+  tsconfig.base.json:36:0: ERROR: Expected string in JSON but found "<<"
+    - libs/shared/ui/vite.config.ts: Build failed with 1 error:
+  tsconfig.base.json:36:0: ERROR: Expected string in JSON but found "<<"
+    - libs/pages/auth/vite.config.ts: Build failed with 1 error:
+  tsconfig.base.json:36:0: ERROR: Expected string in JSON but found "<<"
+    - libs/pages/layout/vite.config.ts: Build failed with 1 error:
+  tsconfig.base.json:36:0: ERROR: Expected string in JSON but found "<<"
+    - libs/domains/voice/vite.config.ts: Build failed with 1 error:
+  tsconfig.base.json:36:0: ERROR: Expected string in JSON but found "<<"
+    - libs/domains/user/vite.config.ts: Build failed with 1 error:
+  tsconfig.base.json:36:0: ERROR: Expected string in JSON but found "<<"
+      at createNodesFromFiles (/home/mihai/Projets/Beep/front/node_modules/.pnpm/nx@19.3.2_@swc-node+register@1.9.2_@swc+core@1.5.7_@swc+helpers@0.5.11__@swc+types@0.1.7_type_n5pexknj54x4762oj5yxzci6tq/node_modules/nx/src/project-graph/plugins/utils.js:58:15)
+      at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+      at async Array.createNodesV2 (/home/mihai/Projets/Beep/front/node_modules/.pnpm/@nx+vite@19.3.2_@babel+traverse@7.24.7_@swc-node+register@1.9.2_@swc+core@1.5.7_@swc+helpers@_gttxiarok2rvfqvvhq4p4coeue/node_modules/@nx/vite/src/plugins/plugin.js:45:20)
+      at async LoadedNxPlugin.createNodes (/home/mihai/Projets/Beep/front/node_modules/.pnpm/nx@19.3.2_@swc-node+register@1.9.2_@swc+core@1.5.7_@swc+helpers@0.5.11__@swc+types@0.1.7_type_n5pexknj54x4762oj5yxzci6tq/node_modules/nx/src/project-graph/plugins/internal-api.js:31:36)
+      at async LoadedNxPlugin.createNodes.<computed> (/home/mihai/Projets/Beep/front/node_modules/.pnpm/nx@19.3.2_@swc-node+register@1.9.2_@swc+core@1.5.7_@swc+helpers@0.5.11__@swc+types@0.1.7_type_n5pexknj54x4762oj5yxzci6tq/node_modules/nx/src/project-graph/plugins/internal-api.js:41:28)
+      at async Promise.all (index 1)
+      at async processFilesAndCreateAndSerializeProjectGraph (/home/mihai/Projets/Beep/front/node_modules/.pnpm/nx@19.3.2_@swc-node+register@1.9.2_@swc+core@1.5.7_@swc+helpers@0.5.11__@swc+types@0.1.7_type_n5pexknj54x4762oj5yxzci6tq/node_modules/nx/src/daemon/server/project-graph-incremental-recomputation.js:148:43)
+      at async getCachedSerializedProjectGraphPromise (/home/mihai/Projets/Beep/front/node_modules/.pnpm/nx@19.3.2_@swc-node+register@1.9.2_@swc+core@1.5.7_@swc+helpers@0.5.11__@swc+types@0.1.7_type_n5pexknj54x4762oj5yxzci6tq/node_modules/nx/src/daemon/server/project-graph-incremental-recomputation.js:46:16)
+      at async handleRequestProjectGraph (/home/mihai/Projets/Beep/front/node_modules/.pnpm/nx@19.3.2_@swc-node+register@1.9.2_@swc+core@1.5.7_@swc+helpers@0.5.11__@swc+types@0.1.7_type_n5pexknj54x4762oj5yxzci6tq/node_modules/nx/src/daemon/server/handle-request-project-graph.js:12:24)
+      at async handleResult (/home/mihai/Projets/Beep/front/node_modules/.pnpm/nx@19.3.2_@swc-node+register@1.9.2_@swc+core@1.5.7_@swc+helpers@0.5.11__@swc+types@0.1.7_type_n5pexknj54x4762oj5yxzci6tq/node_modules/nx/src/daemon/server/server.js:130:16)
+The "nx/js/dependencies-and-lockfile" plugin threw an error while creating dependencies:
+    Error: InvalidSymbol in /home/mihai/Projets/Beep/front/tsconfig.base.json at 36:1
+      34 |       "@beep/user": ["libs/domains/user/src/index.ts"],
+      35 |       "@beep/utils": ["libs/shared/utils/src/index.ts"],
+    > 36 | <<<<<<< HEAD
+         | ^^^^^^^
+      37 |       "@beep/voice": ["libs/domains/voice/src/index.ts"],
+      38 |       "@beep/transmit" : ["libs/shared/utils/src/index.ts"],
+      39 |       "@beep/settings": ["libs/pages/settings/src/index.ts"]
+    
+        at parseJson (/home/mihai/Projets/Beep/front/node_modules/.pnpm/nx@19.3.2_@swc-node+register@1.9.2_@swc+core@1.5.7_@swc+helpers@0.5.11__@swc+types@0.1.7_type_n5pexknj54x4762oj5yxzci6tq/node_modules/nx/src/utils/json.js:27:15)
+        at readJsonFile (/home/mihai/Projets/Beep/front/node_modules/.pnpm/nx@19.3.2_@swc-node+register@1.9.2_@swc+core@1.5.7_@swc+helpers@0.5.11__@swc+types@0.1.7_type_n5pexknj54x4762oj5yxzci6tq/node_modules/nx/src/utils/fileutils.js:22:37)
+        at TargetProjectLocator.getRootTsConfig (/home/mihai/Projets/Beep/front/node_modules/.pnpm/nx@19.3.2_@swc-node+register@1.9.2_@swc+core@1.5.7_@swc+helpers@0.5.11__@swc+types@0.1.7_type_n5pexknj54x4762oj5yxzci6tq/node_modules/nx/src/plugins/js/project-graph/build-dependencies/target-project-locator.js:228:50)
+        at new TargetProjectLocator (/home/mihai/Projets/Beep/front/node_modules/.pnpm/nx@19.3.2_@swc-node+register@1.9.2_@swc+core@1.5.7_@swc+helpers@0.5.11__@swc+types@0.1.7_type_n5pexknj54x4762oj5yxzci6tq/node_modules/nx/src/plugins/js/project-graph/build-dependencies/target-project-locator.js:32:30)
+        at buildExplicitDependencies (/home/mihai/Projets/Beep/front/node_modules/.pnpm/nx@19.3.2_@swc-node+register@1.9.2_@swc+core@1.5.7_@swc+helpers@0.5.11__@swc+types@0.1.7_type_n5pexknj54x4762oj5yxzci6tq/node_modules/nx/src/plugins/js/project-graph/build-dependencies/build-dependencies.js:22:34)
+        at Object.createDependencies (/home/mihai/Projets/Beep/front/node_modules/.pnpm/nx@19.3.2_@swc-node+register@1.9.2_@swc+core@1.5.7_@swc+helpers@0.5.11__@swc+types@0.1.7_type_n5pexknj54x4762oj5yxzci6tq/node_modules/nx/src/plugins/js/index.js:79:92)
+        at LoadedNxPlugin.createDependencies (/home/mihai/Projets/Beep/front/node_modules/.pnpm/nx@19.3.2_@swc-node+register@1.9.2_@swc+core@1.5.7_@swc+helpers@0.5.11__@swc+types@0.1.7_type_n5pexknj54x4762oj5yxzci6tq/node_modules/nx/src/project-graph/plugins/internal-api.js:57:59)
+        at /home/mihai/Projets/Beep/front/node_modules/.pnpm/nx@19.3.2_@swc-node+register@1.9.2_@swc+core@1.5.7_@swc+helpers@0.5.11__@swc+types@0.1.7_type_n5pexknj54x4762oj5yxzci6tq/node_modules/nx/src/project-graph/build-project-graph.js:226:47
+        at Array.map (<anonymous>)
+        at updateProjectGraphWithPlugins (/home/mihai/Projets/Beep/front/node_modules/.pnpm/nx@19.3.2_@swc-node+register@1.9.2_@swc+core@1.5.7_@swc+helpers@0.5.11__@swc+types@0.1.7_type_n5pexknj54x4762oj5yxzci6tq/node_modules/nx/src/project-graph/build-project-graph.js:223:47)
+[NX Daemon Server] - 2024-06-28T21:10:14.477Z - Done responding to the client null
+[NX Daemon Server] - 2024-06-28T21:10:14.477Z - Handled REQUEST_PROJECT_GRAPH. Handling time: 0. Response time: 1.
+[NX Daemon Server] - 2024-06-28T21:10:14.478Z - Established a connection. Number of open connections: 2
+>>>>>>> 6fdc29c (feat(delete-server): fixed packaging for build)

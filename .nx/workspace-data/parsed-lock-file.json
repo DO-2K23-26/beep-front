@@ -45,6 +45,7 @@
         "hash": "sha512-Xk1sIhyNC/esHGGVjL/niHLowM0csl/kFO5uawBy4IrWwy0o1G8LGt3jP6nmWGz+USxeeqbihAmp/oVZju6wug=="
       }
     },
+<<<<<<< HEAD
     "npm:@babel/code-frame@7.24.2": {
       "type": "npm",
       "name": "npm:@babel/code-frame@7.24.2",
@@ -57,6 +58,11 @@
     "npm:@babel/code-frame@7.24.7": {
       "type": "npm",
       "name": "npm:@babel/code-frame@7.24.7",
+=======
+    "npm:@babel/code-frame": {
+      "type": "npm",
+      "name": "npm:@babel/code-frame",
+>>>>>>> 6fdc29c (feat(delete-server): fixed packaging for build)
       "data": {
         "version": "7.24.7",
         "packageName": "@babel/code-frame",
@@ -76,9 +82,15 @@
       "type": "npm",
       "name": "npm:@babel/core",
       "data": {
+<<<<<<< HEAD
         "version": "7.24.5",
         "packageName": "@babel/core",
         "hash": "sha512-tVQRucExLQ02Boi4vdPp49svNGcfL2GhdTCT9aldhXgCJVAI21EtRfBettiuLUwce/7r6bFdgs6JFkcdTiFttA=="
+=======
+        "version": "7.24.7",
+        "packageName": "@babel/core",
+        "hash": "sha512-nykK+LEK86ahTkX/3TgauT0ikKoNCfKHEaZYTUVupJdTLzGNvrblu4u6fa7DhZONAltdf8e662t/abY8idrd/g=="
+>>>>>>> 6fdc29c (feat(delete-server): fixed packaging for build)
       }
     },
     "npm:@babel/generator": {
@@ -2772,6 +2784,7 @@
         "hash": "sha512-FmlW1rCg7hBpEBwFbjHwCW6AmWLQM6g/v0Sn8XbP9NvmSZ2San1FpQeyPtufzOMSIx7Y4dzjlHoifhp+7NkZhw=="
       }
     },
+<<<<<<< HEAD
     "npm:@radix-ui/react-checkbox": {
       "type": "npm",
       "name": "npm:@radix-ui/react-checkbox",
@@ -2781,6 +2794,8 @@
         "hash": "sha512-0i/EKJ222Afa1FE0C6pNJxDq1itzcl3HChE9DwskA4th4KRse8ojx8a1nVcOjwJdbpDLcz7uol77yYnQNMHdKw=="
       }
     },
+=======
+>>>>>>> 6fdc29c (feat(delete-server): fixed packaging for build)
     "npm:@radix-ui/react-collection@1.0.3": {
       "type": "npm",
       "name": "npm:@radix-ui/react-collection@1.0.3",
@@ -2880,6 +2895,18 @@
         "hash": "sha512-/UovfmmXGptwGcBQawLzvn2jOfM0t4z3/uKffoBlj724+n3FvBbZ7M0aaBOmkp6pqFYpO4yx8tSVJjx3Fl2jig=="
       }
     },
+<<<<<<< HEAD
+=======
+    "npm:@radix-ui/react-dropdown-menu": {
+      "type": "npm",
+      "name": "npm:@radix-ui/react-dropdown-menu",
+      "data": {
+        "version": "2.1.1",
+        "packageName": "@radix-ui/react-dropdown-menu",
+        "hash": "sha512-y8E+x9fBq9qvteD2Zwa4397pUVhYsh9iq44b5RD5qu1GMJWBCBuVg1hMyItbc6+zH00TxGRqd9Iot4wzf3OoBQ=="
+      }
+    },
+>>>>>>> 6fdc29c (feat(delete-server): fixed packaging for build)
     "npm:@radix-ui/react-focus-guards@1.0.1": {
       "type": "npm",
       "name": "npm:@radix-ui/react-focus-guards@1.0.1",
@@ -2952,6 +2979,18 @@
         "hash": "sha512-peLblDlFw/ngk3UWq0VnYaOLy6agTZZ+MUO/WhVfm14vJGML+xH4FAl2XQGLqdefjNb7ApRg6Yn7U42ZhmYXdw=="
       }
     },
+<<<<<<< HEAD
+=======
+    "npm:@radix-ui/react-menu": {
+      "type": "npm",
+      "name": "npm:@radix-ui/react-menu",
+      "data": {
+        "version": "2.1.1",
+        "packageName": "@radix-ui/react-menu",
+        "hash": "sha512-oa3mXRRVjHi6DZu/ghuzdylyjaMXLymx83irM7hTxutQbD+7IhPKdMdRHD26Rm+kHRrWcrUkkRPv5pd47a2xFQ=="
+      }
+    },
+>>>>>>> 6fdc29c (feat(delete-server): fixed packaging for build)
     "npm:@radix-ui/react-popover": {
       "type": "npm",
       "name": "npm:@radix-ui/react-popover",
@@ -3078,6 +3117,7 @@
         "hash": "sha512-FUCf5XMfmW4dtYl69pdS4DbxKy8nj4M7SafBgPllysxmdachynNflAdp/gCsnYWNDnge6tI9onzMp5ARYc1KNw=="
       }
     },
+<<<<<<< HEAD
     "npm:@radix-ui/react-switch": {
       "type": "npm",
       "name": "npm:@radix-ui/react-switch",
@@ -3087,6 +3127,8 @@
         "hash": "sha512-OBzy5WAj641k0AOSpKQtreDMe+isX0MQJ1IVyF03ucdF3DunOnROVrjWs8zsXUxC3zfZ6JL9HFVCUlMghz9dJw=="
       }
     },
+=======
+>>>>>>> 6fdc29c (feat(delete-server): fixed packaging for build)
     "npm:@radix-ui/react-toggle-group": {
       "type": "npm",
       "name": "npm:@radix-ui/react-toggle-group",
@@ -3289,9 +3331,15 @@
       "type": "npm",
       "name": "npm:@reduxjs/toolkit",
       "data": {
+<<<<<<< HEAD
         "version": "2.2.6",
         "packageName": "@reduxjs/toolkit",
         "hash": "sha512-kH0r495c5z1t0g796eDQAkYbEQ3a1OLYN9o8jQQVZyKyw367pfRGS+qZLkHYvFHiUUdafpoSlQ2QYObIApjPWA=="
+=======
+        "version": "2.2.5",
+        "packageName": "@reduxjs/toolkit",
+        "hash": "sha512-aeFA/s5NCG7NoJe/MhmwREJxRkDs0ZaSqt0MxhWUrwCf1UQXpwR87RROJEql0uAkLI6U7snBOYOcKw83ew3FPg=="
+>>>>>>> 6fdc29c (feat(delete-server): fixed packaging for build)
       }
     },
     "npm:@remix-run/router": {
@@ -4374,15 +4422,22 @@
         "hash": "sha512-8X80dp81ugxs4a11z1ka43FPhP+/e+mJNXJSxiNYk8gIX/jPBtY4gQTrKu/KIoco8bzKuPI5lUxjfLiGsfvnlw=="
       }
     },
+<<<<<<< HEAD
     "npm:@swc/types@0.1.7": {
       "type": "npm",
       "name": "npm:@swc/types@0.1.7",
+=======
+    "npm:@swc/types": {
+      "type": "npm",
+      "name": "npm:@swc/types",
+>>>>>>> 6fdc29c (feat(delete-server): fixed packaging for build)
       "data": {
         "version": "0.1.7",
         "packageName": "@swc/types",
         "hash": "sha512-scHWahbHF0eyj3JsxG9CFJgFdFNaVQCNAimBlT6PzS3n/HptxqREjsm4OH6AN3lYcffZYSPxXW8ua2BEHp0lJQ=="
       }
     },
+<<<<<<< HEAD
     "npm:@swc/types@0.1.9": {
       "type": "npm",
       "name": "npm:@swc/types@0.1.9",
@@ -4392,6 +4447,8 @@
         "hash": "sha512-qKnCno++jzcJ4lM4NTfYifm1EFSCeIfKiAHAfkENZAV5Kl9PjJIyd2yeeVv6c/2CckuLyv2NmRC5pv6pm2WQBg=="
       }
     },
+=======
+>>>>>>> 6fdc29c (feat(delete-server): fixed packaging for build)
     "npm:@szhsin/react-menu": {
       "type": "npm",
       "name": "npm:@szhsin/react-menu",
@@ -4851,6 +4908,7 @@
         "hash": "sha512-OpXEVoCKSS3lQqjx9GGGOapBeuW5eUboYHRlHP9urXPX25IKZ6AnP5ZRxtVf63iieUbsHxLn8NQ5Nlftc6yzAA=="
       }
     },
+<<<<<<< HEAD
     "npm:@types/luxon": {
       "type": "npm",
       "name": "npm:@types/luxon",
@@ -4860,6 +4918,8 @@
         "hash": "sha512-TifLZlFudklWlMBfhubvgqTXRzLDI5pCbGa4P8a3wPyUQSW+1xQ5eDsreP9DWHX3tjq1ke96uYG/nwundroWcA=="
       }
     },
+=======
+>>>>>>> 6fdc29c (feat(delete-server): fixed packaging for build)
     "npm:@types/markdown-it": {
       "type": "npm",
       "name": "npm:@types/markdown-it",
@@ -7542,6 +7602,7 @@
         "hash": "sha512-t/Ygsytq+R995EJ5PZlD4Cu56sWa8InXySaViRzw9apusqsOO2bQP+SbYzAhR0pFKoB+43lYy8rWban9JSuXnA=="
       }
     },
+<<<<<<< HEAD
     "npm:date-fns": {
       "type": "npm",
       "name": "npm:date-fns",
@@ -7551,6 +7612,8 @@
         "hash": "sha512-fRHTG8g/Gif+kSh50gaGEdToemgfj74aRX3swtiouboip5JDLAyDE9F11nHMIcvOaXeOC6D7SpNhi7uFyB7Uww=="
       }
     },
+=======
+>>>>>>> 6fdc29c (feat(delete-server): fixed packaging for build)
     "npm:dayjs": {
       "type": "npm",
       "name": "npm:dayjs",
@@ -8131,9 +8194,15 @@
       "type": "npm",
       "name": "npm:electron-to-chromium",
       "data": {
+<<<<<<< HEAD
         "version": "1.4.815",
         "packageName": "electron-to-chromium",
         "hash": "sha512-OvpTT2ItpOXJL7IGcYakRjHCt8L5GrrN/wHCQsRB4PQa1X9fe+X9oen245mIId7s14xvArCGSTIq644yPUKKLg=="
+=======
+        "version": "1.4.814",
+        "packageName": "electron-to-chromium",
+        "hash": "sha512-GVulpHjFu1Y9ZvikvbArHmAhZXtm3wHlpjTMcXNGKl4IQ4jMQjlnz8yMQYYqdLHKi/jEL2+CBC2akWVCoIGUdw=="
+>>>>>>> 6fdc29c (feat(delete-server): fixed packaging for build)
       }
     },
     "npm:emittery@0.10.2": {
@@ -9252,6 +9321,7 @@
         "hash": "sha512-ZsDfxO51wGAXREY55a7la9LScWpwv9RxIrYABrlvOFBlH/ShPnrtsXeuUIfXKKOVicNxQ+o8JTbJvjS4M89yew=="
       }
     },
+<<<<<<< HEAD
     "npm:framer-motion": {
       "type": "npm",
       "name": "npm:framer-motion",
@@ -9261,6 +9331,8 @@
         "hash": "sha512-lCjkV4nA9rWOy2bhR4RZzkp2xpB++kFmUZ6D44V9VQaxk+JDmbDd5lq+u58DjJIIllE8AZEXp9OG/TyDN4FB/w=="
       }
     },
+=======
+>>>>>>> 6fdc29c (feat(delete-server): fixed packaging for build)
     "npm:fresh": {
       "type": "npm",
       "name": "npm:fresh",
@@ -11929,9 +12001,15 @@
       "type": "npm",
       "name": "npm:lucide-react",
       "data": {
+<<<<<<< HEAD
         "version": "0.396.0",
         "packageName": "lucide-react",
         "hash": "sha512-N/zP+9vEfEYHiMWMpjwH/M5diaV0e4UFe07BpgdzaRYce5QvXi87hixf7F0Xqdr3zuX/9u7H/2D4MVXIK22O0A=="
+=======
+        "version": "0.397.0",
+        "packageName": "lucide-react",
+        "hash": "sha512-rUcbRY5jFP/4za/OJvaRUUmdPsPb940Tw9zE1ehrRZmr9JnkDcW8OV3POR3XfEAAMDkssiTc5IWBFv8Y//pkDQ=="
+>>>>>>> 6fdc29c (feat(delete-server): fixed packaging for build)
       }
     },
     "npm:luxon": {
@@ -13725,6 +13803,7 @@
         "hash": "sha512-1exovf0uGTGyq5mXQT0zgQ80uvj2PCwvF8zY1RN9/vbJVSjSo3fsB/4L3ObbF7u70NduSiK4xu4Y6q1MHoUGEw=="
       }
     },
+<<<<<<< HEAD
     "npm:react-day-picker": {
       "type": "npm",
       "name": "npm:react-day-picker",
@@ -13734,6 +13813,8 @@
         "hash": "sha512-TMx7fNbhLk15eqcMt+7Z7S2KF7mfTId/XJDjKE8f+IUcFn0l08/kI4FiYTL/0yuOLmEcbR4Fwe3GJf/NiiMnPA=="
       }
     },
+=======
+>>>>>>> 6fdc29c (feat(delete-server): fixed packaging for build)
     "npm:react-docgen-typescript": {
       "type": "npm",
       "name": "npm:react-docgen-typescript",
@@ -16078,9 +16159,15 @@
       "type": "npm",
       "name": "npm:unplugin",
       "data": {
+<<<<<<< HEAD
         "version": "1.10.2",
         "packageName": "unplugin",
         "hash": "sha512-KuPqnjU4HBcrSwmQatfdc5hU4xzaQrhoKqCKylwmLnbBvqj5udXL8cHrkOuYDoI4ESCwJIiAIKMujroIUKLgow=="
+=======
+        "version": "1.10.1",
+        "packageName": "unplugin",
+        "hash": "sha512-d6Mhq8RJeGA8UfKCu54Um4lFA0eSaRa3XxdAJg8tIdxbu1ubW0hBCZUL7yI2uGyYCRndvbK8FLHzqy2XKfeMsg=="
+>>>>>>> 6fdc29c (feat(delete-server): fixed packaging for build)
       }
     },
     "npm:untildify": {
@@ -16812,6 +16899,7 @@
         "hash": "sha512-rVksvsnNCdJ/ohGc6xgPwyN8eheCxsiLM8mxuE/t/mOVqJewPuO1miLpTHQiRgTKCLexL4MeAFVagts7HmNZ2Q=="
       }
     },
+<<<<<<< HEAD
     "npm:yocto-queue@1.1.0": {
       "type": "npm",
       "name": "npm:yocto-queue@1.1.0",
@@ -16819,6 +16907,15 @@
         "version": "1.1.0",
         "packageName": "yocto-queue",
         "hash": "sha512-cMojmlnwkAgIXqga+2sXshlgrrcI0QEPJ5n58pEvtuFo4PaekfomlCudArDD7hj8Hkswjl0/x4eu4q+Xa0WFgQ=="
+=======
+    "npm:yocto-queue@1.0.0": {
+      "type": "npm",
+      "name": "npm:yocto-queue@1.0.0",
+      "data": {
+        "version": "1.0.0",
+        "packageName": "yocto-queue",
+        "hash": "sha512-9bnSc/HEW2uRy67wc+T8UwauLuPJVn28jb+GtJY16iiKWyvmYJRXVT4UamsAEGQfPohgr2q4Tq0sQbQlxTfi1g=="
+>>>>>>> 6fdc29c (feat(delete-server): fixed packaging for build)
       }
     },
     "npm:z-schema": {
@@ -16848,11 +16945,16 @@
       "type": "static"
     },
     {
+<<<<<<< HEAD
       "source": "npm:@babel/code-frame@7.24.2",
+=======
+      "source": "npm:@babel/code-frame",
+>>>>>>> 6fdc29c (feat(delete-server): fixed packaging for build)
       "target": "npm:@babel/highlight",
       "type": "static"
     },
     {
+<<<<<<< HEAD
       "source": "npm:@babel/code-frame@7.24.2",
       "target": "npm:picocolors",
       "type": "static"
@@ -16864,6 +16966,9 @@
     },
     {
       "source": "npm:@babel/code-frame@7.24.7",
+=======
+      "source": "npm:@babel/code-frame",
+>>>>>>> 6fdc29c (feat(delete-server): fixed packaging for build)
       "target": "npm:picocolors",
       "type": "static"
     },
@@ -16874,7 +16979,11 @@
     },
     {
       "source": "npm:@babel/core",
+<<<<<<< HEAD
       "target": "npm:@babel/code-frame@7.24.2",
+=======
+      "target": "npm:@babel/code-frame",
+>>>>>>> 6fdc29c (feat(delete-server): fixed packaging for build)
       "type": "static"
     },
     {
@@ -19074,7 +19183,11 @@
     },
     {
       "source": "npm:@babel/template",
+<<<<<<< HEAD
       "target": "npm:@babel/code-frame@7.24.7",
+=======
+      "target": "npm:@babel/code-frame",
+>>>>>>> 6fdc29c (feat(delete-server): fixed packaging for build)
       "type": "static"
     },
     {
@@ -19089,7 +19202,11 @@
     },
     {
       "source": "npm:@babel/traverse",
+<<<<<<< HEAD
       "target": "npm:@babel/code-frame@7.24.7",
+=======
+      "target": "npm:@babel/code-frame",
+>>>>>>> 6fdc29c (feat(delete-server): fixed packaging for build)
       "type": "static"
     },
     {
@@ -21743,6 +21860,7 @@
       "type": "static"
     },
     {
+<<<<<<< HEAD
       "source": "npm:@radix-ui/react-checkbox",
       "target": "npm:@radix-ui/primitive@1.1.0",
       "type": "static"
@@ -21803,6 +21921,8 @@
       "type": "static"
     },
     {
+=======
+>>>>>>> 6fdc29c (feat(delete-server): fixed packaging for build)
       "source": "npm:@radix-ui/react-collection@1.0.3",
       "target": "npm:@babel/runtime",
       "type": "static"
@@ -22148,6 +22268,64 @@
       "type": "static"
     },
     {
+<<<<<<< HEAD
+=======
+      "source": "npm:@radix-ui/react-dropdown-menu",
+      "target": "npm:@radix-ui/primitive@1.1.0",
+      "type": "static"
+    },
+    {
+      "source": "npm:@radix-ui/react-dropdown-menu",
+      "target": "npm:@radix-ui/react-compose-refs@1.1.0",
+      "type": "static"
+    },
+    {
+      "source": "npm:@radix-ui/react-dropdown-menu",
+      "target": "npm:@radix-ui/react-context@1.1.0",
+      "type": "static"
+    },
+    {
+      "source": "npm:@radix-ui/react-dropdown-menu",
+      "target": "npm:@radix-ui/react-id@1.1.0",
+      "type": "static"
+    },
+    {
+      "source": "npm:@radix-ui/react-dropdown-menu",
+      "target": "npm:@radix-ui/react-menu",
+      "type": "static"
+    },
+    {
+      "source": "npm:@radix-ui/react-dropdown-menu",
+      "target": "npm:@radix-ui/react-primitive@2.0.0",
+      "type": "static"
+    },
+    {
+      "source": "npm:@radix-ui/react-dropdown-menu",
+      "target": "npm:@radix-ui/react-use-controllable-state@1.1.0",
+      "type": "static"
+    },
+    {
+      "source": "npm:@radix-ui/react-dropdown-menu",
+      "target": "npm:react",
+      "type": "static"
+    },
+    {
+      "source": "npm:@radix-ui/react-dropdown-menu",
+      "target": "npm:react-dom",
+      "type": "static"
+    },
+    {
+      "source": "npm:@radix-ui/react-dropdown-menu",
+      "target": "npm:@types/react",
+      "type": "static"
+    },
+    {
+      "source": "npm:@radix-ui/react-dropdown-menu",
+      "target": "npm:@types/react-dom",
+      "type": "static"
+    },
+    {
+>>>>>>> 6fdc29c (feat(delete-server): fixed packaging for build)
       "source": "npm:@radix-ui/react-focus-guards@1.0.1",
       "target": "npm:@babel/runtime",
       "type": "static"
@@ -22313,6 +22491,119 @@
       "type": "static"
     },
     {
+<<<<<<< HEAD
+=======
+      "source": "npm:@radix-ui/react-menu",
+      "target": "npm:@radix-ui/primitive@1.1.0",
+      "type": "static"
+    },
+    {
+      "source": "npm:@radix-ui/react-menu",
+      "target": "npm:@radix-ui/react-collection@1.1.0",
+      "type": "static"
+    },
+    {
+      "source": "npm:@radix-ui/react-menu",
+      "target": "npm:@radix-ui/react-compose-refs@1.1.0",
+      "type": "static"
+    },
+    {
+      "source": "npm:@radix-ui/react-menu",
+      "target": "npm:@radix-ui/react-context@1.1.0",
+      "type": "static"
+    },
+    {
+      "source": "npm:@radix-ui/react-menu",
+      "target": "npm:@radix-ui/react-direction@1.1.0",
+      "type": "static"
+    },
+    {
+      "source": "npm:@radix-ui/react-menu",
+      "target": "npm:@radix-ui/react-dismissable-layer@1.1.0",
+      "type": "static"
+    },
+    {
+      "source": "npm:@radix-ui/react-menu",
+      "target": "npm:@radix-ui/react-focus-guards@1.1.0",
+      "type": "static"
+    },
+    {
+      "source": "npm:@radix-ui/react-menu",
+      "target": "npm:@radix-ui/react-focus-scope@1.1.0",
+      "type": "static"
+    },
+    {
+      "source": "npm:@radix-ui/react-menu",
+      "target": "npm:@radix-ui/react-id@1.1.0",
+      "type": "static"
+    },
+    {
+      "source": "npm:@radix-ui/react-menu",
+      "target": "npm:@radix-ui/react-popper@1.2.0",
+      "type": "static"
+    },
+    {
+      "source": "npm:@radix-ui/react-menu",
+      "target": "npm:@radix-ui/react-portal@1.1.1",
+      "type": "static"
+    },
+    {
+      "source": "npm:@radix-ui/react-menu",
+      "target": "npm:@radix-ui/react-presence",
+      "type": "static"
+    },
+    {
+      "source": "npm:@radix-ui/react-menu",
+      "target": "npm:@radix-ui/react-primitive@2.0.0",
+      "type": "static"
+    },
+    {
+      "source": "npm:@radix-ui/react-menu",
+      "target": "npm:@radix-ui/react-roving-focus",
+      "type": "static"
+    },
+    {
+      "source": "npm:@radix-ui/react-menu",
+      "target": "npm:@radix-ui/react-slot",
+      "type": "static"
+    },
+    {
+      "source": "npm:@radix-ui/react-menu",
+      "target": "npm:@radix-ui/react-use-callback-ref@1.1.0",
+      "type": "static"
+    },
+    {
+      "source": "npm:@radix-ui/react-menu",
+      "target": "npm:aria-hidden",
+      "type": "static"
+    },
+    {
+      "source": "npm:@radix-ui/react-menu",
+      "target": "npm:react",
+      "type": "static"
+    },
+    {
+      "source": "npm:@radix-ui/react-menu",
+      "target": "npm:react-dom",
+      "type": "static"
+    },
+    {
+      "source": "npm:@radix-ui/react-menu",
+      "target": "npm:react-remove-scroll@2.5.7",
+      "type": "static"
+    },
+    {
+      "source": "npm:@radix-ui/react-menu",
+      "target": "npm:@types/react",
+      "type": "static"
+    },
+    {
+      "source": "npm:@radix-ui/react-menu",
+      "target": "npm:@types/react-dom",
+      "type": "static"
+    },
+    {
+>>>>>>> 6fdc29c (feat(delete-server): fixed packaging for build)
       "source": "npm:@radix-ui/react-popover",
       "target": "npm:@radix-ui/primitive@1.1.0",
       "type": "static"
@@ -23078,6 +23369,7 @@
       "type": "static"
     },
     {
+<<<<<<< HEAD
       "source": "npm:@radix-ui/react-switch",
       "target": "npm:@radix-ui/primitive@1.1.0",
       "type": "static"
@@ -23133,6 +23425,8 @@
       "type": "static"
     },
     {
+=======
+>>>>>>> 6fdc29c (feat(delete-server): fixed packaging for build)
       "source": "npm:@radix-ui/react-toggle-group",
       "target": "npm:@radix-ui/primitive@1.1.0",
       "type": "static"
@@ -26279,7 +26573,11 @@
     },
     {
       "source": "npm:@swc-node/core",
+<<<<<<< HEAD
       "target": "npm:@swc/types@0.1.9",
+=======
+      "target": "npm:@swc/types",
+>>>>>>> 6fdc29c (feat(delete-server): fixed packaging for build)
       "type": "static"
     },
     {
@@ -26394,7 +26692,11 @@
     },
     {
       "source": "npm:@swc/core",
+<<<<<<< HEAD
       "target": "npm:@swc/types@0.1.7",
+=======
+      "target": "npm:@swc/types",
+>>>>>>> 6fdc29c (feat(delete-server): fixed packaging for build)
       "type": "static"
     },
     {
@@ -26478,12 +26780,16 @@
       "type": "static"
     },
     {
+<<<<<<< HEAD
       "source": "npm:@swc/types@0.1.7",
       "target": "npm:@swc/counter",
       "type": "static"
     },
     {
       "source": "npm:@swc/types@0.1.9",
+=======
+      "source": "npm:@swc/types",
+>>>>>>> 6fdc29c (feat(delete-server): fixed packaging for build)
       "target": "npm:@swc/counter",
       "type": "static"
     },
@@ -26514,7 +26820,11 @@
     },
     {
       "source": "npm:@testing-library/dom@10.2.0",
+<<<<<<< HEAD
       "target": "npm:@babel/code-frame@7.24.7",
+=======
+      "target": "npm:@babel/code-frame",
+>>>>>>> 6fdc29c (feat(delete-server): fixed packaging for build)
       "type": "static"
     },
     {
@@ -26554,7 +26864,11 @@
     },
     {
       "source": "npm:@testing-library/dom@9.3.4",
+<<<<<<< HEAD
       "target": "npm:@babel/code-frame@7.24.2",
+=======
+      "target": "npm:@babel/code-frame",
+>>>>>>> 6fdc29c (feat(delete-server): fixed packaging for build)
       "type": "static"
     },
     {
@@ -31888,6 +32202,7 @@
       "type": "static"
     },
     {
+<<<<<<< HEAD
       "source": "npm:framer-motion",
       "target": "npm:tslib",
       "type": "static"
@@ -31903,6 +32218,8 @@
       "type": "static"
     },
     {
+=======
+>>>>>>> 6fdc29c (feat(delete-server): fixed packaging for build)
       "source": "npm:front-matter",
       "target": "npm:js-yaml@3.14.1",
       "type": "static"
@@ -33954,7 +34271,11 @@
     },
     {
       "source": "npm:jest-message-util@28.1.3",
+<<<<<<< HEAD
       "target": "npm:@babel/code-frame@7.24.2",
+=======
+      "target": "npm:@babel/code-frame",
+>>>>>>> 6fdc29c (feat(delete-server): fixed packaging for build)
       "type": "static"
     },
     {
@@ -33999,7 +34320,11 @@
     },
     {
       "source": "npm:jest-message-util@29.7.0",
+<<<<<<< HEAD
       "target": "npm:@babel/code-frame@7.24.2",
+=======
+      "target": "npm:@babel/code-frame",
+>>>>>>> 6fdc29c (feat(delete-server): fixed packaging for build)
       "type": "static"
     },
     {
@@ -36724,7 +37049,11 @@
     },
     {
       "source": "npm:p-limit@5.0.0",
+<<<<<<< HEAD
       "target": "npm:yocto-queue@1.1.0",
+=======
+      "target": "npm:yocto-queue@1.0.0",
+>>>>>>> 6fdc29c (feat(delete-server): fixed packaging for build)
       "type": "static"
     },
     {
@@ -36779,7 +37108,11 @@
     },
     {
       "source": "npm:parse-json",
+<<<<<<< HEAD
       "target": "npm:@babel/code-frame@7.24.2",
+=======
+      "target": "npm:@babel/code-frame",
+>>>>>>> 6fdc29c (feat(delete-server): fixed packaging for build)
       "type": "static"
     },
     {
@@ -37203,6 +37536,7 @@
       "type": "static"
     },
     {
+<<<<<<< HEAD
       "source": "npm:react-day-picker",
       "target": "npm:date-fns",
       "type": "static"
@@ -37213,6 +37547,8 @@
       "type": "static"
     },
     {
+=======
+>>>>>>> 6fdc29c (feat(delete-server): fixed packaging for build)
       "source": "npm:react-docgen-typescript",
       "target": "npm:typescript",
       "type": "static"

@@ -1,4 +1,5 @@
 {
+<<<<<<< HEAD
   "17451698893258717916": {
     "build-storybook": {
       "command": "storybook build",
@@ -208,6 +209,9 @@
     }
   },
   "6755865084864064153": {
+=======
+  "3868769799860529413": {
+>>>>>>> 6fdc29c (feat(delete-server): fixed packaging for build)
     "build-storybook": {
       "command": "storybook build",
       "options": {

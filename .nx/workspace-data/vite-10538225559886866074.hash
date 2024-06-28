@@ -1,5 +1,36 @@
 {
+<<<<<<< HEAD
   "15694424978475332643apps/client/vite.config.ts": {
+=======
+  "3375613668709381873libs/shared/events/vite.config.ts": {
+    "targets": {
+      "test": {
+        "command": "vitest",
+        "options": {
+          "cwd": "libs/shared/events"
+        },
+        "cache": true,
+        "inputs": [
+          "default",
+          "^production",
+          {
+            "externalDependencies": [
+              "vitest"
+            ]
+          },
+          {
+            "env": "CI"
+          }
+        ],
+        "outputs": [
+          "{workspaceRoot}/coverage/libs/shared/events"
+        ]
+      }
+    },
+    "metadata": {}
+  },
+  "11523704835075753171apps/client/vite.config.ts": {
+>>>>>>> 6fdc29c (feat(delete-server): fixed packaging for build)
     "targets": {
       "build": {
         "command": "vite build",
@@ -67,6 +98,7 @@
     },
     "metadata": {}
   },
+<<<<<<< HEAD
   "10745728871595394806libs/shared/events/vite.config.ts": {
     "targets": {
       "test": {
@@ -279,6 +311,9 @@
     "metadata": {}
   },
   "4741261066016722950libs/pages/channels/vite.config.ts": {
+=======
+  "6333206720310624569libs/pages/channels/vite.config.ts": {
+>>>>>>> 6fdc29c (feat(delete-server): fixed packaging for build)
     "targets": {
       "test": {
         "command": "vitest",
@@ -305,6 +340,7 @@
     },
     "metadata": {}
   },
+<<<<<<< HEAD
   "9494021843811466158libs/domains/user/vite.config.ts": {
     "targets": {
       "test": {
@@ -360,6 +396,9 @@
     "metadata": {}
   },
   "9763161469835094184libs/pages/auth/vite.config.ts": {
+=======
+  "11937637398447920424libs/pages/auth/vite.config.ts": {
+>>>>>>> 6fdc29c (feat(delete-server): fixed packaging for build)
     "targets": {
       "test": {
         "command": "vitest",
@@ -386,6 +425,7 @@
     },
     "metadata": {}
   },
+<<<<<<< HEAD
   "3459427577095729689libs/shared/contracts/vite.config.ts": {
     "targets": {
       "test": {
@@ -2439,6 +2479,9 @@
     "metadata": {}
   },
   "15500338331996125604libs/domains/responsive/vite.config.ts": {
+=======
+  "11740755478354895621libs/domains/responsive/vite.config.ts": {
+>>>>>>> 6fdc29c (feat(delete-server): fixed packaging for build)
     "targets": {
       "test": {
         "command": "vitest",
@@ -2465,6 +2508,7 @@
     },
     "metadata": {}
   },
+<<<<<<< HEAD
   "3626827956102749958apps/client/vite.config.ts": {
     "targets": {
       "build": {
@@ -2718,6 +2762,9 @@
     "metadata": {}
   },
   "15905601911335230805libs/pages/settings/vite.config.ts": {
+=======
+  "8360726483109413306libs/pages/settings/vite.config.ts": {
+>>>>>>> 6fdc29c (feat(delete-server): fixed packaging for build)
     "targets": {
       "test": {
         "command": "vitest",
@@ -2744,12 +2791,20 @@
     },
     "metadata": {}
   },
+<<<<<<< HEAD
   "935594906729243578libs/shared/routes/vite.config.ts": {
+=======
+  "9989656111422522933libs/domains/voice/vite.config.ts": {
+>>>>>>> 6fdc29c (feat(delete-server): fixed packaging for build)
     "targets": {
       "test": {
         "command": "vitest",
         "options": {
+<<<<<<< HEAD
           "cwd": "libs/shared/routes"
+=======
+          "cwd": "libs/domains/voice"
+>>>>>>> 6fdc29c (feat(delete-server): fixed packaging for build)
         },
         "cache": true,
         "inputs": [
@@ -2765,12 +2820,17 @@
           }
         ],
         "outputs": [
+<<<<<<< HEAD
           "{workspaceRoot}/coverage/libs/shared/routes"
+=======
+          "{workspaceRoot}/coverage/libs/domains/voice"
+>>>>>>> 6fdc29c (feat(delete-server): fixed packaging for build)
         ]
       }
     },
     "metadata": {}
   },
+<<<<<<< HEAD
   "14073485331216838451libs/domains/channel/vite.config.ts": {
     "targets": {
       "test": {
@@ -2853,6 +2913,9 @@
     "metadata": {}
   },
   "16818683545049269251libs/shared/utils/vite.config.ts": {
+=======
+  "49372927698642973libs/shared/utils/vite.config.ts": {
+>>>>>>> 6fdc29c (feat(delete-server): fixed packaging for build)
     "targets": {
       "test": {
         "command": "vitest",
@@ -2879,12 +2942,20 @@
     },
     "metadata": {}
   },
+<<<<<<< HEAD
   "4887547361486002916libs/pages/layout/vite.config.ts": {
+=======
+  "11482785092536327287libs/domains/channel/vite.config.ts": {
+>>>>>>> 6fdc29c (feat(delete-server): fixed packaging for build)
     "targets": {
       "test": {
         "command": "vitest",
         "options": {
+<<<<<<< HEAD
           "cwd": "libs/pages/layout"
+=======
+          "cwd": "libs/domains/channel"
+>>>>>>> 6fdc29c (feat(delete-server): fixed packaging for build)
         },
         "cache": true,
         "inputs": [
@@ -2900,12 +2971,17 @@
           }
         ],
         "outputs": [
+<<<<<<< HEAD
           "{workspaceRoot}/coverage/libs/pages/layout"
+=======
+          "{workspaceRoot}/coverage/libs/domains/channel"
+>>>>>>> 6fdc29c (feat(delete-server): fixed packaging for build)
         ]
       }
     },
     "metadata": {}
   },
+<<<<<<< HEAD
   "5314094874362035378libs/domains/user/vite.config.ts": {
     "targets": {
       "test": {
@@ -3083,6 +3159,9 @@
     "metadata": {}
   },
   "1980273679067420060libs/domains/server/vite.config.ts": {
+=======
+  "18156808306774561747libs/domains/server/vite.config.ts": {
+>>>>>>> 6fdc29c (feat(delete-server): fixed packaging for build)
     "targets": {
       "test": {
         "command": "vitest",
@@ -3109,6 +3188,7 @@
     },
     "metadata": {}
   },
+<<<<<<< HEAD
   "201530032027717754libs/shared/ui/vite.config.ts": {
     "targets": {
       "test": {
@@ -3164,6 +3244,9 @@
     "metadata": {}
   },
   "14279751101331306565libs/domains/user/vite.config.ts": {
+=======
+  "542190138511759672libs/domains/user/vite.config.ts": {
+>>>>>>> 6fdc29c (feat(delete-server): fixed packaging for build)
     "targets": {
       "test": {
         "command": "vitest",
@@ -3190,12 +3273,20 @@
     },
     "metadata": {}
   },
+<<<<<<< HEAD
   "6408715166984002352libs/shared/utils/vite.config.ts": {
+=======
+  "16196619887201337419libs/pages/layout/vite.config.ts": {
+>>>>>>> 6fdc29c (feat(delete-server): fixed packaging for build)
     "targets": {
       "test": {
         "command": "vitest",
         "options": {
+<<<<<<< HEAD
           "cwd": "libs/shared/utils"
+=======
+          "cwd": "libs/pages/layout"
+>>>>>>> 6fdc29c (feat(delete-server): fixed packaging for build)
         },
         "cache": true,
         "inputs": [
@@ -3211,12 +3302,17 @@
           }
         ],
         "outputs": [
+<<<<<<< HEAD
           "{workspaceRoot}/coverage/libs/shared/utils"
+=======
+          "{workspaceRoot}/coverage/libs/pages/layout"
+>>>>>>> 6fdc29c (feat(delete-server): fixed packaging for build)
         ]
       }
     },
     "metadata": {}
   },
+<<<<<<< HEAD
   "15382556297979849788libs/shared/events/vite.config.ts": {
     "targets": {
       "test": {
@@ -3321,6 +3417,9 @@
     "metadata": {}
   },
   "9053386652249908832libs/state/store/vite.config.ts": {
+=======
+  "17384703989803098218libs/state/store/vite.config.ts": {
+>>>>>>> 6fdc29c (feat(delete-server): fixed packaging for build)
     "targets": {
       "test": {
         "command": "vitest",
@@ -3347,7 +3446,11 @@
     },
     "metadata": {}
   },
+<<<<<<< HEAD
   "13241641681190355652libs/shared/routes/vite.config.ts": {
+=======
+  "12517640104037449632libs/shared/routes/vite.config.ts": {
+>>>>>>> 6fdc29c (feat(delete-server): fixed packaging for build)
     "targets": {
       "test": {
         "command": "vitest",
@@ -3374,6 +3477,7 @@
     },
     "metadata": {}
   },
+<<<<<<< HEAD
   "11178296119387725736libs/domains/channel/vite.config.ts": {
     "targets": {
       "test": {
@@ -3578,6 +3682,9 @@
     "metadata": {}
   },
   "13343249343343961817libs/shared/contracts/vite.config.ts": {
+=======
+  "15769728853821746516libs/shared/contracts/vite.config.ts": {
+>>>>>>> 6fdc29c (feat(delete-server): fixed packaging for build)
     "targets": {
       "test": {
         "command": "vitest",
@@ -3604,6 +3711,7 @@
     },
     "metadata": {}
   },
+<<<<<<< HEAD
   "10922761279845290412libs/domains/channel/vite.config.ts": {
     "targets": {
       "test": {
@@ -3686,6 +3794,9 @@
     "metadata": {}
   },
   "3471815363732264430libs/shared/ui/vite.config.ts": {
+=======
+  "15959176433054385608libs/shared/ui/vite.config.ts": {
+>>>>>>> 6fdc29c (feat(delete-server): fixed packaging for build)
     "targets": {
       "test": {
         "command": "vitest",
@@ -3711,6 +3822,7 @@
       }
     },
     "metadata": {}
+<<<<<<< HEAD
   },
   "9745222932236923495libs/pages/layout/vite.config.ts": {
     "targets": {
@@ -3976,5 +4088,7 @@
       }
     },
     "metadata": {}
+=======
+>>>>>>> 6fdc29c (feat(delete-server): fixed packaging for build)
   }
 }

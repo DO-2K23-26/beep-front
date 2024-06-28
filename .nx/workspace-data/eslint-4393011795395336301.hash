@@ -111,7 +111,11 @@
       }
     }
   },
+<<<<<<< HEAD
   "756220776936236285": {
+=======
+  "8322628376265873947": {
+>>>>>>> 6fdc29c (feat(delete-server): fixed packaging for build)
     "libs/domains/server": {
       "targets": {
         "lint": {
@@ -139,7 +143,11 @@
       }
     }
   },
+<<<<<<< HEAD
   "784576327318206295": {
+=======
+  "497166382077242995": {
+>>>>>>> 6fdc29c (feat(delete-server): fixed packaging for build)
     "libs/domains/user": {
       "targets": {
         "lint": {
@@ -167,7 +175,11 @@
       }
     }
   },
+<<<<<<< HEAD
   "16960225683912836985": {
+=======
+  "5385144859374051010": {
+>>>>>>> 6fdc29c (feat(delete-server): fixed packaging for build)
     "libs/domains/voice": {
       "targets": {
         "lint": {
@@ -195,7 +207,11 @@
       }
     }
   },
+<<<<<<< HEAD
   "4788941758337807197": {
+=======
+  "15228912245543863194": {
+>>>>>>> 6fdc29c (feat(delete-server): fixed packaging for build)
     "libs/pages/auth": {
       "targets": {
         "lint": {
@@ -223,7 +239,11 @@
       }
     }
   },
+<<<<<<< HEAD
   "11436576927709468163": {
+=======
+  "9387654639834424810": {
+>>>>>>> 6fdc29c (feat(delete-server): fixed packaging for build)
     "libs/pages/channels": {
       "targets": {
         "lint": {
@@ -251,7 +271,11 @@
       }
     }
   },
+<<<<<<< HEAD
   "12068780069697894513": {
+=======
+  "6965874953932280730": {
+>>>>>>> 6fdc29c (feat(delete-server): fixed packaging for build)
     "libs/pages/layout": {
       "targets": {
         "lint": {
@@ -279,7 +303,11 @@
       }
     }
   },
+<<<<<<< HEAD
   "15232440697611651326": {
+=======
+  "11719897785188384237": {
+>>>>>>> 6fdc29c (feat(delete-server): fixed packaging for build)
     "libs/pages/settings": {
       "targets": {
         "lint": {
@@ -307,7 +335,11 @@
       }
     }
   },
+<<<<<<< HEAD
   "5476956288913242695": {
+=======
+  "14051559786535615170": {
+>>>>>>> 6fdc29c (feat(delete-server): fixed packaging for build)
     "libs/shared/contracts": {
       "targets": {
         "lint": {
@@ -391,7 +423,11 @@
       }
     }
   },
+<<<<<<< HEAD
   "8405963404697308566": {
+=======
+  "15748560627614259806": {
+>>>>>>> 6fdc29c (feat(delete-server): fixed packaging for build)
     "libs/shared/ui": {
       "targets": {
         "lint": {
@@ -475,6 +511,7 @@
       }
     }
   },
+<<<<<<< HEAD
   "17467675325300905859": {},
   "4423130591612708864": {},
   "2385171145545192755": {
@@ -2044,6 +2081,12 @@
   },
   "11262211880415815938": {},
   "17436792089597080070": {
+=======
+  "13647076545426715714": {},
+  "13809409172528840054": {},
+  "9753897317714369431": {},
+  "784576327318206295": {
+>>>>>>> 6fdc29c (feat(delete-server): fixed packaging for build)
     "libs/domains/user": {
       "targets": {
         "lint": {
@@ -2071,15 +2114,24 @@
       }
     }
   },
+<<<<<<< HEAD
   "1058240551114002217": {},
   "2904764398895886120": {
     "libs/domains/user": {
+=======
+  "8506490164145766891": {
+    "libs/domains/voice": {
+>>>>>>> 6fdc29c (feat(delete-server): fixed packaging for build)
       "targets": {
         "lint": {
           "command": "eslint .",
           "cache": true,
           "options": {
+<<<<<<< HEAD
             "cwd": "libs/domains/user"
+=======
+            "cwd": "libs/domains/voice"
+>>>>>>> 6fdc29c (feat(delete-server): fixed packaging for build)
           },
           "inputs": [
             "default",
@@ -2100,15 +2152,24 @@
       }
     }
   },
+<<<<<<< HEAD
   "14982474547487237540": {},
   "18090520899072571371": {
     "libs/pages/settings": {
+=======
+  "4788941758337807197": {
+    "libs/pages/auth": {
+>>>>>>> 6fdc29c (feat(delete-server): fixed packaging for build)
       "targets": {
         "lint": {
           "command": "eslint .",
           "cache": true,
           "options": {
+<<<<<<< HEAD
             "cwd": "libs/pages/settings"
+=======
+            "cwd": "libs/pages/auth"
+>>>>>>> 6fdc29c (feat(delete-server): fixed packaging for build)
           },
           "inputs": [
             "default",
@@ -2129,6 +2190,7 @@
       }
     }
   },
+<<<<<<< HEAD
   "5539602329396931684": {},
   "17000215691906935818": {
     "libs/pages/settings": {
@@ -2622,6 +2684,9 @@
     }
   },
   "2032363189755013953": {
+=======
+  "11436576927709468163": {
+>>>>>>> 6fdc29c (feat(delete-server): fixed packaging for build)
     "libs/pages/channels": {
       "targets": {
         "lint": {
@@ -2649,7 +2714,11 @@
       }
     }
   },
+<<<<<<< HEAD
   "8076537523231619449": {
+=======
+  "7240035083316630162": {
+>>>>>>> 6fdc29c (feat(delete-server): fixed packaging for build)
     "libs/pages/layout": {
       "targets": {
         "lint": {
@@ -2677,7 +2746,39 @@
       }
     }
   },
+<<<<<<< HEAD
   "2114088434127791466": {
+=======
+  "15232440697611651326": {
+    "libs/pages/settings": {
+      "targets": {
+        "lint": {
+          "command": "eslint .",
+          "cache": true,
+          "options": {
+            "cwd": "libs/pages/settings"
+          },
+          "inputs": [
+            "default",
+            "^default",
+            "{workspaceRoot}/.eslintrc.json",
+            "{projectRoot}/.eslintrc.json",
+            "{workspaceRoot}/tools/eslint-rules/**/*",
+            {
+              "externalDependencies": [
+                "eslint"
+              ]
+            }
+          ],
+          "outputs": [
+            "{options.outputFile}"
+          ]
+        }
+      }
+    }
+  },
+  "3659376712778160503": {
+>>>>>>> 6fdc29c (feat(delete-server): fixed packaging for build)
     "libs/shared/contracts": {
       "targets": {
         "lint": {
@@ -2705,7 +2806,11 @@
       }
     }
   },
+<<<<<<< HEAD
   "10089454504715504608": {
+=======
+  "17028630660576036968": {
+>>>>>>> 6fdc29c (feat(delete-server): fixed packaging for build)
     "libs/shared/ui": {
       "targets": {
         "lint": {
@@ -2733,6 +2838,7 @@
       }
     }
   },
+<<<<<<< HEAD
   "5399979923298962279": {},
   "13340313052023366872": {
     "libs/shared/contracts": {
@@ -2934,4 +3040,7 @@
     }
   },
   "8729770755054075775": {}
+=======
+  "743172838138888771": {}
+>>>>>>> 6fdc29c (feat(delete-server): fixed packaging for build)
 }
