@@ -107,7 +107,9 @@ export default function ChannelsNavigation({
             </Tooltip>
           </div>
         </div>
+
         {/* Create channel modal */}
+
         <Button
           iconLeft={'lucide:circle-plus'}
           size={ButtonSize.REGULAR}

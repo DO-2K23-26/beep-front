@@ -5,6 +5,7 @@ export interface UseModalProps {
   content: ReactNode
   options?: {
     width: number
+    height: number
   }
 }
 
@@ -23,7 +24,7 @@ export function useModal() {
       if (modal.options) setOptionsModal(modal.options)
       setContentModal(<>{modal.content}</>)
     }
-  }, [modal])
+  }, [modal,])
 
   return {
     openModal,

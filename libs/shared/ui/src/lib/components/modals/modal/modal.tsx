@@ -17,6 +17,7 @@ export interface ModalProps {
   defaultOpen?: boolean
   buttonClose?: boolean
   width?: number
+  height?: number | undefined | null
   className?: string
   externalOpen?: boolean
   setExternalOpen?: (e: boolean) => void
@@ -30,7 +31,8 @@ export const Modal = (props: ModalProps) => {
   const {
     children,
     trigger,
-    width = '474',
+    width = 478,
+    height = null,
     className = '',
     defaultOpen = false,
     buttonClose = true,
@@ -105,7 +107,7 @@ export const Modal = (props: ModalProps) => {
           onPointerDownOutside={(event) => {
             event.preventDefault()
           }}
-          style={{ width: `${width}px` }}
+          style={{ width: `${width}px`, height: `${height}px` }}
           className={`modal__content fixed top-[84px] left-1/2 bg-white rounded-md shadow-[0_0_32px_rgba(0,0,0,0.08)] z-40 ${className}`}
         >
           <div className="max-h-[80vh] overflow-auto">

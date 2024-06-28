@@ -1,0 +1,9 @@
+{
+  "name": "settings",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/pages/settings/src",
+  "projectType": "library",
+  "tags": [],
+  "// targets": "to see all targets run: nx show project settings --web",
+  "targets": {}
+}

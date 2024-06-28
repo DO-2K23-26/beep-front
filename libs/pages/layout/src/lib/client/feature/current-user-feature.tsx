@@ -17,8 +17,7 @@ const onPhone = () => {
 }
 
 export default function CurrentUserFeature() {
-  const { tokens, isLoading, isAuthenticated, payload } =
-    useSelector(getUserState)
+  const { payload } = useSelector(getUserState)
 
   const dispatch = useDispatch()
 
@@ -71,7 +70,6 @@ export default function CurrentUserFeature() {
   const devices = useSelector(voiceSliceSelector.selectDevices)
 
   const handleDeviceChange = () => {
-    // console.log('device change');
     navigator.mediaDevices.enumerateDevices().then((devices) => {
       dispatch({
         type: 'voice/setDevices',
@@ -117,7 +115,6 @@ export default function CurrentUserFeature() {
         })
       })
     }
-    // console.log(devices);
     devices.forEach(function (device: Device) {
       if (device.kind === 'audiooutput') {
         audioOutputs.push({
