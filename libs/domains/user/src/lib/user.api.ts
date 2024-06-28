@@ -8,6 +8,7 @@ import {
   RefreshRequest,
   RefreshResponse,
   RegisterResponse,
+  UpdateMicRequest,
   UpdateUserResponse,
   UserConnectedEntity,
   UserDisplayedEntity,
@@ -111,8 +112,18 @@ export const userApi = createApi({
       query: (id) => `/users/${id}`,
       providesTags: ['users'],
     }),
-  }),
-})
+    updateState: builder.mutation<
+      void,
+      { serverId: string; payload: UpdateMicRequest }
+    >({
+      query: ({ serverId, payload }) => ({
+        url: `/servers/${serverId}/users/mic`,
+        method: 'POST',
+        body: payload,
+      }),
+    })
+  })
+});
 
 export const {
   useConfirmEmailMutation,
@@ -127,4 +138,5 @@ export const {
   useSendEmailMutation,
   useVerifyEmailMutation,
   useGetUserByIdQuery,
+  useUpdateStateMutation,
 } = userApi

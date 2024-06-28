@@ -1,6 +1,7 @@
 export * from './user/login.request'
 export * from './user/register.request'
 export * from './refresh.request'
+export * from './user/muted.request'
 
 export * from './channel/create-channel.request'
 export * from './channel/join-voice-channel.request'

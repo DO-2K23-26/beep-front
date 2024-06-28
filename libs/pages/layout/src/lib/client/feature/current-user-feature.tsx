@@ -2,7 +2,8 @@ import { Device, UserEntity } from '@beep/contracts'
 import { useModal } from '@beep/ui'
 import {
   useFetchProfilePictureQuery,
-  useGetMeQuery
+  useGetMeQuery,
+  getUserState, userActions, useUpdateStateMutation
 } from '@beep/user'
 import { voiceSliceSelector } from '@beep/voice'
 import { useEffect, useState } from 'react'
@@ -10,18 +11,32 @@ import { useForm } from 'react-hook-form'
 import { toast } from 'react-hot-toast'
 import { useDispatch, useSelector } from 'react-redux'
 import CurrentUser from '../ui/current-user'
+import { RootState } from '@beep/store'
+import { TransmitSingleton } from '@beep/utils'
+import { useGetCurrentStreamingUsersQuery } from '@beep/server'
 
-const onMicrophone = () => {
-  console.log('Microphone')
-}
-
-const onPhone = () => {
-  console.log('Phone')
-}
 
 export default function CurrentUserFeature() {
   const { data } = useGetMeQuery()
+  const server = useSelector((state: RootState) => state.servers.server)
+  const { isMuted, isVoiceMuted } = useSelector(getUserState)
   const dispatch = useDispatch()
+  const [updateState] = useUpdateStateMutation()
+
+  const onMicrophone = () => {
+    dispatch(userActions.toggleIsVoiceMuted())
+    if (server) updateState({ serverId: server.id, payload: { muted: isMuted, voiceMuted: isVoiceMuted } })
+    }
+  const onPhone = () => {
+    dispatch(userActions.toggleIsMuted())
+    if (server) updateState({ serverId: server.id, payload: { muted: isMuted, voiceMuted: isVoiceMuted } })
+  }
+  
+  const { refetch } = useGetCurrentStreamingUsersQuery(server?.id ?? '')
+  useEffect(() => {
+    if (!server?.id) return
+    TransmitSingleton.subscribe(`users/${server?.id}/state`, (message) => { refetch() })
+  }, [refetch, server])
 
   const { currentData } = useFetchProfilePictureQuery(data ? data.id : '1')
 
@@ -186,6 +201,8 @@ export default function CurrentUserFeature() {
   return (
     <CurrentUser
       user={currentUser}
+      isMuted={isMuted}
+      isVoiceMuted={isVoiceMuted}
       onMicrophone={onMicrophone}
       onPhone={onPhone}
       onSaveParameters={onSaveParameters}

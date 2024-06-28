@@ -8,12 +8,9 @@ import {
   Badge,
   BadgeType,
   Button,
-  ButtonSize,
   ButtonStyle,
-  DialogCloseButton,
   DropdownMenu,
   DropdownMenuContent,
-  DropdownMenuItem,
   DropdownMenuTrigger,
   FullScreenDialog,
   FullScreenDialogContent,
@@ -22,16 +19,15 @@ import {
   Tooltip,
   TooltipContent,
   TooltipTrigger,
-  UseModalProps,
+  UseModalProps
 } from '@beep/ui'
 
 import { getChannelsState } from '@beep/channel'
 import { getResponsiveState } from '@beep/responsive'
-import { FormProvider, UseFormReturn } from 'react-hook-form'
+import { UseFormReturn } from 'react-hook-form'
 import { useSelector } from 'react-redux'
 import CurrentUserFeature from '../feature/current-user-feature'
 import { ConnectedChannelRow } from './connect-channel-row'
-import { CreateChannelModal } from './create-channel-modal'
 import { ListTextChannels } from './list-channels'
 import { ListVoiceChannels } from './list-voice-channels'
 import {

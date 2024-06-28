@@ -20,4 +20,6 @@ export interface UserState {
     lastName: string
     email: string
   }
+    isMuted?: boolean
+    isVoiceMuted?: boolean
 }

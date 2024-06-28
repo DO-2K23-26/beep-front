@@ -12,6 +12,8 @@ export const initialUserState: UserState = {
   isAuthenticated: false,
   isLoading: true,
   tokens: {},
+  isMuted: false,
+  isVoiceMuted: false,
 }
 export const userSlice = createSlice({
   name: USER_KEY,
@@ -36,6 +38,12 @@ export const userSlice = createSlice({
     updateIsLoading(state, payload: PayloadAction<boolean>) {
       state.isLoading = payload.payload
     },
+    toggleIsMuted(state, payload: PayloadAction<void>) {
+      state.isMuted = !state.isMuted
+    },
+    toggleIsVoiceMuted(state, payload: PayloadAction<void>) {
+      state.isVoiceMuted = !state.isVoiceMuted
+    }
   },
 })
 export const getUserState = (root: RootState) => root[USER_KEY]
