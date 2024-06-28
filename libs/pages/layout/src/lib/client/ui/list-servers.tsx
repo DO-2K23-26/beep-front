@@ -7,10 +7,12 @@ export interface ListServersProps {
 
 export function ListServers({ servers }: ListServersProps) {
   return servers ? (
+    // eslint-disable-next-line react/jsx-no-useless-fragment
     <>
-      {Array.isArray(servers) && servers.map((server) => (
-        <DisplayServerFeature key={server.id} server={server} />
-      ))}
+      {Array.isArray(servers) &&
+        servers.map((server) => (
+          <DisplayServerFeature key={server.id} server={server} />
+        ))}
     </>
   ) : null
 }

@@ -1,8 +1,15 @@
-import { getServersState, useDeleteServerMutation } from '@beep/server'
+import {
+  getServersState,
+  serverActions,
+  useDeleteServerMutation,
+  useGetServersQuery,
+} from '@beep/server'
 import { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import DestroyServerModal from '../ui/server-settings-modal/delete-server-modal'
 import { useNavigate } from 'react-router'
+import { ServerEntity } from '@beep/contracts'
+import toast from 'react-hot-toast'
 
 interface DestroyServerFeatureProps {
   closeModal: () => void
@@ -13,12 +20,12 @@ export default function DestroyServerFeature({
   closeModal,
 }: DestroyServerFeatureProps) {
   const [confirmation, setConfirmation] = useState('')
-  const focusedServer = useSelector(getServersState).server?.id
+  const focusedServer = useSelector(getServersState).server
   const [deleteServer, result] = useDeleteServerMutation()
   const [error, setError] = useState<string | undefined>(undefined)
   const [loading, setLoading] = useState(false)
   const navigate = useNavigate()
-  const availableServers = useSelector(getServersState).entities
+  const { data: availableServers } = useGetServersQuery()
   const dispatch = useDispatch()
 
   const CONFIRMATION_TEXT =
@@ -36,17 +43,45 @@ export default function DestroyServerFeature({
       setLoading(false)
       return
     }
-    deleteServer(focusedServer)
+    const focusedServerId = focusedServer.id
+    const emptyServer: ServerEntity = {
+      id: '',
+      name: 'You have no servers',
+      createdAt: '',
+      updatedAt: '',
+      ownerId: '',
+      picture: '',
+    }
+    deleteServer(focusedServerId)
       .unwrap()
       .then(() => {
         setLoading(false)
-        const serverToNavigate = availableServers[0].id
-        // dispatch('servers/set', serverToNavigate)
+        if (!availableServers) {
+          //TODO: replace it with discovery page once its done
+          dispatch(serverActions.setServer(emptyServer))
+          navigate('/servers/@me')
+          toast.success('Server deleted successfully')
+          closeModal()
+          return
+        }
+        const serverToNavigate = availableServers.find(
+          (server) => server.id !== focusedServerId
+        )
+        if (!serverToNavigate) {
+          dispatch(serverActions.setServer(emptyServer))
+          navigate('/servers/@me')
+          toast.success('Server deleted successfully')
+          closeModal()
+          return
+        }
+        dispatch(serverActions.setServer(serverToNavigate))
+        toast.success('Server deleted successfully')
         closeModal()
       })
       .catch((err) => {
         setError('An error occured while deleting the server')
         setLoading(false)
+        toast.error('An error occured while deleting the server')
       })
   }
 
