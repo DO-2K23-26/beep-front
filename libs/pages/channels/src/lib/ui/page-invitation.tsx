@@ -6,22 +6,25 @@ import toast from 'react-hot-toast'
 export function PageInvitation() {
   const { inviteId } = useParams<{ inviteId: string }>()
   const navigate = useNavigate()
-  const [joinPrivateServer, { isLoading, isError, isSuccess, data }] =
+  const [joinPrivateServer, { isLoading, isError, isSuccess, data, error }] =
     useJoinPrivateServerMutation()
 
   useEffect(() => {
-    joinPrivateServer(inviteId!)
-  }, [])
+    if (inviteId) {
+      joinPrivateServer(inviteId)
+    }
+  }, [inviteId, joinPrivateServer])
 
   useEffect(() => {
     if (isError) {
       toast.error('Error joining the server. Please try again.')
+      console.error('Error:', error)
     }
     if (isSuccess && data) {
-      navigate(`/servers/${data.serverId}`)
       toast.success('Successfully joined the server!')
+      navigate(`/servers/${data.serverId}`)
     }
-  }, [isError, isSuccess, data, navigate])
+  }, [isError, isSuccess, data, error, navigate])
 
   return (
     <div className="bg-violet-200 w-full p-4">
