@@ -18,8 +18,6 @@ export default function DisplayServerFeature({
   const onServerChange = () => {
     dispatch(serverActions.setServer(server))
     if (channels && channels.length > 0) {
-      // console.log('channels : ', channels)
-      // console.log('/${server.id}/channels/${channels[0].id}', channels[0].id)
       navigate(`/servers/${server.id}/channels/${channels[0].id}`)
     } else {
       navigate(`/servers/@me`)
