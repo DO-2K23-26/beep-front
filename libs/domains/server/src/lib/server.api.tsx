@@ -9,6 +9,7 @@ import {
   OccupiedChannelEntity,
   ServerEntity,
   UserDisplayedEntity,
+  JoinInvitationResponse,
 } from '@beep/contracts'
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 // eslint-disable-next-line @nx/enforce-module-boundaries
@@ -54,7 +55,7 @@ export const serverApi = createApi({
         },
       }),
     }),
-    joinPrivateServer: builder.mutation<void, string>({
+    joinPrivateServer: builder.mutation<JoinInvitationResponse, string>({
       query: (inviteId) => ({
         url: `/servers/join/${inviteId}`,
         method: 'POST',

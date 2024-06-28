@@ -7,3 +7,4 @@ export * from './message/get-messages.response'
 export * from './user/update.response'
 
 export * from './invitation/create-invitation.response'
+export * from './invitation/join-private-server.response'
