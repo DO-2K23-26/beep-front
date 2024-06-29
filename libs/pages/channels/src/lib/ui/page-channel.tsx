@@ -12,7 +12,7 @@ export interface PageChannelProps {
   channel: ChannelEntity
   messages: MessageEntity[]
   sendMessage: () => void
-  onUpdateMessage: (messageId: string) => void
+  onUpdateMessage: (messageId: string, newContent: string) => void
   files: File[]
   onAddFiles: (file: File) => void
   onDeleteFile: (index: number) => void
@@ -123,7 +123,7 @@ export const PageChannel = ({
               )}
             />
           </div>
-          
+
           {/* buttons */}
           <div className="flex flex-row gap-6">
             <Button

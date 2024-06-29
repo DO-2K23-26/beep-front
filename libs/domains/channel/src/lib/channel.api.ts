@@ -84,7 +84,7 @@ export const channelApi = createApi({
       query: (request) => ({
         url: `channels/${request.channelId}/messages/${request.messageId}`,
         method: 'PATCH',
-        body: request,
+        body: { content: request.content },
         formData: true,
       }),
       invalidatesTags: ['messages']

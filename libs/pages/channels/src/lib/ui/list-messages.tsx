@@ -1,13 +1,15 @@
 import { MessageEntity } from '@beep/contracts'
 import MessageFeature from '../feature/message-feature'
+import { useState } from 'react'
 
 interface ListMessagesProps {
   messages: MessageEntity[]
-  onUpdateMessage: (messageId: string) => void
+  onUpdateMessage: (messageId: string, newContent: string) => void
   control: any
 }
 
 export default function ListMessages({ messages, onUpdateMessage, control }: ListMessagesProps) {
+  const [editingMessageId, setEditingMessageId] = useState<string | null>(null)
   return (
     <div className="flex flex-col-reverse gap-6 overflow-y-scroll no-scrollbar scroll-smooth h-full">
       {messages &&
@@ -21,6 +23,8 @@ export default function ListMessages({ messages, onUpdateMessage, control }: Lis
               createdAt={message.createdAt || ''}
               message={message}
               control={control}
+              editingMessageId={editingMessageId}
+              setEditingMessageId={setEditingMessageId}
             />
           ))}
     </div>

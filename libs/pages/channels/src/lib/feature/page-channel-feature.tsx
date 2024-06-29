@@ -1,10 +1,9 @@
-import { Transmit } from '@adonisjs/transmit-client'
 import {
   useCreateMessageMutation,
   useGetChannelQuery,
-  useGetMessagesByChannelIdQuery
+  useGetMessagesByChannelIdQuery, useUpdateMessageMutation
 } from '@beep/channel'
-import { ChannelType, backendUrl } from '@beep/contracts'
+import { ChannelType } from '@beep/contracts'
 import { responsiveActions } from '@beep/responsive'
 import { useGetUsersByServerIdQuery } from '@beep/server'
 import { AppDispatch } from '@beep/store'
@@ -16,25 +15,27 @@ import { useDispatch } from 'react-redux'
 import { useParams } from 'react-router'
 import { PageChannel } from '../ui/page-channel'
 import { DynamicSelectorFeature } from './dynamic-selector-item-feature'
+import { TransmitSingleton } from '@beep/utils'
 
 export function PageChannelFeature() {
   const { serverId = '', channelId = '' } = useParams<{ serverId: string, channelId: string }>()
-  const { data: channel } = useGetChannelQuery({ serverId: serverId, channelId: channelId }) 
-  const { data: messages, refetch } = useGetMessagesByChannelIdQuery({
-    channelId: channelId,
-  })
+  const { data: channel } = useGetChannelQuery({ serverId: serverId, channelId: channelId })
+  const { data: messages, refetch, isSuccess } = useGetMessagesByChannelIdQuery({ channelId })
   const { data: usersServer } = useGetUsersByServerIdQuery(serverId)
 
   const [files, setFiles] = useState<File[]>([])
   const [previewUrls, setPreviewUrls] = useState<{ content: string | null }[]>(
     []
   )
-  const inputRef = useRef<HTMLInputElement>(null);
+  const inputRef = useRef<HTMLInputElement>(null)
 
   const [createMessage] = useCreateMessageMutation()
 
   const methods = useForm({
     mode: 'onChange',
+    defaultValues: {
+      message: ''
+    }
   })
 
   const [dynamicSelector, setDynamicSelector] = useState<DynamicSelectorProps | undefined>(undefined)
@@ -96,7 +97,7 @@ export function PageChannelFeature() {
         onSelect: (id) => {
           methods.setValue('message', `${text.slice(0, text.indexOf('#'))}#$${id}`)
           setDynamicSelector(undefined)
-        },
+        }
       })
     } else {
       setDynamicSelector(undefined)
@@ -104,22 +105,22 @@ export function PageChannelFeature() {
   }
 
   const handleInputChange = (value: string, onChange: (value: string) => void) => {
-    onChange(value);
-    if (value === undefined || value === '') return;
+    onChange(value)
+    if (value === undefined || value === '') return
 
-    const cursorPos: number = inputRef.current ? inputRef.current.selectionStart! : 0;
+    const cursorPos: number = inputRef.current ? inputRef.current.selectionStart! : 0
 
     updateDynamicSelector(value, cursorPos)
-  };
+  }
 
   const handleCursorChange = () => {
     if (inputRef.current) {
-      const value = inputRef.current.value;
-      const cursorPos: number = inputRef.current ? inputRef.current.selectionStart! : 0;
+      const value = inputRef.current.value
+      const cursorPos: number = inputRef.current ? inputRef.current.selectionStart! : 0
 
       updateDynamicSelector(value, cursorPos)
     }
-  };
+  }
 
   const dispatch = useDispatch<AppDispatch>()
   const hideRightDiv = () => {
@@ -138,7 +139,7 @@ export function PageChannelFeature() {
       reader.onloadend = () => {
         setPreviewUrls((prev) => [
           ...prev,
-          { content: reader.result as string },
+          { content: reader.result as string }
         ])
       }
       reader.readAsDataURL(file)
@@ -152,7 +153,22 @@ export function PageChannelFeature() {
     setPreviewUrls((prev) => prev.filter((_, i) => i !== index))
   }
 
-  const onSendMessage = methods.handleSubmit((data) => {
+  const [updateMessage] = useUpdateMessageMutation()
+
+  const onUpdateMessage = async (messageId: string, newContent: string) => {
+    try {
+      await updateMessage({
+        channelId: channelId,
+        messageId: messageId,
+        content: newContent
+      }).unwrap()
+      refetch()
+    } catch (error) {
+      console.error('Error updating message:', error)
+    }
+  }
+
+  const onSendMessage = methods.handleSubmit(async (data) => {
     // check if message is not empty OR files are not empty
     if ('message' in data && ((data.message !== '' && data.message !== undefined) || files.length > 0)) {
       // create a form data object for the http request
@@ -160,7 +176,7 @@ export function PageChannelFeature() {
 
       // set the content of the message -> { content: data.message }
       formData.set('content', data.message === '' || data.message === undefined ? ' ' : data.message)
-      
+
       // if files are present, append them to the form data object
       if (files.length > 0) {
         formData.set('attachments', JSON.stringify([]))
@@ -168,7 +184,7 @@ export function PageChannelFeature() {
           formData.append(`attachments[${i}]`, file)
         })
       }
-      
+
       // send the http request to the server and create a new message
       createMessage({
         channelId: channelId,
@@ -184,17 +200,8 @@ export function PageChannelFeature() {
   })
 
   useEffect(() => {
-    const transmit = new Transmit({
-      baseUrl: backendUrl,
-    })
-
-    const subscription = transmit.subscription(`channels/${channelId}/messages`)
-
-    subscription.create()
-    subscription.onMessage((message) => {
-      refetch()
-    })
-  }, [])
+    TransmitSingleton.subscribe(`channels/${channelId}/message`, (message) => { refetch() })
+  }, [channelId, refetch, isSuccess])
 
   return (
     messages !== undefined && channel !== undefined ? (
@@ -208,7 +215,7 @@ export function PageChannelFeature() {
             type: ChannelType.TEXT,
           }}
           sendMessage={onSendMessage}
-          onUpdateMessage={() => {}}
+          onUpdateMessage={onUpdateMessage}
           files={files}
           filesPreview={previewUrls}
           onAddFiles={onAddFile}
