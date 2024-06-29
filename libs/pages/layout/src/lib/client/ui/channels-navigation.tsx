@@ -10,6 +10,10 @@ import {
   Button,
   ButtonSize,
   ButtonStyle,
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
   Icon,
   Tooltip,
   TooltipContent,
@@ -28,6 +32,7 @@ import { ListTextChannels } from './list-channels'
 import { ListVoiceChannels } from './list-voice-channels'
 import { getServersState } from '@beep/server'
 import { ServerDropdownMenu } from './server-dropdown-menu'
+import { OverviewSettingsServer } from './overview-settings-server'
 
 export interface ChannelsNavigationProps {
   textChannels?: ChannelEntity[]
@@ -70,27 +75,84 @@ export default function ChannelsNavigation({
       >
         {/* Server infos */}
         <div className="flex flex-row gap-6">
-          {/* <Button
-            style={ButtonStyle.SQUARE}
-            onClick={() => {
-              console.log('click')
-            }}
-          >
-            {server ? (
-              server.picture ? (
-                <img
-                  src={server?.picture}
-                  alt="Server"
-                  className="rounded-xl hover:rounded-2xl transition-all"
+          <DropdownMenu>
+            <DropdownMenuTrigger>
+              <Button
+                style={ButtonStyle.SQUARE}
+                onClick={() => {
+                  console.log('click')
+                }}
+              >
+                {server ? (
+                  server.picture ? (
+                    <img
+                      src={server?.picture}
+                      alt="Server"
+                      className="rounded-xl hover:rounded-2xl transition-all"
+                    />
+                  ) : (
+                    <p className="max-w-[175px] truncate">{server.name[0]}</p>
+                  )
+                ) : (
+                  <p>@ME</p>
+                )}
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent className="rounded-lg bg-violet-50 mt-4 mx-5 py-4 px-3">
+              {/* <DropdownMenuItemCustom
+                label="Invite users"
+                iconName="lucide:credit-card"
+              /> //need dorian PR*/}
+              {/* {isAdmin && (
+                <DropdownMenuItemCustom
+                  label="Create channel"
+                  iconName="lucide:plus"
+                  onClick={() =>
+                    openModal({
+                      content: (
+                        <FormProvider {...methodsAddChannel}>
+                          <CreateChannelModal
+                            closeModal={closeModal}
+                            onCreateChannel={onCreateChannel}
+                            methodsAddChannel={methodsAddChannel}
+                          />
+                        </FormProvider>
+                      ),
+                    })
+                  }
                 />
-              ) : (
-                <p className="max-w-[175px] truncate">{server.name[0]}</p>
-              )
-            ) : (
-              <p>@ME</p>
-            )}
-          </Button> */}
-          <ServerDropdownMenu server={server} />
+            )} */}
+              <DropdownMenuItemCustom
+                label="Settings"
+                iconName="lucide:settings"
+                onClick={() => {
+                  openModal({
+                    content: <OverviewSettingsServer server={server!} />,
+                  })
+                }}
+              />
+
+              <hr className="bg-slate-400 h-[1px] my-2 text-slate-400" />
+              {/* <DropdownMenuItemCustom
+                label="Leave server"
+                iconName="charm:sign-out"
+                warning
+              /> */}
+              {/* {isAdmin && (
+                <DropdownMenuItemCustom
+                  label="Destroy server"
+                  iconName="lucide:trash-2"
+                  warning
+                  onClick={() => {
+                    openModal({
+                      content: <DestroyServerFeature closeModal={closeModal} />,
+                    })
+                  }}
+                />
+              )} */}
+            </DropdownMenuContent>
+          </DropdownMenu>
+
           <div className="flex flex-col items-start justify-between">
             <h5 className="font-semibold max-w-[175px] truncate">
               {server?.name}
@@ -113,26 +175,28 @@ export default function ChannelsNavigation({
 
         {/* Create channel modal */}
 
-        <Button
-          iconLeft={'lucide:circle-plus'}
-          size={ButtonSize.REGULAR}
-          className="!bg-violet-400 px-2 xl:px-3 py-2 text-base font-semibold flex flex-row gap-2 items-center"
-          onClick={() => {
-            openModal({
-              content: (
-                <FormProvider {...methodsAddChannel}>
-                  <CreateChannelModal
-                    closeModal={closeModal}
-                    onCreateChannel={onCreateChannel}
-                    methodsAddChannel={methodsAddChannel}
-                  />
-                </FormProvider>
-              ),
-            })
-          }}
-        >
-          <p>Create channel</p>
-        </Button>
+        {/* {isAdmin && (
+          <Button
+            iconLeft={'lucide:circle-plus'}
+            size={ButtonSize.REGULAR}
+            className="!bg-violet-400 px-2 xl:px-3 py-2 text-base font-semibold flex flex-row gap-2 items-center"
+            onClick={() => {
+              openModal({
+                content: (
+                  <FormProvider {...methodsAddChannel}>
+                    <CreateChannelModal
+                      closeModal={closeModal}
+                      onCreateChannel={onCreateChannel}
+                      methodsAddChannel={methodsAddChannel}
+                    />
+                  </FormProvider>
+                ),
+              })
+            }}
+          >
+            <p>Create channel</p>
+          </Button>
+        )} */}
         {/* Channels list */}
         <div className="flex flex-col gap-6 min-w-max flex-grow overflow-y-scroll no-scrollbar scroll-smooth">
           <div className="flex flex-col flex-grow gap-6">
@@ -169,5 +233,35 @@ export default function ChannelsNavigation({
         </Button>
       </div>
     </div>
+  )
+}
+
+interface DropdownMenuItemCustomProps {
+  onClick?: () => void
+  label: string
+  iconName?: string
+  className?: string
+  warning?: boolean
+}
+function DropdownMenuItemCustom({
+  onClick,
+  label,
+  iconName,
+  className,
+  warning,
+}: DropdownMenuItemCustomProps) {
+  const colors = {
+    default: 'text-tint-900 hover:bg-violet-100 hover:text-tint-900',
+    warning: 'text-red-600 fill-red-600 hover:bg-red-100 hover:text-red-600',
+  }
+  const focusedColor = warning ? colors.warning : colors.default
+  return (
+    <DropdownMenuItem
+      className={`flex items-center gap-2 pl-2 py-1 pr-9 ${className} ${focusedColor} rounded-md  transition-colors cursor-pointer`}
+      onSelect={onClick}
+    >
+      {iconName && <Icon className={`${focusedColor}`} name={iconName} />}
+      <p className={`font-bold ${focusedColor}`}>{label}</p>
+    </DropdownMenuItem>
   )
 }

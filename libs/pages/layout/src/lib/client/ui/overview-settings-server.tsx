@@ -10,7 +10,7 @@ export function OverviewSettingsServer({
 }: OverviewSettingsServerProps) {
   console.log('OverviewSettingsServer')
   return (
-    <div className="p-10">
+    <div className="w-full	 bg-white p-10 overflow-y-auto">
       <h3 className=" text-slate-700 font-bold mb-2 max-w-sm">
         SERVER OVERVIEW
       </h3>
@@ -38,10 +38,11 @@ export function OverviewSettingsServer({
         )}
       </div>
       <hr className="bg-violet-300 h-1"></hr>
-
       <div className="py-5 ">
         <div className="py-2">
-          <h5 className="py-5 text-slate-700 font-bold mb-2 max-w-sm">Server name</h5>
+          <h5 className="py-5 text-slate-700 font-bold mb-2 max-w-sm">
+            Server name
+          </h5>
           <InputText
             label="Server name"
             type="text"
@@ -51,7 +52,9 @@ export function OverviewSettingsServer({
           />
         </div>
         <div className="py-2">
-          <h5 className="py-5 text-slate-700 font-bold mb-2 max-w-sm">Server description</h5>
+          <h5 className="py-5 text-slate-700 font-bold mb-2 max-w-sm">
+            Server description
+          </h5>
           <InputText
             label="Server description"
             type="text"
