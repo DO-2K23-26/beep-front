@@ -21,6 +21,8 @@ interface MessageProps {
   cancelEditing: () => void
   createdAt: string
   payload?: any
+  onPin: () => void
+  isPinned?: boolean; // New property to indicate if message is pinned
 }
 
 export default function Message({
@@ -34,6 +36,8 @@ export default function Message({
   cancelEditing,
   createdAt,
   payload,
+  onPin,
+  isPinned
 }: Readonly<MessageProps>) {
   const { control } = useFormContext()
 
@@ -99,6 +103,13 @@ export default function Message({
             </Button>
           )}
         </div>
+        {!isPinned && ( // Conditionally render if not already pinned
+          <div className="flex flex-row gap-4 items-center invisible group-hover:visible">
+            <Button onClick={onPin}>
+              <Icon name="lucide:pin" className="w-5 h-5" />
+            </Button>
+          </div>
+        )}
       </div>
       <div className="flex flex-row gap-2">
         {isEditing ? (

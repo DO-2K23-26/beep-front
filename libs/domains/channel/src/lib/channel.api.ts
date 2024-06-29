@@ -1,9 +1,21 @@
 /* eslint-disable @nx/enforce-module-boundaries */
 /* eslint-disable react-hooks/rules-of-hooks */
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
-import { ChannelEntity, CreateChannelRequest, CreateChannelResponse, CreateMessageRequest, DeleteMessageRequest, GetMessageFromChannelRequest, MessageEntity, OccupiedChannelEntity, ShowMessageRequest, UpdateMessageRequest, UserEntity, backendUrl } from '@beep/contracts';
+import { 
+  ChannelEntity, 
+  CreateChannelRequest, 
+  CreateChannelResponse, 
+  CreateMessageRequest, 
+  DeleteMessageRequest, 
+  GetMessageFromChannelRequest, 
+  MessageEntity, 
+  PinMessageRequest, 
+  ShowMessageRequest,
+  UpdateMessageRequest, 
+  UserEntity, 
+  backendUrl 
+} from '@beep/contracts';
 import { RootState } from '@beep/store';
-import { useFetchProfilePictureQuery } from '@beep/user';
 
 const baseQuery = fetchBaseQuery({
   baseUrl: backendUrl,
@@ -11,6 +23,7 @@ const baseQuery = fetchBaseQuery({
   prepareHeaders: (headers, { getState }) => {
     const { user } = getState() as RootState;
     headers.set('Authorization', `Bearer ${user.tokens.accessToken}`);
+    return headers;
   },
 });
 
@@ -105,16 +118,44 @@ export const channelApi = createApi({
         }
       })
     }),
+    pinMessage: builder.mutation<MessageEntity, PinMessageRequest>({
+      query: (request) => ({
+        url: `/channels/${request.channelId}/messages/${request.messageId}/pin`,
+        body: request,
+        method: 'PATCH',
+      }),
+      invalidatesTags: ['messages']
+    }),
+    fetchPinnedMessages: builder.query<MessageEntity[], string>({
+      query: (channelId) => ({
+        url: `/channels/${channelId}/messages/pinned`,
+        method: 'GET',
+      }),
+      providesTags: ['messages'],
+    }),
+    findAndDeleteMessage: builder.mutation<MessageEntity, DeleteMessageRequest>({
+      query: (request) => ({
+        url: `/channels/${request.channelId}/messages/${request.messageId}/find-and-delete`,
+        method: 'DELETE',
+        body: request,
+      }),
+      invalidatesTags: ['messages']
+    }),
   })
 })
 
 export const {
   useGetChannelsQuery,
   useGetChannelQuery,
-  useCreateChannelMutation,
+  useGetUsersQuery,
   useGetMessagesByChannelIdQuery,
+  useCreateChannelMutation,
   useCreateMessageMutation,
+  useGetOneMessageQuery,
   useUpdateMessageMutation,
   useDeleteMessageMutation,
   useFetchAttachmentImageQuery,
+  usePinMessageMutation,
+  useFetchPinnedMessagesQuery,
+  useFindAndDeleteMessageMutation
 } = channelApi

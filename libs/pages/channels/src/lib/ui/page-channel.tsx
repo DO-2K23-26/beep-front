@@ -2,6 +2,7 @@ import { ChannelEntity, ChannelType, MessageEntity } from '@beep/contracts'
 import { Button, ButtonStyle, DynamicSelector, DynamicSelectorProps, Icon, Input } from '@beep/ui'
 import { Controller, useFormContext } from 'react-hook-form'
 import ListMessages from './list-messages'
+import DisplayPinned from './display-pinned'
 
 export type MessageFormValues = {
   content: string
@@ -47,7 +48,7 @@ export const PageChannel = ({
     <div className="bg-violet-200 w-full p-6 flex flex-col gap-6 justify-between h-[100dvh]">
       {/* Message page Header */}
       <div className="flex flex-row justify-between gap-6">
-        <div className="flex flex-row gap-6">
+        <div className="flex flex-row gap-6 justify-between lg:w-full">
           <Button
             style={ButtonStyle.SQUARE}
             className="lg:hidden !bg-violet-300"
@@ -62,7 +63,9 @@ export const PageChannel = ({
               <Icon name="lucide:hash" className="w-4 h-4" />
             )}
             <p className="font-semibold">{channel.name}</p>
+
           </div>
+          <DisplayPinned channelId={channel.id} onUpdateMessage={onUpdateMessage} control={control} />
         </div>
         <Button
           style={ButtonStyle.SQUARE}

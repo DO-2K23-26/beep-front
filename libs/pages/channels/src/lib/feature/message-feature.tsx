@@ -1,9 +1,11 @@
-import { FormProvider } from 'react-hook-form'
+import { FormProvider, useForm } from 'react-hook-form'
 import { MessageEntity, UserEntity } from '@beep/contracts'
 import Message from '../ui/message'
+import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux'
-import { getUserState, useFetchProfilePictureQuery } from '@beep/user'
-import { useForm } from 'react-hook-form'
+import { getUserState, useFetchProfilePictureQuery } from '@beep/user';
+import { useCreateMessageMutation, useFindAndDeleteMessageMutation, usePinMessageMutation } from '@beep/channel';
+import toast from 'react-hot-toast';
 
 interface MessageFeatureProps {
   message: MessageEntity
@@ -17,6 +19,7 @@ interface MessageFeatureProps {
   control?: any
   editingMessageId: string | null
   setEditingMessageId: (id: string | null) => void
+  isPinned: boolean
 }
 
 export default function MessageFeature({
@@ -25,19 +28,25 @@ export default function MessageFeature({
   createdAt,
   onUpdateMessage,
   editingMessageId,
-  setEditingMessageId
+  setEditingMessageId,
+  isPinned
 }: MessageFeatureProps) {
+  const [pinMessage, result] = usePinMessageMutation()
+  const [createMessage] = useCreateMessageMutation()
+  const [findAndDeleteMessage] = useFindAndDeleteMessageMutation()
   const { tokens, isLoading, isAuthenticated, payload } = useSelector(getUserState)
+
+
+  const userProfilePicture = user ? useFetchProfilePictureQuery(user.id, {
+    skip: !user
+  }).currentData : undefined
+
+  const isEditing = editingMessageId === message.id
 
   const methods = useForm({
     mode: 'onChange',
   })
 
-  const userProfilePicture = user ? useFetchProfilePictureQuery(user!.id, {
-    skip: !user
-  }).currentData : undefined
-
-  const isEditing = editingMessageId === message.id
 
   const switchEditing = () => {
     if (editingMessageId && editingMessageId !== message.id) {
@@ -53,9 +62,44 @@ export default function MessageFeature({
     setEditingMessageId(null);
   };
 
-  const deleteMessage = () => {
+  const deleteMessage = () => {}
 
-  }
+
+  const onPin = async () => {
+    try {
+      await pinMessage({ channelId: message.channelId, messageId: message.id });
+    } catch (error) {
+      toast.error('Failure while trying to pin the message');
+    }
+  };
+
+
+  useEffect(() => {
+    if (result.isSuccess) {
+      console.log(result.data.pinned)
+
+      if(result.data.pinned === true) {
+        toast.success('Message pinned!');
+        const notificationMessage = `The message with ID ${message.id} is pinned.`;
+        const formData = new FormData();
+        formData.set('content', notificationMessage);
+
+        createMessage({
+          channelId: message.channelId,
+          body: formData
+        });
+      } else {
+        findAndDeleteMessage({
+          channelId: message.channelId,
+          messageId: message.id
+        
+        })
+        toast.success('Message unpinned!');
+      }
+    } else if (result.isError) {
+      toast.error('Failure while trying to pin the message');
+    }
+  }, [createMessage, findAndDeleteMessage, message.channelId, message.id, result])
 
   const onUpdateMessageSubmit = methods.handleSubmit((data) => {
     try {
@@ -83,7 +127,9 @@ export default function MessageFeature({
       onUpdateMessage={onUpdateMessageSubmit}
       createdAt={createdAt}
       payload={payload}
-      />
+        onPin={onPin}
+      isPinned={isPinned}
+    />
     </FormProvider>
   )
 }

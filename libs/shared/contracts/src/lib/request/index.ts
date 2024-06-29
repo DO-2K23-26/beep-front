@@ -12,3 +12,5 @@ export * from './message/show-message.request'
 export * from './message/get-messages-from-channel.request'
 export * from './user/update.request'
 export * from './user/confirm-email.request'
+
+export * from './message/pin-message.request'

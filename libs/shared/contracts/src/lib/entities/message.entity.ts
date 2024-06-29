@@ -10,4 +10,5 @@ export interface MessageEntity {
     owner?: UserEntity
     createdAt?: string
     updatedAt?: string
+    pinned: boolean
   }

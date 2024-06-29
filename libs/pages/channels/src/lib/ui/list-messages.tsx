@@ -25,6 +25,7 @@ export default function ListMessages({ messages, onUpdateMessage, control }: Lis
               control={control}
               editingMessageId={editingMessageId}
               setEditingMessageId={setEditingMessageId}
+              isPinned= {false}
             />
           ))}
     </div>
