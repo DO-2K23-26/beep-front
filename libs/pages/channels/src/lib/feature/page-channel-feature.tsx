@@ -88,7 +88,7 @@ export function PageChannelFeature() {
         maxElements: 5,
         emptyMessage: 'Any text channel.',
         onSelect: (id) => {
-          methods.setValue('message', `${text.slice(0, text.indexOf('#'))}#$${id}`)
+          methods.setValue('message', message.slice(0, startWordIndex) + `${text.slice(0, text.indexOf('#'))}#$${id}`)
           setDynamicSelector(undefined)
         },
 
