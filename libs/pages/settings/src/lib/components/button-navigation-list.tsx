@@ -13,22 +13,24 @@ export function ButtonNavigationList({
   setSelectedSetting,
 }: ButtonNavigationListProps) {
   return (
-    <div className="flex flex-col items-center container pb-4 gap-1">
-      <p className="font-semibold text-2xl">
-        {subSettings.subGroupSettingTitle}
-      </p>
-      {subSettings.settings.map((setting) => {
-        return (
-          <SettingPickerButton
-            key={setting.title}
-            title={setting.title}
-            navigateTo={function (): void {
-              setSelectedSetting(setting.title)
-            }}
-            isPicked={selectedSetting === setting.title}
-          />
-        )
-      })}
+    <div className="flex flex-row shrink">
+      <div className="flex flex-col items-start container pb-4 gap-1">
+        <p className="font-semibold text-2xl">
+          {subSettings.subGroupSettingTitle}
+        </p>
+        {subSettings.settings.map((setting) => {
+          return (
+            <SettingPickerButton
+              key={setting.title}
+              title={setting.title}
+              navigateTo={function (): void {
+                setSelectedSetting(setting.title)
+              }}
+              isPicked={selectedSetting === setting.title}
+            />
+          )
+        })}
+      </div>
     </div>
   )
 }

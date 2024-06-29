@@ -140,11 +140,11 @@ export const PageChannel = ({
             >
               <Icon name="lucide:plus" className="w-5 h-5" />
             </Button> */}
-            <label htmlFor="file_upload" className="cursor-pointer btn btn--regular btn--square !bg-violet-50">
+            <label htmlFor="file" className="cursor-pointer btn btn--regular btn--square !bg-violet-50">
               <Icon name="lucide:plus" className="w-5 h-5" />
             </label>
             <input
-            id='file_upload'
+            id='file'
             type='file'
             className='hidden'
             onChange={(e) => {

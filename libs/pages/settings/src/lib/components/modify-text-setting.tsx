@@ -1,15 +1,15 @@
-import { Button } from "@beep/ui"
+import { ReactNode } from 'react'
 
 interface ModifyTextSettingProps {
   title: string
   value: string
-  onClick: () => void
+  modalButton: ReactNode
 }
 
 export function ModifyTextSetting({
   title,
   value,
-  onClick,
+  modalButton: modal,
 }: ModifyTextSettingProps) {
   return (
     <div className="flex flex-row justify-between items-center">
@@ -17,9 +17,7 @@ export function ModifyTextSetting({
         <p className="text-sm font-semibold">{title}</p>
         <p className="text-sm">{value}</p>
       </div>
-      <Button onClick={onClick}>
-        <p>Modify</p>
-      </Button>
+      {modal}
     </div>
   )
 }

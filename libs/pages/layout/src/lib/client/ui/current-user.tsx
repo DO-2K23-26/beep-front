@@ -1,14 +1,14 @@
 import { Device, UserEntity } from '@beep/contracts'
+import { ModifyProfileCardFeature, SettingsModal, SubSettings } from '@beep/settings'
 import {
   Badge,
   BadgeType,
   Button,
   ButtonStyle,
+  DialogCloseButton,
   Icon,
-  Input,
   UseModalProps
 } from '@beep/ui'
-import { SubSettings } from 'libs/pages/settings/src/lib/models/setting-navigation-models'
 import { FormProvider, UseFormReturn } from 'react-hook-form'
 import { UserMediaModal } from './user-media-modal'
 
@@ -76,10 +76,10 @@ export default function CurrentUser({
         >
           <Icon name="lucide:phone hidden" className="!w-5 !h-5" />
         </Button>
-        {/* <DialogCloseButton
+        <DialogCloseButton
           triggerButton={<Icon name="lucide:settings" className="!w-5 !h-5" />}
           content={<SettingsModal settings={[subSetting]} />}
-        /> */}
+  />
         <button
           className="cursor-pointer"
           onClick={() => {
@@ -105,12 +105,10 @@ export default function CurrentUser({
   )
 }
 
-// for testing purpose
+// List of setting in the user setting modal
 const subSetting: SubSettings = {
   subGroupSettingTitle: 'Account',
   settings: [
-    { title: 'account', settingComponent: <Input /> },
-    { title: 'voice', settingComponent: <Input /> },
-    { title: 'text', settingComponent: <Input /> },
+    { title: 'account', settingComponent: <ModifyProfileCardFeature /> },
   ],
 }

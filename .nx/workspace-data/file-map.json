@@ -1,0 +1,2472 @@
+{
+  "version": "6.0",
+  "nxVersion": "19.3.2",
+  "deps": {
+    "@adonisjs/transmit-client": "^1.0.0",
+    "@iconify/react": "^4.1.1",
+    "@markdoc/markdoc": "^0.4.0",
+    "@radix-ui/react-dialog": "^1.0.5",
+    "@radix-ui/react-icons": "^1.3.0",
+    "@radix-ui/react-label": "^2.0.2",
+    "@radix-ui/react-popover": "^1.0.7",
+    "@radix-ui/react-select": "^2.0.0",
+    "@radix-ui/react-separator": "^1.0.3",
+    "@radix-ui/react-slot": "^1.0.2",
+    "@radix-ui/react-tooltip": "^1.0.7",
+    "@reduxjs/toolkit": "^2.2.3",
+    "@szhsin/react-menu": "^4.1.0",
+    "class-variance-authority": "^0.7.0",
+    "clsx": "^2.1.0",
+    "lucide-react": "^0.396.0",
+    "luxon": "^3.4.4",
+    "react": "18.2.0",
+    "react-dom": "18.2.0",
+    "react-draggable": "^4.4.6",
+    "react-hook-form": "^7.51.3",
+    "react-hot-toast": "^2.4.1",
+    "react-redux": "^9.1.2",
+    "react-router": "^6.22.3",
+    "react-router-dom": "^6.22.3",
+    "react-select": "^5.8.0",
+    "socket.io-client": "^4.7.5",
+    "tailwind-merge": "^2.2.2",
+    "ts-pattern": "^5.1.1",
+    "tslib": "^2.6.2",
+    "utils": "link:@/lib/utils",
+    "@babel/core": "^7.24.4",
+    "@babel/preset-react": "^7.24.1",
+    "@nx/cypress": "18.2.4",
+    "@nx/eslint": "18.2.4",
+    "@nx/eslint-plugin": "18.2.4",
+    "@nx/jest": "18.2.4",
+    "@nx/js": "18.2.4",
+    "@nx/react": "18.2.4",
+    "@nx/storybook": "18.2.4",
+    "@nx/vite": "18.2.4",
+    "@nx/web": "18.2.4",
+    "@nx/workspace": "18.2.4",
+    "@storybook/addon-essentials": "7.6.17",
+    "@storybook/addon-interactions": "^7.6.17",
+    "@storybook/core-server": "7.6.17",
+    "@storybook/jest": "^0.2.3",
+    "@storybook/react": "7.6.17",
+    "@storybook/react-vite": "7.6.17",
+    "@storybook/test-runner": "^0.13.0",
+    "@storybook/testing-library": "^0.2.2",
+    "@swc-node/register": "~1.8.0",
+    "@swc/cli": "~0.1.65",
+    "@swc/core": "~1.3.107",
+    "@swc/helpers": "~0.5.10",
+    "@testing-library/react": "14.0.0",
+    "@types/jest": "^29.4.0",
+    "@types/node": "18.16.9",
+    "@types/react": "18.2.33",
+    "@types/react-dom": "18.2.14",
+    "@typescript-eslint/eslint-plugin": "^7.7.0",
+    "@typescript-eslint/parser": "^7.7.0",
+    "@vitejs/plugin-react": "^4.2.1",
+    "@vitest/coverage-v8": "^1.5.0",
+    "@vitest/ui": "^1.5.0",
+    "autoprefixer": "10.4.13",
+    "cypress": "^13.7.3",
+    "eslint": "~8.57.0",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-cypress": "^2.15.2",
+    "eslint-plugin-import": "2.27.5",
+    "eslint-plugin-jsx-a11y": "6.7.1",
+    "eslint-plugin-react": "7.32.2",
+    "eslint-plugin-react-hooks": "4.6.0",
+    "jest": "^29.4.1",
+    "jest-environment-node": "^29.4.1",
+    "jsdom": "~22.1.0",
+    "nx": "18.2.4",
+    "postcss": "8.4.21",
+    "prettier": "^2.8.8",
+    "sass": "^1.75.0",
+    "storybook": "7.6.17",
+    "tailwindcss": "3.2.7",
+    "ts-jest": "^29.1.0",
+    "ts-node": "10.9.1",
+    "typescript": "~5.4.5",
+    "vite": "~5.0.13",
+    "vite-plugin-dts": "~3.8.3",
+    "vitest": "^1.5.0"
+  },
+  "pathMappings": {
+    "@beep/auth": [
+      "libs/pages/auth/src/index.ts"
+    ],
+    "@beep/channel": [
+      "libs/domains/channel/src/index.ts"
+    ],
+    "@beep/channels": [
+      "libs/pages/channels/src/index.ts"
+    ],
+    "@beep/contracts": [
+      "libs/shared/contracts/src/index.ts"
+    ],
+    "@beep/events": [
+      "libs/shared/events/src/index.ts"
+    ],
+    "@beep/layout": [
+      "libs/pages/layout/src/index.ts"
+    ],
+    "@beep/pages/auth": [
+      "libs/pages/auth/src/index.ts"
+    ],
+    "@beep/pages/channels": [
+      "libs/pages/channels/src/index.ts"
+    ],
+    "@beep/pages/layout": [
+      "libs/pages/layout/src/index.ts"
+    ],
+    "@beep/responsive": [
+      "libs/domains/responsive/src/index.ts"
+    ],
+    "@beep/routes": [
+      "libs/shared/routes/src/index.ts"
+    ],
+    "@beep/server": [
+      "libs/domains/server/src/index.ts"
+    ],
+    "@beep/store": [
+      "libs/state/store/src/index.ts"
+    ],
+    "@beep/ui": [
+      "libs/shared/ui/src/index.ts"
+    ],
+    "@beep/user": [
+      "libs/domains/user/src/index.ts"
+    ],
+    "@beep/utils": [
+      "libs/shared/utils/src/index.ts"
+    ],
+    "@beep/voice": [
+      "libs/domains/voice/src/index.ts"
+    ],
+    "@beep/transmit": [
+      "libs/shared/utils/src/index.ts"
+    ],
+    "@beep/settings": [
+      "libs/pages/settings/src/index.ts"
+    ]
+  },
+  "nxJsonPlugins": [
+    {
+      "name": "@nx/vite/plugin",
+      "options": {
+        "buildTargetName": "build",
+        "previewTargetName": "preview",
+        "testTargetName": "test",
+        "serveTargetName": "serve",
+        "serveStaticTargetName": "serve-static"
+      }
+    },
+    {
+      "name": "@nx/eslint/plugin",
+      "options": {
+        "targetName": "lint"
+      }
+    },
+    {
+      "name": "@nx/cypress/plugin",
+      "options": {
+        "targetName": "e2e",
+        "componentTestingTargetName": "component-test",
+        "ciTargetName": "e2e-ci",
+        "openTargetName": "open-cypress"
+      }
+    },
+    {
+      "name": "@nx/storybook/plugin",
+      "options": {
+        "buildStorybookTargetName": "build-storybook",
+        "serveStorybookTargetName": "storybook",
+        "testStorybookTargetName": "test-storybook",
+        "staticStorybookTargetName": "static-storybook"
+      }
+    },
+    {
+      "name": "@nx/jest/plugin",
+      "options": {
+        "targetName": "test"
+      }
+    }
+  ],
+  "fileMap": {
+    "nonProjectFiles": [
+      {
+        "file": ".prettierrc",
+        "hash": "16168323439053702593"
+      },
+      {
+        "file": "Dockerfile",
+        "hash": "5529540702012835930"
+      },
+      {
+        "file": "helm/Chart.yaml",
+        "hash": "1251930523993404945"
+      },
+      {
+        "file": ".gitlab-ci.yml",
+        "hash": "11550980783474810505"
+      },
+      {
+        "file": "package.json",
+        "hash": "5676451489787903797"
+      },
+      {
+        "file": "jest.preset.js",
+        "hash": "11039555799044607920"
+      },
+      {
+        "file": "vitest.workspace.ts",
+        "hash": "7870362608836821141"
+      },
+      {
+        "file": "migrations.json",
+        "hash": "3121978655632550628"
+      },
+      {
+        "file": ".eslintignore",
+        "hash": "6625779930127276236"
+      },
+      {
+        "file": ".gitlab/issue_templates/Default.md",
+        "hash": "8184565121153877532"
+      },
+      {
+        "file": ".gitignore",
+        "hash": "9629455838039204971"
+      },
+      {
+        "file": "nx.json",
+        "hash": "12263665369575359023"
+      },
+      {
+        "file": "helm/values.yaml",
+        "hash": "8223797683189297487"
+      },
+      {
+        "file": "helm/templates/deployment.yaml",
+        "hash": "10284662101076725124"
+      },
+      {
+        "file": "README.md",
+        "hash": "12884624643554565363"
+      },
+      {
+        "file": "gitversion-ci-cd-plugin-extension.gitlab-ci.yml",
+        "hash": "9591808149017694014"
+      },
+      {
+        "file": "helm/templates/_helper.tpl",
+        "hash": "9628039977089512869"
+      },
+      {
+        "file": ".eslintrc.json",
+        "hash": "14687746412462661691"
+      },
+      {
+        "file": "tsconfig.base.json",
+        "hash": "3438520966106879357"
+      },
+      {
+        "file": ".npmrc",
+        "hash": "1880664178033616490"
+      },
+      {
+        "file": "tailwind-workspace-preset.js",
+        "hash": "1666216589247468944"
+      },
+      {
+        "file": "pnpm-lock.yaml",
+        "hash": "16004592728154319242"
+      },
+      {
+        "file": "helm/templates/ingress.yaml",
+        "hash": "7834196520100303260"
+      },
+      {
+        "file": "nginx.conf",
+        "hash": "7771670371142415860"
+      },
+      {
+        "file": "jest.config.ts",
+        "hash": "3544775089889764213"
+      },
+      {
+        "file": ".editorconfig",
+        "hash": "5443105041930014821"
+      },
+      {
+        "file": ".template.env",
+        "hash": "1855400211933325932"
+      },
+      {
+        "file": "helm/templates/service.yaml",
+        "hash": "13213917091170295688"
+      },
+      {
+        "file": ".prettierignore",
+        "hash": "16448050467312557263"
+      },
+      {
+        "file": ".gitlab/issue_templates/Bug.md",
+        "hash": "7319204432504743760"
+      },
+      {
+        "file": "GitVersion.yml",
+        "hash": "11859653297525228367"
+      }
+    ],
+    "projectFileMap": {
+      "domains-server": [
+        {
+          "file": "libs/domains/server/.babelrc",
+          "hash": "2946678488919325452"
+        },
+        {
+          "file": "libs/domains/server/.eslintrc.json",
+          "hash": "15946965712701950674"
+        },
+        {
+          "file": "libs/domains/server/README.md",
+          "hash": "9079227599155060106"
+        },
+        {
+          "file": "libs/domains/server/package.json",
+          "hash": "15988726976878814926"
+        },
+        {
+          "file": "libs/domains/server/project.json",
+          "hash": "12532062126083162793"
+        },
+        {
+          "file": "libs/domains/server/src/index.ts",
+          "hash": "4796876957200933243"
+        },
+        {
+          "file": "libs/domains/server/src/lib/server.api.tsx",
+          "hash": "8689763915425174655",
+          "deps": [
+            "contracts",
+            "npm:@reduxjs/toolkit",
+            "store"
+          ]
+        },
+        {
+          "file": "libs/domains/server/src/lib/server.slice.tsx",
+          "hash": "10184134811643187246",
+          "deps": [
+            "npm:@reduxjs/toolkit",
+            "contracts",
+            "store"
+          ]
+        },
+        {
+          "file": "libs/domains/server/tsconfig.json",
+          "hash": "8945200214589149969"
+        },
+        {
+          "file": "libs/domains/server/tsconfig.lib.json",
+          "hash": "920925512994609163"
+        },
+        {
+          "file": "libs/domains/server/tsconfig.spec.json",
+          "hash": "6227144360273957678"
+        },
+        {
+          "file": "libs/domains/server/vite.config.ts",
+          "hash": "9199294019793182299",
+          "deps": [
+            "npm:vite",
+            "npm:@vitejs/plugin-react",
+            "npm:vite-plugin-dts"
+          ]
+        }
+      ],
+      "events": [
+        {
+          "file": "libs/shared/events/.babelrc",
+          "hash": "2946678488919325452"
+        },
+        {
+          "file": "libs/shared/events/.eslintrc.json",
+          "hash": "15946965712701950674"
+        },
+        {
+          "file": "libs/shared/events/README.md",
+          "hash": "15300368491624804220"
+        },
+        {
+          "file": "libs/shared/events/project.json",
+          "hash": "17410532632660337228"
+        },
+        {
+          "file": "libs/shared/events/src/index.ts",
+          "hash": "13130398535595000894"
+        },
+        {
+          "file": "libs/shared/events/src/lib/event.tsx",
+          "hash": "4253744578596162696"
+        },
+        {
+          "file": "libs/shared/events/src/lib/events.tsx",
+          "hash": "9934183415816488222",
+          "deps": [
+            "utils",
+            "npm:socket.io-client"
+          ]
+        },
+        {
+          "file": "libs/shared/events/tsconfig.json",
+          "hash": "5803453740373313970"
+        },
+        {
+          "file": "libs/shared/events/tsconfig.lib.json",
+          "hash": "15322717985845125222"
+        },
+        {
+          "file": "libs/shared/events/tsconfig.spec.json",
+          "hash": "6227144360273957678"
+        },
+        {
+          "file": "libs/shared/events/vite.config.ts",
+          "hash": "8057284132228746010",
+          "deps": [
+            "npm:vite",
+            "npm:@vitejs/plugin-react"
+          ]
+        }
+      ],
+      "channels": [
+        {
+          "file": "libs/pages/channels/.babelrc",
+          "hash": "2946678488919325452"
+        },
+        {
+          "file": "libs/pages/channels/.eslintrc.json",
+          "hash": "15946965712701950674"
+        },
+        {
+          "file": "libs/pages/channels/README.md",
+          "hash": "6291834631108690003"
+        },
+        {
+          "file": "libs/pages/channels/package-lock.json",
+          "hash": "11956875320965963705"
+        },
+        {
+          "file": "libs/pages/channels/package.json",
+          "hash": "12992375632990666301"
+        },
+        {
+          "file": "libs/pages/channels/project.json",
+          "hash": "11443496361317174123"
+        },
+        {
+          "file": "libs/pages/channels/src/index.ts",
+          "hash": "4935891016516273600"
+        },
+        {
+          "file": "libs/pages/channels/src/lib/feature/attachment-feature.tsx",
+          "hash": "15040789670637285887",
+          "deps": [
+            "channel",
+            "contracts",
+            "ui"
+          ]
+        },
+        {
+          "file": "libs/pages/channels/src/lib/feature/dynamic-selector-item-feature.tsx",
+          "hash": "9811999567745771836",
+          "deps": [
+            "contracts",
+            "user"
+          ]
+        },
+        {
+          "file": "libs/pages/channels/src/lib/feature/local-feed.tsx",
+          "hash": "4377068579423957388",
+          "deps": [
+            "npm:react-redux",
+            "voice"
+          ]
+        },
+        {
+          "file": "libs/pages/channels/src/lib/feature/message-feature.tsx",
+          "hash": "9536396970101266337",
+          "deps": [
+            "contracts",
+            "npm:react-redux",
+            "user",
+            "npm:react-hook-form"
+          ]
+        },
+        {
+          "file": "libs/pages/channels/src/lib/feature/page-channel-feature.tsx",
+          "hash": "11731783298652638079",
+          "deps": [
+            "npm:@adonisjs/transmit-client",
+            "channel",
+            "contracts",
+            "responsive",
+            "domains-server",
+            "store",
+            "ui",
+            "npm:react-hook-form",
+            "npm:react-hot-toast",
+            "npm:react-redux",
+            "npm:react-router"
+          ]
+        },
+        {
+          "file": "libs/pages/channels/src/lib/feature/page-me-general-feature.tsx",
+          "hash": "10779298278221951175",
+          "deps": [
+            "npm:react-redux",
+            "responsive",
+            "store"
+          ]
+        },
+        {
+          "file": "libs/pages/channels/src/lib/hooks/local-media-stream.ts",
+          "hash": "15879556345925873400",
+          "deps": [
+            "npm:react-redux",
+            "voice"
+          ]
+        },
+        {
+          "file": "libs/pages/channels/src/lib/page-channels.tsx",
+          "hash": "10577303829064430915",
+          "deps": [
+            "npm:react-router-dom"
+          ]
+        },
+        {
+          "file": "libs/pages/channels/src/lib/router.tsx",
+          "hash": "4716202752870454098",
+          "deps": [
+            "routes"
+          ]
+        },
+        {
+          "file": "libs/pages/channels/src/lib/types.ts",
+          "hash": "15088719449319993193"
+        },
+        {
+          "file": "libs/pages/channels/src/lib/ui/custom-markdown/Callout.tsx",
+          "hash": "15379973696667743341"
+        },
+        {
+          "file": "libs/pages/channels/src/lib/ui/custom-markdown/Subscript.tsx",
+          "hash": "7995922014421527915"
+        },
+        {
+          "file": "libs/pages/channels/src/lib/ui/list-messages.tsx",
+          "hash": "9084764863891482819",
+          "deps": [
+            "contracts"
+          ]
+        },
+        {
+          "file": "libs/pages/channels/src/lib/ui/media.tsx",
+          "hash": "16176971845030558804",
+          "deps": [
+            "npm:react-draggable"
+          ]
+        },
+        {
+          "file": "libs/pages/channels/src/lib/ui/message.tsx",
+          "hash": "2568189489366105363",
+          "deps": [
+            "contracts",
+            "ui",
+            "npm:react-hook-form",
+            "npm:@markdoc/markdoc"
+          ]
+        },
+        {
+          "file": "libs/pages/channels/src/lib/ui/page-channel.tsx",
+          "hash": "8075443150100882714",
+          "deps": [
+            "contracts",
+            "ui",
+            "npm:react-hook-form"
+          ]
+        },
+        {
+          "file": "libs/pages/channels/src/lib/ui/page-me-general.tsx",
+          "hash": "7180127455937156491",
+          "deps": [
+            "ui"
+          ]
+        },
+        {
+          "file": "libs/pages/channels/src/lib/utils/markdown-config.tsx",
+          "hash": "6318670646327962602",
+          "deps": [
+            "npm:@markdoc/markdoc"
+          ]
+        },
+        {
+          "file": "libs/pages/channels/src/lib/utils/markdown-parser.tsx",
+          "hash": "3511092051806438006"
+        },
+        {
+          "file": "libs/pages/channels/tsconfig.json",
+          "hash": "8945200214589149969"
+        },
+        {
+          "file": "libs/pages/channels/tsconfig.lib.json",
+          "hash": "920925512994609163"
+        },
+        {
+          "file": "libs/pages/channels/tsconfig.spec.json",
+          "hash": "6227144360273957678"
+        },
+        {
+          "file": "libs/pages/channels/vite.config.ts",
+          "hash": "11401521523036165575",
+          "deps": [
+            "npm:vite",
+            "npm:@vitejs/plugin-react",
+            "npm:vite-plugin-dts"
+          ]
+        }
+      ],
+      "voice": [
+        {
+          "file": "libs/domains/voice/.babelrc",
+          "hash": "2946678488919325452"
+        },
+        {
+          "file": "libs/domains/voice/.eslintrc.json",
+          "hash": "15946965712701950674"
+        },
+        {
+          "file": "libs/domains/voice/README.md",
+          "hash": "8645407144093774799"
+        },
+        {
+          "file": "libs/domains/voice/package.json",
+          "hash": "7021859894756103083"
+        },
+        {
+          "file": "libs/domains/voice/project.json",
+          "hash": "3112085845966864773"
+        },
+        {
+          "file": "libs/domains/voice/src/index.ts",
+          "hash": "11568561696195002333"
+        },
+        {
+          "file": "libs/domains/voice/src/lib/voice.api.ts",
+          "hash": "16917028773067363618"
+        },
+        {
+          "file": "libs/domains/voice/src/lib/voice.slice.ts",
+          "hash": "7025886058609072446",
+          "deps": [
+            "contracts",
+            "store",
+            "npm:@reduxjs/toolkit"
+          ]
+        },
+        {
+          "file": "libs/domains/voice/tsconfig.json",
+          "hash": "2231839231104708401"
+        },
+        {
+          "file": "libs/domains/voice/tsconfig.lib.json",
+          "hash": "920925512994609163"
+        },
+        {
+          "file": "libs/domains/voice/tsconfig.spec.json",
+          "hash": "6227144360273957678"
+        },
+        {
+          "file": "libs/domains/voice/vite.config.ts",
+          "hash": "15405737453421533738",
+          "deps": [
+            "npm:vite",
+            "npm:@vitejs/plugin-react",
+            "npm:vite-plugin-dts"
+          ]
+        }
+      ],
+      "client": [
+        {
+          "file": "apps/client/.eslintrc.json",
+          "hash": "11012487992710232822"
+        },
+        {
+          "file": "apps/client/index.html",
+          "hash": "11894711381856016959"
+        },
+        {
+          "file": "apps/client/postcss.config.js",
+          "hash": "2759402739052110475"
+        },
+        {
+          "file": "apps/client/project.json",
+          "hash": "13295485801002351687"
+        },
+        {
+          "file": "apps/client/public/418.jpg",
+          "hash": "15424226834291631998"
+        },
+        {
+          "file": "apps/client/public/background.svg",
+          "hash": "8640407778279034748"
+        },
+        {
+          "file": "apps/client/public/favicon.png",
+          "hash": "14654928139974480579"
+        },
+        {
+          "file": "apps/client/public/picture.svg",
+          "hash": "13628051353388897365"
+        },
+        {
+          "file": "apps/client/src/app/app.tsx",
+          "hash": "13430646195698356518",
+          "deps": [
+            "user",
+            "npm:react-redux",
+            "layout",
+            "npm:react-router-dom",
+            "npm:ts-pattern",
+            "npm:react-hot-toast",
+            "store",
+            "ui"
+          ]
+        },
+        {
+          "file": "apps/client/src/app/router.main.tsx",
+          "hash": "7347775454565579004",
+          "deps": [
+            "auth",
+            "channels"
+          ]
+        },
+        {
+          "file": "apps/client/src/assets/.gitkeep",
+          "hash": "3244421341483603138"
+        },
+        {
+          "file": "apps/client/src/main.tsx",
+          "hash": "10030377039250252570",
+          "deps": [
+            "store",
+            "ui",
+            "npm:react-redux",
+            "npm:react-router-dom",
+            "npm:@radix-ui/react-tooltip"
+          ]
+        },
+        {
+          "file": "apps/client/src/styles.scss",
+          "hash": "9540575453073076294"
+        },
+        {
+          "file": "apps/client/tailwind.config.js",
+          "hash": "9718720026169561880"
+        },
+        {
+          "file": "apps/client/tsconfig.app.json",
+          "hash": "7232119452847825095"
+        },
+        {
+          "file": "apps/client/tsconfig.json",
+          "hash": "11166545116916107487"
+        },
+        {
+          "file": "apps/client/tsconfig.spec.json",
+          "hash": "9472099605191632308"
+        },
+        {
+          "file": "apps/client/vite.config.ts",
+          "hash": "70425939032685778",
+          "deps": [
+            "npm:vite",
+            "npm:@vitejs/plugin-react"
+          ]
+        }
+      ],
+      "ui": [
+        {
+          "file": "libs/shared/ui/.babelrc",
+          "hash": "2946678488919325452"
+        },
+        {
+          "file": "libs/shared/ui/.eslintrc.json",
+          "hash": "807400449232234690"
+        },
+        {
+          "file": "libs/shared/ui/.storybook/main.ts",
+          "hash": "14528189689566307419",
+          "deps": [
+            "npm:@storybook/react-vite"
+          ]
+        },
+        {
+          "file": "libs/shared/ui/.storybook/preview.tsx",
+          "hash": "16089820282696352096",
+          "deps": [
+            "npm:@radix-ui/react-tooltip",
+            "npm:@storybook/react",
+            "npm:react-router"
+          ]
+        },
+        {
+          "file": "libs/shared/ui/README.md",
+          "hash": "12971312433074001572"
+        },
+        {
+          "file": "libs/shared/ui/package.json",
+          "hash": "1639069214180412815"
+        },
+        {
+          "file": "libs/shared/ui/postcss.config.js",
+          "hash": "2759402739052110475"
+        },
+        {
+          "file": "libs/shared/ui/project.json",
+          "hash": "15676660273585945034"
+        },
+        {
+          "file": "libs/shared/ui/src/index.ts",
+          "hash": "17046864288552994611"
+        },
+        {
+          "file": "libs/shared/ui/src/lib/components/avatar/avatar.stories.tsx",
+          "hash": "5521993720054234023",
+          "deps": [
+            "npm:@storybook/react"
+          ]
+        },
+        {
+          "file": "libs/shared/ui/src/lib/components/avatar/avatar.tsx",
+          "hash": "15232582327932429799",
+          "deps": [
+            "utils"
+          ]
+        },
+        {
+          "file": "libs/shared/ui/src/lib/components/badge/badge.stories.tsx",
+          "hash": "2178574837205074295",
+          "deps": [
+            "npm:@storybook/react"
+          ]
+        },
+        {
+          "file": "libs/shared/ui/src/lib/components/badge/badge.tsx",
+          "hash": "8994774822162414443"
+        },
+        {
+          "file": "libs/shared/ui/src/lib/components/buttons/button.stories.tsx",
+          "hash": "17073154395461055518",
+          "deps": [
+            "npm:@storybook/react"
+          ]
+        },
+        {
+          "file": "libs/shared/ui/src/lib/components/buttons/button.tsx",
+          "hash": "8930960930900590885",
+          "deps": [
+            "npm:react-router-dom"
+          ]
+        },
+        {
+          "file": "libs/shared/ui/src/lib/components/buttons/index.ts",
+          "hash": "9194926357233691967"
+        },
+        {
+          "file": "libs/shared/ui/src/lib/components/callout/callout.tsx",
+          "hash": "1053258050066444950",
+          "deps": [
+            "npm:class-variance-authority",
+            "utils"
+          ]
+        },
+        {
+          "file": "libs/shared/ui/src/lib/components/icons/icon-fa/icon-fa.tsx",
+          "hash": "533269083348354859",
+          "deps": [
+            "npm:@iconify/react",
+            "utils"
+          ]
+        },
+        {
+          "file": "libs/shared/ui/src/lib/components/icons/icon.stories.tsx",
+          "hash": "7638673969876829831",
+          "deps": [
+            "npm:@storybook/react"
+          ]
+        },
+        {
+          "file": "libs/shared/ui/src/lib/components/icons/icon.tsx",
+          "hash": "365936908515491474"
+        },
+        {
+          "file": "libs/shared/ui/src/lib/components/index.ts",
+          "hash": "15055094203128678741"
+        },
+        {
+          "file": "libs/shared/ui/src/lib/components/inputs/index.ts",
+          "hash": "3885107042606906771"
+        },
+        {
+          "file": "libs/shared/ui/src/lib/components/inputs/input-number.tsx",
+          "hash": "15472538888542854454"
+        },
+        {
+          "file": "libs/shared/ui/src/lib/components/inputs/input-radio-box.stories.tsx",
+          "hash": "6956755380447870520",
+          "deps": [
+            "npm:@storybook/react"
+          ]
+        },
+        {
+          "file": "libs/shared/ui/src/lib/components/inputs/input-radio-box.tsx",
+          "hash": "16653708331341484949"
+        },
+        {
+          "file": "libs/shared/ui/src/lib/components/inputs/input-radio.stories.tsx",
+          "hash": "16644606943280029733",
+          "deps": [
+            "npm:@storybook/react"
+          ]
+        },
+        {
+          "file": "libs/shared/ui/src/lib/components/inputs/input-radio.tsx",
+          "hash": "14930359750516232557"
+        },
+        {
+          "file": "libs/shared/ui/src/lib/components/inputs/input-search.stories.tsx",
+          "hash": "4694105079584264396",
+          "deps": [
+            "npm:@storybook/react"
+          ]
+        },
+        {
+          "file": "libs/shared/ui/src/lib/components/inputs/input-search.tsx",
+          "hash": "10992389711204023006",
+          "deps": [
+            "utils"
+          ]
+        },
+        {
+          "file": "libs/shared/ui/src/lib/components/inputs/input-select-small.stories.tsx",
+          "hash": "9157853851610784825",
+          "deps": [
+            "npm:@storybook/react"
+          ]
+        },
+        {
+          "file": "libs/shared/ui/src/lib/components/inputs/input-select-small.tsx",
+          "hash": "14636311773012363198",
+          "deps": [
+            "utils",
+            "contracts"
+          ]
+        },
+        {
+          "file": "libs/shared/ui/src/lib/components/inputs/input-select.stories.tsx",
+          "hash": "2250325266036093790",
+          "deps": [
+            "npm:@storybook/react"
+          ]
+        },
+        {
+          "file": "libs/shared/ui/src/lib/components/inputs/input-select.tsx",
+          "hash": "1582129532441208214",
+          "deps": [
+            "npm:react-select",
+            "contracts"
+          ]
+        },
+        {
+          "file": "libs/shared/ui/src/lib/components/inputs/input-text-area.stories.tsx",
+          "hash": "1233397005316804345",
+          "deps": [
+            "npm:@storybook/react"
+          ]
+        },
+        {
+          "file": "libs/shared/ui/src/lib/components/inputs/input-text-area.tsx",
+          "hash": "5681830372405919917"
+        },
+        {
+          "file": "libs/shared/ui/src/lib/components/inputs/input-text.stories.tsx",
+          "hash": "7858089847187062981",
+          "deps": [
+            "npm:@storybook/react"
+          ]
+        },
+        {
+          "file": "libs/shared/ui/src/lib/components/inputs/input-text.tsx",
+          "hash": "9502882075781006195"
+        },
+        {
+          "file": "libs/shared/ui/src/lib/components/inputs/input.stories.tsx",
+          "hash": "3662769158372874861",
+          "deps": [
+            "npm:@storybook/react"
+          ]
+        },
+        {
+          "file": "libs/shared/ui/src/lib/components/inputs/input.tsx",
+          "hash": "3990147569767962412",
+          "deps": [
+            "utils"
+          ]
+        },
+        {
+          "file": "libs/shared/ui/src/lib/components/loader-spinner/loader-spinner.stories.tsx",
+          "hash": "13430114519463033000",
+          "deps": [
+            "npm:@storybook/react"
+          ]
+        },
+        {
+          "file": "libs/shared/ui/src/lib/components/loader-spinner/loader-spinner.tsx",
+          "hash": "2359257452786610300",
+          "deps": [
+            "utils"
+          ]
+        },
+        {
+          "file": "libs/shared/ui/src/lib/components/loading-screen/loading-screen.tsx",
+          "hash": "3501625422513661207"
+        },
+        {
+          "file": "libs/shared/ui/src/lib/components/menu/menu-group.tsx",
+          "hash": "2359289652716902683",
+          "deps": [
+            "utils",
+            "npm:@szhsin/react-menu"
+          ]
+        },
+        {
+          "file": "libs/shared/ui/src/lib/components/menu/menu-item.tsx",
+          "hash": "11849865736634720553",
+          "deps": [
+            "utils",
+            "npm:@szhsin/react-menu",
+            "npm:react-router-dom"
+          ]
+        },
+        {
+          "file": "libs/shared/ui/src/lib/components/menu/menu.stories.tsx",
+          "hash": "7046382925535972336",
+          "deps": [
+            "npm:@storybook/react"
+          ]
+        },
+        {
+          "file": "libs/shared/ui/src/lib/components/menu/menu.tsx",
+          "hash": "8521947396100246430",
+          "deps": [
+            "npm:@szhsin/react-menu",
+            "utils"
+          ]
+        },
+        {
+          "file": "libs/shared/ui/src/lib/components/modals/dialog/dialog-component.tsx",
+          "hash": "3804624156058039296"
+        },
+        {
+          "file": "libs/shared/ui/src/lib/components/modals/dialog/dialog.tsx",
+          "hash": "7605920008478535638",
+          "deps": [
+            "npm:@radix-ui/react-dialog",
+            "npm:lucide-react",
+            "utils"
+          ]
+        },
+        {
+          "file": "libs/shared/ui/src/lib/components/modals/full-screen-modal/full-screen-dialog.tsx",
+          "hash": "13079935639252764660",
+          "deps": [
+            "npm:@radix-ui/react-dialog",
+            "npm:lucide-react",
+            "utils"
+          ]
+        },
+        {
+          "file": "libs/shared/ui/src/lib/components/modals/full-screen-modal/full-screen-modal.tsx",
+          "hash": "10553393374598797484"
+        },
+        {
+          "file": "libs/shared/ui/src/lib/components/modals/index.ts",
+          "hash": "17424431824408049672"
+        },
+        {
+          "file": "libs/shared/ui/src/lib/components/modals/modal-alert/modal-alert.tsx",
+          "hash": "55569292745409382",
+          "deps": [
+            "npm:@radix-ui/react-dialog"
+          ]
+        },
+        {
+          "file": "libs/shared/ui/src/lib/components/modals/modal-alert/use-modal-alert.tsx",
+          "hash": "8186424965897329209"
+        },
+        {
+          "file": "libs/shared/ui/src/lib/components/modals/modal-confirmation/modal-confirmation.stories.tsx",
+          "hash": "11057152141604065696",
+          "deps": [
+            "npm:@storybook/react"
+          ]
+        },
+        {
+          "file": "libs/shared/ui/src/lib/components/modals/modal-confirmation/modal-confirmation.tsx",
+          "hash": "11730160022815464200",
+          "deps": [
+            "npm:react-hook-form"
+          ]
+        },
+        {
+          "file": "libs/shared/ui/src/lib/components/modals/modal-confirmation/use-modal-confirmation.tsx",
+          "hash": "1719546613726913600"
+        },
+        {
+          "file": "libs/shared/ui/src/lib/components/modals/modal-crud/modal-crud.tsx",
+          "hash": "2512634943938038735",
+          "deps": [
+            "npm:react-hook-form"
+          ]
+        },
+        {
+          "file": "libs/shared/ui/src/lib/components/modals/modal/index.ts",
+          "hash": "13890385289962413254"
+        },
+        {
+          "file": "libs/shared/ui/src/lib/components/modals/modal/modal-root.tsx",
+          "hash": "3004403872102307304"
+        },
+        {
+          "file": "libs/shared/ui/src/lib/components/modals/modal/modal.stories.tsx",
+          "hash": "14219643399662497889",
+          "deps": [
+            "npm:@storybook/react"
+          ]
+        },
+        {
+          "file": "libs/shared/ui/src/lib/components/modals/modal/modal.tsx",
+          "hash": "8364502423593145908",
+          "deps": [
+            "npm:@radix-ui/react-dialog"
+          ]
+        },
+        {
+          "file": "libs/shared/ui/src/lib/components/modals/modal/use-modal.tsx",
+          "hash": "5514638218318899053"
+        },
+        {
+          "file": "libs/shared/ui/src/lib/components/popover/popover.tsx",
+          "hash": "16407712873051342144",
+          "deps": [
+            "npm:@radix-ui/react-popover",
+            "utils"
+          ]
+        },
+        {
+          "file": "libs/shared/ui/src/lib/components/selectors/dynamic-selector/dynamic-selector.stories.tsx",
+          "hash": "3244421341483603138"
+        },
+        {
+          "file": "libs/shared/ui/src/lib/components/selectors/dynamic-selector/dynamic-selector.tsx",
+          "hash": "5755401427036590598"
+        },
+        {
+          "file": "libs/shared/ui/src/lib/components/selectors/dynamic-selector/use-dynamic-selector.tsx",
+          "hash": "3244421341483603138"
+        },
+        {
+          "file": "libs/shared/ui/src/lib/components/selectors/index.ts",
+          "hash": "14588602400083436487"
+        },
+        {
+          "file": "libs/shared/ui/src/lib/components/tooltip/tooltip.tsx",
+          "hash": "7335193123276105580",
+          "deps": [
+            "npm:@radix-ui/react-tooltip",
+            "utils"
+          ]
+        },
+        {
+          "file": "libs/shared/ui/src/lib/components/truncate/truncate.tsx",
+          "hash": "2154757795408426733"
+        },
+        {
+          "file": "libs/shared/ui/src/lib/styles/base/variable.scss",
+          "hash": "11424512956577391109"
+        },
+        {
+          "file": "libs/shared/ui/src/lib/styles/components/button.scss",
+          "hash": "11396423952500455023"
+        },
+        {
+          "file": "libs/shared/ui/src/lib/styles/components/input.scss",
+          "hash": "4658943406084000991"
+        },
+        {
+          "file": "libs/shared/ui/src/lib/styles/components/modal.scss",
+          "hash": "13796635866979578360"
+        },
+        {
+          "file": "libs/shared/ui/src/lib/styles/components/select.scss",
+          "hash": "8231348881663928783"
+        },
+        {
+          "file": "libs/shared/ui/src/lib/styles/components/skeleton.scss",
+          "hash": "15155949973828355854"
+        },
+        {
+          "file": "libs/shared/ui/src/lib/styles/main.scss",
+          "hash": "11909797623483995638"
+        },
+        {
+          "file": "libs/shared/ui/src/lib/styles/object/animation.scss",
+          "hash": "13670197109391058457"
+        },
+        {
+          "file": "libs/shared/ui/tailwind.config.js",
+          "hash": "8971658615202166391"
+        },
+        {
+          "file": "libs/shared/ui/tsconfig.json",
+          "hash": "12705205737129309373"
+        },
+        {
+          "file": "libs/shared/ui/tsconfig.lib.json",
+          "hash": "10717794132043055458"
+        },
+        {
+          "file": "libs/shared/ui/tsconfig.spec.json",
+          "hash": "6227144360273957678"
+        },
+        {
+          "file": "libs/shared/ui/tsconfig.storybook.json",
+          "hash": "17160026149145892629"
+        },
+        {
+          "file": "libs/shared/ui/vite.config.ts",
+          "hash": "12253098023201608697",
+          "deps": [
+            "npm:vite",
+            "npm:@vitejs/plugin-react",
+            "npm:vite-plugin-dts"
+          ]
+        }
+      ],
+      "contracts": [
+        {
+          "file": "libs/shared/contracts/.babelrc",
+          "hash": "2946678488919325452"
+        },
+        {
+          "file": "libs/shared/contracts/.eslintrc.json",
+          "hash": "15946965712701950674"
+        },
+        {
+          "file": "libs/shared/contracts/README.md",
+          "hash": "7462529598113004341"
+        },
+        {
+          "file": "libs/shared/contracts/package.json",
+          "hash": "1669298998069451411"
+        },
+        {
+          "file": "libs/shared/contracts/project.json",
+          "hash": "15557390667509316914"
+        },
+        {
+          "file": "libs/shared/contracts/src/index.ts",
+          "hash": "14694764281983757560"
+        },
+        {
+          "file": "libs/shared/contracts/src/lib/entities/attachment.entity.ts",
+          "hash": "11746306959935731782"
+        },
+        {
+          "file": "libs/shared/contracts/src/lib/entities/channel.entity.ts",
+          "hash": "12361810185523802127"
+        },
+        {
+          "file": "libs/shared/contracts/src/lib/entities/device.entity.ts",
+          "hash": "17115581398287853435"
+        },
+        {
+          "file": "libs/shared/contracts/src/lib/entities/index.ts",
+          "hash": "7590172974115879710"
+        },
+        {
+          "file": "libs/shared/contracts/src/lib/entities/ivoice.entity.ts",
+          "hash": "9241775210060246353"
+        },
+        {
+          "file": "libs/shared/contracts/src/lib/entities/media.entity.ts",
+          "hash": "5708628698812426870"
+        },
+        {
+          "file": "libs/shared/contracts/src/lib/entities/message.entity.ts",
+          "hash": "2828188680145800161"
+        },
+        {
+          "file": "libs/shared/contracts/src/lib/entities/occupied-channel.entity.ts",
+          "hash": "4104775799876847342"
+        },
+        {
+          "file": "libs/shared/contracts/src/lib/entities/server.entity.ts",
+          "hash": "17077745810774298021"
+        },
+        {
+          "file": "libs/shared/contracts/src/lib/entities/user-connected.entity.ts",
+          "hash": "1615103728624168689"
+        },
+        {
+          "file": "libs/shared/contracts/src/lib/entities/user-displayed.entity.ts",
+          "hash": "2447558708468704697"
+        },
+        {
+          "file": "libs/shared/contracts/src/lib/entities/user.entity.ts",
+          "hash": "10016788542159667283"
+        },
+        {
+          "file": "libs/shared/contracts/src/lib/enums/channel-type.ts",
+          "hash": "5071690732656958075"
+        },
+        {
+          "file": "libs/shared/contracts/src/lib/enums/index.ts",
+          "hash": "17760450598578098884"
+        },
+        {
+          "file": "libs/shared/contracts/src/lib/enums/user-roles.ts",
+          "hash": "17503553103510186363"
+        },
+        {
+          "file": "libs/shared/contracts/src/lib/request/channel/create-channel.request.ts",
+          "hash": "13865632267797654282"
+        },
+        {
+          "file": "libs/shared/contracts/src/lib/request/channel/join-voice-channel.request.ts",
+          "hash": "16027291283804889909"
+        },
+        {
+          "file": "libs/shared/contracts/src/lib/request/index.ts",
+          "hash": "12142740995687365118"
+        },
+        {
+          "file": "libs/shared/contracts/src/lib/request/message/create-message.request.ts",
+          "hash": "9042292610711986290"
+        },
+        {
+          "file": "libs/shared/contracts/src/lib/request/message/delete-message.request.ts",
+          "hash": "1316654534316146371"
+        },
+        {
+          "file": "libs/shared/contracts/src/lib/request/message/get-messages-from-channel.request.ts",
+          "hash": "17305279995619969724"
+        },
+        {
+          "file": "libs/shared/contracts/src/lib/request/message/show-message.request.ts",
+          "hash": "7621622265147449180"
+        },
+        {
+          "file": "libs/shared/contracts/src/lib/request/message/update-message.request.ts",
+          "hash": "13864466167799578344"
+        },
+        {
+          "file": "libs/shared/contracts/src/lib/request/refresh.request.ts",
+          "hash": "2448972938278733391"
+        },
+        {
+          "file": "libs/shared/contracts/src/lib/request/user/confirm-email.request.ts",
+          "hash": "10552184469040997522"
+        },
+        {
+          "file": "libs/shared/contracts/src/lib/request/user/login.request.ts",
+          "hash": "9309549140264876274"
+        },
+        {
+          "file": "libs/shared/contracts/src/lib/request/user/register.request.ts",
+          "hash": "12397282443028671784"
+        },
+        {
+          "file": "libs/shared/contracts/src/lib/request/user/update.request.ts",
+          "hash": "10938460905205920561"
+        },
+        {
+          "file": "libs/shared/contracts/src/lib/response/channel/create-channel.response.ts",
+          "hash": "12370991290105295695"
+        },
+        {
+          "file": "libs/shared/contracts/src/lib/response/index.ts",
+          "hash": "992098308042247513"
+        },
+        {
+          "file": "libs/shared/contracts/src/lib/response/message/get-messages.response.ts",
+          "hash": "10634127491167015920"
+        },
+        {
+          "file": "libs/shared/contracts/src/lib/response/refresh.response.ts",
+          "hash": "983859697861065810"
+        },
+        {
+          "file": "libs/shared/contracts/src/lib/response/user/login.response.ts",
+          "hash": "6875478698169808475"
+        },
+        {
+          "file": "libs/shared/contracts/src/lib/response/user/register.reponse.ts",
+          "hash": "7013948610265185427"
+        },
+        {
+          "file": "libs/shared/contracts/src/lib/response/user/update.response.ts",
+          "hash": "8353148179238259477"
+        },
+        {
+          "file": "libs/shared/contracts/src/lib/state/channel.state.ts",
+          "hash": "174411592170485931"
+        },
+        {
+          "file": "libs/shared/contracts/src/lib/state/index.ts",
+          "hash": "5724864494530933707"
+        },
+        {
+          "file": "libs/shared/contracts/src/lib/state/responsive.state.ts",
+          "hash": "13658975982656697600"
+        },
+        {
+          "file": "libs/shared/contracts/src/lib/state/server.state.ts",
+          "hash": "3165360371369413240"
+        },
+        {
+          "file": "libs/shared/contracts/src/lib/state/user.state.ts",
+          "hash": "8960647996115495776"
+        },
+        {
+          "file": "libs/shared/contracts/src/lib/value.interface.ts",
+          "hash": "11757791865466992436"
+        },
+        {
+          "file": "libs/shared/contracts/tsconfig.json",
+          "hash": "8945200214589149969"
+        },
+        {
+          "file": "libs/shared/contracts/tsconfig.lib.json",
+          "hash": "920925512994609163"
+        },
+        {
+          "file": "libs/shared/contracts/tsconfig.spec.json",
+          "hash": "6227144360273957678"
+        },
+        {
+          "file": "libs/shared/contracts/vite.config.ts",
+          "hash": "4837050682530425428",
+          "deps": [
+            "npm:vite",
+            "npm:@vitejs/plugin-react",
+            "npm:vite-plugin-dts"
+          ]
+        }
+      ],
+      "layout": [
+        {
+          "file": "libs/pages/layout/.babelrc",
+          "hash": "2946678488919325452"
+        },
+        {
+          "file": "libs/pages/layout/.eslintrc.json",
+          "hash": "15946965712701950674"
+        },
+        {
+          "file": "libs/pages/layout/README.md",
+          "hash": "801973567138624398"
+        },
+        {
+          "file": "libs/pages/layout/package.json",
+          "hash": "7717479282603900297"
+        },
+        {
+          "file": "libs/pages/layout/project.json",
+          "hash": "6959790284603320510"
+        },
+        {
+          "file": "libs/pages/layout/src/index.ts",
+          "hash": "7259968531481413760"
+        },
+        {
+          "file": "libs/pages/layout/src/lib/client/feature/channels-navigation-feature.tsx",
+          "hash": "5035181192141278086",
+          "deps": [
+            "channel",
+            "contracts",
+            "responsive",
+            "domains-server",
+            "store",
+            "utils",
+            "ui",
+            "npm:@reduxjs/toolkit",
+            "npm:react-hook-form",
+            "npm:react-hot-toast",
+            "npm:react-redux"
+          ]
+        },
+        {
+          "file": "libs/pages/layout/src/lib/client/feature/current-user-feature.tsx",
+          "hash": "2533163699666190962",
+          "deps": [
+            "contracts",
+            "ui",
+            "user",
+            "voice",
+            "npm:react-hook-form",
+            "npm:react-hot-toast",
+            "npm:react-redux"
+          ]
+        },
+        {
+          "file": "libs/pages/layout/src/lib/client/feature/display-channel-feature.tsx",
+          "hash": "18081764937112769126",
+          "deps": [
+            "contracts",
+            "npm:react-hot-toast",
+            "npm:react-router-dom"
+          ]
+        },
+        {
+          "file": "libs/pages/layout/src/lib/client/feature/display-channel-props.tsx",
+          "hash": "13636762256872405147",
+          "deps": [
+            "contracts",
+            "npm:react-hot-toast",
+            "npm:react-router-dom"
+          ]
+        },
+        {
+          "file": "libs/pages/layout/src/lib/client/feature/display-member-feature.tsx",
+          "hash": "1062570811777235999",
+          "deps": [
+            "contracts",
+            "user"
+          ]
+        },
+        {
+          "file": "libs/pages/layout/src/lib/client/feature/display-server-feature.tsx",
+          "hash": "18226704310777467293",
+          "deps": [
+            "contracts",
+            "domains-server",
+            "npm:react-redux",
+            "store",
+            "npm:react-router-dom"
+          ]
+        },
+        {
+          "file": "libs/pages/layout/src/lib/client/feature/layout.tsx",
+          "hash": "9532753638932262002",
+          "deps": [
+            "responsive",
+            "store",
+            "npm:react-redux"
+          ]
+        },
+        {
+          "file": "libs/pages/layout/src/lib/client/feature/members-navigation-feature.tsx",
+          "hash": "219673260595660421",
+          "deps": [
+            "ui",
+            "user",
+            "contracts",
+            "npm:@adonisjs/transmit-client"
+          ]
+        },
+        {
+          "file": "libs/pages/layout/src/lib/client/feature/servers-navigation-feature.tsx",
+          "hash": "13030264096896739010",
+          "deps": [
+            "domains-server",
+            "store",
+            "ui",
+            "user",
+            "npm:react-hook-form",
+            "npm:react-hot-toast",
+            "npm:react-redux",
+            "npm:react-router-dom"
+          ]
+        },
+        {
+          "file": "libs/pages/layout/src/lib/client/feature/voice-channel-props.tsx",
+          "hash": "18166928041422648626",
+          "deps": [
+            "contracts",
+            "domains-server"
+          ]
+        },
+        {
+          "file": "libs/pages/layout/src/lib/client/ui/channels-navigation.tsx",
+          "hash": "4798553523066277347",
+          "deps": [
+            "contracts",
+            "ui",
+            "channel",
+            "responsive",
+            "npm:react-hook-form",
+            "npm:react-redux",
+            "domains-server"
+          ]
+        },
+        {
+          "file": "libs/pages/layout/src/lib/client/ui/connect-channel-row.tsx",
+          "hash": "1323280652998303520",
+          "deps": [
+            "ui"
+          ]
+        },
+        {
+          "file": "libs/pages/layout/src/lib/client/ui/connected-user-row.tsx",
+          "hash": "14068179115299694715",
+          "deps": [
+            "user"
+          ]
+        },
+        {
+          "file": "libs/pages/layout/src/lib/client/ui/create-channel-modal.tsx",
+          "hash": "3242655871781508674",
+          "deps": [
+            "contracts",
+            "ui",
+            "npm:react-hook-form"
+          ]
+        },
+        {
+          "file": "libs/pages/layout/src/lib/client/ui/current-user.tsx",
+          "hash": "14973640571465152815",
+          "deps": [
+            "contracts",
+            "settings",
+            "ui",
+            "npm:react-hook-form"
+          ]
+        },
+        {
+          "file": "libs/pages/layout/src/lib/client/ui/display-channel.tsx",
+          "hash": "5846061203516282294",
+          "deps": [
+            "contracts",
+            "ui"
+          ]
+        },
+        {
+          "file": "libs/pages/layout/src/lib/client/ui/display-member.tsx",
+          "hash": "3678099320790783461",
+          "deps": [
+            "contracts",
+            "ui"
+          ]
+        },
+        {
+          "file": "libs/pages/layout/src/lib/client/ui/display-server.tsx",
+          "hash": "7226960284989463708",
+          "deps": [
+            "contracts",
+            "ui"
+          ]
+        },
+        {
+          "file": "libs/pages/layout/src/lib/client/ui/layout-page.tsx",
+          "hash": "7033431460391551409",
+          "deps": [
+            "responsive",
+            "ui",
+            "npm:react-redux"
+          ]
+        },
+        {
+          "file": "libs/pages/layout/src/lib/client/ui/leave-voice-channel-button.tsx",
+          "hash": "4806123239947143009",
+          "deps": [
+            "ui"
+          ]
+        },
+        {
+          "file": "libs/pages/layout/src/lib/client/ui/list-channels.tsx",
+          "hash": "784565587457581241",
+          "deps": [
+            "contracts"
+          ]
+        },
+        {
+          "file": "libs/pages/layout/src/lib/client/ui/list-connected-user.tsx",
+          "hash": "5826294721534748881",
+          "deps": [
+            "contracts"
+          ]
+        },
+        {
+          "file": "libs/pages/layout/src/lib/client/ui/list-members.tsx",
+          "hash": "3305209275270485508",
+          "deps": [
+            "contracts"
+          ]
+        },
+        {
+          "file": "libs/pages/layout/src/lib/client/ui/list-servers.tsx",
+          "hash": "4735448182225854212",
+          "deps": [
+            "contracts"
+          ]
+        },
+        {
+          "file": "libs/pages/layout/src/lib/client/ui/list-voice-channels.tsx",
+          "hash": "5432715118939907953",
+          "deps": [
+            "contracts"
+          ]
+        },
+        {
+          "file": "libs/pages/layout/src/lib/client/ui/members-navigation.tsx",
+          "hash": "6294722194292491058",
+          "deps": [
+            "contracts",
+            "ui",
+            "npm:react-hot-toast",
+            "npm:react-redux",
+            "responsive",
+            "settings"
+          ]
+        },
+        {
+          "file": "libs/pages/layout/src/lib/client/ui/servers-navigation.tsx",
+          "hash": "4440937531077551122",
+          "deps": [
+            "contracts",
+            "ui",
+            "npm:react-hook-form"
+          ]
+        },
+        {
+          "file": "libs/pages/layout/src/lib/client/ui/user-media-modal.tsx",
+          "hash": "2955850299478650646",
+          "deps": [
+            "contracts",
+            "ui",
+            "voice",
+            "npm:react-redux"
+          ]
+        },
+        {
+          "file": "libs/pages/layout/tsconfig.json",
+          "hash": "8945200214589149969"
+        },
+        {
+          "file": "libs/pages/layout/tsconfig.lib.json",
+          "hash": "920925512994609163"
+        },
+        {
+          "file": "libs/pages/layout/tsconfig.spec.json",
+          "hash": "6227144360273957678"
+        },
+        {
+          "file": "libs/pages/layout/vite.config.ts",
+          "hash": "972428668216636777",
+          "deps": [
+            "npm:vite",
+            "npm:@vitejs/plugin-react",
+            "npm:vite-plugin-dts"
+          ]
+        }
+      ],
+      "responsive": [
+        {
+          "file": "libs/domains/responsive/.babelrc",
+          "hash": "2946678488919325452"
+        },
+        {
+          "file": "libs/domains/responsive/.eslintrc.json",
+          "hash": "15946965712701950674"
+        },
+        {
+          "file": "libs/domains/responsive/README.md",
+          "hash": "3579897398864890324"
+        },
+        {
+          "file": "libs/domains/responsive/package.json",
+          "hash": "1466722406669276808"
+        },
+        {
+          "file": "libs/domains/responsive/project.json",
+          "hash": "16782955579790008595"
+        },
+        {
+          "file": "libs/domains/responsive/src/index.ts",
+          "hash": "3135142090726015620"
+        },
+        {
+          "file": "libs/domains/responsive/src/lib/responsive.slice.ts",
+          "hash": "8265361689242931288",
+          "deps": [
+            "contracts",
+            "store",
+            "npm:@reduxjs/toolkit"
+          ]
+        },
+        {
+          "file": "libs/domains/responsive/tsconfig.json",
+          "hash": "8945200214589149969"
+        },
+        {
+          "file": "libs/domains/responsive/tsconfig.lib.json",
+          "hash": "920925512994609163"
+        },
+        {
+          "file": "libs/domains/responsive/tsconfig.spec.json",
+          "hash": "6227144360273957678"
+        },
+        {
+          "file": "libs/domains/responsive/vite.config.ts",
+          "hash": "8566580238702779171",
+          "deps": [
+            "npm:vite",
+            "npm:@vitejs/plugin-react",
+            "npm:vite-plugin-dts"
+          ]
+        }
+      ],
+      "auth": [
+        {
+          "file": "libs/pages/auth/.babelrc",
+          "hash": "2946678488919325452"
+        },
+        {
+          "file": "libs/pages/auth/.eslintrc.json",
+          "hash": "15946965712701950674"
+        },
+        {
+          "file": "libs/pages/auth/README.md",
+          "hash": "17049953570275250328"
+        },
+        {
+          "file": "libs/pages/auth/package.json",
+          "hash": "6352810448871352010"
+        },
+        {
+          "file": "libs/pages/auth/project.json",
+          "hash": "2675989919913607807"
+        },
+        {
+          "file": "libs/pages/auth/src/index.ts",
+          "hash": "11700101658587276161"
+        },
+        {
+          "file": "libs/pages/auth/src/lib/feature/page-after-signup-feature.tsx",
+          "hash": "683282613002806526",
+          "deps": [
+            "npm:react-router-dom"
+          ]
+        },
+        {
+          "file": "libs/pages/auth/src/lib/feature/page-confirm-email-feature.tsx",
+          "hash": "5688431697930006681",
+          "deps": [
+            "npm:react-router-dom",
+            "store",
+            "npm:react-redux",
+            "user"
+          ]
+        },
+        {
+          "file": "libs/pages/auth/src/lib/feature/page-email-update-confirmation-feature.tsx",
+          "hash": "537003821662787335",
+          "deps": [
+            "user",
+            "npm:react-redux",
+            "npm:react-router"
+          ]
+        },
+        {
+          "file": "libs/pages/auth/src/lib/feature/page-signin-feature.tsx",
+          "hash": "9877877374514214626",
+          "deps": [
+            "npm:react-hook-form",
+            "npm:react-router-dom",
+            "contracts",
+            "store",
+            "npm:react-redux",
+            "user"
+          ]
+        },
+        {
+          "file": "libs/pages/auth/src/lib/feature/page-signup-feature.tsx",
+          "hash": "2748059628692137114",
+          "deps": [
+            "contracts",
+            "npm:react-hook-form",
+            "npm:react-router-dom",
+            "user"
+          ]
+        },
+        {
+          "file": "libs/pages/auth/src/lib/feature/page-verify-feature.tsx",
+          "hash": "14975221900233095504",
+          "deps": [
+            "npm:react-router",
+            "user"
+          ]
+        },
+        {
+          "file": "libs/pages/auth/src/lib/page-auth.tsx",
+          "hash": "8082115339550900008",
+          "deps": [
+            "npm:react-router-dom"
+          ]
+        },
+        {
+          "file": "libs/pages/auth/src/lib/router.tsx",
+          "hash": "11838889816585470880",
+          "deps": [
+            "routes"
+          ]
+        },
+        {
+          "file": "libs/pages/auth/src/lib/ui/page-after-signup.tsx",
+          "hash": "18445787285863783613",
+          "deps": [
+            "ui"
+          ]
+        },
+        {
+          "file": "libs/pages/auth/src/lib/ui/page-confirm-email.tsx",
+          "hash": "6741907425320323663",
+          "deps": [
+            "ui"
+          ]
+        },
+        {
+          "file": "libs/pages/auth/src/lib/ui/page-email-update-confirmation.tsx",
+          "hash": "1121777609388599982"
+        },
+        {
+          "file": "libs/pages/auth/src/lib/ui/page-signin.tsx",
+          "hash": "1616093515600949858",
+          "deps": [
+            "ui",
+            "npm:react-hook-form"
+          ]
+        },
+        {
+          "file": "libs/pages/auth/src/lib/ui/page-signup.tsx",
+          "hash": "1976135653011438519",
+          "deps": [
+            "ui",
+            "npm:react-hook-form"
+          ]
+        },
+        {
+          "file": "libs/pages/auth/src/lib/ui/page-verify.tsx",
+          "hash": "1930641470556637733",
+          "deps": [
+            "ui",
+            "npm:react-router"
+          ]
+        },
+        {
+          "file": "libs/pages/auth/tsconfig.json",
+          "hash": "8945200214589149969"
+        },
+        {
+          "file": "libs/pages/auth/tsconfig.lib.json",
+          "hash": "920925512994609163"
+        },
+        {
+          "file": "libs/pages/auth/tsconfig.spec.json",
+          "hash": "6227144360273957678"
+        },
+        {
+          "file": "libs/pages/auth/vite.config.ts",
+          "hash": "13942266140191541494",
+          "deps": [
+            "npm:vite",
+            "npm:@vitejs/plugin-react",
+            "npm:vite-plugin-dts"
+          ]
+        }
+      ],
+      "store": [
+        {
+          "file": "libs/state/store/.babelrc",
+          "hash": "2946678488919325452"
+        },
+        {
+          "file": "libs/state/store/.eslintrc.json",
+          "hash": "15946965712701950674"
+        },
+        {
+          "file": "libs/state/store/README.md",
+          "hash": "9409316085282775679"
+        },
+        {
+          "file": "libs/state/store/package.json",
+          "hash": "12690799260456417903"
+        },
+        {
+          "file": "libs/state/store/project.json",
+          "hash": "1576328648683857258"
+        },
+        {
+          "file": "libs/state/store/src/index.ts",
+          "hash": "4594961145768460613"
+        },
+        {
+          "file": "libs/state/store/src/lib/root.ts",
+          "hash": "170833686566933077",
+          "deps": [
+            "channel",
+            "responsive",
+            "domains-server",
+            "user",
+            "voice",
+            "npm:@reduxjs/toolkit"
+          ]
+        },
+        {
+          "file": "libs/state/store/tsconfig.json",
+          "hash": "8945200214589149969"
+        },
+        {
+          "file": "libs/state/store/tsconfig.lib.json",
+          "hash": "920925512994609163"
+        },
+        {
+          "file": "libs/state/store/tsconfig.spec.json",
+          "hash": "6227144360273957678"
+        },
+        {
+          "file": "libs/state/store/vite.config.ts",
+          "hash": "6894948901395684371",
+          "deps": [
+            "npm:vite",
+            "npm:@vitejs/plugin-react",
+            "npm:vite-plugin-dts"
+          ]
+        }
+      ],
+      "channel": [
+        {
+          "file": "libs/domains/channel/.babelrc",
+          "hash": "2946678488919325452"
+        },
+        {
+          "file": "libs/domains/channel/.eslintrc.json",
+          "hash": "15946965712701950674"
+        },
+        {
+          "file": "libs/domains/channel/README.md",
+          "hash": "16711655657200289493"
+        },
+        {
+          "file": "libs/domains/channel/package.json",
+          "hash": "10028187777555311442"
+        },
+        {
+          "file": "libs/domains/channel/project.json",
+          "hash": "13856292354616517925"
+        },
+        {
+          "file": "libs/domains/channel/src/index.ts",
+          "hash": "4386558192927751266"
+        },
+        {
+          "file": "libs/domains/channel/src/lib/channel.api.ts",
+          "hash": "13649521324353839081",
+          "deps": [
+            "npm:@reduxjs/toolkit",
+            "contracts",
+            "store",
+            "user"
+          ]
+        },
+        {
+          "file": "libs/domains/channel/src/lib/channel.slice.ts",
+          "hash": "14267413878399865510",
+          "deps": [
+            "contracts",
+            "store",
+            "npm:@reduxjs/toolkit",
+            "domains-server"
+          ]
+        },
+        {
+          "file": "libs/domains/channel/tsconfig.json",
+          "hash": "8945200214589149969"
+        },
+        {
+          "file": "libs/domains/channel/tsconfig.lib.json",
+          "hash": "920925512994609163"
+        },
+        {
+          "file": "libs/domains/channel/tsconfig.spec.json",
+          "hash": "6227144360273957678"
+        },
+        {
+          "file": "libs/domains/channel/vite.config.ts",
+          "hash": "18340154902239170709",
+          "deps": [
+            "npm:vite",
+            "npm:@vitejs/plugin-react",
+            "npm:vite-plugin-dts"
+          ]
+        }
+      ],
+      "user": [
+        {
+          "file": "libs/domains/user/.babelrc",
+          "hash": "2946678488919325452"
+        },
+        {
+          "file": "libs/domains/user/.eslintrc.json",
+          "hash": "15946965712701950674"
+        },
+        {
+          "file": "libs/domains/user/README.md",
+          "hash": "14920626267761135910"
+        },
+        {
+          "file": "libs/domains/user/package.json",
+          "hash": "3355590674491797815"
+        },
+        {
+          "file": "libs/domains/user/project.json",
+          "hash": "13832514799948405828"
+        },
+        {
+          "file": "libs/domains/user/src/index.ts",
+          "hash": "6700654078048103507"
+        },
+        {
+          "file": "libs/domains/user/src/lib/user.api.ts",
+          "hash": "13223544559161144209",
+          "deps": [
+            "npm:@reduxjs/toolkit",
+            "contracts",
+            "store"
+          ]
+        },
+        {
+          "file": "libs/domains/user/src/lib/user.slice.ts",
+          "hash": "10731936174907265076",
+          "deps": [
+            "npm:@reduxjs/toolkit",
+            "contracts",
+            "store"
+          ]
+        },
+        {
+          "file": "libs/domains/user/tsconfig.json",
+          "hash": "8945200214589149969"
+        },
+        {
+          "file": "libs/domains/user/tsconfig.lib.json",
+          "hash": "920925512994609163"
+        },
+        {
+          "file": "libs/domains/user/tsconfig.spec.json",
+          "hash": "6227144360273957678"
+        },
+        {
+          "file": "libs/domains/user/vite.config.ts",
+          "hash": "9586463081089677674",
+          "deps": [
+            "npm:vite",
+            "npm:@vitejs/plugin-react",
+            "npm:vite-plugin-dts"
+          ]
+        }
+      ],
+      "client-e2e": [
+        {
+          "file": "apps/client-e2e/.eslintrc.json",
+          "hash": "14060216369337943343"
+        },
+        {
+          "file": "apps/client-e2e/cypress.config.ts",
+          "hash": "9009978577422157199",
+          "deps": [
+            "npm:cypress"
+          ]
+        },
+        {
+          "file": "apps/client-e2e/project.json",
+          "hash": "13965098044368137522"
+        },
+        {
+          "file": "apps/client-e2e/src/e2e/app.cy.ts",
+          "hash": "4604656125477134902"
+        },
+        {
+          "file": "apps/client-e2e/src/fixtures/example.json",
+          "hash": "11785586596216172004"
+        },
+        {
+          "file": "apps/client-e2e/src/support/app.po.ts",
+          "hash": "11157016311132186162"
+        },
+        {
+          "file": "apps/client-e2e/src/support/commands.ts",
+          "hash": "5397443931564808659"
+        },
+        {
+          "file": "apps/client-e2e/src/support/e2e.ts",
+          "hash": "1054106023200826784"
+        },
+        {
+          "file": "apps/client-e2e/tsconfig.json",
+          "hash": "10740392072068377465"
+        }
+      ],
+      "routes": [
+        {
+          "file": "libs/shared/routes/.babelrc",
+          "hash": "2946678488919325452"
+        },
+        {
+          "file": "libs/shared/routes/.eslintrc.json",
+          "hash": "15946965712701950674"
+        },
+        {
+          "file": "libs/shared/routes/README.md",
+          "hash": "2131638500356004687"
+        },
+        {
+          "file": "libs/shared/routes/package.json",
+          "hash": "11731751259747212475"
+        },
+        {
+          "file": "libs/shared/routes/project.json",
+          "hash": "16162467695791069362"
+        },
+        {
+          "file": "libs/shared/routes/src/index.ts",
+          "hash": "1319631043369666246"
+        },
+        {
+          "file": "libs/shared/routes/src/lib/router.tsx",
+          "hash": "14702602826950794599"
+        },
+        {
+          "file": "libs/shared/routes/src/lib/sub-router/login.router.ts",
+          "hash": "1267140428767931409"
+        },
+        {
+          "file": "libs/shared/routes/tsconfig.json",
+          "hash": "8945200214589149969"
+        },
+        {
+          "file": "libs/shared/routes/tsconfig.lib.json",
+          "hash": "920925512994609163"
+        },
+        {
+          "file": "libs/shared/routes/tsconfig.spec.json",
+          "hash": "6227144360273957678"
+        },
+        {
+          "file": "libs/shared/routes/vite.config.ts",
+          "hash": "2735389976405881496",
+          "deps": [
+            "npm:vite",
+            "npm:@vitejs/plugin-react",
+            "npm:vite-plugin-dts"
+          ]
+        }
+      ],
+      "utils": [
+        {
+          "file": "libs/shared/utils/.babelrc",
+          "hash": "2946678488919325452"
+        },
+        {
+          "file": "libs/shared/utils/.eslintrc.json",
+          "hash": "15946965712701950674"
+        },
+        {
+          "file": "libs/shared/utils/README.md",
+          "hash": "17034218750445164374"
+        },
+        {
+          "file": "libs/shared/utils/package.json",
+          "hash": "9252008554201357036"
+        },
+        {
+          "file": "libs/shared/utils/project.json",
+          "hash": "12209198749366689120"
+        },
+        {
+          "file": "libs/shared/utils/src/index.ts",
+          "hash": "5319792094295374384"
+        },
+        {
+          "file": "libs/shared/utils/src/lib/sort-by-key.ts",
+          "hash": "10420896276747447233"
+        },
+        {
+          "file": "libs/shared/utils/src/lib/transmit.ts",
+          "hash": "1752862237409735873",
+          "deps": [
+            "npm:@adonisjs/transmit-client",
+            "contracts"
+          ]
+        },
+        {
+          "file": "libs/shared/utils/src/lib/tw-merge.ts",
+          "hash": "5299576472061735752",
+          "deps": [
+            "npm:tailwind-merge",
+            "npm:clsx"
+          ]
+        },
+        {
+          "file": "libs/shared/utils/tsconfig.json",
+          "hash": "8945200214589149969"
+        },
+        {
+          "file": "libs/shared/utils/tsconfig.lib.json",
+          "hash": "920925512994609163"
+        },
+        {
+          "file": "libs/shared/utils/tsconfig.spec.json",
+          "hash": "6227144360273957678"
+        },
+        {
+          "file": "libs/shared/utils/vite.config.ts",
+          "hash": "9658428637340538836",
+          "deps": [
+            "npm:vite",
+            "npm:@vitejs/plugin-react",
+            "npm:vite-plugin-dts"
+          ]
+        }
+      ],
+      "settings": [
+        {
+          "file": "libs/pages/settings/.babelrc",
+          "hash": "2946678488919325452"
+        },
+        {
+          "file": "libs/pages/settings/.eslintrc.json",
+          "hash": "15946965712701950674"
+        },
+        {
+          "file": "libs/pages/settings/README.md",
+          "hash": "3789840470215118436"
+        },
+        {
+          "file": "libs/pages/settings/package.json",
+          "hash": "6042713515014116499"
+        },
+        {
+          "file": "libs/pages/settings/project.json",
+          "hash": "4682455515795802593"
+        },
+        {
+          "file": "libs/pages/settings/src/index.ts",
+          "hash": "13068615486590302327"
+        },
+        {
+          "file": "libs/pages/settings/src/lib/buttons/setting-navigation-button.tsx",
+          "hash": "17724817909791017970",
+          "deps": [
+            "ui"
+          ]
+        },
+        {
+          "file": "libs/pages/settings/src/lib/components/button-navigation-list.tsx",
+          "hash": "2027337258171131489"
+        },
+        {
+          "file": "libs/pages/settings/src/lib/components/hover-modify-picture.tsx",
+          "hash": "17535509892670549635"
+        },
+        {
+          "file": "libs/pages/settings/src/lib/components/modify-email-dialog.tsx",
+          "hash": "15542615956263776393",
+          "deps": [
+            "ui",
+            "npm:react-hook-form"
+          ]
+        },
+        {
+          "file": "libs/pages/settings/src/lib/components/modify-profile-card.tsx",
+          "hash": "14762447567325271256"
+        },
+        {
+          "file": "libs/pages/settings/src/lib/components/modify-profile-picture-dialog.tsx",
+          "hash": "12732790560697551394",
+          "deps": [
+            "ui"
+          ]
+        },
+        {
+          "file": "libs/pages/settings/src/lib/components/modify-text-setting.tsx",
+          "hash": "10268069508442879813"
+        },
+        {
+          "file": "libs/pages/settings/src/lib/components/modify-username-dialog.tsx",
+          "hash": "116297290060256067",
+          "deps": [
+            "ui",
+            "npm:react-hook-form"
+          ]
+        },
+        {
+          "file": "libs/pages/settings/src/lib/components/modify-username-email.tsx",
+          "hash": "2047841693324401516"
+        },
+        {
+          "file": "libs/pages/settings/src/lib/feature/modify-profile-card-feature.tsx",
+          "hash": "2616851466914406785",
+          "deps": [
+            "contracts",
+            "user",
+            "npm:react-hook-form",
+            "npm:react-hot-toast"
+          ]
+        },
+        {
+          "file": "libs/pages/settings/src/lib/modal/setting-modal.tsx",
+          "hash": "4188428355953382222"
+        },
+        {
+          "file": "libs/pages/settings/src/lib/models/setting-navigation-models.tsx",
+          "hash": "2898495839464286132"
+        },
+        {
+          "file": "libs/pages/settings/tsconfig.json",
+          "hash": "8945200214589149969"
+        },
+        {
+          "file": "libs/pages/settings/tsconfig.lib.json",
+          "hash": "920925512994609163"
+        },
+        {
+          "file": "libs/pages/settings/tsconfig.spec.json",
+          "hash": "6227144360273957678"
+        },
+        {
+          "file": "libs/pages/settings/vite.config.ts",
+          "hash": "10893821605293521456",
+          "deps": [
+            "npm:vite",
+            "npm:@vitejs/plugin-react",
+            "npm:vite-plugin-dts"
+          ]
+        }
+      ]
+    }
+  }
+}

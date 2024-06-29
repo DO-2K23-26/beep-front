@@ -1,30 +1,31 @@
+import { ReactNode } from 'react'
 import { ModifyTextSetting } from './modify-text-setting'
 
 interface ModifyUsernameEmailProps {
   username: string
   email: string
-  openUsernameModal: () => void
-  openEmailModal: () => void
+  usernameButtonModal: ReactNode
+  emailButtonModal: ReactNode
 }
 
 export function ModifyUsernameEmail({
   username,
   email,
-  openEmailModal,
-  openUsernameModal,
+  usernameButtonModal,
+  emailButtonModal,
 }: ModifyUsernameEmailProps) {
   return (
     <div className="flex flex-col gap-4 bg-violet-300 rounded-md p-4">
       <ModifyTextSetting
         title={'Username'}
         value={username}
-        onClick={openUsernameModal}
+        modalButton={usernameButtonModal}
       />
-      <ModifyTextSetting
+      {/* <ModifyTextSetting
         title={'Email'}
         value={email}
-        onClick={openEmailModal}
-      />
+        modalButton={emailButtonModal}
+      /> */}
     </div>
   )
 }
