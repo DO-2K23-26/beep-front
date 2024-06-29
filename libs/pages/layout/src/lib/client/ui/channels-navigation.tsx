@@ -10,10 +10,14 @@ import {
   Button,
   ButtonSize,
   ButtonStyle,
+  DialogCloseButton,
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
+  FullScreenDialog,
+  FullScreenDialogContent,
+  FullScreenDialogTrigger,
   Icon,
   Tooltip,
   TooltipContent,
@@ -122,15 +126,21 @@ export default function ChannelsNavigation({
                   }
                 />
             )} */}
-              <DropdownMenuItemCustom
-                label="Settings"
-                iconName="lucide:settings"
-                onClick={() => {
-                  openModal({
-                    content: <OverviewSettingsServer server={server!} />,
-                  })
-                }}
-              />
+              {server && (
+                <FullScreenDialog>
+                  <FullScreenDialogTrigger asChild>
+                    <button>
+                      <DropdownMenuItemCustom
+                        label="Settings"
+                        iconName="lucide:settings"
+                      />
+                    </button>
+                  </FullScreenDialogTrigger>
+                  <FullScreenDialogContent className="w-full h-full bg-white">
+                    <OverviewSettingsServer server={server} />
+                  </FullScreenDialogContent>
+                </FullScreenDialog>
+              )}
 
               <hr className="bg-slate-400 h-[1px] my-2 text-slate-400" />
               {/* <DropdownMenuItemCustom
@@ -256,12 +266,12 @@ function DropdownMenuItemCustom({
   }
   const focusedColor = warning ? colors.warning : colors.default
   return (
-    <DropdownMenuItem
+    <button
       className={`flex items-center gap-2 pl-2 py-1 pr-9 ${className} ${focusedColor} rounded-md  transition-colors cursor-pointer`}
-      onSelect={onClick}
+      onClick={onClick}
     >
       {iconName && <Icon className={`${focusedColor}`} name={iconName} />}
       <p className={`font-bold ${focusedColor}`}>{label}</p>
-    </DropdownMenuItem>
+    </button>
   )
 }
