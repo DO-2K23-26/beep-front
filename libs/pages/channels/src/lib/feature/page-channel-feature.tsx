@@ -18,9 +18,12 @@ import { useParams } from 'react-router'
 import { PageChannel } from '../ui/page-channel'
 import { DynamicSelectorFeature } from './dynamic-selector-item-feature'
 import { TransmitSingleton } from '@beep/utils'
+import { any } from 'ts-pattern/dist/patterns'
 
 export function PageChannelFeature() {
   const { serverId = '', channelId = '' } = useParams<{ serverId: string, channelId: string }>()
+  const { data: channels } = useGetServerChannelsQuery(serverId)
+  const usersServer = useGetUsersByServerIdQuery(serverId).data
   const { data: channel } = useGetChannelQuery({ serverId: serverId, channelId: channelId })
   const { data: messages, refetch } = useGetMessagesByChannelIdQuery({
     channelId: channelId,
