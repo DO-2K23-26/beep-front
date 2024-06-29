@@ -25,9 +25,7 @@ export function PageChannelFeature() {
   const { data: channels } = useGetServerChannelsQuery(serverId)
   const usersServer = useGetUsersByServerIdQuery(serverId).data
   const { data: channel } = useGetChannelQuery({ serverId: serverId, channelId: channelId })
-  const { data: messages, refetch } = useGetMessagesByChannelIdQuery({
-    channelId: channelId,
-  })
+  const { data: messages, refetch, isSuccess } = useGetMessagesByChannelIdQuery({ channelId })
 
   const [files, setFiles] = useState<File[]>([])
   const [previewUrls, setPreviewUrls] = useState<{ content: string | null }[]>(
