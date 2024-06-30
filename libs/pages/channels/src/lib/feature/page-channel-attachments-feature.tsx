@@ -2,6 +2,7 @@ import { useGetAttachmentsQuery } from "@beep/channel"
 import { useEffect, useState } from "react"
 import { useParams } from "react-router"
 import { useSearchParams } from "react-router-dom"
+import PageAttachments from "../ui/page-attachments"
 
 export function PageChannelAttachementsFeature() {
   const { channelId = '' } = useParams()
@@ -30,9 +31,10 @@ export function PageChannelAttachementsFeature() {
   useEffect(() => {
     console.log(channelId)
   }, [channelId])
+
   return (
-    <div>
-      <span>{channelId}</span>
-    </div>
+    <PageAttachments
+      attachments={data?.data}
+    />
   )
 }
