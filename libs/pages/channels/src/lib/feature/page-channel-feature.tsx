@@ -1,5 +1,5 @@
 import {
-  useCreateMessageMutation,
+  useCreateMessageMutation, useDeleteMessageMutation,
   useGetChannelQuery,
   useGetMessagesByChannelIdQuery, useUpdateMessageMutation
 } from '@beep/channel'
@@ -7,7 +7,7 @@ import { ChannelType, UserDisplayedEntity, backendUrl } from '@beep/contracts'
 import { responsiveActions } from '@beep/responsive'
 import { useGetUsersByServerIdQuery } from '@beep/server'
 import { AppDispatch } from '@beep/store'
-import { DynamicSelectorProps } from '@beep/ui'
+import { DynamicSelectorProps, useModal } from '@beep/ui'
 import { useEffect, useRef, useState } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
 import toast from 'react-hot-toast'
@@ -16,6 +16,7 @@ import { useParams } from 'react-router'
 import { PageChannel } from '../ui/page-channel'
 import { DynamicSelectorFeature } from './dynamic-selector-item-feature'
 import { TransmitSingleton } from '@beep/utils'
+import { DeleteMessageModal } from '../ui/delete-message-modal'
 import { useGetUserByIdQuery } from '@beep/user'
 
 export function PageChannelFeature() {
@@ -23,7 +24,7 @@ export function PageChannelFeature() {
   const { data: channel } = useGetChannelQuery({ serverId: serverId, channelId: channelId })
   const { data: messages, refetch, isSuccess } = useGetMessagesByChannelIdQuery({ channelId })
   const { data: usersServer } = useGetUsersByServerIdQuery(serverId)
-
+  const { openModal, closeModal } = useModal()
   const [files, setFiles] = useState<File[]>([])
   const [previewUrls, setPreviewUrls] = useState<{ content: string | null }[]>(
     []
@@ -181,9 +182,31 @@ export function PageChannelFeature() {
         messageId: messageId,
         content: newContent
       }).unwrap()
-      refetch()
     } catch (error) {
-      console.error('Error updating message:', error)
+      console.error('Error updating message')
+    }
+  }
+
+  const [deleteMessage] = useDeleteMessageMutation()
+
+  const onDeleteMessage = async (channelId: string, messageId: string) => {
+    try {
+      openModal({
+        content: (
+          <DeleteMessageModal
+            closeModal={closeModal}
+            onDeleteMessage={async () => {
+              await deleteMessage({
+                channelId: channelId,
+                messageId: messageId
+              }).unwrap()
+              closeModal()
+            }}
+          />
+        ),
+      })
+    } catch (error) {
+      toast.error('Failure while trying to delete the message')
     }
   }
 
@@ -235,6 +258,7 @@ export function PageChannelFeature() {
           }}
           sendMessage={onSendMessage}
           onUpdateMessage={onUpdateMessage}
+          onDeleteMessage={onDeleteMessage}
           files={files}
           filesPreview={previewUrls}
           onAddFiles={onAddFile}

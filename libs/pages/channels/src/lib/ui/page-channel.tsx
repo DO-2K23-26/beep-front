@@ -15,6 +15,7 @@ export interface PageChannelProps {
   messages: MessageEntity[]
   sendMessage: () => void
   onUpdateMessage: (messageId: string, newContent: string) => void
+  onDeleteMessage: (channelId: string, messageId: string) => void
   files: File[]
   onAddFiles: (file: File) => void
   onDeleteFile: (index: number) => void
@@ -37,6 +38,7 @@ export const PageChannel = ({
   messages,
   sendMessage,
   onUpdateMessage,
+  onDeleteMessage,
   files,
   onAddFiles,
   onDeleteFile,
@@ -87,7 +89,7 @@ export const PageChannel = ({
         </Button>
       </div>
       {/* Message list */}
-      <ListMessages messages={messages} onUpdateMessage={onUpdateMessage} editingMessageId={editingMessageId} setEditingMessageId={setEditingMessageId} findUserForTag={findUserForTag} selectedTaggedUser={selectedTaggedUser} setSelectedTaggedUser={setSelectedTaggedUser} />
+      <ListMessages messages={messages} onUpdateMessage={onUpdateMessage} onDeleteMessage={onDeleteMessage} editingMessageId={editingMessageId} setEditingMessageId={setEditingMessageId} findUserForTag={findUserForTag} selectedTaggedUser={selectedTaggedUser} setSelectedTaggedUser={setSelectedTaggedUser} />
       {
           selectedTaggedUser ? (
             <UserInformationsFeature user={{ id: selectedTaggedUser.id, username: selectedTaggedUser.username }} onClose={() => setSelectedTaggedUser(undefined)} />

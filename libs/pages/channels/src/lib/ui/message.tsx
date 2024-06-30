@@ -3,9 +3,9 @@ import { MessageEntity, UserEntity } from '@beep/contracts'
 import { Button, ButtonStyle, Icon, Input } from '@beep/ui'
 import { Controller, useFormContext } from 'react-hook-form'
 import AttachmentFeature from '../feature/attachment-feature'
-import Markdoc from "@markdoc/markdoc";
-import { config, markdownComponents } from "../utils/markdown-config";
-import { preprocessMarkdown } from "../utils/markdown-parser";
+import Markdoc from "@markdoc/markdoc"
+import { config, markdownComponents } from "../utils/markdown-config"
+import { preprocessMarkdown } from "../utils/markdown-parser"
 
 interface MessageProps {
   message: MessageEntity
@@ -68,14 +68,14 @@ export default function Message({
   }, [isEditing, cancelEditing, onUpdateMessage]);
 
   // Convert markdown to Markdoc nodes
-  const adjustLineBreaks = preprocessMarkdown(message.content);
-  const nodes = Markdoc.parse(adjustLineBreaks);
+  const adjustLineBreaks = preprocessMarkdown(message.content)
+  const nodes = Markdoc.parse(adjustLineBreaks)
   // Transform nodes to a Markdoc AST
   const ast = Markdoc.transform(nodes, config)
   // Render the AST to React elements
   const renderedMessage = replaceTagEntity(Markdoc.renderers.react(ast, React, {
     components: markdownComponents,
-  }));
+  }))
 
   return (
     <div className={"flex flex-col gap-2 p-3 rounded-xl group" + (isHighlighted ? ' bg-green-100/60 hover:bg-green-100' : ' hover:bg-violet-300')}>
@@ -94,29 +94,31 @@ export default function Message({
           <p className="font-normal text-xs truncate">{createdAt}</p>
         </div>
         <div className="flex flex-row gap-4 items-center invisible group-hover:visible pr-2">
-          {switchEditing && !isEditing && (
-            <Button style={ButtonStyle.NONE} onClick={switchEditing}>
-              <Icon name="lucide:pencil" className="w-4 h-4" />
-            </Button>
-          )}
-          {onDelete && (
-            <Button style={ButtonStyle.NONE} onClick={onDelete}>
-              <Icon name="lucide:trash" className="w-4 h-4 hidden" />
-            </Button>
-          )}
+          {!isPinned &&
+            <>
+              {switchEditing && !isEditing && (
+                <Button style={ButtonStyle.NONE} onClick={switchEditing}>
+                  <Icon name="lucide:pencil" className="w-4 h-4" />
+                </Button>
+              )}
+              {onDelete && (
+                <Button style={ButtonStyle.NONE} onClick={onDelete}>
+                  <Icon name="lucide:trash" className="w-4 h-4" />
+                </Button>
+              )}
+              <div className="flex flex-row gap-4 items-center invisible group-hover:visible">
+                <Button onClick={onPin}>
+                  <Icon name="lucide:pin" className="w-5 h-5" />
+                </Button>
+              </div>
+            </>
+          }
           {isEditing && (
             <Button style={ButtonStyle.NONE} onClick={cancelEditing}>
               <Icon name="lucide:x" className="w-4 h-4" />
             </Button>
           )}
         </div>
-        {!isPinned && ( // Conditionally render if not already pinned
-          <div className="flex flex-row gap-4 items-center invisible group-hover:visible">
-            <Button onClick={onPin}>
-              <Icon name="lucide:pin" className="w-5 h-5" />
-            </Button>
-          </div>
-        )}
       </div>
       <div className="flex flex-row gap-2">
       {isEditing ? (

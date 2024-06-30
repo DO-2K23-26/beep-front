@@ -2,8 +2,7 @@ import { useModal } from '@beep/ui'
 import MembersNavigation from '../ui/members-navigation'
 import { useFetchAllUsersConnectedQuery, useFetchAllUsersQuery } from '@beep/user'
 import { useEffect } from 'react'
-import { backendUrl } from '@beep/contracts'
-import { Transmit } from "@adonisjs/transmit-client";
+import { TransmitSingleton } from '@beep/utils'
 
 export default function MembersNavigationFeature() {
   const { openModal, closeModal } = useModal()
@@ -12,16 +11,8 @@ export default function MembersNavigationFeature() {
   const { data: users, refetch: refetchUsers } = useFetchAllUsersQuery()
 
   useEffect(() => {
-    const transmit = new Transmit({
-      baseUrl: backendUrl,
-    })
-
-    const result = transmit.subscription(`users/state`)
-    result.create()
-    result.onMessage((message) => {
-      refetchUsersConnected()
-    })
-  }, []);
+    TransmitSingleton.subscribe('users/state', (message) => { refetchUsersConnected() })
+  }, [])
 
 
   return (

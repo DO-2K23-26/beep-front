@@ -5,6 +5,7 @@ import { useState } from 'react'
 interface ListMessagesProps {
   messages: MessageEntity[]
   onUpdateMessage: (messageId: string, newContent: string) => void
+  onDeleteMessage: (channelId: string, messageId: string) => void
   editingMessageId: string | null
   setEditingMessageId: React.Dispatch<React.SetStateAction<string | null>>
   findUserForTag: (value: string) => UserDisplayedEntity | undefined
@@ -12,7 +13,7 @@ interface ListMessagesProps {
   setSelectedTaggedUser: React.Dispatch<React.SetStateAction<UserDisplayedEntity | undefined>>
 }
 
-export default function ListMessages({ messages, onUpdateMessage, editingMessageId, setEditingMessageId, findUserForTag, selectedTaggedUser, setSelectedTaggedUser }: ListMessagesProps) {
+export default function ListMessages({ messages, onUpdateMessage, onDeleteMessage, editingMessageId, setEditingMessageId, findUserForTag, selectedTaggedUser, setSelectedTaggedUser }: ListMessagesProps) {
   return (
     <div className="flex flex-col-reverse gap-6 overflow-y-scroll no-scrollbar scroll-smooth h-full">
       {messages &&
@@ -23,6 +24,7 @@ export default function ListMessages({ messages, onUpdateMessage, editingMessage
               key={message.id}
               user={message.owner}
               onUpdateMessage={onUpdateMessage}
+              onDeleteMessage={onDeleteMessage}
               createdAt={message.createdAt || ''}
               message={message}
               editingMessageId={editingMessageId}
