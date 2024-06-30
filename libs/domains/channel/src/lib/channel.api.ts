@@ -2,6 +2,7 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { 
+  ChannelAttachmentsResponse,
   ChannelEntity, 
   CreateChannelRequest, 
   CreateChannelResponse, 
@@ -70,7 +71,7 @@ export const channelApi = createApi({
       query: (request) => `/channels/${request.channelId}/messages`,
       providesTags: ['messages'],
     }),
-    getAttachments: builder.query({
+    getAttachments: builder.query<ChannelAttachmentsResponse, { channelId: string, search: string }>({
       query: (payload) => `/channels/${payload.channelId}/attachments`,
     }),
     createChannel: builder.mutation<CreateChannelResponse, CreateChannelRequest>({
