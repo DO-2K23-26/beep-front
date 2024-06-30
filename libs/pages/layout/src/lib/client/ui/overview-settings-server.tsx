@@ -10,7 +10,7 @@ export function OverviewSettingsServer({
 }: OverviewSettingsServerProps) {
   console.log('OverviewSettingsServer')
   return (
-    <div className="w-full	 bg-white p-10 overflow-y-auto">
+    <div className="w-full bg-violet-200 p-10 overflow-y-auto">
       <h3 className=" text-slate-700 font-bold mb-2 max-w-sm">
         SERVER OVERVIEW
       </h3>

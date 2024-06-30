@@ -126,7 +126,8 @@ export default function ChannelsNavigation({
                   }
                 />
             )} */}
-              {server && (
+            { <p> feature is coming</p>}
+              {/* {server && (
                 <FullScreenDialog>
                   <FullScreenDialogTrigger asChild>
                     <button>
@@ -140,7 +141,7 @@ export default function ChannelsNavigation({
                     <OverviewSettingsServer server={server} />
                   </FullScreenDialogContent>
                 </FullScreenDialog>
-              )}
+              )} */}
 
               <hr className="bg-slate-400 h-[1px] my-2 text-slate-400" />
               {/* <DropdownMenuItemCustom
