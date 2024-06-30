@@ -39,7 +39,7 @@ testem.log
 Thumbs.db
 
 .nx/cache
-.nx
+.nx/*
 
 
 storybook-static
