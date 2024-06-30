@@ -1,41 +1,79 @@
 import { ServerEntity } from '@beep/contracts'
-import { Button, ButtonStyle, Input, InputText } from '@beep/ui'
+import {
+  Button,
+  ButtonStyle,
+  InputText,
+  InputPictureSettings,
+  InputBannerSettings,
+} from '@beep/ui'
+import { useState } from 'react'
+import {
+  useTransmitBannerQuery,
+  useTransmitPictureQuery,
+  useUpdateServerMutation,
+} from '@beep/server'
+import toast from 'react-hot-toast'
 
 export interface OverviewSettingsServerProps {
   server: ServerEntity
+  isAdmin: boolean
 }
 
 export function OverviewSettingsServer({
   server,
+  isAdmin,
 }: OverviewSettingsServerProps) {
-  console.log('OverviewSettingsServer')
+  const [serverName, setServerName] = useState(server.name)
+  const [serverDescription, setServerDescription] = useState(server.description)
+  const [updateServer, result] = useUpdateServerMutation()
+
+  const banner = useTransmitBannerQuery(server.id).currentData
+  const icon = useTransmitPictureQuery(server.id).currentData
+
+  const handleSave = async () => {
+    try {
+      const updatedServer = {
+        id: server.id,
+        name: serverName,
+        description: serverDescription,
+      }
+      console.log('Sending data:', updatedServer)
+
+      const updatedData = await updateServer({
+        serverId: server.id,
+        updatedServer,
+      })
+
+      console.log('Server updated successfully', updatedData)
+      toast.success('Server updated !')
+    } catch (error) {
+      console.error('Failed to update server', result.error)
+      toast.error('An error occured while updating the server !')
+    }
+  }
+
   return (
     <div className="w-full bg-violet-200 p-10 overflow-y-auto">
       <h3 className=" text-slate-700 font-bold mb-2 max-w-sm">
         SERVER OVERVIEW
       </h3>
       <div className="flex gap-10 items-center py-10">
-        {server.picture ? (
-          <img
-            src={server.picture}
-            alt={server.name}
-            className="rounded-full  truncate h-60 w-60  flex items-center justify-center"
+        <div className="w-1/3 h-60 flex justify-center items-center">
+          <InputPictureSettings
+            name="picture"
+            label="Add a picture."
+            serverId={server.id}
+            initialPicture={icon}
           />
-        ) : (
-          <p className=" rounded-full truncate h-60 w-60 bg-slate-300 flex items-center justify-center text-black">
-            {server.name}
-          </p>
-        )}
-
-        {server.banner ? (
-          <img
-            src={server.banner}
-            alt={server.banner}
-            className="rounded-xl truncate h-60 flex-grow flex items-center justify-center"
+        </div>
+        <div className="w-2/3 h-60">
+          <InputBannerSettings
+            name="banner"
+            label="Add a banner."
+            serverId={server.id}
+            initialBanner={banner}
           />
-        ) : (
-          <p className="rounded-xl truncate h-60 flex-grow bg-slate-300 flex items-center justify-center"></p>
-        )}
+        </div>
       </div>
       <hr className="bg-violet-300 h-1"></hr>
       <div className="py-5 ">
@@ -48,7 +86,9 @@ export function OverviewSettingsServer({
             type="text"
             name="server-name"
             className="!rounded-lg min-h-[40px] w-1/3 "
-            value={server.name}
+            value={serverName}
+            onChange={(e) => setServerName(e.target.value)}
+            disabled={!isAdmin}
           />
         </div>
         <div className="py-2">
@@ -60,11 +100,17 @@ export function OverviewSettingsServer({
             type="text"
             name="server-description"
             className="w-2/3 !rounded-lg min-h-[40px]"
-            value={server.description}
+            value={serverDescription}
+            onChange={(e) => setServerDescription(e.target.value)}
+            disabled={!isAdmin}
           />
         </div>
       </div>
-      <Button style={ButtonStyle.BASIC}>SAVE</Button>
+      {isAdmin && (
+        <Button style={ButtonStyle.BASIC} onClick={handleSave}>
+          SAVE
+        </Button>
+      )}
     </div>
   )
 }

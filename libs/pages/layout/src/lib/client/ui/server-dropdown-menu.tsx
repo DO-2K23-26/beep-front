@@ -32,10 +32,11 @@ import {
   DropdownMenuTrigger,
 } from '@beep/ui'
 import { ServerEntity } from '@beep/contracts'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { SettingsModal } from '@beep/settings'
 import { OverviewSettingsServer } from './overview-settings-server'
 import { SubSettings } from 'libs/pages/settings/src/lib/models/setting-navigation-models'
+import { useTransmitPictureQuery } from '@beep/server'
 
 interface ServerDropDownMenuProps {
   server?: ServerEntity
@@ -43,13 +44,14 @@ interface ServerDropDownMenuProps {
 export function ServerDropdownMenu({ server }: ServerDropDownMenuProps) {
   const [isSettingsModalOpen, setIsSettingsModalOpen] = useState(false)
 
-
   const subSetting: SubSettings = {
     subGroupSettingTitle: 'Server',
     settings: [
       {
         title: 'Overview',
-        settingComponent: <OverviewSettingsServer server={server!} />,
+        settingComponent: (
+          <OverviewSettingsServer server={server!} isAdmin={true} />
+        ),
       },
       // { title: 'voice', settingComponent: <Input /> },
       // { title: 'text', settingComponent: <Input /> },
@@ -64,6 +66,8 @@ export function ServerDropdownMenu({ server }: ServerDropDownMenuProps) {
     setIsSettingsModalOpen(false)
   }
 
+  const icon = useTransmitPictureQuery(server?.id || '').currentData || ''
+
   return (
     <>
       <DropdownMenu>
@@ -75,11 +79,11 @@ export function ServerDropdownMenu({ server }: ServerDropDownMenuProps) {
             }}
           >
             {server ? (
-              server.picture ? (
+              icon ? (
                 <img
-                  src={server?.picture}
+                  src={icon}
                   alt="Server"
-                  className="rounded-xl hover:rounded-2xl transition-all"
+                  className=" aspect-square rounded-xl hover:rounded-2x3 transition-all object-cover"
                 />
               ) : (
                 <p className="max-w-[175px] truncate">{server.name[0]}</p>

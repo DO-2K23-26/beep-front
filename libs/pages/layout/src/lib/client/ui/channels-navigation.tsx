@@ -34,9 +34,15 @@ import { ConnectedChannelRow } from './connect-channel-row'
 import { CreateChannelModal } from './create-channel-modal'
 import { ListTextChannels } from './list-channels'
 import { ListVoiceChannels } from './list-voice-channels'
-import { getServersState } from '@beep/server'
+import {
+  getServersState,
+  useTransmitBannerQuery,
+  useTransmitPictureQuery,
+} from '@beep/server'
 import { ServerDropdownMenu } from './server-dropdown-menu'
 import { OverviewSettingsServer } from './overview-settings-server'
+import { getUserState } from '@beep/user'
+import { useEffect, useState } from 'react'
 
 export interface ChannelsNavigationProps {
   textChannels?: ChannelEntity[]
@@ -70,6 +76,19 @@ export default function ChannelsNavigation({
   const { showLeftPane } = useSelector(getResponsiveState)
   const { connected, focusedChannel, serverName } =
     useSelector(getChannelsState)
+  const [isAdmin, setIsAdmin] = useState(false)
+
+  const { payload } = useSelector(getUserState)
+
+  useEffect(() => {
+    if (server) {
+      setIsAdmin(server.ownerId === payload.sub)
+    }
+  }, [server, payload])
+
+  const banner = useTransmitBannerQuery(server?.id || '').currentData || ''
+  const icon = useTransmitPictureQuery(server?.id || '').currentData || ''
+
   return (
     <div className={showLeftPane ? 'flex abolute w-full' : 'hidden lg:flex'}>
       <div
@@ -77,37 +96,51 @@ export default function ChannelsNavigation({
           showLeftPane ? 'w-full' : 'sm:w-fit'
         }`}
       >
-        {/* Server infos */}
-        <div className="flex flex-row gap-6">
-          <DropdownMenu>
-            <DropdownMenuTrigger>
-              <Button
-                style={ButtonStyle.SQUARE}
-                onClick={() => {
-                  console.log('click')
-                }}
-              >
-                {server ? (
-                  server.picture ? (
-                    <img
-                      src={server?.picture}
-                      alt="Server"
-                      className="rounded-xl hover:rounded-2xl transition-all"
-                    />
+        <div className="relative">
+          {/* Server infos */}
+          {/* <<<<<<< HEAD */}
+          <div className="absolute inset-0 z-0">
+            {banner ? (
+              <img
+                src={banner}
+                alt="Server"
+                className=" rounded-xl hover:rounded-2x3 transition-all object-cover truncate  h-[100px] w-full"
+              />
+            ) : (
+              <></>
+            )}
+          </div>
+          <div className="relative z-0 flex flex-row gap-6 p-5 bg-white bg-opacity-10 rounded-xl">
+            {/* <div className="flex flex-row gap-6"> */}
+            <DropdownMenu>
+              <DropdownMenuTrigger>
+                <Button
+                  style={ButtonStyle.SQUARE}
+                  onClick={() => {
+                    console.log('click')
+                  }}
+                >
+                  {server ? (
+                    icon ? (
+                      <img
+                        src={icon}
+                        alt="Server"
+                        className=" aspect-square rounded-xl hover:rounded-2x3 transition-all object-cover"
+                      />
+                    ) : (
+                      <p className="max-w-[175px] truncate">{server.name[0]}</p>
+                    )
                   ) : (
-                    <p className="max-w-[175px] truncate">{server.name[0]}</p>
-                  )
-                ) : (
-                  <p>@ME</p>
-                )}
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent className="rounded-lg bg-violet-50 mt-4 mx-5 py-4 px-3">
-              {/* <DropdownMenuItemCustom
+                    <p>@ME</p>
+                  )}
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent className="rounded-lg bg-violet-50 mt-4 mx-5 py-4 px-3">
+                {/* <DropdownMenuItemCustom
                 label="Invite users"
                 iconName="lucide:credit-card"
               /> //need dorian PR*/}
-              {/* {isAdmin && (
+                {/* {isAdmin && (
                 <DropdownMenuItemCustom
                   label="Create channel"
                   iconName="lucide:plus"
@@ -126,30 +159,33 @@ export default function ChannelsNavigation({
                   }
                 />
             )} */}
-            { <p> feature is coming</p>}
-              {/* {server && (
-                <FullScreenDialog>
-                  <FullScreenDialogTrigger asChild>
-                    <button>
-                      <DropdownMenuItemCustom
-                        label="Settings"
-                        iconName="lucide:settings"
+                {/* { <p> feature is coming</p>} */}
+                {server && (
+                  <FullScreenDialog>
+                    <FullScreenDialogTrigger asChild>
+                      <button>
+                        <DropdownMenuItemCustom
+                          label="Settings"
+                          iconName="lucide:settings"
+                        />
+                      </button>
+                    </FullScreenDialogTrigger>
+                    <FullScreenDialogContent className="w-full h-full bg-white">
+                      <OverviewSettingsServer
+                        server={server}
+                        isAdmin={isAdmin}
                       />
-                    </button>
-                  </FullScreenDialogTrigger>
-                  <FullScreenDialogContent className="w-full h-full bg-white">
-                    <OverviewSettingsServer server={server} />
-                  </FullScreenDialogContent>
-                </FullScreenDialog>
-              )} */}
+                    </FullScreenDialogContent>
+                  </FullScreenDialog>
+                )}
 
-              <hr className="bg-slate-400 h-[1px] my-2 text-slate-400" />
-              {/* <DropdownMenuItemCustom
+                <hr className="bg-slate-400 h-[1px] my-2 text-slate-400" />
+                {/* <DropdownMenuItemCustom
                 label="Leave server"
                 iconName="charm:sign-out"
                 warning
               /> */}
-              {/* {isAdmin && (
+                {/* {isAdmin && (
                 <DropdownMenuItemCustom
                   label="Destroy server"
                   iconName="lucide:trash-2"
@@ -161,26 +197,36 @@ export default function ChannelsNavigation({
                   }}
                 />
               )} */}
-            </DropdownMenuContent>
-          </DropdownMenu>
+              </DropdownMenuContent>
+            </DropdownMenu>
 
-          <div className="flex flex-col items-start justify-between">
-            <h5 className="font-semibold max-w-[175px] truncate">
-              {server?.name}
-            </h5>
-            <Tooltip>
-              <TooltipTrigger>
-                <Badge
-                  type={BadgeType.DEFAULT}
-                  title={server?.id ?? ''}
-                  className="bg-violet-50 hover:bg-violet-100 !text-violet-900 max-w-[175px] truncate cursor-pointer"
-                  onClick={() => onClickId(server?.id ?? '')}
-                />
-              </TooltipTrigger>
-              <TooltipContent>
-                <p>{server?.id ?? ''}</p>
-              </TooltipContent>
-            </Tooltip>
+            <div className="flex flex-col items-start justify-between">
+              <h5 className="font-semibold max-w-[175px] truncate">
+                {server?.name}
+              </h5>
+              <Tooltip>
+                <TooltipTrigger>
+                  <Badge
+                    type={BadgeType.DEFAULT}
+                    title={server?.id ?? ''}
+                    className="bg-violet-50 hover:bg-violet-100 !text-violet-900 max-w-[175px] truncate cursor-pointer"
+                    onClick={() => onClickId(server?.id ?? '')}
+                  />
+                </TooltipTrigger>
+                <TooltipContent>
+                  <p>{server?.id ?? ''}</p>
+                </TooltipContent>
+              </Tooltip>
+              {/* ======= */}
+              {/*  */}
+              {/* <div className="relative z-0 flex flex-row gap-6 p-5 bg-white bg-opacity-10 rounded-xl"> */}
+              {/* <ServerDropdownMenu server={server} /> */}
+              {/* <div className="flex flex-col items-start justify-between"> */}
+              {/* </h5> */}
+              {/*  */}
+              {/* </div> */}
+              {/* >>>>>>> 32ec56f (feat: banner and icon on channel navigation) */}
+            </div>
           </div>
         </div>
 

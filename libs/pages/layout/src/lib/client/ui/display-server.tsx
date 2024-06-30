@@ -1,4 +1,5 @@
 import { ServerEntity } from '@beep/contracts'
+import { useTransmitPictureQuery } from '@beep/server'
 import { Button, ButtonStyle } from '@beep/ui'
 
 interface DisplayServerProps {
@@ -10,6 +11,8 @@ export default function DisplayServer({
   server,
   onServerChange,
 }: DisplayServerProps) {
+  const icon = useTransmitPictureQuery(server?.id || '').currentData || ''
+
   return (
     <Button
       key={server.id}
@@ -17,18 +20,15 @@ export default function DisplayServer({
       style={ButtonStyle.SQUARE}
       className="!bg-violet-50"
     >
-      {
-        server.picture ? (
-          <img
-            src={server.picture}
-            alt={server.name}
-            className="rounded-xl hover:rounded-2xl transition-all"
-          />
-        ) : (
-          <p>{server.name}</p>
-        )
-      }
-      
+      {icon ? (
+        <img
+          src={icon}
+          alt={server.name}
+          className="aspect-square rounded-xl hover:rounded-2xl transition-all object-cover"
+        />
+      ) : (
+        <p>{server.name}</p>
+      )}
     </Button>
   )
 }

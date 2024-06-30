@@ -37,10 +37,18 @@ export function SettingsModal({ settings }: SettingsUserModalProps) {
           )
         })}
       </div>
-      <div className="basis-5/6 bg-violet-200 flex flex-col h-[100dvh] items-center overflow-y-auto">
-        <div className="flex flex-col pt-12 pl-12 w-3/5">
-          {findSettingComponentByTitle(settings, selectedSetting)}
-        </div>
+      <div className="basis-5/6 bg-violet-200 flex-col h-[100dvh]">
+        {/* affichage des paramatres */}
+        {
+          settings
+            .find((subSetting) =>
+              subSetting.settings.find(
+                (setting) => setting.title === selectedSetting
+              )
+            )
+            ?.settings.find((setting) => setting.title === selectedSetting)
+            ?.settingComponent
+        }
       </div>
     </div>
   )

@@ -87,38 +87,104 @@ export const serverApi = createApi({
       query: (serverId) => `/servers/${serverId}/channels`,
       providesTags: ['channels'],
     }),
-    joinVoiceChannel: builder.mutation<void, {serverId:string, channelId:string}>({
+    joinVoiceChannel: builder.mutation<
+      void,
+      { serverId: string; channelId: string }
+    >({
       query: ({ serverId, channelId }) => ({
         url: `/servers/${serverId}/channels/${channelId}/join`,
         method: 'POST',
       }),
-      invalidatesTags: (result, error, arg) => [{ type: 'streamingUsers', channelId: arg.channelId }]
+      invalidatesTags: (result, error, arg) => [
+        { type: 'streamingUsers', channelId: arg.channelId },
+      ],
     }),
     leaveVoiceChannel: builder.mutation<void, void>({
       query: () => ({
         url: `/servers/channels/leave`,
         method: 'POST',
       }),
-      invalidatesTags: ['streamingUsers']
+      invalidatesTags: ['streamingUsers'],
     }),
     getCurrentStreamingUsers: builder.query<OccupiedChannelEntity[], string>({
       query: (serverId) => `/servers/${serverId}/streaming/users`,
       providesTags: (result, error, arg) =>
         result
-          ? [...result.map(({ channelId }) => ({ type: 'streamingUsers' as const, channelId })), 'streamingUsers']
+          ? [
+              ...result.map(({ channelId }) => ({
+                type: 'streamingUsers' as const,
+                channelId,
+              })),
+              'streamingUsers',
+            ]
           : ['streamingUsers'],
     }),
     getUsersByServerId: builder.query<UserDisplayedEntity[], string>({
       query: (serverId) => `servers/${serverId}/users`,
       providesTags: (result, error, serverId) =>
-        result ?
-          [
-            ...result.map(({ id }) => ({ type: 'users' as const, id })),
-            { type: 'users', id: `LIST-${serverId}` },
-          ] : [
-            { type: 'users', id: `LIST-${serverId}` }
-          ]
-    })
+        result
+          ? [
+              ...result.map(({ id }) => ({ type: 'users' as const, id })),
+              { type: 'users', id: `LIST-${serverId}` },
+            ]
+          : [{ type: 'users', id: `LIST-${serverId}` }],
+    }),
+
+    updateServer: builder.mutation<
+      ServerEntity,
+      { serverId: string; updatedServer: Partial<ServerEntity> }
+    >({
+      query: (request) => ({
+        url: `/servers/${request.serverId}`,
+        method: 'PATCH',
+        body: request.updatedServer,
+      }),
+      invalidatesTags: ['servers'],
+    }),
+
+    updateBanner: builder.mutation<
+      void,
+      { serverId: string; formData: FormData }
+    >({
+      query: ({ serverId, formData }) => ({
+        url: `/servers/${serverId}/banner`,
+        method: 'PUT',
+        body: formData,
+      }),
+      invalidatesTags: ['servers'],
+    }),
+
+    updatePicture: builder.mutation<
+      void,
+      { serverId: string; formData: FormData }
+    >({
+      query: ({ serverId, formData }) => ({
+        url: `/servers/${serverId}/picture`,
+        method: 'PUT',
+        body: formData,
+      }),
+      invalidatesTags: ['servers'],
+    }),
+
+    transmitBanner: builder.query<string, string>({
+      query: (serverId) => ({
+        url: `/servers/${serverId}/banner`,
+        responseHandler: async (response) => {
+          const blob = await response.blob()
+          return URL.createObjectURL(blob)
+        },
+      }),
+    }),
+
+    transmitPicture: builder.query<string, string>({
+      query: (serverId) => ({
+        url: `/servers/${serverId}/picture`,
+        responseHandler: async (response) => {
+          const blob = await response.blob()
+          return URL.createObjectURL(blob)
+        },
+      }),
+    }),
   }),
 })
 
@@ -134,4 +200,9 @@ export const {
   useLeaveVoiceChannelMutation,
   useGetCurrentStreamingUsersQuery,
   useGetUsersByServerIdQuery,
+  useUpdateServerMutation,
+  useUpdateBannerMutation,
+  useUpdatePictureMutation,
+  useTransmitBannerQuery,
+  useTransmitPictureQuery,
 } = serverApi
