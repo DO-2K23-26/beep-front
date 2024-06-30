@@ -5,14 +5,14 @@ import { useState } from 'react'
 interface ListMessagesProps {
   messages: MessageEntity[]
   onUpdateMessage: (messageId: string, newContent: string) => void
-  control: any
-  findUserForTag?: (value: string) => UserDisplayedEntity | undefined
+  editingMessageId: string | null
+  setEditingMessageId: React.Dispatch<React.SetStateAction<string | null>>
+  findUserForTag: (value: string) => UserDisplayedEntity | undefined
   selectedTaggedUser: UserDisplayedEntity | undefined
   setSelectedTaggedUser: React.Dispatch<React.SetStateAction<UserDisplayedEntity | undefined>>
 }
 
-export default function ListMessages({ messages, onUpdateMessage, control, findUserForTag, selectedTaggedUser, setSelectedTaggedUser }: ListMessagesProps) {
-  const [editingMessageId, setEditingMessageId] = useState<string | null>(null)
+export default function ListMessages({ messages, onUpdateMessage, editingMessageId, setEditingMessageId, findUserForTag, selectedTaggedUser, setSelectedTaggedUser }: ListMessagesProps) {
   return (
     <div className="flex flex-col-reverse gap-6 overflow-y-scroll no-scrollbar scroll-smooth h-full">
       {messages &&
@@ -25,7 +25,6 @@ export default function ListMessages({ messages, onUpdateMessage, control, findU
               onUpdateMessage={onUpdateMessage}
               createdAt={message.createdAt || ''}
               message={message}
-              control={control}
               editingMessageId={editingMessageId}
               setEditingMessageId={setEditingMessageId}
               isPinned= {false}

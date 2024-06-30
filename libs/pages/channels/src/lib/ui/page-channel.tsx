@@ -22,10 +22,12 @@ export interface PageChannelProps {
   hideRightDiv?: () => void
   hideLeftDiv?: () => void
   inputRef?: React.RefObject<HTMLInputElement>
+  editingMessageId: string | null
+  setEditingMessageId: React.Dispatch<React.SetStateAction<string | null>>
   onChange?: (value: string, onChange: (value: string) => void) => void
   onCursorChange?: () => void
   dynamicSelector?: DynamicSelectorProps
-  findUserForTag?: (value: string) => UserDisplayedEntity | undefined
+  findUserForTag: (value: string) => UserDisplayedEntity | undefined
   selectedTaggedUser: UserDisplayedEntity | undefined
   setSelectedTaggedUser: React.Dispatch<React.SetStateAction<UserDisplayedEntity | undefined>>
 }
@@ -42,6 +44,8 @@ export const PageChannel = ({
   hideRightDiv,
   hideLeftDiv,
   inputRef,
+  editingMessageId,
+  setEditingMessageId,
   onChange,
   onCursorChange,
   dynamicSelector,
@@ -72,7 +76,7 @@ export const PageChannel = ({
             <p className="font-semibold">{channel.name}</p>
 
           </div>
-          <DisplayPinned channelId={channel.id} onUpdateMessage={onUpdateMessage} control={control} />
+          <DisplayPinned channelId={channel.id} onUpdateMessage={onUpdateMessage} editingMessageId={editingMessageId} setEditingMessageId={setEditingMessageId} findUserForTag={findUserForTag} selectedTaggedUser={selectedTaggedUser} setSelectedTaggedUser={setSelectedTaggedUser} />
         </div>
         <Button
           style={ButtonStyle.SQUARE}
@@ -83,7 +87,7 @@ export const PageChannel = ({
         </Button>
       </div>
       {/* Message list */}
-      <ListMessages messages={messages} onUpdateMessage={onUpdateMessage} control={control} findUserForTag={findUserForTag} selectedTaggedUser={selectedTaggedUser} setSelectedTaggedUser={setSelectedTaggedUser} />
+      <ListMessages messages={messages} onUpdateMessage={onUpdateMessage} editingMessageId={editingMessageId} setEditingMessageId={setEditingMessageId} findUserForTag={findUserForTag} selectedTaggedUser={selectedTaggedUser} setSelectedTaggedUser={setSelectedTaggedUser} />
       {
           selectedTaggedUser ? (
             <UserInformationsFeature user={{ id: selectedTaggedUser.id, username: selectedTaggedUser.username }} onClose={() => setSelectedTaggedUser(undefined)} />

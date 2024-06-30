@@ -1,7 +1,7 @@
 import React, { ReactNode, useEffect } from "react";
-import { MessageEntity, UserDisplayedEntity, UserEntity } from '@beep/contracts'
+import { MessageEntity, UserEntity } from '@beep/contracts'
 import { Button, ButtonStyle, Icon, Input } from '@beep/ui'
-import { Controller } from 'react-hook-form'
+import { Controller, useFormContext } from 'react-hook-form'
 import AttachmentFeature from '../feature/attachment-feature'
 import Markdoc from "@markdoc/markdoc";
 import { config, markdownComponents } from "../utils/markdown-config";
@@ -21,10 +21,8 @@ interface MessageProps {
   cancelEditing: () => void
   createdAt: string
   updatedAt?: string
-  payload?: any
   onPin: () => void
-  isPinned?: boolean // New property to indicate if message is pinned
-  control?: any
+  isPinned?: boolean
   replaceTagEntity: (message: ReactNode) => ReactNode
   isHighlighted: boolean
 }
@@ -43,13 +41,12 @@ export default function Message({
   cancelEditing,
   createdAt,
   updatedAt,
-  payload,
   onPin,
   isPinned,
-  control,
   replaceTagEntity,
   isHighlighted
 }: Readonly<MessageProps>) {
+  const { control } = useFormContext()
 
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {

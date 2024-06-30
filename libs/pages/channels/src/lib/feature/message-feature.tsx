@@ -19,8 +19,7 @@ interface MessageFeatureProps {
   editingMessageId: string | null
   setEditingMessageId: (id: string | null) => void
   isPinned: boolean
-  control?: any
-  findUserForTag?: (value: string) => UserDisplayedEntity | undefined
+  findUserForTag: (value: string) => UserDisplayedEntity | undefined
   selectedTaggedUser: UserDisplayedEntity | undefined
   setSelectedTaggedUser: React.Dispatch<React.SetStateAction<UserDisplayedEntity | undefined>>
 }
@@ -37,7 +36,6 @@ export default function MessageFeature({
   editingMessageId,
   setEditingMessageId,
   isPinned,
-  control,
   findUserForTag,
   selectedTaggedUser,
   setSelectedTaggedUser
@@ -46,7 +44,6 @@ export default function MessageFeature({
   const [createMessage] = useCreateMessageMutation()
   const [findAndDeleteMessage] = useFindAndDeleteMessageMutation()
   const { tokens, isLoading, isAuthenticated, payload } = useSelector(getUserState)
-
 
   const userProfilePicture = user ? useFetchProfilePictureQuery(user.id, {
     skip: !user
@@ -57,7 +54,6 @@ export default function MessageFeature({
   const methods = useForm({
     mode: 'onChange',
   })
-
 
   const switchEditing = () => {
     if (editingMessageId && editingMessageId !== message.id) {
@@ -74,7 +70,6 @@ export default function MessageFeature({
   };
 
   const deleteMessage = () => {}
-
 
   const onPin = async () => {
     try {
@@ -187,11 +182,8 @@ export default function MessageFeature({
         cancelEditing={cancelEditing}
         onUpdateMessage={onUpdateMessageSubmit}
         createdAt={createdAt}
-        control={control}
         replaceTagEntity={replaceTagEntity}
         isHighlighted={message.content.includes('@$' + payload?.sub)}
-        selectedTaggedUser={selectedTaggedUser}
-        setSelectedTaggedUser={setSelectedTaggedUser}
         onPin={onPin}
         isPinned={isPinned}
       />

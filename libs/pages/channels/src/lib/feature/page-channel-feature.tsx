@@ -30,6 +30,7 @@ export function PageChannelFeature() {
   )
   const inputRef = useRef<HTMLInputElement>(null);
   const [selectedTaggedUser, setSelectedTaggedUser] = useState<UserDisplayedEntity | undefined>(undefined)
+  const [editingMessageId, setEditingMessageId] = useState<string | null>(null)
 
   const [createMessage] = useCreateMessageMutation()
 
@@ -241,6 +242,8 @@ export function PageChannelFeature() {
           hideRightDiv={hideRightDiv}
           hideLeftDiv={hideLeftDiv}
           inputRef={inputRef}
+          editingMessageId={editingMessageId}
+          setEditingMessageId={setEditingMessageId}
           onChange={handleInputChange}
           onCursorChange={handleCursorChange}
           dynamicSelector={dynamicSelector}
