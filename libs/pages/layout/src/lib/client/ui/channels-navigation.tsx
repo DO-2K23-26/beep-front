@@ -24,21 +24,19 @@ import {
 
 import { getChannelsState } from '@beep/channel'
 import { getResponsiveState } from '@beep/responsive'
+import {
+  useTransmitBannerQuery,
+  useTransmitPictureQuery
+} from '@beep/server'
+import { getUserState } from '@beep/user'
+import { useEffect, useState } from 'react'
 import { UseFormReturn } from 'react-hook-form'
 import { useSelector } from 'react-redux'
 import CurrentUserFeature from '../feature/current-user-feature'
 import { ConnectedChannelRow } from './connect-channel-row'
 import { ListTextChannels } from './list-channels'
 import { ListVoiceChannels } from './list-voice-channels'
-import {
-  getServersState,
-  useTransmitBannerQuery,
-  useTransmitPictureQuery,
-} from '@beep/server'
-import { ServerDropdownMenu } from './server-dropdown-menu'
 import { OverviewSettingsServer } from './overview-settings-server'
-import { getUserState } from '@beep/user'
-import { useEffect, useState } from 'react'
 
 import { warn } from 'console'
 import DestroyServerFeature from '../feature/destroy-server-feature'
