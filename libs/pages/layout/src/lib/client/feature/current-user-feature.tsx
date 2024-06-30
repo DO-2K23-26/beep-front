@@ -1,19 +1,20 @@
 import { Device, UserEntity } from '@beep/contracts'
+import { useGetCurrentStreamingUsersQuery } from '@beep/server'
+import { RootState } from '@beep/store'
 import { useModal } from '@beep/ui'
 import {
+  getUserState,
   useFetchProfilePictureQuery,
   useGetMeQuery,
-  getUserState, userActions, useUpdateStateMutation
+  userActions
 } from '@beep/user'
+import { TransmitSingleton } from '@beep/utils'
 import { voiceSliceSelector } from '@beep/voice'
 import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { toast } from 'react-hot-toast'
 import { useDispatch, useSelector } from 'react-redux'
 import CurrentUser from '../ui/current-user'
-import { RootState } from '@beep/store'
-import { TransmitSingleton } from '@beep/utils'
-import { useGetCurrentStreamingUsersQuery } from '@beep/server'
 
 
 export default function CurrentUserFeature() {
@@ -21,15 +22,12 @@ export default function CurrentUserFeature() {
   const server = useSelector((state: RootState) => state.servers.server)
   const { isMuted, isVoiceMuted } = useSelector(getUserState)
   const dispatch = useDispatch()
-  const [updateState] = useUpdateStateMutation()
 
   const onMicrophone = () => {
-    dispatch(userActions.toggleIsVoiceMuted())
-    if (server) updateState({ serverId: server.id, payload: { muted: isMuted, voiceMuted: isVoiceMuted } })
+    if (server) dispatch(userActions.toggleIsVoiceMuted(server.id))
     }
   const onPhone = () => {
-    dispatch(userActions.toggleIsMuted())
-    if (server) updateState({ serverId: server.id, payload: { muted: isMuted, voiceMuted: isVoiceMuted } })
+    if (server) dispatch(userActions.toggleIsMuted(server.id))
   }
   
   const { refetch } = useGetCurrentStreamingUsersQuery(server?.id ?? '')

@@ -1,4 +1,4 @@
 export interface UpdateMicRequest {
-    muted?: boolean
-    voiceMuted?: boolean
+    muted: boolean
+    voiceMuted: boolean
 }

@@ -38,10 +38,10 @@ export const userSlice = createSlice({
     updateIsLoading(state, payload: PayloadAction<boolean>) {
       state.isLoading = payload.payload
     },
-    toggleIsMuted(state, payload: PayloadAction<void>) {
+    toggleIsMuted(state : UserState, payload: PayloadAction<string>) {
       state.isMuted = !state.isMuted
     },
-    toggleIsVoiceMuted(state, payload: PayloadAction<void>) {
+    toggleIsVoiceMuted(state : UserState, payload: PayloadAction<string>) {
       state.isVoiceMuted = !state.isVoiceMuted
     }
   },
@@ -49,3 +49,5 @@ export const userSlice = createSlice({
 export const getUserState = (root: RootState) => root[USER_KEY]
 export const userReducer = userSlice.reducer
 export const userActions = userSlice.actions
+export const { toggleIsMuted } = userActions;
+export const { toggleIsVoiceMuted } = userActions;

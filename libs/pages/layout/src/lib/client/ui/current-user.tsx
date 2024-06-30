@@ -53,8 +53,6 @@ export default function CurrentUser({
   audioInputs,
   videoInputs,
 }: CurrentUserProps) {
-  const isMutedValue = !isMuted //TODO : remove this line and understant why its the opposite value
-  const isVoiceMutedValue = !isVoiceMuted //TODO : remove this line and understant why its the opposite value
   return (
     <div className="flex flex-row justify-between items-center gap-4">
       <div className="flex flex-row gap-3">
@@ -79,14 +77,14 @@ export default function CurrentUser({
           onClick={onPhone}
           className="cursor-pointer"
         >
-          <Icon name={isMutedValue ? "lucide:volume-x" : "lucide:volume-2"} className="!w-5 !h-5" />
+          <Icon name={isMuted ? "lucide:volume-x" : "lucide:volume-2"} className="!w-5 !h-5" />
         </Button>
         <Button
           style={ButtonStyle.NONE}
           onClick={onMicrophone}
           className="cursor-pointer "
         >
-          <Icon name={isVoiceMutedValue ? "lucide:mic-off" : "lucide:mic"} className="!w-5 !h-5" />
+          <Icon name={isVoiceMuted ? "lucide:mic-off" : "lucide:mic"} className="!w-5 !h-5" />
         </Button>
         <DialogCloseButton
           triggerButton={<Icon name="lucide:settings" className="!w-5 !h-5" />}

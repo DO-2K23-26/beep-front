@@ -2,7 +2,7 @@
 import { channelApi, voiceChannelReducer } from '@beep/channel'
 import { responsiveReducer } from '@beep/responsive'
 import { serverApi, serverReducer } from '@beep/server'
-import { userApi, userReducer } from '@beep/user'
+import { toggleListenerMiddleware, userApi, userReducer } from '@beep/user'
 import { voiceSliceReducer } from '@beep/voice'
 import { combineReducers, configureStore } from '@reduxjs/toolkit'
 
@@ -19,16 +19,18 @@ export const rootReducer = combineReducers({
 
 export function setupStore(preloadedState?: never) {
   return configureStore({
-    reducer: rootReducer,
+    reducer: rootReducer, // Directly assign rootReducer here
     preloadedState,
     middleware: (getDefaultMiddleware) =>
       getDefaultMiddleware({
         serializableCheck: false,
         immutableCheck: false,
-      })
-        .concat(userApi.middleware)
-        .concat(channelApi.middleware)
-        .concat(serverApi.middleware)
+      }).concat(
+        userApi.middleware,
+        channelApi.middleware,
+        serverApi.middleware,
+        toggleListenerMiddleware.middleware
+      ),
   })
 }
 

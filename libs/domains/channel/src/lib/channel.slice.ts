@@ -2,7 +2,6 @@
 import { ChannelEntity, ChannelType, JoinVoiceChannelRequest } from '@beep/contracts'
 import { RootState } from '@beep/store'
 import { createEntityAdapter, createSlice } from '@reduxjs/toolkit'
-import { useJoinVoiceChannelMutation, useLeaveVoiceChannelMutation } from '@beep/server'
 
 export const CHANNELS_KEY = 'channels'
 export const channelsAdapter = createEntityAdapter<ChannelEntity>()

@@ -4,12 +4,11 @@ import { useFetchProfilePictureQuery } from "@beep/user"
 interface ConnectedUserRowProps {
     userId: string,
     name: string,
-    muted?: boolean,
-    voiceMuted?: boolean
+    muted: boolean,
+    voiceMuted: boolean
   }
   
 export default function ConnectedUserRow({ userId, name, muted, voiceMuted }: ConnectedUserRowProps) {
-    console.log('muted', muted)
     const userProfilePicture = useFetchProfilePictureQuery(userId).currentData
     return (
       <div className="flex flex-row justify-between items-center p-2 hover:bg-violet-400 rounded-xl transition-all cursor-pointer w-full group gap-2">
