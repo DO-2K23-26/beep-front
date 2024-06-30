@@ -70,6 +70,9 @@ export const channelApi = createApi({
       query: (request) => `/channels/${request.channelId}/messages`,
       providesTags: ['messages'],
     }),
+    getAttachments: builder.query({
+      query: (payload) => `/channels/${payload.channelId}/attachments`,
+    }),
     createChannel: builder.mutation<CreateChannelResponse, CreateChannelRequest>({
       query: (channel) => ({
         url: `channels`,
@@ -150,6 +153,7 @@ export const {
   useGetUsersQuery,
   useGetMessagesByChannelIdQuery,
   useCreateChannelMutation,
+  useGetAttachmentsQuery,
   useCreateMessageMutation,
   useGetOneMessageQuery,
   useUpdateMessageMutation,
