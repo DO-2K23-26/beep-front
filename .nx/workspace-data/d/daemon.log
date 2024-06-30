@@ -3325,3 +3325,177 @@
 [NX Daemon Server] - 2024-06-30T16:32:05.007Z - Done responding to the client project-graph
 [NX Daemon Server] - 2024-06-30T16:32:05.007Z - Handled REQUEST_PROJECT_GRAPH. Handling time: 0. Response time: 2.
 [NX Daemon Server] - 2024-06-30T16:32:05.012Z - Established a connection. Number of open connections: 2
+[NX Daemon Server] - 2024-06-30T16:32:17.646Z - [WATCHER]: Processing file changes in outputs
+[NX Daemon Server] - 2024-06-30T16:32:17.647Z - [WATCHER]: Stopping the watcher for /home/mihai/Projets/Beep/front (sources)
+[NX Daemon Server] - 2024-06-30T16:32:17.950Z - Started listening on: /tmp/a79bf436bb256c6fccd5/d.sock
+[NX Daemon Server] - 2024-06-30T16:32:17.953Z - [WATCHER]: Subscribed to changes within: /home/mihai/Projets/Beep/front (native)
+[NX Daemon Server] - 2024-06-30T16:32:17.955Z - Established a connection. Number of open connections: 1
+[NX Daemon Server] - 2024-06-30T16:32:17.956Z - Established a connection. Number of open connections: 2
+[NX Daemon Server] - 2024-06-30T16:32:17.959Z - [REQUEST]: Client Request for Project Graph Received
+[NX Daemon Server] - 2024-06-30T16:32:18.130Z - [REQUEST]: Updated workspace context based on watched changes, recomputing project graph...
+[NX Daemon Server] - 2024-06-30T16:32:18.131Z - [REQUEST]: 
+[NX Daemon Server] - 2024-06-30T16:32:18.131Z - [REQUEST]: 
+[NX Daemon Server] - 2024-06-30T16:32:21.444Z - Time taken for 'Load Nx Plugin: /home/mihai/Projets/Beep/front/node_modules/.pnpm/nx@19.3.2_@swc-node+register@1.9.2_@swc+core@1.5.7_@swc+helpers@0.5.11__@swc+types@0.1.7_type_n5pexknj54x4762oj5yxzci6tq/node_modules/nx/src/plugins/project-json/build-nodes/package-json-next-to-project-json' 168.1805340051651ms
+[NX Daemon Server] - 2024-06-30T16:32:21.445Z - Closed a connection. Number of open connections: 1
+[33mThe CJS build of Vite's Node API is deprecated. See https://vitejs.dev/guide/troubleshooting.html#vite-cjs-node-api-deprecated for more details.[39m
+
+[vite:dts] You are building a library that may not need to generate declaration files.
+
+
+[vite:dts] You are building a library that may not need to generate declaration files.
+
+
+[vite:dts] You are building a library that may not need to generate declaration files.
+
+
+[vite:dts] You are building a library that may not need to generate declaration files.
+
+
+[vite:dts] You are building a library that may not need to generate declaration files.
+
+
+[vite:dts] You are building a library that may not need to generate declaration files.
+
+
+[vite:dts] You are building a library that may not need to generate declaration files.
+
+
+[vite:dts] You are building a library that may not need to generate declaration files.
+
+
+[vite:dts] You are building a library that may not need to generate declaration files.
+
+
+[vite:dts] You are building a library that may not need to generate declaration files.
+
+
+[vite:dts] You are building a library that may not need to generate declaration files.
+
+
+[vite:dts] You are building a library that may not need to generate declaration files.
+
+
+[vite:dts] You are building a library that may not need to generate declaration files.
+
+[NX Daemon Server] - 2024-06-30T16:32:22.418Z - [REQUEST]: Responding to the client. project-graph
+[NX Daemon Server] - 2024-06-30T16:32:22.422Z - Time taken for 'total for creating and serializing project graph' 4458.441302999854ms
+[NX Daemon Server] - 2024-06-30T16:32:22.427Z - Done responding to the client project-graph
+[NX Daemon Server] - 2024-06-30T16:32:22.427Z - Handled REQUEST_PROJECT_GRAPH. Handling time: 4458. Response time: 10.
+[NX Daemon Server] - 2024-06-30T16:32:22.692Z - [REQUEST]: Client Request for Project Graph Received
+[NX Daemon Server] - 2024-06-30T16:32:22.692Z - [REQUEST]: Responding to the client. project-graph
+[NX Daemon Server] - 2024-06-30T16:32:22.694Z - Time taken for 'total for creating and serializing project graph' 0.234484001994133ms
+[NX Daemon Server] - 2024-06-30T16:32:22.697Z - Done responding to the client project-graph
+[NX Daemon Server] - 2024-06-30T16:32:22.697Z - Handled REQUEST_PROJECT_GRAPH. Handling time: 0. Response time: 5.
+[NX Daemon Server] - 2024-06-30T16:32:22.707Z - Established a connection. Number of open connections: 2
+[NX Daemon Server] - 2024-06-30T16:35:06.562Z - [WATCHER]: Processing file changes in outputs
+[NX Daemon Server] - 2024-06-30T16:35:06.564Z - [WATCHER]: libs/pages/layout/src/lib/client/ui/current-user.tsx was modified
+[NX Daemon Server] - 2024-06-30T16:35:06.565Z - [REQUEST]: Responding to the client. File watch changed
+[NX Daemon Server] - 2024-06-30T16:35:06.565Z - Done responding to the client File watch changed
+[NX Daemon Server] - 2024-06-30T16:35:06.565Z - Handled FILE-WATCH-CHANGED. Handling time: 0. Response time: 0.
+[NX Daemon Server] - 2024-06-30T16:35:06.565Z - Time taken for 'changed-projects' 0.5642140060663223ms
+[NX Daemon Server] - 2024-06-30T16:35:06.665Z - [REQUEST]: Updated workspace context based on watched changes, recomputing project graph...
+[NX Daemon Server] - 2024-06-30T16:35:06.665Z - [REQUEST]: libs/pages/layout/src/lib/client/ui/current-user.tsx
+[NX Daemon Server] - 2024-06-30T16:35:06.665Z - [REQUEST]: 
+[NX Daemon Server] - 2024-06-30T16:35:06.820Z - Time taken for 'hash changed files from watcher' 0.7078119963407516ms
+
+[vite:dts] You are building a library that may not need to generate declaration files.
+
+[NX Daemon Server] - 2024-06-30T16:35:07.074Z - Time taken for 'build-project-configs' 168.2413899898529ms
+[NX Daemon Server] - 2024-06-30T16:35:07.571Z - [REQUEST]: Client Request for Project Graph Received
+[NX Daemon Server] - 2024-06-30T16:35:07.571Z - [REQUEST]: Responding to the client. project-graph
+[NX Daemon Server] - 2024-06-30T16:35:07.574Z - Time taken for 'total for creating and serializing project graph' 0.3536209911108017ms
+[NX Daemon Server] - 2024-06-30T16:35:07.576Z - Done responding to the client project-graph
+[NX Daemon Server] - 2024-06-30T16:35:07.576Z - Handled REQUEST_PROJECT_GRAPH. Handling time: 0. Response time: 5.
+[NX Daemon Server] - 2024-06-30T16:35:07.584Z - [REQUEST]: Responding to the client. handleContextFileData
+[NX Daemon Server] - 2024-06-30T16:35:07.585Z - Done responding to the client handleContextFileData
+[NX Daemon Server] - 2024-06-30T16:35:07.585Z - Handled GET_CONTEXT_FILE_DATA. Handling time: 0. Response time: 1.
+[NX Daemon Server] - 2024-06-30T16:35:07.586Z - Closed a connection. Number of open connections: 1
+[NX Daemon Server] - 2024-06-30T16:35:07.596Z - Closed a connection. Number of open connections: 0
+[NX Daemon Server] - 2024-06-30T16:35:07.597Z - Established a connection. Number of open connections: 1
+[NX Daemon Server] - 2024-06-30T16:35:07.597Z - Established a connection. Number of open connections: 2
+[NX Daemon Server] - 2024-06-30T16:35:07.597Z - [REQUEST]: Client Request for Project Graph Received
+[NX Daemon Server] - 2024-06-30T16:35:07.597Z - [REQUEST]: Responding to the client. project-graph
+[NX Daemon Server] - 2024-06-30T16:35:07.599Z - Time taken for 'total for creating and serializing project graph' 0.15775299072265625ms
+[NX Daemon Server] - 2024-06-30T16:35:07.599Z - Closed a connection. Number of open connections: 1
+[NX Daemon Server] - 2024-06-30T16:35:07.600Z - Done responding to the client project-graph
+[NX Daemon Server] - 2024-06-30T16:35:07.600Z - Handled REQUEST_PROJECT_GRAPH. Handling time: 0. Response time: 3.
+[NX Daemon Server] - 2024-06-30T16:35:07.609Z - [REQUEST]: Client Request for Project Graph Received
+[NX Daemon Server] - 2024-06-30T16:35:07.610Z - [REQUEST]: Responding to the client. project-graph
+[NX Daemon Server] - 2024-06-30T16:35:07.613Z - Time taken for 'total for creating and serializing project graph' 0.3458629995584488ms
+[NX Daemon Server] - 2024-06-30T16:35:07.616Z - Done responding to the client project-graph
+[NX Daemon Server] - 2024-06-30T16:35:07.616Z - Handled REQUEST_PROJECT_GRAPH. Handling time: 1. Response time: 6.
+[NX Daemon Server] - 2024-06-30T16:35:07.622Z - Established a connection. Number of open connections: 2
+[NX Daemon Server] - 2024-06-30T16:48:06.847Z - Started listening on: /tmp/a79bf436bb256c6fccd5/d.sock
+[NX Daemon Server] - 2024-06-30T16:48:06.851Z - [WATCHER]: Subscribed to changes within: /home/mihai/Projets/Beep/front (native)
+[NX Daemon Server] - 2024-06-30T16:48:06.856Z - Established a connection. Number of open connections: 1
+[NX Daemon Server] - 2024-06-30T16:48:06.858Z - Established a connection. Number of open connections: 2
+[NX Daemon Server] - 2024-06-30T16:48:06.861Z - Closed a connection. Number of open connections: 1
+[NX Daemon Server] - 2024-06-30T16:48:06.863Z - [REQUEST]: Client Request for Project Graph Received
+[NX Daemon Server] - 2024-06-30T16:48:07.077Z - [REQUEST]: Updated workspace context based on watched changes, recomputing project graph...
+[NX Daemon Server] - 2024-06-30T16:48:07.077Z - [REQUEST]: 
+[NX Daemon Server] - 2024-06-30T16:48:07.077Z - [REQUEST]: 
+
+> NX notify watch() error err=Error { kind: MaxFilesWatch, paths: ["/home/mihai/Projets/Beep/front/node_modules/.pnpm/@storybook+preview@7.6.17"] }
+
+
+> NX runtime error err=Native fs watcher error
+
+[NX Daemon Server] - 2024-06-30T16:48:10.836Z - Time taken for 'Load Nx Plugin: /home/mihai/Projets/Beep/front/node_modules/.pnpm/nx@19.3.2_@swc-node+register@1.9.2_@swc+core@1.5.7_@swc+helpers@0.5.11__@swc+types@0.1.9_type_e4ab24byqhklizh6jwkbpehdpu/node_modules/nx/src/plugins/project-json/build-nodes/package-json-next-to-project-json' 208.72668800000002ms
+[33mThe CJS build of Vite's Node API is deprecated. See https://vitejs.dev/guide/troubleshooting.html#vite-cjs-node-api-deprecated for more details.[39m
+
+[vite:dts] You are building a library that may not need to generate declaration files.
+
+
+[vite:dts] You are building a library that may not need to generate declaration files.
+
+
+[vite:dts] You are building a library that may not need to generate declaration files.
+
+
+[vite:dts] You are building a library that may not need to generate declaration files.
+
+
+[vite:dts] You are building a library that may not need to generate declaration files.
+
+
+[vite:dts] You are building a library that may not need to generate declaration files.
+
+
+[vite:dts] You are building a library that may not need to generate declaration files.
+
+
+[vite:dts] You are building a library that may not need to generate declaration files.
+
+
+[vite:dts] You are building a library that may not need to generate declaration files.
+
+
+[vite:dts] You are building a library that may not need to generate declaration files.
+
+
+[vite:dts] You are building a library that may not need to generate declaration files.
+
+
+[vite:dts] You are building a library that may not need to generate declaration files.
+
+
+[vite:dts] You are building a library that may not need to generate declaration files.
+
+[NX Daemon Server] - 2024-06-30T16:48:11.577Z - [REQUEST]: Responding to the client. project-graph
+[NX Daemon Server] - 2024-06-30T16:48:11.580Z - Time taken for 'total for creating and serializing project graph' 4714.2274449999995ms
+[NX Daemon Server] - 2024-06-30T16:48:11.584Z - Done responding to the client project-graph
+[NX Daemon Server] - 2024-06-30T16:48:11.584Z - Handled REQUEST_PROJECT_GRAPH. Handling time: 4714. Response time: 7.
+[NX Daemon Server] - 2024-06-30T16:48:11.909Z - [REQUEST]: Responding to the client. handleHashTasks
+[NX Daemon Server] - 2024-06-30T16:48:11.910Z - Done responding to the client handleHashTasks
+[NX Daemon Server] - 2024-06-30T16:48:11.910Z - Handled HASH_TASKS. Handling time: 37. Response time: 1.
+[NX Daemon Server] - 2024-06-30T16:48:15.466Z - [WATCHER]: Processing file changes in outputs
+[NX Daemon Server] - 2024-06-30T16:48:15.518Z - [WATCHER]: Processing file changes in outputs
+[NX Daemon Server] - 2024-06-30T16:48:15.538Z - [REQUEST]: Responding to the client. recordOutputsHash
+[NX Daemon Server] - 2024-06-30T16:48:15.538Z - Done responding to the client recordOutputsHash
+[NX Daemon Server] - 2024-06-30T16:48:15.538Z - Handled RECORD_OUTPUTS_HASH. Handling time: 1. Response time: 0.
+[NX Daemon Server] - 2024-06-30T16:48:21.828Z - [WATCHER]: Processing file changes in outputs
+[NX Daemon Server] - 2024-06-30T16:48:22.322Z - [WATCHER]: Processing file changes in outputs
+[NX Daemon Server] - 2024-06-30T16:48:22.379Z - [REQUEST]: Responding to the client. recordOutputsHash
+[NX Daemon Server] - 2024-06-30T16:48:22.379Z - Done responding to the client recordOutputsHash
+[NX Daemon Server] - 2024-06-30T16:48:22.379Z - Handled RECORD_OUTPUTS_HASH. Handling time: 1. Response time: 0.
+[NX Daemon Server] - 2024-06-30T16:48:22.400Z - Closed a connection. Number of open connections: 0

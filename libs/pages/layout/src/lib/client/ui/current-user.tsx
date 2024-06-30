@@ -1,5 +1,9 @@
 import { Device, UserEntity } from '@beep/contracts'
-import { ModifyProfileCardFeature, SettingsModal, SubSettings } from '@beep/settings'
+import {
+  ModifyProfileCardFeature,
+  SettingsModal,
+  SubSettings,
+} from '@beep/settings'
 import {
   Badge,
   BadgeType,
@@ -7,7 +11,7 @@ import {
   ButtonStyle,
   DialogCloseButton,
   Icon,
-  UseModalProps
+  UseModalProps,
 } from '@beep/ui'
 import { FormProvider, UseFormReturn } from 'react-hook-form'
 import { UserMediaModal } from './user-media-modal'
@@ -79,7 +83,7 @@ export default function CurrentUser({
         <DialogCloseButton
           triggerButton={<Icon name="lucide:settings" className="!w-5 !h-5" />}
           content={<SettingsModal settings={[subSetting]} />}
-  />
+        />
         <button
           className="cursor-pointer"
           onClick={() => {
