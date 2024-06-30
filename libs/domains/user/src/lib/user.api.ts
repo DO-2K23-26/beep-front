@@ -1,6 +1,5 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 // eslint-disable-next-line @nx/enforce-module-boundaries
-<<<<<<< HEAD
 import {
   backendUrl,
   ConfirmEmailRequest,
@@ -14,11 +13,8 @@ import {
   UserDisplayedEntity,
   UserEntity,
 } from '@beep/contracts'
+// eslint-disable-next-line @nx/enforce-module-boundaries
 import { RootState } from '@beep/store'
-=======
-import { backendUrl, ConfirmEmailRequest, LoginRequest, LoginResponse, RefreshRequest, RefreshResponse, RegisterResponse, UpdateUserResponse, UserConnectedEntity, UserEntity } from '@beep/contracts';
-import { RootState } from '@beep/store';
->>>>>>> f08a655 (feat(settings):init lib)
 
 export const userApi = createApi({
   reducerPath: 'userApi',
@@ -66,23 +62,6 @@ export const userApi = createApi({
       }),
       providesTags: ['me'],
     }),
-    updateMe: builder.mutation<UpdateUserResponse, FormData>({
-      query: (data) => ({
-        url: '/users/@me',
-        method: 'PUT',
-        body: data,
-        formData: true
-
-      }),
-      invalidatesTags: ['profilePicture','me']
-    }),
-    getMe: builder.query<UserEntity, void>({
-      query: () => ({
-        url: '/users/@me',
-        method: 'GET',
-      }),
-      providesTags: ['me']
-    }),
     fetchProfilePicture: builder.query<string, string>({
       query: (id) => ({
         url: `/storage/files/secure/profilePicture/${id}`,
@@ -106,13 +85,6 @@ export const userApi = createApi({
         method: 'PUT',
         body: data,
       }),
-    }),
-    confirmEmail: builder.mutation<void, ConfirmEmailRequest>({
-      query: (data) => ({
-        url: `/users/@me/email`,
-        method: 'PUT',
-        body: data
-      })
     }),
     fetchAllUsers: builder.query<UserConnectedEntity[], void>({
       query: () => '/users/display',
