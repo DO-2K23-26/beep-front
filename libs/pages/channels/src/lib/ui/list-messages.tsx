@@ -8,6 +8,7 @@ import MessageFeature from '../feature/message-feature'
 interface ListMessagesProps {
   messages: MessageEntity[]
   onUpdateMessage: (messageId: string, newContent: string) => void
+  onReply: (message: MessageEntity) => void
   onDeleteMessage: (channelId: string, messageId: string) => void
   editingMessageId: string | null
   setEditingMessageId: React.Dispatch<React.SetStateAction<string | null>>
@@ -25,7 +26,8 @@ interface ListMessagesProps {
 
 export default function ListMessages({
   messages,
-  onUpdateMessage,
+  onUpdateMessage, 
+  onReply,
   onDeleteMessage,
   editingMessageId,
   setEditingMessageId,
@@ -58,6 +60,9 @@ export default function ListMessages({
               findChannelForTag={findChannelForTag}
               selectedTaggedChannel={selectedTaggedChannel}
               setSelectedTaggedChannel={setSelectedTaggedChannel}
+              onReply={() => {
+                onReply(message)
+              }}
             />
           ))}
     </div>

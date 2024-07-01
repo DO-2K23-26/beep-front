@@ -31,6 +31,8 @@ interface MessageFeatureProps {
   editingMessageId: string | null
   setEditingMessageId: (id: string | null) => void
   isPinned: boolean
+  onReply: (message: MessageEntity) => void
+  onReply: (message: MessageEntity) => void
   findUserForTag: (value: string) => UserDisplayedEntity | undefined
   selectedTaggedUser: UserDisplayedEntity | undefined
   setSelectedTaggedUser: React.Dispatch<
@@ -56,6 +58,7 @@ export default function MessageFeature({
   editingMessageId,
   setEditingMessageId,
   isPinned,
+  onReply,
   findUserForTag,
   selectedTaggedUser,
   setSelectedTaggedUser,
@@ -312,6 +315,7 @@ export default function MessageFeature({
         isHighlighted={message.content.includes('@$' + userId)}
         onPin={onPin}
         isPinned={isPinned}
+        onReply={() => onReply(message)}
       />
     </FormProvider>
   )

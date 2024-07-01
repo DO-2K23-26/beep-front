@@ -1,7 +1,4 @@
-import {
-  MessageEntity,
-  UserEntity
-} from '@beep/contracts'
+import { MessageEntity, UserEntity } from '@beep/contracts'
 import { Button, ButtonStyle, Icon, Input } from '@beep/ui'
 import Markdoc from '@markdoc/markdoc'
 import React, { ReactNode, useEffect } from 'react'
@@ -29,6 +26,7 @@ interface MessageProps {
   replaceTagEntity: (message: ReactNode) => ReactNode
   replaceMentionChannel: (content: React.ReactNode) => React.ReactNode
   isHighlighted: boolean
+  onReply: (message: MessageEntity) => void
 }
 
 export default function Message({
@@ -47,6 +45,7 @@ export default function Message({
   updatedAt,
   onPin,
   isPinned,
+  onReply,
   replaceTagEntity,
   replaceMentionChannel,
   isHighlighted,
@@ -86,15 +85,20 @@ export default function Message({
     )
   )
 
+  // Ajoutez cette logique dans le composant Message
   return (
-    <div
-      className={
-        'flex flex-col gap-2 p-3 rounded-xl group' +
-        (isHighlighted
-          ? ' bg-green-100/60 hover:bg-green-100'
-          : ' hover:bg-violet-300')
-      }
-    >
+    <div className={'flex flex-col gap-2 p-3 rounded-xl group' + (isHighlighted ? ' bg-green-100/60 hover:bg-green-100' : ' hover:bg-violet-300')}>
+  {message.parentMessage && (
+    <div className={'flex items-center ml-4 opacity-60'}>
+      <Icon name="lucide:corner-up-right" className="w-4 h-4 mr-2" />
+      <div className="reply-to bg-violet-100 p-2 rounded">
+        <span className="text-sm text-gray-600">
+          <strong>{message.parentMessage?.owner?.username}</strong> :{' '}
+          <i>{message.parentMessage?.content.length > 30 ? message.parentMessage?.content.substring(0, 30) + " ..." : message.parentMessage?.content}</i>
+        </span>{' '}
+      </div>
+    </div>
+  )}
       <div className="flex flex-row justify-between">
         <div className="flex flex-row gap-4 items-center">
           <div className="flex flex-row gap-3 items-center overflow-hidden">
@@ -122,11 +126,12 @@ export default function Message({
                   <Icon name="lucide:trash" className="w-4 h-4" />
                 </Button>
               )}
-              <div className="flex flex-row gap-4 items-center invisible group-hover:visible">
-                <Button onClick={onPin}>
-                  <Icon name="lucide:pin" className="w-5 h-5" />
-                </Button>
-              </div>
+              <Button style={ButtonStyle.NONE} onClick={onPin}>
+                <Icon name="lucide:pin" className="w-5 h-5" />
+              </Button>
+              <Button style={ButtonStyle.NONE} onClick={() => onReply(message)}>
+                <Icon name="lucide:corner-up-left" className="w-5 h-5" />
+              </Button>
             </>
           )}
           {isEditing && (

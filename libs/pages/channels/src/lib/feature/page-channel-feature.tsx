@@ -61,14 +61,15 @@ export function PageChannelFeature() {
     UserDisplayedEntity | undefined
   >(undefined)
   const [editingMessageId, setEditingMessageId] = useState<string | null>(null)
-
+  const [replyTo, setReplyTo] = useState<string | null>(null)
   const [createMessage] = useCreateMessageMutation()
 
   const methods = useForm({
     mode: 'onChange',
     defaultValues: {
       message: '',
-    },
+      replyTo: null
+    }
   })
 
   const [dynamicSelector, setDynamicSelector] = useState<
@@ -301,6 +302,8 @@ export function PageChannelFeature() {
         })
       }
 
+      formData.set('parentMessageId', data.replyTo || '')
+
       // send the http request to the server and create a new message
       createMessage({
         channelId: channelId,
@@ -309,6 +312,7 @@ export function PageChannelFeature() {
 
       // reset the form
       methods.setValue('message', '')
+      methods.setValue('replyTo', null)
       setFiles([])
     } else {
       toast.error('A message is required')
@@ -332,6 +336,7 @@ export function PageChannelFeature() {
           type: ChannelType.TEXT,
         }}
         sendMessage={onSendMessage}
+          
         onUpdateMessage={onUpdateMessage}
         onDeleteMessage={onDeleteMessage}
         files={files}

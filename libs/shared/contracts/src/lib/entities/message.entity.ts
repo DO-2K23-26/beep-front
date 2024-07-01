@@ -11,4 +11,6 @@ export interface MessageEntity {
     createdAt?: string
     updatedAt?: string
     pinned: boolean
-  }
+    parentMessageId?: string | null
+    parentMessage?: MessageEntity | null
+}
