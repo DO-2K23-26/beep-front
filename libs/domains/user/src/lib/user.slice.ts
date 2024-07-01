@@ -26,8 +26,8 @@ export const userSlice = createSlice({
     ) {
       if (payload.payload.accessToken) {
         state.payload = JSON.parse(
-          atob(payload.payload.accessToken?.split('.')[1]),
-        );
+          atob(payload.payload.accessToken?.split('.')[1])
+        )
       }
 
       state.tokens = payload.payload
@@ -41,4 +41,3 @@ export const userSlice = createSlice({
 export const getUserState = (root: RootState) => root[USER_KEY]
 export const userReducer = userSlice.reducer
 export const userActions = userSlice.actions
-

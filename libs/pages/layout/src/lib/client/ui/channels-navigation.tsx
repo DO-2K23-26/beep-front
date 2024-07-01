@@ -86,7 +86,11 @@ export default function ChannelsNavigation({
 
   useEffect(() => {
     if (server) {
+      if (!payload) {
+        return
+      }
       setIsAdmin(server.ownerId === payload.sub)
+      console.log('isAdmin', server.ownerId === payload.sub)
     }
   }, [server, payload])
 
@@ -102,7 +106,6 @@ export default function ChannelsNavigation({
       >
         <div className="relative">
           {/* Server infos */}
-          {/* <<<<<<< HEAD */}
           <div className="absolute inset-0 z-0">
             {banner ? (
               <img
@@ -238,7 +241,7 @@ export default function ChannelsNavigation({
 
         {/* Create channel modal */}
 
-        {/* {isAdmin && (
+        {isAdmin && (
           <Button
             iconLeft={'lucide:circle-plus'}
             size={ButtonSize.REGULAR}
@@ -259,7 +262,7 @@ export default function ChannelsNavigation({
           >
             <p>Create channel</p>
           </Button>
-        )} */}
+        )}
         {/* Channels list */}
         <div className="flex flex-col gap-6 min-w-max flex-grow overflow-y-scroll no-scrollbar scroll-smooth">
           <div className="flex flex-col flex-grow gap-6">

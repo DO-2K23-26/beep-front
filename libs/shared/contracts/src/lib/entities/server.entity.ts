@@ -1,12 +1,12 @@
 export interface ServerEntity {
   id: string
   name: string
-  owner_id: string
+  ownerId: string
   visibility: 'public' | 'private'
   picture?: string
-  created_at?: string
-  updated_at?: string
-  invite_code?: string | ''
+  createdAt?: string
+  updatedAt?: string
+  inviteCode?: string | ''
   banner?: string
   description?: string
 }
