@@ -38,12 +38,18 @@ export function ChannelsNavigationFeature() {
     const handleBeforeUnload = () => {
       leaveServer(); // Call your function to leave the server
     };
-  
+    
+    const handlePageReload = () => {
+      leaveServer(); // Call your function to leave the server
+    };
+    
     window.addEventListener('beforeunload', handleBeforeUnload);
-  
-    // Clean up the event listener on component unmount
+    window.addEventListener('unload', handlePageReload);
+    
+    // Clean up the event listeners on component unmount
     return () => {
       window.removeEventListener('beforeunload', handleBeforeUnload);
+      window.removeEventListener('unload', handlePageReload);
     };
   }, []); // Make sure to include any dependencies if your leaveServer function depends on props or state
 
