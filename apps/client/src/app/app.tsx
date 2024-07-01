@@ -16,7 +16,8 @@ import { AppDispatch } from '@beep/store'
 import { LoadingScreen } from '@beep/ui'
 
 export default function App() {
-  const { tokens, isLoading, isAuthenticated, payload } = useSelector(getUserState)
+  const { tokens, isLoading, isAuthenticated, payload } =
+    useSelector(getUserState)
   const navigate = useNavigate()
   const dispatch = useDispatch<AppDispatch>()
   const [tokenRefreshInterval, setTokenRefreshInterval] =
@@ -29,7 +30,7 @@ export default function App() {
     const refreshToken = sessionStorage.getItem('refreshToken')
 
     if (accessToken && refreshToken) {
-      dispatch(userActions.setTokens({accessToken, refreshToken}))
+      dispatch(userActions.setTokens({ accessToken, refreshToken }))
     }
 
     dispatch(userActions.updateIsLoading(false))
@@ -45,7 +46,6 @@ export default function App() {
       if (tokenRefreshInterval) {
         clearInterval(tokenRefreshInterval)
       }
-
     }
   }, [tokens])
 
@@ -81,7 +81,6 @@ export default function App() {
         dispatch(userActions.setTokens({}))
         navigate('/authentication/signin')
       }
-
     }
   }, [result])
 
@@ -90,9 +89,7 @@ export default function App() {
   }
 
   if (isLoading && !pathname.includes('authentication')) {
-    return (
-      <LoadingScreen />
-    )
+    return <LoadingScreen />
   }
 
   if (
@@ -115,7 +112,14 @@ export default function App() {
                 <Route
                   key={r.path}
                   path={r.path}
-                  element={<Layout>{r.component}</Layout>}
+                  element={
+                    <Layout
+                      rightPanel={r.layout?.rightPanel || undefined}
+                      leftPanel={r.layout?.leftPanel || undefined}
+                    >
+                      {r.component}
+                    </Layout>
+                  }
                 />
               )
             )
@@ -123,7 +127,7 @@ export default function App() {
               <Route key={r.path} path={r.path} element={r.component} />
             ))
         )}
-        <Route path="*" element={<Navigate to="/servers/@me" />} />
+        <Route path="*" element={<Navigate to="/discover" />} />
       </Routes>
     </div>
   )

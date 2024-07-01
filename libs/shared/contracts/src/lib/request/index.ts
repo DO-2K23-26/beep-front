@@ -7,6 +7,7 @@ export * from './channel/create-channel.request'
 export * from './channel/join-voice-channel.request'
 
 export * from './server/create-server.request'
+export * from './server/search-server.request'
 
 export * from './message/create-message.request'
 export * from './message/update-message.request'

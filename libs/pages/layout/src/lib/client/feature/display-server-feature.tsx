@@ -20,7 +20,7 @@ export default function DisplayServerFeature({
     if (channels && channels.length > 0) {
       navigate(`/servers/${server.id}/channels/${channels[0].id}`)
     } else {
-      navigate(`/servers/@me`)
+      navigate(`/servers/${server.id}`)
     }
   }
   return <DisplayServer server={server} onServerChange={onServerChange} />

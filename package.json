@@ -4,6 +4,7 @@
   "license": "MIT",
   "scripts": {
     "start": "nx serve client",
+    "dev": "nx serve client",
     "build": "nx build client",
     "storybook": "nx run ui:storybook",
     "lint": "nx run-many -t lint",
@@ -32,8 +33,8 @@
     "@szhsin/react-menu": "^4.1.0",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.0",
-    "framer-motion": "^11.2.12",
     "date-fns": "^3.6.0",
+    "framer-motion": "^11.2.12",
     "lucide-react": "^0.396.0",
     "luxon": "^3.4.4",
     "react": "18.3.1",

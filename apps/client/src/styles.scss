@@ -2,3 +2,82 @@
 @tailwind components;
 @tailwind utilities;
 /* You can add global styles to this file, and also import other style files */
+
+:root {
+  --main-color: #3c3c3c;
+  --background-color: #f0f0f000;
+}
+
+/* Hide the default scrollbar for WebKit browsers */
+::-webkit-scrollbar {
+  width: 8px; /* Adjust the width of the scrollbar */
+  height: 8px; /* Adjust the height of the scrollbar */
+  border-radius: 100px; /* Rounded corners for the track */
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: var(--background-color); /* Background of the track */
+  border-radius: 100px; /* Rounded corners for the track */
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: var(--main-color); /* Color of the scrollbar handle */
+  border-radius: 100px; /* Rounded corners for the track */
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: var(--main-color); /* Color of the scrollbar handle on hover */
+}
+
+/* Handle on active */
+::-webkit-scrollbar-thumb:active {
+  background: var(
+    --main-color
+  ); /* Color of the scrollbar handle when active (clicked) */
+}
+
+/* Firefox scrollbar styling */
+* {
+  scrollbar-width: thin; /* Makes the scrollbar thinner */
+  scrollbar-color: var(--main-color) var(--background-color); /* Handle color and track color */
+}
+
+.custom-scrollbar {
+  overflow-y: auto; /* Enables vertical scrolling */
+  scrollbar-width: thin; /* For Firefox */
+  scrollbar-color: var(--main-color) var(--background-color); /* For Firefox */
+}
+
+/* Apply the WebKit styles within this class */
+.custom-scrollbar::-webkit-scrollbar {
+  width: 0px;
+  height: 0px;
+  border-radius: 100px; /* Rounded corners for the track */
+}
+
+.custom-scrollbar::-webkit-scrollbar:hover {
+  width: 8px;
+  height: 8px;
+  border-radius: 100px; /* Rounded corners for the track */
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: var(--background-color);
+  border-radius: 100px; /* Rounded corners for the track */
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: var(--main-color);
+  border-radius: 100px; /* Rounded corners for the track */
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: var(--main-color);
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:active {
+  background: var(--main-color);
+}

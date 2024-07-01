@@ -32,19 +32,17 @@ export function PageSigninFeature() {
   useEffect(() => {
     if (result) {
       if (result.isSuccess && result.status === 'fulfilled') {
-        console.log("RESULT", result.data)
+        console.log('RESULT', result.data)
         sessionStorage.setItem('accessToken', result.data.tokens.accessToken)
         sessionStorage.setItem('refreshToken', result.data.tokens.refreshToken)
         dispatch(userActions.setTokens(result.data.tokens))
       }
     }
-
   }, [result])
-
 
   useEffect(() => {
     if (isAuthenticated) {
-      navigate('/servers/@me')
+      navigate('/discover')
     }
   }, [isAuthenticated])
 

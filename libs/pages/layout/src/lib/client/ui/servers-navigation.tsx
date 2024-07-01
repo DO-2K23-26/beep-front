@@ -9,12 +9,12 @@ import {
 } from 'react-hook-form'
 import { useState } from 'react'
 import AddServerFeature from '../feature/add-server-feature'
+import { Link } from 'react-router-dom'
 
 interface ServersNavigationProps {
   servers: ServerEntity[] | undefined
   onPrivateMessage?: () => void
   onLogout?: () => void
-  onCreateServer: () => void
   onJoinServer: (serverId: string) => void
   openModal: React.Dispatch<React.SetStateAction<UseModalProps | undefined>>
   closeModal: () => void
@@ -25,7 +25,6 @@ export default function ServersNavigation({
   servers,
   onPrivateMessage,
   onLogout,
-  onCreateServer,
   onJoinServer,
   openModal,
   closeModal,
@@ -55,6 +54,11 @@ export default function ServersNavigation({
         >
           <Icon name="lucide:plus" className="w-5 h-5" />
         </Button>
+        <Link to="/discover">
+          <Button style={ButtonStyle.SQUARE} className="!bg-violet-50">
+            <Icon name="lucide:compass" className="w-5 h-5" />
+          </Button>
+        </Link>
       </div>
       <div className="pt-12">
         <Button

@@ -1,7 +1,10 @@
 import { Control, Controller, UseFormRegister } from 'react-hook-form'
 import { BaseSyntheticEvent, ChangeEvent } from 'react'
 import { Button, InputPicture, InputText, InputTextArea } from '@beep/ui'
-import { AddServerForm, CreateServerForm } from '../../feature/add-server-feature'
+import {
+  AddServerForm,
+  CreateServerForm,
+} from '../../feature/add-server-feature'
 
 interface CreateServerModalProps {
   register: UseFormRegister<AddServerForm>

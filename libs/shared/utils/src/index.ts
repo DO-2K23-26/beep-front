@@ -3,6 +3,7 @@ import { ReactNode, createElement } from 'react'
 export * from './lib/sort-by-key'
 export * from './lib/tw-merge'
 export * from './lib/transmit'
+export * from './lib/debounce'
 
 type ReactElementProps = {
   tag: (...props: unknown[]) => JSX.Element

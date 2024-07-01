@@ -7,6 +7,7 @@ import {
   CreateInvitationRequest,
   CreateInvitationResponse,
   OccupiedChannelEntity,
+  SearchServerRequest,
   ServerEntity,
   UserDisplayedEntity,
   JoinInvitationResponse,
@@ -27,11 +28,22 @@ const baseQuery = fetchBaseQuery({
 export const serverApi = createApi({
   reducerPath: 'serverApi',
   baseQuery,
-  tagTypes: ['servers', 'channels', 'streamingUsers', 'users'],
+  tagTypes: ['servers', 'channels', 'streamingUsers', 'users', 'publicServers'],
   endpoints: (builder) => ({
     getServers: builder.query<ServerEntity[], void>({
       query: () => `/servers`,
       providesTags: ['servers'],
+    }),
+    discoverServers: builder.query<ServerEntity[], SearchServerRequest>({
+      query: (params) => {
+        const url = new URL(`/servers/discover`, backendUrl)
+        Object.entries(params).forEach(([key, value]) =>
+          url.searchParams.append(key, value)
+        )
+        return { url: url.toString() }
+      },
+
+      providesTags: ['publicServers'],
     }),
     createServer: builder.mutation<string, FormData>({
       query: (request: FormData) => ({
@@ -214,4 +226,5 @@ export const {
   useTransmitBannerQuery,
   useTransmitPictureQuery,
   useDeleteServerMutation,
+  useDiscoverServersQuery,
 } = serverApi

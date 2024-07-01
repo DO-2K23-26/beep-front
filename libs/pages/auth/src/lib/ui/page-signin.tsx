@@ -1,5 +1,6 @@
 import { InputText, Button, ButtonStyle } from '@beep/ui'
 import { Controller, useFormContext } from 'react-hook-form'
+import { Link } from 'react-router-dom'
 
 export interface PageSigninProps {
   onSubmit: () => void
@@ -78,7 +79,9 @@ export function PageSignin({
           style={ButtonStyle.NONE}
           className="text-purple-600 font-medium hover:!bg-transparent !p-0 !min-w-0 !h-fit hidden"
         >
-          <p className="text-purple-600 font-normal hidden">Forgot password ?</p>
+          <p className="text-purple-600 font-normal hidden">
+            Forgot password ?
+          </p>
         </Button>
         <div className="flex flex-col w-full">
           <Button
@@ -96,13 +99,12 @@ export function PageSignin({
         </div>
         <div className="flex flex-row gap-1">
           <p className="font-normal">Don't have an account ?</p>
-          <Button
-            style={ButtonStyle.NONE}
+          <Link
             className="text-purple-600 font-medium hover:!bg-transparent !p-0 !min-w-0 !h-fit"
-            onClick={toSignup}
+            to="/authentication/signup"
           >
             <p className="text-purple-600 font-normal">Sign up</p>
-          </Button>
+          </Link>
         </div>
       </div>
     </div>

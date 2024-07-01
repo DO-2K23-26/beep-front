@@ -2,7 +2,7 @@ import { voiceChannelActions } from '@beep/channel'
 import {
   ChannelEntity,
   ChannelType,
-  CreateChannelRequest
+  CreateChannelRequest,
 } from '@beep/contracts'
 import { responsiveActions } from '@beep/responsive'
 import {
@@ -24,7 +24,7 @@ import { toast } from 'react-hot-toast'
 import { useDispatch, useSelector } from 'react-redux'
 import ChannelsNavigation from '../ui/channels-navigation'
 
-export default function ChannelsNavigationFeature() {
+export function ChannelsNavigationFeature() {
   const server = useSelector((state: RootState) => state.servers.server)
   const { data: streamingUsers } = useGetCurrentStreamingUsersQuery(
     server?.id ?? ''
@@ -75,7 +75,9 @@ export default function ChannelsNavigationFeature() {
   const { refetch } = useGetCurrentStreamingUsersQuery(server?.id ?? '')
   useEffect(() => {
     if (!server?.id) return
-    TransmitSingleton.subscribe(`servers/${server?.id}/movement`, (message) => { refetch() })
+    TransmitSingleton.subscribe(`servers/${server?.id}/movement`, (message) => {
+      refetch()
+    })
   }, [refetch, server])
 
   const methodsAddChannel = useForm({
@@ -96,7 +98,7 @@ export default function ChannelsNavigationFeature() {
           serverName: server.name,
         })
       )
-      joinServer({serverId: server.id, channelId: channel.id})
+      joinServer({ serverId: server.id, channelId: channel.id })
     }
   }
   const onLeaveVoiceChannel = () => {

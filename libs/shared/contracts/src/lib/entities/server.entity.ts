@@ -6,6 +6,7 @@ export interface ServerEntity {
   picture?: string
   createdAt?: string
   updatedAt?: string
+  invite_code?: string | ''
   banner?: string
   description?: string
 }

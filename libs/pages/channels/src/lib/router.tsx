@@ -8,6 +8,10 @@ export const ROUTER_CHANNELS: Route[] = [
     path: '/@me',
     component: <PageMeGeneralFeature />,
   },
+  {
+    path: '/:serverId',
+    component: <PageChannelFeature />,
+  },
   { path: '/:serverId/channels/:channelId', component: <PageChannelFeature /> },
   { path: '/invite/:inviteId', component: <PageInvitation /> },
 ]

@@ -51,6 +51,7 @@ export default function DestroyServerFeature({
       updatedAt: '',
       ownerId: '',
       picture: '',
+      visibility: 'private',
     }
     deleteServer(focusedServerId)
       .unwrap()

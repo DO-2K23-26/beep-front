@@ -217,15 +217,6 @@ export default function ChannelsNavigation({
                   <p>{server?.id ?? ''}</p>
                 </TooltipContent>
               </Tooltip>
-              {/* ======= */}
-              {/*  */}
-              {/* <div className="relative z-0 flex flex-row gap-6 p-5 bg-white bg-opacity-10 rounded-xl"> */}
-              {/* <ServerDropdownMenu server={server} /> */}
-              {/* <div className="flex flex-col items-start justify-between"> */}
-              {/* </h5> */}
-              {/*  */}
-              {/* </div> */}
-              {/* >>>>>>> 32ec56f (feat: banner and icon on channel navigation) */}
             </div>
           </div>
         </div>

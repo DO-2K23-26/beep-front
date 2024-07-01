@@ -1,5 +1,6 @@
-import { Button, ButtonStyle, Icon, InputText } from '@beep/ui';
+import { Button, ButtonStyle, Icon, InputText } from '@beep/ui'
 import { Controller, useFormContext } from 'react-hook-form'
+import { Link } from 'react-router-dom'
 
 export interface PageSignupProps {
   onSubmit: () => void
@@ -16,7 +17,7 @@ export function PageSignup({
   onSubmit,
   toSignin,
   addProfilePicture,
-  previewUrl
+  previewUrl,
 }: PageSignupProps) {
   const { control, watch } = useFormContext()
   return (
@@ -166,26 +167,29 @@ export function PageSignup({
           )}
         />
 
-
-        <label htmlFor="file_upload" className="w-full h-fit input !cursor-pointer !rounded-lg !bg-violet-50 flex flex-col justify-center items-center">
+        <label
+          htmlFor="file_upload"
+          className="w-full h-fit input !cursor-pointer !rounded-lg !bg-violet-50 flex flex-col justify-center items-center"
+        >
           <p>Profile picture</p>
         </label>
         <input
-        id="file_upload"
-        type="file"
-        className="hidden"
-        accept="image/*"
-        onChange={(e) => {
-          console.log(e.target?.files);
-          addProfilePicture(e.target?.files![0]);
-        }} />
+          id="file_upload"
+          type="file"
+          className="hidden"
+          accept="image/*"
+          onChange={(e) => {
+            console.log(e.target?.files)
+            addProfilePicture(e.target?.files![0])
+          }}
+        />
         {previewUrl && (
           <div className="flex justify-center items-center w-full">
-          <img
-            src={previewUrl}
-            alt="profile-picture"
-            className="w-40 h-40 bg-violet-50 flex justify-center items-center border-2 border-black rounded-2xl"
-          />
+            <img
+              src={previewUrl}
+              alt="profile-picture"
+              className="w-40 h-40 bg-violet-50 flex justify-center items-center border-2 border-black rounded-2xl"
+            />
           </div>
         )}
 
@@ -205,13 +209,12 @@ export function PageSignup({
         </div>
         <div className="flex flex-row gap-1">
           <p className="font-normal">Already have an account ?</p>
-          <Button
-            style={ButtonStyle.NONE}
+          <Link
             className="text-purple-600 font-medium hover:!bg-transparent !p-0 !min-w-0 !h-fit"
-            onClick={toSignin}
+            to="/authentication/signin"
           >
             <p className="text-purple-600 font-normal">Sign in</p>
-          </Button>
+          </Link>
         </div>
       </div>
     </div>

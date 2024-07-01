@@ -14,7 +14,11 @@ import {
   UserDisplayedEntity,
 } from '@beep/contracts'
 import { responsiveActions } from '@beep/responsive'
-import { useGetUsersByServerIdQuery } from '@beep/server'
+import {
+  serverActions,
+  useGetServersQuery,
+  useGetUsersByServerIdQuery,
+} from '@beep/server'
 import { AppDispatch } from '@beep/store'
 import { DynamicSelectorProps, useModal } from '@beep/ui'
 import { useEffect, useRef, useState } from 'react'
@@ -40,6 +44,8 @@ export function PageChannelFeature() {
     serverId: serverId,
     channelId: channelId,
   })
+  const { data: availableServers } = useGetServersQuery()
+
   const {
     data: messages,
     refetch,
@@ -323,7 +329,19 @@ export function PageChannelFeature() {
     TransmitSingleton.subscribe(`channels/${channelId}/message`, (message) => {
       refetch()
     })
-  }, [channelId, refetch, isSuccess])
+    if (availableServers) {
+      const curServer = availableServers.find((s) => s.id === serverId) ?? {
+        id: '',
+        name: 'You have no servers',
+        createdAt: '',
+        updatedAt: '',
+        ownerId: '',
+        picture: '',
+        visibility: 'private',
+      }
+      dispatch(serverActions.setServer(curServer))
+    }
+  }, [serverId, refetch, isSuccess, availableServers, dispatch, channelId])
 
   return messages !== undefined && channel !== undefined ? (
     <FormProvider {...methods}>

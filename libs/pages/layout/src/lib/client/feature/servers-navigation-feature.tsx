@@ -1,7 +1,7 @@
 import {
   useCreateServerMutation,
   useGetServersQuery,
-  useJoinPublicServerMutation
+  useJoinPublicServerMutation,
 } from '@beep/server'
 import { AppDispatch } from '@beep/store'
 import { useModal } from '@beep/ui'
@@ -16,7 +16,7 @@ const onPrivateMessage = (navigation: NavigateFunction) => {
   navigation('/servers/@me')
 }
 
-export default function ServersNavigationFeature() {
+export function ServersNavigationFeature() {
   const { data: servers } = useGetServersQuery()
   const [createServer] = useCreateServerMutation()
   const [joinServer] = useJoinPublicServerMutation()
@@ -40,11 +40,6 @@ export default function ServersNavigationFeature() {
     },
   })
 
-  const onCreateServer = methodsAddChannel.handleSubmit((data) => {
-    createServer(data.name)
-    closeModal()
-  })
-
   const onJoinServer = (serverId: string) => {
     joinServer(serverId)
     closeModal()
@@ -55,7 +50,6 @@ export default function ServersNavigationFeature() {
       servers={servers}
       onLogout={() => onLogout(navigate)}
       onPrivateMessage={() => onPrivateMessage(navigate)}
-      onCreateServer={onCreateServer}
       onJoinServer={onJoinServer}
       openModal={openModal}
       closeModal={closeModal}
