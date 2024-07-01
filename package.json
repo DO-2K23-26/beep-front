@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "license": "MIT",
   "scripts": {
-    "start": "nx serve client --host 0.0.0.0",
+    "start": "nx serve client",
     "build": "nx build client",
     "storybook": "nx run ui:storybook",
     "lint": "nx run-many -t lint",
