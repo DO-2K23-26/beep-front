@@ -1,14 +1,11 @@
-import {
-  MessageEntity,
-  UserEntity
-} from '@beep/contracts'
+import React, { useEffect } from 'react'
+import { MessageEntity, UserEntity } from '@beep/contracts'
 import { Button, ButtonStyle, Icon, Input } from '@beep/ui'
-import Markdoc from '@markdoc/markdoc'
-import React, { ReactNode, useEffect } from 'react'
 import { Controller, useFormContext } from 'react-hook-form'
 import AttachmentFeature from '../feature/attachment-feature'
-import { config, markdownComponents } from '../utils/markdown-config'
-import { preprocessMarkdown } from '../utils/markdown-parser'
+import Markdoc from "@markdoc/markdoc"
+import { config, markdownComponents } from "../utils/markdown-config"
+import { preprocessMarkdown } from "../utils/markdown-parser"
 
 interface MessageProps {
   message: MessageEntity
@@ -23,54 +20,41 @@ interface MessageProps {
   onDelete: (() => void) | null
   cancelEditing: () => void
   createdAt: string
-  updatedAt?: string
-  onPin: () => void
-  isPinned?: boolean
-  replaceTagEntity: (message: ReactNode) => ReactNode
-  replaceMentionChannel: (content: React.ReactNode) => React.ReactNode
-  isHighlighted: boolean
+  payload?: any
 }
 
 export default function Message({
-  message,
   user,
-  image,
-  gif,
-  video,
-  isEditing,
-  profilePicture,
-  switchEditing,
-  onUpdateMessage,
+  message,
   onDelete,
+  isEditing,
+  switchEditing,
+  profilePicture,
+  onUpdateMessage,
   cancelEditing,
   createdAt,
-  updatedAt,
-  onPin,
-  isPinned,
-  replaceTagEntity,
-  replaceMentionChannel,
-  isHighlighted,
+  payload,
 }: Readonly<MessageProps>) {
   const { control } = useFormContext()
 
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
       if (event.key === 'Escape') {
-        cancelEditing()
+        cancelEditing();
       } else if (event.key === 'Enter') {
-        event.preventDefault()
-        onUpdateMessage()
+        event.preventDefault();
+        onUpdateMessage();
       }
-    }
+    };
 
     if (isEditing) {
-      document.addEventListener('keydown', handleKeyDown)
+      document.addEventListener('keydown', handleKeyDown);
     }
 
     return () => {
-      document.removeEventListener('keydown', handleKeyDown)
-    }
-  }, [isEditing, cancelEditing, onUpdateMessage])
+      document.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [isEditing, cancelEditing, onUpdateMessage]);
 
   // Convert markdown to Markdoc nodes
   const adjustLineBreaks = preprocessMarkdown(message.content)
@@ -78,23 +62,12 @@ export default function Message({
   // Transform nodes to a Markdoc AST
   const ast = Markdoc.transform(nodes, config)
   // Render the AST to React elements
-  const renderedMessage = replaceMentionChannel(
-    replaceTagEntity(
-      Markdoc.renderers.react(ast, React, {
-        components: markdownComponents,
-      })
-    )
-  )
+  const renderedMessage = Markdoc.renderers.react(ast, React, {
+    components: markdownComponents,
+  })
 
   return (
-    <div
-      className={
-        'flex flex-col gap-2 p-3 rounded-xl group' +
-        (isHighlighted
-          ? ' bg-green-100/60 hover:bg-green-100'
-          : ' hover:bg-violet-300')
-      }
-    >
+    <div className="flex flex-col gap-2 hover:bg-violet-300 p-3 rounded-xl group">
       <div className="flex flex-row justify-between">
         <div className="flex flex-row gap-4 items-center">
           <div className="flex flex-row gap-3 items-center overflow-hidden">
@@ -110,24 +83,15 @@ export default function Message({
           <p className="font-normal text-xs truncate">{createdAt}</p>
         </div>
         <div className="flex flex-row gap-4 items-center invisible group-hover:visible pr-2">
-          {!isPinned && (
-            <>
-              {switchEditing && !isEditing && (
-                <Button style={ButtonStyle.NONE} onClick={switchEditing}>
-                  <Icon name="lucide:pencil" className="w-4 h-4" />
-                </Button>
-              )}
-              {onDelete && (
-                <Button style={ButtonStyle.NONE} onClick={onDelete}>
-                  <Icon name="lucide:trash" className="w-4 h-4" />
-                </Button>
-              )}
-              <div className="flex flex-row gap-4 items-center invisible group-hover:visible">
-                <Button onClick={onPin}>
-                  <Icon name="lucide:pin" className="w-5 h-5" />
-                </Button>
-              </div>
-            </>
+          {switchEditing && !isEditing && (payload && payload.sub === user?.id) && (
+            <Button style={ButtonStyle.NONE} onClick={switchEditing}>
+              <Icon name="lucide:pencil" className="w-4 h-4" />
+            </Button>
+          )}
+          {onDelete && (
+            <Button style={ButtonStyle.NONE} onClick={onDelete}>
+              <Icon name="lucide:trash" className="w-4 h-4 hidden" />
+            </Button>
           )}
           {isEditing && (
             <Button style={ButtonStyle.NONE} onClick={cancelEditing}>
@@ -150,10 +114,7 @@ export default function Message({
                     type="text"
                     className="rounded-xl bg-violet-50 px-4 h-full w-full"
                   />
-                  <Button
-                    style={ButtonStyle.NONE}
-                    onClick={() => onUpdateMessage()}
-                  >
+                  <Button style={ButtonStyle.NONE} onClick={() => onUpdateMessage()}>
                     <Icon name="lucide:save" className="w-10 h-10 visible" />
                   </Button>
                 </div>
@@ -165,11 +126,9 @@ export default function Message({
             <div className="text-xs font-semibold break-all">
               {renderedMessage}
             </div>
-
-            {message.attachments &&
-              message.attachments.map((attachment, i) => (
-                <AttachmentFeature attachment={attachment} key={i} />
-              ))}
+            {message.attachments && message.attachments.map((attachment, i) => (
+              <AttachmentFeature attachment={attachment} key={i} />
+            ))}
           </div>
         )}
       </div>

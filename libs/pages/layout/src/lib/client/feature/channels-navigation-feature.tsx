@@ -32,8 +32,9 @@ export default function ChannelsNavigationFeature() {
   const dispatch = useDispatch<AppDispatch>()
   const { openModal, closeModal } = useModal()
   const { data: servers } = useGetServersQuery()
-  const { data: channels } = useGetServerChannelsQuery(server?.id ?? skipToken)
+  const { data: channels } = useGetServerChannelsQuery(server?.id)
 
+  useEffect(() => {console.log("serverid: "+ server?.id);}, [servers,server])
   useEffect(() => {
     if (!server && servers && servers.length > 0) {
       dispatch(serverActions.setServer(servers![0]))

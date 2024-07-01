@@ -1,6 +1,9 @@
-import { MessageEntity, UserDisplayedEntity } from '@beep/contracts'
+import {
+  ChannelEntity,
+  MessageEntity,
+  UserDisplayedEntity,
+} from '@beep/contracts'
 import MessageFeature from '../feature/message-feature'
-import { useState } from 'react'
 
 interface ListMessagesProps {
   messages: MessageEntity[]
@@ -10,10 +13,29 @@ interface ListMessagesProps {
   setEditingMessageId: React.Dispatch<React.SetStateAction<string | null>>
   findUserForTag: (value: string) => UserDisplayedEntity | undefined
   selectedTaggedUser: UserDisplayedEntity | undefined
-  setSelectedTaggedUser: React.Dispatch<React.SetStateAction<UserDisplayedEntity | undefined>>
+  setSelectedTaggedUser: React.Dispatch<
+    React.SetStateAction<UserDisplayedEntity | undefined>
+  >
+  findChannelForTag: (tag: string) => ChannelEntity | undefined
+  selectedTaggedChannel: ChannelEntity | undefined
+  setSelectedTaggedChannel: React.Dispatch<
+    React.SetStateAction<ChannelEntity | undefined>
+  >
 }
 
-export default function ListMessages({ messages, onUpdateMessage, onDeleteMessage, editingMessageId, setEditingMessageId, findUserForTag, selectedTaggedUser, setSelectedTaggedUser }: ListMessagesProps) {
+export default function ListMessages({
+  messages,
+  onUpdateMessage,
+  onDeleteMessage,
+  editingMessageId,
+  setEditingMessageId,
+  findUserForTag,
+  selectedTaggedUser,
+  setSelectedTaggedUser,
+  findChannelForTag,
+  selectedTaggedChannel,
+  setSelectedTaggedChannel,
+}: ListMessagesProps) {
   return (
     <div className="flex flex-col-reverse gap-6 overflow-y-scroll no-scrollbar scroll-smooth h-full">
       {messages &&
@@ -29,10 +51,13 @@ export default function ListMessages({ messages, onUpdateMessage, onDeleteMessag
               message={message}
               editingMessageId={editingMessageId}
               setEditingMessageId={setEditingMessageId}
-              isPinned= {false}
+              isPinned={false}
               findUserForTag={findUserForTag}
               selectedTaggedUser={selectedTaggedUser}
               setSelectedTaggedUser={setSelectedTaggedUser}
+              findChannelForTag={findChannelForTag}
+              selectedTaggedChannel={selectedTaggedChannel}
+              setSelectedTaggedChannel={setSelectedTaggedChannel}
             />
           ))}
     </div>

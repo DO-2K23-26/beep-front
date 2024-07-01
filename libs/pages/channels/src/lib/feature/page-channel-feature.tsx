@@ -1,9 +1,18 @@
 import {
-  useCreateMessageMutation, useDeleteMessageMutation,
+  useCreateMessageMutation,
+  useDeleteMessageMutation,
   useGetChannelQuery,
-  useGetMessagesByChannelIdQuery, useUpdateMessageMutation
+  useGetMessagesByChannelIdQuery,
+  useUpdateMessageMutation,
 } from '@beep/channel'
-import { ChannelType, UserDisplayedEntity, backendUrl } from '@beep/contracts'
+import { useGetServerChannelsQuery } from '@beep/server'
+import { skipToken } from '@reduxjs/toolkit/query'
+import {
+  ChannelEntity,
+  ChannelType,
+  backendUrl,
+  UserDisplayedEntity,
+} from '@beep/contracts'
 import { responsiveActions } from '@beep/responsive'
 import { useGetUsersByServerIdQuery } from '@beep/server'
 import { AppDispatch } from '@beep/store'
@@ -15,22 +24,42 @@ import { useDispatch } from 'react-redux'
 import { useParams } from 'react-router'
 import { PageChannel } from '../ui/page-channel'
 import { DynamicSelectorFeature } from './dynamic-selector-item-feature'
+import { DynamicSelectorChannelFeature } from './dynamic-selector-channel-feature'
 import { TransmitSingleton } from '@beep/utils'
 import { DeleteMessageModal } from '../ui/delete-message-modal'
 import { useGetUserByIdQuery } from '@beep/user'
+import { useFetchProfilePictureQuery } from '@beep/user'
 
 export function PageChannelFeature() {
-  const { serverId = '', channelId = '' } = useParams<{ serverId: string, channelId: string }>()
-  const { data: channel } = useGetChannelQuery({ serverId: serverId, channelId: channelId })
-  const { data: messages, refetch, isSuccess } = useGetMessagesByChannelIdQuery({ channelId })
+  const { serverId = '', channelId = '' } = useParams<{
+    serverId: string
+    channelId: string
+  }>()
+  const { data: channels } = useGetServerChannelsQuery(serverId)
+  const { data: channel } = useGetChannelQuery({
+    serverId: serverId,
+    channelId: channelId,
+  })
+  const {
+    data: messages,
+    refetch,
+    isSuccess,
+  } = useGetMessagesByChannelIdQuery({ channelId })
   const { data: usersServer } = useGetUsersByServerIdQuery(serverId)
   const { openModal, closeModal } = useModal()
   const [files, setFiles] = useState<File[]>([])
   const [previewUrls, setPreviewUrls] = useState<{ content: string | null }[]>(
     []
   )
-  const inputRef = useRef<HTMLInputElement>(null);
-  const [selectedTaggedUser, setSelectedTaggedUser] = useState<UserDisplayedEntity | undefined>(undefined)
+
+  const [selectedTaggedChannel, setSelectedTaggedChannel] = useState<
+    ChannelEntity | undefined
+  >(undefined)
+
+  const inputRef = useRef<HTMLInputElement>(null)
+  const [selectedTaggedUser, setSelectedTaggedUser] = useState<
+    UserDisplayedEntity | undefined
+  >(undefined)
   const [editingMessageId, setEditingMessageId] = useState<string | null>(null)
 
   const [createMessage] = useCreateMessageMutation()
@@ -38,32 +67,49 @@ export function PageChannelFeature() {
   const methods = useForm({
     mode: 'onChange',
     defaultValues: {
-      message: ''
-    }
+      message: '',
+    },
   })
 
-  const [dynamicSelector, setDynamicSelector] = useState<DynamicSelectorProps | undefined>(undefined)
+  const [dynamicSelector, setDynamicSelector] = useState<
+    DynamicSelectorProps | undefined
+  >(undefined)
 
   const updateDynamicSelector = (message: string, cursorPos: number) => {
-    const startWordIndex: number = message.slice(0, cursorPos).includes(' ') ? message.slice(0, cursorPos).lastIndexOf(' ') + 1 : 0;
-    const endWordIndex: number = message.slice(cursorPos).includes(' ') ? message.indexOf(' ', cursorPos) : message.length;
+    const startWordIndex: number = message.slice(0, cursorPos).includes(' ')
+      ? message.slice(0, cursorPos).lastIndexOf(' ') + 1
+      : 0
+    const endWordIndex: number = message.slice(cursorPos).includes(' ')
+      ? message.indexOf(' ', cursorPos)
+      : message.length
 
-    const currentWord = message.slice(startWordIndex, endWordIndex);
+    const currentWord = message.slice(startWordIndex, endWordIndex)
 
     if (currentWord[0] !== '@' && currentWord[0] !== '#') {
       setDynamicSelector(undefined)
-      return;
+      return
     }
 
-    const nonUserTagRegex = /@(?!(\$[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}))/;
-    const nonChannelTagRegex = /#(?!(\$[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}))/;
+    const nonUserTagRegex =
+      /@(?!(\$[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}))/
+    const nonChannelTagRegex =
+      /#(?!(\$[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}))/
 
-    const text: string = message.slice(startWordIndex, endWordIndex).trim();
+    const text: string = message.slice(startWordIndex, endWordIndex).trim()
     if (nonUserTagRegex.test(text)) {
-      const elements = usersServer ? usersServer.filter(u => u.username.toLowerCase().includes(text.slice(1).toLowerCase()) || text.slice(1) === '').map(user => ({
-        id: user.id,
-        content: <DynamicSelectorFeature user={user} />
-      })) : []
+      const elements = usersServer
+        ? usersServer
+            .filter(
+              (u) =>
+                u.username
+                  .toLowerCase()
+                  .includes(text.slice(1).toLowerCase()) || text.slice(1) === ''
+            )
+            .map((user) => ({
+              id: user.id,
+              content: <DynamicSelectorFeature user={user} />,
+            }))
+        : []
 
       if (elements.length === 0) {
         setDynamicSelector(undefined)
@@ -74,7 +120,12 @@ export function PageChannelFeature() {
           maxElements: 5,
           emptyMessage: 'Any user.',
           onSelect: (id) => {
-            methods.setValue('message', message.slice(0, startWordIndex) + `@$${id}` + message.slice(endWordIndex))
+            methods.setValue(
+              'message',
+              message.slice(0, startWordIndex) +
+                `@$${id}` +
+                message.slice(endWordIndex)
+            )
             setDynamicSelector(undefined)
           },
         })
@@ -82,37 +133,45 @@ export function PageChannelFeature() {
     } else if (nonChannelTagRegex.test(text)) {
       setDynamicSelector({
         title: 'Text channels',
-        elements: [
-          {
-            id: '56bd5d7c-8874-45a5-b2a4-4457b2bc2ed2',
-            content: <p># DO</p>
-          },
-          {
-            id: '4febae3f-37fc-4cd5-be87-529f30c0378e',
-            content: <p># IG</p>
-          },
-          {
-            id: 'b50bb44a-2ec6-4c87-9e75-e45b3d58c448',
-            content: <p># MEA</p>
-          }
-        ],
+        elements:
+          channels
+            ?.filter(
+              (c: { type: ChannelType; name: string }) =>
+                (c.type === ChannelType.TEXT &&
+                  c.name.toLowerCase().includes(text.slice(1).toLowerCase())) ||
+                text.slice(1) === ''
+            )
+            .map((channel) => ({
+              id: channel.id,
+              content: <DynamicSelectorChannelFeature channel={channel} />,
+            })) ?? [],
         maxElements: 5,
         emptyMessage: 'Any text channel.',
         onSelect: (id) => {
-          methods.setValue('message', `${text.slice(0, text.indexOf('#'))}#$${id}`)
+          methods.setValue(
+            'message',
+            message.slice(0, startWordIndex) +
+              `#$${id}` +
+              message.slice(endWordIndex)
+          )
           setDynamicSelector(undefined)
-        }
+        },
       })
     } else {
       setDynamicSelector(undefined)
     }
   }
 
-  const handleInputChange = (value: string, onChange: (value: string) => void) => {
+  const handleInputChange = (
+    value: string,
+    onChange: (value: string) => void
+  ) => {
     onChange(value)
     if (value === undefined || value === '') return
 
-    const cursorPos: number = inputRef.current ? inputRef.current.selectionStart! : 0
+    const cursorPos: number = inputRef.current
+      ? inputRef.current.selectionStart!
+      : 0
 
     updateDynamicSelector(value, cursorPos)
   }
@@ -120,15 +179,24 @@ export function PageChannelFeature() {
   const handleCursorChange = () => {
     if (inputRef.current) {
       const value = inputRef.current.value
-      const cursorPos: number = inputRef.current ? inputRef.current.selectionStart! : 0
+      const cursorPos: number = inputRef.current
+        ? inputRef.current.selectionStart!
+        : 0
 
       updateDynamicSelector(value, cursorPos)
     }
   }
 
+  const findChannelForTag = (tag: string): ChannelEntity | undefined => {
+    if (channels) {
+      return channels.find((c) => c.id === tag.slice(2))
+    }
+    return undefined
+  }
+
   const findUserForTag = (tag: string): UserDisplayedEntity | undefined => {
     if (usersServer) {
-      const user = usersServer.find(u => u.id === tag.slice(2))
+      const user = usersServer.find((u) => u.id === tag.slice(2))
       if (user) {
         return user
       }
@@ -159,7 +227,7 @@ export function PageChannelFeature() {
       reader.onloadend = () => {
         setPreviewUrls((prev) => [
           ...prev,
-          { content: reader.result as string }
+          { content: reader.result as string },
         ])
       }
       reader.readAsDataURL(file)
@@ -180,7 +248,7 @@ export function PageChannelFeature() {
       await updateMessage({
         channelId: channelId,
         messageId: messageId,
-        content: newContent
+        content: newContent,
       }).unwrap()
     } catch (error) {
       console.error('Error updating message')
@@ -198,7 +266,7 @@ export function PageChannelFeature() {
             onDeleteMessage={async () => {
               await deleteMessage({
                 channelId: channelId,
-                messageId: messageId
+                messageId: messageId,
               }).unwrap()
               closeModal()
             }}
@@ -212,12 +280,18 @@ export function PageChannelFeature() {
 
   const onSendMessage = methods.handleSubmit(async (data) => {
     // check if message is not empty OR files are not empty
-    if ('message' in data && ((data.message !== '' && data.message !== undefined) || files.length > 0)) {
+    if (
+      'message' in data &&
+      ((data.message !== '' && data.message !== undefined) || files.length > 0)
+    ) {
       // create a form data object for the http request
       const formData: FormData = new FormData()
 
       // set the content of the message -> { content: data.message }
-      formData.set('content', data.message === '' || data.message === undefined ? ' ' : data.message)
+      formData.set(
+        'content',
+        data.message === '' || data.message === undefined ? ' ' : data.message
+      )
 
       // if files are present, append them to the form data object
       if (files.length > 0) {
@@ -230,7 +304,7 @@ export function PageChannelFeature() {
       // send the http request to the server and create a new message
       createMessage({
         channelId: channelId,
-        body: formData
+        body: formData,
       })
 
       // reset the form
@@ -242,42 +316,45 @@ export function PageChannelFeature() {
   })
 
   useEffect(() => {
-    TransmitSingleton.subscribe(`channels/${channelId}/message`, (message) => { refetch() })
+    TransmitSingleton.subscribe(`channels/${channelId}/message`, (message) => {
+      refetch()
+    })
   }, [channelId, refetch, isSuccess])
 
-  return (
-    messages !== undefined && channel !== undefined ? (
-      <FormProvider {...methods}>
-        <PageChannel
-          messages={messages}
-          channel={{
-            id: channel.id,
-            name: channel.name,
-            serverId: channelId,
-            type: ChannelType.TEXT,
-          }}
-          sendMessage={onSendMessage}
-          onUpdateMessage={onUpdateMessage}
-          onDeleteMessage={onDeleteMessage}
-          files={files}
-          filesPreview={previewUrls}
-          onAddFiles={onAddFile}
-          onDeleteFile={onDeleteFile}
-          hideRightDiv={hideRightDiv}
-          hideLeftDiv={hideLeftDiv}
-          inputRef={inputRef}
-          editingMessageId={editingMessageId}
-          setEditingMessageId={setEditingMessageId}
-          onChange={handleInputChange}
-          onCursorChange={handleCursorChange}
-          dynamicSelector={dynamicSelector}
-          findUserForTag={findUserForTag}
-          selectedTaggedUser={selectedTaggedUser}
-          setSelectedTaggedUser={setSelectedTaggedUser}
-        />
-      </FormProvider>
-    ) : (
-      <p>Data is loading... Beboup beboup</p>
-    )
+  return messages !== undefined && channel !== undefined ? (
+    <FormProvider {...methods}>
+      <PageChannel
+        messages={messages}
+        channel={{
+          id: channel.id,
+          name: channel.name,
+          serverId: channelId,
+          type: ChannelType.TEXT,
+        }}
+        sendMessage={onSendMessage}
+        onUpdateMessage={onUpdateMessage}
+        onDeleteMessage={onDeleteMessage}
+        files={files}
+        filesPreview={previewUrls}
+        onAddFiles={onAddFile}
+        onDeleteFile={onDeleteFile}
+        hideRightDiv={hideRightDiv}
+        hideLeftDiv={hideLeftDiv}
+        inputRef={inputRef}
+        editingMessageId={editingMessageId}
+        setEditingMessageId={setEditingMessageId}
+        onChange={handleInputChange}
+        onCursorChange={handleCursorChange}
+        dynamicSelector={dynamicSelector}
+        findChannelForTag={findChannelForTag}
+        selectedTaggedChannel={selectedTaggedChannel}
+        setSelectedTaggedChannel={setSelectedTaggedChannel}
+        findUserForTag={findUserForTag}
+        selectedTaggedUser={selectedTaggedUser}
+        setSelectedTaggedUser={setSelectedTaggedUser}
+      />
+    </FormProvider>
+  ) : (
+    <p>Data is loading... Beboup beboup</p>
   )
 }

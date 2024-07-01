@@ -20,15 +20,12 @@ import {
   Tooltip,
   TooltipContent,
   TooltipTrigger,
-  UseModalProps
+  UseModalProps,
 } from '@beep/ui'
 
 import { getChannelsState } from '@beep/channel'
 import { getResponsiveState } from '@beep/responsive'
-import {
-  useTransmitBannerQuery,
-  useTransmitPictureQuery
-} from '@beep/server'
+import { useTransmitBannerQuery, useTransmitPictureQuery } from '@beep/server'
 import { getUserState } from '@beep/user'
 import { useEffect, useState } from 'react'
 import { FormProvider, UseFormReturn } from 'react-hook-form'
@@ -39,9 +36,7 @@ import { ListTextChannels } from './list-channels'
 import { ListVoiceChannels } from './list-voice-channels'
 import { OverviewSettingsServer } from './overview-settings-server'
 
-import { warn } from 'console'
 import DestroyServerFeature from '../feature/destroy-server-feature'
-import { get } from 'http'
 import { CreateChannelModal } from './create-channel-modal'
 
 export interface ChannelsNavigationProps {

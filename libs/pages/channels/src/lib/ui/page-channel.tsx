@@ -4,6 +4,7 @@ import { Controller, useFormContext } from 'react-hook-form'
 import ListMessages from './list-messages'
 import DisplayPinned from './display-pinned'
 import { UserInformationsFeature } from '../feature/user-informations-feature'
+import { TaggedChannelFeature } from '../feature/tagged-channel-feature'
 
 export type MessageFormValues = {
   content: string
@@ -31,6 +32,9 @@ export interface PageChannelProps {
   findUserForTag: (value: string) => UserDisplayedEntity | undefined
   selectedTaggedUser: UserDisplayedEntity | undefined
   setSelectedTaggedUser: React.Dispatch<React.SetStateAction<UserDisplayedEntity | undefined>>
+  findChannelForTag: (value: string) => ChannelEntity | undefined
+  selectedTaggedChannel: ChannelEntity | undefined
+  setSelectedTaggedChannel: React.Dispatch<React.SetStateAction<ChannelEntity | undefined>>
 }
 
 export const PageChannel = ({
@@ -54,6 +58,9 @@ export const PageChannel = ({
   findUserForTag,
   selectedTaggedUser,
   setSelectedTaggedUser,
+  findChannelForTag,
+  selectedTaggedChannel,
+  setSelectedTaggedChannel,
 }: PageChannelProps) => {
   const { control } = useFormContext()
 
@@ -89,7 +96,15 @@ export const PageChannel = ({
         </Button>
       </div>
       {/* Message list */}
-      <ListMessages messages={messages} onUpdateMessage={onUpdateMessage} onDeleteMessage={onDeleteMessage} editingMessageId={editingMessageId} setEditingMessageId={setEditingMessageId} findUserForTag={findUserForTag} selectedTaggedUser={selectedTaggedUser} setSelectedTaggedUser={setSelectedTaggedUser} />
+      <ListMessages messages={messages} onUpdateMessage={onUpdateMessage} onDeleteMessage={onDeleteMessage} editingMessageId={editingMessageId} setEditingMessageId={setEditingMessageId} findUserForTag={findUserForTag} selectedTaggedUser={selectedTaggedUser} setSelectedTaggedUser={setSelectedTaggedUser} findChannelForTag={findChannelForTag} selectedTaggedChannel={selectedTaggedChannel} setSelectedTaggedChannel={setSelectedTaggedChannel}/>
+      {
+
+          selectedTaggedChannel ? (
+              <TaggedChannelFeature channel={selectedTaggedChannel} onClick={() => setSelectedTaggedChannel(undefined)}/>
+          ) : (
+            <></>
+          )
+      }
       {
           selectedTaggedUser ? (
             <UserInformationsFeature user={{ id: selectedTaggedUser.id, username: selectedTaggedUser.username }} onClose={() => setSelectedTaggedUser(undefined)} />
