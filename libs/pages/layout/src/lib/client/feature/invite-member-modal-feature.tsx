@@ -14,7 +14,7 @@ export default function InviteMemberModalFeature() {
   const dispatch = useDispatch<AppDispatch>()
   const url = window.location.origin.replace(useLocation().pathname, '')
   const [createInvitation] = useCreateInvitationMutation()
-  const { server } = useSelector(getServersState)
+  const { server, inviteCode } = useSelector(getServersState)
 
   const onGenerateCode = async (uniqueCode: boolean, expirationDate: Date) => {
     const response = await createInvitation({
@@ -22,7 +22,9 @@ export default function InviteMemberModalFeature() {
       expiration: DateTime.fromJSDate(expirationDate),
       serverId: server?.id || '',
     })
-    dispatch(serverActions.setInviteCode(url + '/servers/invite/' + response.data?.id))
+    dispatch(
+      serverActions.setInviteCode(url + '/servers/invite/' + response.data?.id)
+    )
     toast.success('Code generated successfully')
   }
 
@@ -40,7 +42,7 @@ export default function InviteMemberModalFeature() {
       copyToClipboard={copyToClipboard}
       onGenerateCode={onGenerateCode}
       onGenerateNewCode={onGenerateNewCode}
-      serverInviteCode={server?.invite_code}
+      serverInviteCode={inviteCode || ''}
       serverVisibility={server?.visibility}
       serverId={server?.id}
     />

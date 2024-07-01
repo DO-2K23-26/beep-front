@@ -10,6 +10,7 @@ import { RootState } from '@beep/store'
 
 export const initialServersState: ServerState = {
   server: undefined,
+  inviteCode: null,
 }
 
 const serverAdapter = createEntityAdapter<ServerEntity>()
@@ -23,7 +24,7 @@ export const serverSlice = createSlice({
     },
     setInviteCode(state, action: PayloadAction<string | null>) {
       if (state.server) {
-        state.server.invite_code = action.payload as string
+        state.inviteCode = action.payload as string
       }
     },
   },
