@@ -32,9 +32,21 @@ export function ChannelsNavigationFeature() {
   const dispatch = useDispatch<AppDispatch>()
   const { openModal, closeModal } = useModal()
   const { data: servers } = useGetServersQuery()
-  const { data: channels } = useGetServerChannelsQuery(server?.id)
+  const { data: channels } = useGetServerChannelsQuery(server ? server.id : skipToken)
 
-  useEffect(() => {console.log("serverid: "+ server?.id);}, [servers,server])
+  useEffect(() => {
+    const handleBeforeUnload = () => {
+      leaveServer(); // Call your function to leave the server
+    };
+  
+    window.addEventListener('beforeunload', handleBeforeUnload);
+  
+    // Clean up the event listener on component unmount
+    return () => {
+      window.removeEventListener('beforeunload', handleBeforeUnload);
+    };
+  }, []); // Make sure to include any dependencies if your leaveServer function depends on props or state
+
   useEffect(() => {
     if (!server && servers && servers.length > 0) {
       dispatch(serverActions.setServer(servers![0]))
@@ -59,8 +71,10 @@ export function ChannelsNavigationFeature() {
     }
   }, [server, servers, dispatch])
 
+  
+  
   const [createChannel, resultCreatedChannel] =
-    useCreateChannelInServerMutation()
+  useCreateChannelInServerMutation()
   useEffect(() => {
     if (
       resultCreatedChannel.isSuccess &&
@@ -79,7 +93,7 @@ export function ChannelsNavigationFeature() {
       refetch()
     })
   }, [refetch, server])
-
+  
   const methodsAddChannel = useForm({
     mode: 'onChange',
     defaultValues: {
@@ -105,6 +119,7 @@ export function ChannelsNavigationFeature() {
     dispatch(voiceChannelActions.unsetFocusedVoiceChannel())
     leaveServer()
   }
+
   const onCreateChannel = methodsAddChannel.handleSubmit((data) => {
     const createChannelRequest: CreateChannelRequest = {
       serverId: server?.id ?? '',
