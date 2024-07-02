@@ -326,7 +326,7 @@ export function PageChannelFeature() {
   })
 
   useEffect(() => {
-    TransmitSingleton.subscribe(`channels/${channelId}/message`, (message) => {
+    TransmitSingleton.subscribe(`channels/${channelId}/messages`, (message) => {
       refetch()
     })
     if (availableServers) {
