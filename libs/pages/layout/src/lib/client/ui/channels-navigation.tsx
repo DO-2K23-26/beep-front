@@ -5,22 +5,11 @@ import {
   ServerEntity,
 } from '@beep/contracts'
 import {
-  Badge,
-  BadgeType,
   Button,
   ButtonSize,
   ButtonStyle,
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuTrigger,
-  FullScreenDialog,
-  FullScreenDialogContent,
-  FullScreenDialogTrigger,
   Icon,
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger,
-  UseModalProps,
+  UseModalProps
 } from '@beep/ui'
 
 import { getChannelsState } from '@beep/channel'
@@ -36,8 +25,10 @@ import { ListTextChannels } from './list-channels'
 import { ListVoiceChannels } from './list-voice-channels'
 import { OverviewSettingsServer } from './overview-settings-server'
 
-import DestroyServerFeature from '../feature/destroy-server-feature'
+import { SettingBodyWidth, SubSettings } from '@beep/settings'
 import { CreateChannelModal } from './create-channel-modal'
+import { ServerDropdown } from './server-dropdown'
+import { ServerPictureButton } from './server-picture-button'
 
 export interface ChannelsNavigationProps {
   textChannels?: ChannelEntity[]
@@ -74,7 +65,19 @@ export default function ChannelsNavigation({
   const [isAdmin, setIsAdmin] = useState(false)
 
   const { payload } = useSelector(getUserState)
-
+  // List of setting in the user setting modal
+  const subSetting: SubSettings = {
+    subGroupSettingTitle: 'Server',
+    settings: [
+      {
+        title: 'Overview',
+        settingComponent: server && (
+          <OverviewSettingsServer server={server} isAdmin={isAdmin} />
+        ),
+        settingBodySize: SettingBodyWidth.L,
+      },
+    ],
+  }
   useEffect(() => {
     if (server) {
       if (!payload) {
@@ -85,8 +88,8 @@ export default function ChannelsNavigation({
     }
   }, [server, payload])
 
-  const banner = useTransmitBannerQuery(server?.id || '').currentData || ''
-  const icon = useTransmitPictureQuery(server?.id || '').currentData || ''
+  const banner = useTransmitBannerQuery(server?.id ?? '').currentData ?? ''
+  const icon = useTransmitPictureQuery(server?.id ?? '').currentData ?? ''
 
   return (
     <div className={showLeftPane ? 'flex abolute w-full' : 'hidden lg:flex'}>
@@ -108,117 +111,16 @@ export default function ChannelsNavigation({
               <></>
             )}
           </div>
-          <div className="relative z-0 flex flex-row gap-6 p-5 bg-white bg-opacity-10 rounded-xl">
-            {/* <div className="flex flex-row gap-6"> */}
-            <DropdownMenu>
-              <DropdownMenuTrigger>
-                <Button
-                  style={ButtonStyle.SQUARE}
-                  onClick={() => {
-                    console.log('click')
-                  }}
-                >
-                  {server ? (
-                    icon ? (
-                      <img
-                        src={icon}
-                        alt="Server"
-                        className=" aspect-square rounded-xl hover:rounded-2x3 transition-all object-cover"
-                      />
-                    ) : (
-                      <p className="max-w-[175px] truncate">{server.name[0]}</p>
-                    )
-                  ) : (
-                    <p>@ME</p>
-                  )}
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent className="rounded-lg bg-violet-50 mt-4 mx-5 py-4 px-3">
-                {/* <DropdownMenuItemCustom
-                label="Invite users"
-                iconName="lucide:credit-card"
-              /> //need dorian PR*/}
-                {/* {isAdmin && (
-                <DropdownMenuItemCustom
-                  label="Create channel"
-                  iconName="lucide:plus"
-                  onClick={() =>
-                    openModal({
-                      content: (
-                        <FormProvider {...methodsAddChannel}>
-                          <CreateChannelModal
-                            closeModal={closeModal}
-                            onCreateChannel={onCreateChannel}
-                            methodsAddChannel={methodsAddChannel}
-                          />
-                        </FormProvider>
-                      ),
-                    })
-                  }
-                />
-            )} */}
-                {/* { <p> feature is coming</p>} */}
-                {server && (
-                  <FullScreenDialog>
-                    <FullScreenDialogTrigger asChild>
-                      <button>
-                        <DropdownMenuItemCustom
-                          label="Settings"
-                          iconName="lucide:settings"
-                        />
-                      </button>
-                    </FullScreenDialogTrigger>
-                    <FullScreenDialogContent className="w-full h-full bg-white">
-                      <OverviewSettingsServer
-                        server={server}
-                        isAdmin={isAdmin}
-                      />
-                    </FullScreenDialogContent>
-                  </FullScreenDialog>
-                )}
-
-                <hr className="bg-slate-400 h-[1px] my-2 text-slate-400" />
-                {/* <DropdownMenuItemCustom
-                label="Leave server"
-                iconName="charm:sign-out"
-                warning
-              /> */}
-                {isAdmin && (
-                  <DropdownMenuItemCustom
-                    label="Destroy server"
-                    iconName="lucide:trash-2"
-                    warning
-                    onClick={() => {
-                      openModal({
-                        content: (
-                          <DestroyServerFeature closeModal={closeModal} />
-                        ),
-                      })
-                    }}
-                  />
-                )}
-              </DropdownMenuContent>
-            </DropdownMenu>
-
-            <div className="flex flex-col items-start justify-between">
-              <h5 className="font-semibold max-w-[175px] truncate">
-                {server?.name}
-              </h5>
-              <Tooltip>
-                <TooltipTrigger>
-                  <Badge
-                    type={BadgeType.DEFAULT}
-                    title={server?.id ?? ''}
-                    className="bg-violet-50 hover:bg-violet-100 !text-violet-900 max-w-[175px] truncate cursor-pointer"
-                    onClick={() => onClickId(server?.id ?? '')}
-                  />
-                </TooltipTrigger>
-                <TooltipContent>
-                  <p>{server?.id ?? ''}</p>
-                </TooltipContent>
-              </Tooltip>
-            </div>
-          </div>
+          <ServerDropdown
+          triggerDropdownButton={<ServerPictureButton icon={icon} server={server}/>}
+            server={server}
+            icon={icon}
+            onClickId={onClickId}
+            openModal={openModal}
+            closeModal={closeModal}
+            settings={[subSetting]}
+            isAdmin={isAdmin}
+          />
         </div>
 
         {/* Create channel modal */}
@@ -284,32 +186,3 @@ export default function ChannelsNavigation({
   )
 }
 
-interface DropdownMenuItemCustomProps {
-  onClick?: () => void
-  label: string
-  iconName?: string
-  className?: string
-  warning?: boolean
-}
-function DropdownMenuItemCustom({
-  onClick,
-  label,
-  iconName,
-  className,
-  warning,
-}: DropdownMenuItemCustomProps) {
-  const colors = {
-    default: 'text-tint-900 hover:bg-violet-100 hover:text-tint-900',
-    warning: 'text-red-600 fill-red-600 hover:bg-red-100 hover:text-red-600',
-  }
-  const focusedColor = warning ? colors.warning : colors.default
-  return (
-    <button
-      className={`flex items-center gap-2 pl-2 py-1 pr-9 ${className} ${focusedColor} rounded-md  transition-colors cursor-pointer`}
-      onClick={onClick}
-    >
-      {iconName && <Icon className={`${focusedColor}`} name={iconName} />}
-      <p className={`font-bold ${focusedColor}`}>{label}</p>
-    </button>
-  )
-}

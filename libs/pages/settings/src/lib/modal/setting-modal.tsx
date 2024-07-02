@@ -1,6 +1,9 @@
 import { ReactNode, useState } from 'react'
 import { ButtonNavigationList } from '../components/button-navigation-list'
-import { SubSettings } from '../models/setting-navigation-models'
+import {
+  SettingBodyWidth,
+  SubSettings,
+} from '../models/setting-navigation-models'
 
 export interface SettingsUserModalProps {
   settings: SubSettings[]
@@ -17,7 +20,12 @@ export function SettingsModal({ settings }: SettingsUserModalProps) {
     for (const subSetting of subSettings) {
       for (const setting of subSetting.settings) {
         if (setting.title === title) {
-          return setting.settingComponent
+          const width = setting.settingBodySize ?? SettingBodyWidth.S
+          return (
+            <div className={`flex flex-col pt-12 ${width}`}>
+              {setting.settingComponent}
+            </div>
+          )
         }
       }
     }
@@ -37,18 +45,8 @@ export function SettingsModal({ settings }: SettingsUserModalProps) {
           )
         })}
       </div>
-      <div className="basis-5/6 bg-violet-200 flex-col h-[100dvh]">
-        {/* affichage des paramatres */}
-        {
-          settings
-            .find((subSetting) =>
-              subSetting.settings.find(
-                (setting) => setting.title === selectedSetting
-              )
-            )
-            ?.settings.find((setting) => setting.title === selectedSetting)
-            ?.settingComponent
-        }
+      <div className="basis-5/6 bg-violet-200 flex flex-col h-[100dvh] items-center overflow-y-auto">
+        {findSettingComponentByTitle(settings, selectedSetting)}
       </div>
     </div>
   )

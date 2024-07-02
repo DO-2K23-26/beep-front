@@ -77,14 +77,20 @@ export default function CurrentUser({
           onClick={onPhone}
           className="cursor-pointer"
         >
-          <Icon name={isMuted ? "lucide:volume-x" : "lucide:volume-2"} className="!w-5 !h-5" />
+          <Icon
+            name={isMuted ? 'lucide:volume-x' : 'lucide:volume-2'}
+            className="!w-5 !h-5"
+          />
         </Button>
         <Button
           style={ButtonStyle.NONE}
           onClick={onMicrophone}
           className="cursor-pointer "
         >
-          <Icon name={isVoiceMuted ? "lucide:mic-off" : "lucide:mic"} className="!w-5 !h-5" />
+          <Icon
+            name={isVoiceMuted ? 'lucide:mic-off' : 'lucide:mic'}
+            className="!w-5 !h-5"
+          />
         </Button>
         <DialogCloseButton
           triggerButton={<Icon name="lucide:settings" className="!w-5 !h-5" />}
@@ -119,19 +125,6 @@ export default function CurrentUser({
 const subSetting: SubSettings = {
   subGroupSettingTitle: 'Account',
   settings: [
-    { title: 'account', settingComponent: <ModifyProfileCardFeature /> },
-    { title: 'voice', settingComponent: <p>voice</p> },
-    { title: 'text', settingComponent: <p>text</p> },
-  ],
-}
-// for testing purpose
-const subSetting2: SubSettings = {
-  subGroupSettingTitle: 'Set',
-  settings: [
-    { title: 'pouette', settingComponent: <p>pouette</p> },
-    {
-      title: 'pouette2',
-      settingComponent: <p>pouette2</p>,
-    },
+    { title: 'profile', settingComponent: <ModifyProfileCardFeature /> },
   ],
 }
