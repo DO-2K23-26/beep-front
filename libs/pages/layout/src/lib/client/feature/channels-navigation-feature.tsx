@@ -35,21 +35,16 @@ export function ChannelsNavigationFeature() {
   const { data: channels } = useGetServerChannelsQuery(server ? server.id : skipToken)
 
   useEffect(() => {
-    const handleBeforeUnload = () => {
+    const handleReload = () => {
       leaveServer(); // Call your function to leave the server
     };
-    
-    const handlePageReload = () => {
-      leaveServer(); // Call your function to leave the server
-    };
-    
-    window.addEventListener('beforeunload', handleBeforeUnload);
-    window.addEventListener('unload', handlePageReload);
+    window.addEventListener('beforeunload', handleReload);
+    window.addEventListener('unload', handleReload);
     
     // Clean up the event listeners on component unmount
     return () => {
-      window.removeEventListener('beforeunload', handleBeforeUnload);
-      window.removeEventListener('unload', handlePageReload);
+      window.removeEventListener('beforeunload', handleReload);
+      window.removeEventListener('unload', handleReload);
     };
   }, []); // Make sure to include any dependencies if your leaveServer function depends on props or state
 
