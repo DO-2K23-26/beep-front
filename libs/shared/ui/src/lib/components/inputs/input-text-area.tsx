@@ -60,7 +60,8 @@ export function InputTextArea(props: InputTextAreaProps) {
         <textarea
           name={name}
           id={label}
-          className="w-full min-h-[52px] mt-5 pr-3 bg-transparent appearance-none text-sm text-neutral-400 outline-0"
+          className="w-full min-h-[52px] mt-5 pr-3 bg-transparent resize-none appearance-none text-sm text-neutral-400 outline-0"
+          // !! resize-none prevents the user from resizing the textarea
           value={currentValue}
           onChange={(e) => {
             if (onChange) onChange(e)

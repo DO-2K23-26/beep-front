@@ -1,16 +1,17 @@
 import {
-  backendUrl,
   ChannelEntity,
   CreateChannelRequest,
   CreateChannelResponse,
-  CreateServerRequest,
   CreateInvitationRequest,
   CreateInvitationResponse,
+  DeleteChannelRequest,
+  JoinInvitationResponse,
   OccupiedChannelEntity,
   SearchServerRequest,
   ServerEntity,
+  UpdateChannelRequest,
   UserDisplayedEntity,
-  JoinInvitationResponse,
+  backendUrl
 } from '@beep/contracts'
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 // eslint-disable-next-line @nx/enforce-module-boundaries
@@ -99,7 +100,32 @@ export const serverApi = createApi({
         body: {
           name: request.name,
           type: request.type,
-        },
+        
+        }
+      }),
+      invalidatesTags: ['channels'],
+    }),
+    updateChannelInServer: builder.mutation<
+      ChannelEntity,
+      UpdateChannelRequest
+    >({
+      query: (request) => ({
+        url: `/servers/${request.serverId}/channels/${request.channelId}`,
+        method: 'PUT',
+        body: {
+          name: request.name,
+          description: request.description,
+        }
+      }),
+      invalidatesTags: ['channels'],
+    }),
+    deleteChannelInServer: builder.mutation<
+      ChannelEntity,
+      DeleteChannelRequest
+    >({
+      query: (request) => ({
+        url: `/servers/${request.serverId}/channels/${request.channelId}`,
+        method: 'DELETE'
       }),
       invalidatesTags: ['channels'],
     }),
@@ -216,6 +242,8 @@ export const {
   useCreateServerMutation,
   useGetServerChannelsQuery,
   useCreateChannelInServerMutation,
+  useUpdateChannelInServerMutation,
+  useDeleteChannelInServerMutation,
   useJoinVoiceChannelMutation,
   useLeaveVoiceChannelMutation,
   useGetCurrentStreamingUsersQuery,

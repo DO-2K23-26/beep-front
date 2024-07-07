@@ -350,6 +350,7 @@ export function PageChannelFeature() {
         channel={{
           id: channel.id,
           name: channel.name,
+          description: channel.description,
           serverId: channelId,
           type: ChannelType.TEXT,
         }}
