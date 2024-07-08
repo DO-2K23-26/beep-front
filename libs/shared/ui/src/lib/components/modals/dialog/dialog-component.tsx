@@ -1,4 +1,3 @@
-import { Button } from '@beep/ui'
 import { ReactNode } from 'react'
 import {
   Dialog,
@@ -8,6 +7,7 @@ import {
   DialogTitle,
   DialogTrigger
 } from './dialog'
+import { Button } from '../../buttons/button'
 
 interface DialogComponentProps {
   title: string

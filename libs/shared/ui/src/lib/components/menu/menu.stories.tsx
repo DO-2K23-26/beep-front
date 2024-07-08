@@ -1,6 +1,7 @@
 import { StoryFn } from '@storybook/react'
 import { Menu } from './menu'
-import { Button, Icon } from '@beep/ui'
+import { Button } from '../buttons/button'
+import { Icon } from '../icons/icon'
 
 export default {
   component: Menu,
@@ -20,13 +21,11 @@ Default.args = {
           name: 'React',
           link: { url: 'https://fr.react.dev/', external: true },
           contentLeft: <Icon name="fontisto:react" />,
-          onClick: () => console.log('Item 1 clicked'),
         },
         {
           name: 'Redux & RTK',
           link: { url: 'https://redux.js.org/usage/', external: true },
           contentLeft: <Icon name="fontisto:redux" />,
-          onClick: () => console.log('Item 2 clicked'),
         },
         // Ajoutez d'autres éléments de menu au besoin
       ],

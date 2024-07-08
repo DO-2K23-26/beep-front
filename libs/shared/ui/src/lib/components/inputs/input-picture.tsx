@@ -1,34 +1,22 @@
 import { classNames } from '@beep/utils'
-import { RefObject, useEffect, useRef, useState } from 'react'
+import { useRef } from 'react'
 import { Icon } from '../icons/icon'
-import { UseFormRegister } from 'react-hook-form'
-
-interface WithIcon {
-  icon: File
-  [key: string]: unknown
-}
 
 export interface InputPictureProps {
   label: string
-  disabled?: boolean
-  className?: string
-  customRef?: RefObject<HTMLInputElement>
   onChange?: (e: any) => void
   value: File | null
 }
 
 export function InputPicture({
   label,
-  disabled = false,
-  className = '',
   onChange,
   value,
 }: InputPictureProps): JSX.Element {
   const inputRef = useRef<HTMLInputElement>(null)
-  const isDisabled = disabled ? 'input--disabled' : ''
   const uuid = Math.random().toString(36).substring(7)
 
-  const activated = value ? true : false
+  const activated = !!value
 
   const previewImage = value ? URL.createObjectURL(value) : null
 
@@ -59,7 +47,7 @@ export function InputPicture({
       >
         {previewImage ? (
           <img
-            src={previewImage as string}
+            src={previewImage}
             alt="preview"
             className="h-20 rounded-md"
           />

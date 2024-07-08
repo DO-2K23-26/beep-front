@@ -1,36 +1,29 @@
-import { classNames } from '@beep/utils'
-import { RefObject, useEffect, useRef, useState } from 'react'
-import { Icon } from '../icons/icon'
 import { useUpdateBannerMutation } from '@beep/server'
+import { classNames } from '@beep/utils'
+import { useEffect, useRef, useState } from 'react'
+import { Icon } from '../icons/icon'
 
 export interface InputBannerSettingsProps {
   label: string
   name: string
-  disabled?: boolean
-  className?: string
-  customRef?: RefObject<HTMLInputElement>
   serverId?: string
   initialBanner?: string
 }
 
 export function InputBannerSettings({
   label,
-  disabled = false,
-  className = '',
   name,
   serverId = '',
   initialBanner,
 }: InputBannerSettingsProps): JSX.Element {
   const inputRef = useRef<HTMLInputElement>(null)
   const [previewImage, setPreviewImage] = useState<string | ArrayBuffer | null>(
-    initialBanner || null
+    initialBanner ?? null
   )
-  console.log(previewImage)
-  const isDisabled = disabled ? 'input--disabled' : ''
   const uuid = Math.random().toString(36).substring(7)
   const [updateBanner] = useUpdateBannerMutation()
 
-  const activated = previewImage ? true : false
+  const activated = !!previewImage
 
   useEffect(() => {
     if (inputRef.current) {
@@ -51,7 +44,7 @@ export function InputBannerSettings({
           try {
             await updateBanner({ serverId, formData }).unwrap()
           } catch (error) {
-            console.error('Error updating banner:', error)
+            //TODO: handle error
           }
         }
       })

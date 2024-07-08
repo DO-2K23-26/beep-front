@@ -1,4 +1,3 @@
-import { Icon } from '@beep/ui'
 import {
   ChangeEventHandler,
   ReactNode,
@@ -7,6 +6,7 @@ import {
   useRef,
   useState,
 } from 'react'
+import { Icon } from '../icons/icon'
 
 export interface InputTextProps {
   name: string

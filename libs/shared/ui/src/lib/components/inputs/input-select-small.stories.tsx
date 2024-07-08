@@ -1,6 +1,5 @@
-import React from 'react'
 import { StoryFn } from '@storybook/react'
-import { InputSelectSmall, InputSelectSmallProps } from '@beep/ui'
+import { InputSelectSmall, InputSelectSmallProps } from './input-select-small'
 
 export default {
   title: 'Components/InputSelectSmall',

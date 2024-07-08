@@ -1,12 +1,13 @@
 import { ReactNode, useEffect, useState } from 'react'
-import { ModalConfirmation, useModal } from '@beep/ui'
+import { useModal } from '../modal/use-modal'
+import { ModalConfirmation } from './modal-confirmation'
 
 export interface UseModalConfirmationProps {
   title: string
   description?: string | ReactNode
   action: () => void
   name?: string
-  mode?: string | undefined
+  mode?: string
   warning?: string
   isDelete?: boolean
   placeholder?: string

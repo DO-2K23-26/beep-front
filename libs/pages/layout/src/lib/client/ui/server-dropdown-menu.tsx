@@ -1,42 +1,22 @@
-import {
-  Cloud,
-  CreditCard,
-  Github,
-  Keyboard,
-  Leaf,
-  LifeBuoy,
-  LogOut,
-  Mail,
-  MessageSquare,
-  Plus,
-  PlusCircle,
-  Settings,
-  User,
-  UserPlus,
-  Users,
-} from 'lucide-react'
+import { Settings } from 'lucide-react'
 
-import { Button, ButtonStyle, DialogCloseButton } from '@beep/ui'
+import { ServerEntity } from '@beep/contracts'
+import { useTransmitPictureQuery } from '@beep/server'
+import { SettingsModal, SubSettings } from '@beep/settings'
 import {
+  Button,
+  ButtonStyle,
+  DialogCloseButton,
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuGroup,
   DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuPortal,
   DropdownMenuSeparator,
-  DropdownMenuShortcut,
-  DropdownMenuSub,
-  DropdownMenuSubContent,
-  DropdownMenuSubTrigger,
   DropdownMenuTrigger,
+  Icon,
 } from '@beep/ui'
-import { ServerEntity } from '@beep/contracts'
-import { useEffect, useState } from 'react'
-import { SettingsModal } from '@beep/settings'
+import { useState } from 'react'
 import { OverviewSettingsServer } from './overview-settings-server'
-import { SubSettings } from 'libs/pages/settings/src/lib/models/setting-navigation-models'
-import { useTransmitPictureQuery } from '@beep/server'
 
 interface ServerDropDownMenuProps {
   server?: ServerEntity
@@ -62,11 +42,7 @@ export function ServerDropdownMenu({ server }: ServerDropDownMenuProps) {
     setIsSettingsModalOpen(true)
   }
 
-  const closeSettingsModal = () => {
-    setIsSettingsModalOpen(false)
-  }
-
-  const icon = useTransmitPictureQuery(server?.id || '').currentData || ''
+  const icon = useTransmitPictureQuery(server?.id ?? '').currentData ?? ''
 
   return (
     <>
@@ -74,9 +50,7 @@ export function ServerDropdownMenu({ server }: ServerDropDownMenuProps) {
         <DropdownMenuTrigger>
           <Button
             style={ButtonStyle.SQUARE}
-            onClick={() => {
-              console.log('click')
-            }}
+
           >
             {server ? (
               icon ? (
@@ -96,31 +70,18 @@ export function ServerDropdownMenu({ server }: ServerDropDownMenuProps) {
         <DropdownMenuContent className="w-56">
           <DropdownMenuSeparator />
           <DropdownMenuGroup>
-            {/* <DropdownMenuItem>
-          <CreditCard className="mr-2 h-4 w-4" />
-          <span>Invite users</span>
-          </DropdownMenuItem> */}
-            {/* <DropdownMenuItem>
-            <Plus className="mr-2 h-4 w-4" />
-            <span>Create a room</span>
-          </DropdownMenuItem> */}
             <DropdownMenuItem onClick={handleSettingsClick}>
               <Settings className="mr-2 h-4 w-4" />
               <span>Settings</span>
               {/* quand on cliques, ca ouvre overview-settings-server.tsx */}
             </DropdownMenuItem>
-            {/* <DropdownMenuItem>
-            <LogOut className="mr-2 h-4 w-4" />
-            <span>Leave server</span>
-          </DropdownMenuItem> */}
           </DropdownMenuGroup>
         </DropdownMenuContent>
       </DropdownMenu>
-
       {isSettingsModalOpen && (
         <DialogCloseButton
-          icon={'lucide:settings'}
           content={<SettingsModal settings={[subSetting]} />}
+          triggerButton={<Icon name="lucide:settings" className="w-10 h-10" />}
         />
       )}
     </>

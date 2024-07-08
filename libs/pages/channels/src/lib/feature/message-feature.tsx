@@ -10,7 +10,11 @@ import {
   UserEntity,
 } from '@beep/contracts'
 import { getServersState } from '@beep/server'
-import { getUserState, useFetchProfilePictureQuery } from '@beep/user'
+import {
+  getUserState,
+  useFetchProfilePictureQuery,
+  useGetUsersFromQuery
+} from '@beep/user'
 import React, { ReactNode, useEffect } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
 import { toast } from 'react-hot-toast'
@@ -21,50 +25,35 @@ import Message from '../ui/message'
 interface MessageFeatureProps {
   message: MessageEntity
   user?: UserEntity
-  image?: string
-  gif?: string
-  video?: string
   createdAt: string
-  updatedAt?: string
   onUpdateMessage: (messageId: string, newContent: string) => void
   onDeleteMessage: (channelId: string, messageId: string) => void
   editingMessageId: string | null
   setEditingMessageId: (id: string | null) => void
   isPinned: boolean
   onReply: (message: MessageEntity) => void
-  onReply: (message: MessageEntity) => void
-  findUserForTag: (value: string) => UserDisplayedEntity | undefined
   selectedTaggedUser: UserDisplayedEntity | undefined
   setSelectedTaggedUser: React.Dispatch<
     React.SetStateAction<UserDisplayedEntity | undefined>
   >
   findChannelForTag: (tag: string) => ChannelEntity | undefined
   selectedTaggedChannel: ChannelEntity | undefined
-  setSelectedTaggedChannel: React.Dispatch<
-    React.SetStateAction<ChannelEntity | undefined>
-  >
 }
 
 export default function MessageFeature({
   message,
   user,
-  image,
-  gif,
-  video,
   createdAt,
-  updatedAt,
   onUpdateMessage,
   onDeleteMessage,
   editingMessageId,
   setEditingMessageId,
   isPinned,
   onReply,
-  findUserForTag,
   selectedTaggedUser,
   setSelectedTaggedUser,
   findChannelForTag,
   selectedTaggedChannel,
-  setSelectedTaggedChannel,
 }: MessageFeatureProps) {
   const [pinMessage, result] = usePinMessageMutation()
   const [createMessage] = useCreateMessageMutation()
@@ -72,18 +61,20 @@ export default function MessageFeature({
   const serverData = useSelector(getServersState)
   const userId: string | undefined = useSelector(getUserState).payload?.sub
   const navigate = useNavigate()
-  const userProfilePicture = user
-    ? useFetchProfilePictureQuery(user.id, {
-        skip: !user,
-      }).currentData
-    : undefined
+  const userProfilePicture = useFetchProfilePictureQuery(
+    user!.id ?? ''
+  ).currentData
+  const regex =
+    /@\$(?:[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12})/gi
+  const matches = message.content.match(regex) || []
+  const ids = matches.map((match) => match.slice(2))
+  const { data: taggedUsers } = useGetUsersFromQuery({ userIds: ids })
 
   const isEditing = editingMessageId === message.id
 
   const methods = useForm({
     mode: 'onChange',
   })
-
   const switchEditing = () => {
     if (editingMessageId && editingMessageId !== message.id) {
       setEditingMessageId(null)
@@ -118,8 +109,6 @@ export default function MessageFeature({
 
   useEffect(() => {
     if (result.isSuccess) {
-      console.log(result.data.pinned)
-
       if (result.data.pinned) {
         toast.success('Message pinned!')
         const notificationMessage = `The message with ID ${message.id} is pinned.`
@@ -160,7 +149,7 @@ export default function MessageFeature({
         setEditingMessageId(null)
       }
     } catch (error) {
-      console.error('Error updating message:', error)
+      //TODO: Handle error
     }
   })
 
@@ -170,22 +159,18 @@ export default function MessageFeature({
         onDeleteMessage(message.channelId, message.id)
       }
     } catch (error) {
-      console.error('Error deleting message')
+      //TODO: Handle error
     }
   })
 
   const replaceTagEntity = (message: ReactNode): ReactNode => {
-    if (!findUserForTag) return message
-
-    const regex =
-      /@\$(?:[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12})/gi
-
+    if (!taggedUsers) return message
     const replaceText = (text: string): ReactNode => {
       const parts: ReactNode[] = []
       let lastIndex = 0
 
       text.replace(regex, (match, offset) => {
-        const user = findUserForTag(match)
+        const user = taggedUsers.find((u) => u.id === match.slice(2))
         parts.push(text.slice(lastIndex, offset))
         parts.push(
           <span
@@ -235,8 +220,6 @@ export default function MessageFeature({
   }
 
   const replaceMentionChannel = (content: ReactNode): ReactNode => {
-    if (!findChannelForTag) return content
-
     const regex =
       /#\$(?:[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12})/gi
 
@@ -288,10 +271,8 @@ export default function MessageFeature({
   }
 
   const onClickTagChannel = (channel: ChannelEntity) => {
-    !selectedTaggedChannel ||
-    (selectedTaggedChannel && selectedTaggedChannel.id !== channel.id)
-      ? navigate(`/servers/${channel.serverId}/channels/${channel.id}`)
-      : null
+    if (selectedTaggedChannel && selectedTaggedChannel.id !== channel.id)
+      navigate(`/servers/${channel.serverId}/channels/${channel.id}`)
   }
 
   return (

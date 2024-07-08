@@ -1,11 +1,22 @@
-import { ChannelEntity, ChannelType, MessageEntity, UserDisplayedEntity } from '@beep/contracts'
-import { Button, ButtonStyle, DynamicSelector, DynamicSelectorProps, Icon, Input } from '@beep/ui'
-import { Controller, useFormContext } from 'react-hook-form'
-import ListMessages from './list-messages'
-import DisplayPinned from './display-pinned'
-import { useEffect, useState } from 'react'
-import { UserInformationsFeature } from '../feature/user-informations-feature'
+import {
+  ChannelEntity,
+  ChannelType,
+  MessageEntity,
+  UserDisplayedEntity,
+} from '@beep/contracts'
+import {
+  Button,
+  ButtonStyle,
+  DynamicSelector,
+  DynamicSelectorProps,
+  Icon,
+  Input,
+} from '@beep/ui'
+import { Controller, UseFormReturn } from 'react-hook-form'
 import { TaggedChannelFeature } from '../feature/tagged-channel-feature'
+import { UserInformationsFeature } from '../feature/user-informations-feature'
+import DisplayPinned from './display-pinned'
+import ListMessages from './list-messages'
 
 export type MessageFormValues = {
   content: string
@@ -13,9 +24,17 @@ export type MessageFormValues = {
 }
 
 export interface PageChannelProps {
+  messageForm: UseFormReturn<
+    {
+      message: string
+      replyTo: MessageEntity | null
+    },
+    any,
+    undefined
+  >
   channel: ChannelEntity
   messages: MessageEntity[]
-  sendMessage: (content: string, parentMessageId: string | null) => void // Ajout de parentMessageId
+  sendMessage: () => void
   onUpdateMessage: (messageId: string, newContent: string) => void
   onDeleteMessage: (channelId: string, messageId: string) => void
   files: File[]
@@ -30,15 +49,19 @@ export interface PageChannelProps {
   onChange?: (value: string, onChange: (value: string) => void) => void
   onCursorChange?: () => void
   dynamicSelector?: DynamicSelectorProps
-  findUserForTag: (value: string) => UserDisplayedEntity | undefined
   selectedTaggedUser: UserDisplayedEntity | undefined
-  setSelectedTaggedUser: React.Dispatch<React.SetStateAction<UserDisplayedEntity | undefined>>
+  setSelectedTaggedUser: React.Dispatch<
+    React.SetStateAction<UserDisplayedEntity | undefined>
+  >
   findChannelForTag: (value: string) => ChannelEntity | undefined
   selectedTaggedChannel: ChannelEntity | undefined
-  setSelectedTaggedChannel: React.Dispatch<React.SetStateAction<ChannelEntity | undefined>>
+  setSelectedTaggedChannel: React.Dispatch<
+    React.SetStateAction<ChannelEntity | undefined>
+  >
 }
 
 export const PageChannel = ({
+  messageForm,
   channel,
   messages,
   sendMessage,
@@ -56,27 +79,16 @@ export const PageChannel = ({
   onChange,
   onCursorChange,
   dynamicSelector,
-  findUserForTag,
   selectedTaggedUser,
   setSelectedTaggedUser,
   findChannelForTag,
   selectedTaggedChannel,
   setSelectedTaggedChannel,
 }: PageChannelProps) => {
-  const { control, setValue } = useFormContext()
-  const [replyTo, setReplyTo] = useState<MessageEntity | null>(null) // Ajout de l'état replyTo
-
-  const handleSendMessage = (content: string) => {
-    sendMessage(content, replyTo ? replyTo.id : null)
-    setReplyTo(null) // Réinitialiser replyTo après l'envoi du message
+  const replyTo = messageForm.watch('replyTo')
+  const setReplyTo = (message: MessageEntity | null) => {
+    messageForm.setValue('replyTo', message)
   }
-
-
-  useEffect(() => {
-    if (replyTo) {
-      setValue('replyTo', replyTo.id)
-    }
-  }, [replyTo])
 
   return (
     <div className="bg-violet-200 w-full p-6 flex flex-col gap-6 justify-between h-[100dvh]">
@@ -98,7 +110,14 @@ export const PageChannel = ({
             )}
             <p className="font-semibold">{channel.name}</p>
           </div>
-          <DisplayPinned channelId={channel.id} onUpdateMessage={onUpdateMessage} editingMessageId={editingMessageId} setEditingMessageId={setEditingMessageId} findUserForTag={findUserForTag} selectedTaggedUser={selectedTaggedUser} setSelectedTaggedUser={setSelectedTaggedUser} />
+          <DisplayPinned
+            channelId={channel.id}
+            onUpdateMessage={onUpdateMessage}
+            editingMessageId={editingMessageId}
+            setEditingMessageId={setEditingMessageId}
+            selectedTaggedUser={selectedTaggedUser}
+            setSelectedTaggedUser={setSelectedTaggedUser}
+          />
         </div>
         <Button
           style={ButtonStyle.SQUARE}
@@ -109,25 +128,37 @@ export const PageChannel = ({
         </Button>
       </div>
       {/* Message list */}
-      <ListMessages messages={messages} onUpdateMessage={onUpdateMessage} onDeleteMessage={onDeleteMessage} editingMessageId={editingMessageId} setEditingMessageId={setEditingMessageId} findUserForTag={findUserForTag} selectedTaggedUser={selectedTaggedUser} setSelectedTaggedUser={setSelectedTaggedUser} findChannelForTag={findChannelForTag} selectedTaggedChannel={selectedTaggedChannel} setSelectedTaggedChannel={setSelectedTaggedChannel} onReply={setReplyTo}/>
-      {
-
-          selectedTaggedChannel ? (
-              <TaggedChannelFeature channel={selectedTaggedChannel} onClick={() => setSelectedTaggedChannel(undefined)}/>
-          ) : (
-            <></>
-          )
-      }
-      {
-          selectedTaggedUser ? (
-            <UserInformationsFeature user={{ id: selectedTaggedUser.id, username: selectedTaggedUser.username }} onClose={() => setSelectedTaggedUser(undefined)} />
-          ) : (
-          <></>
-        )
-      }
+      <ListMessages
+        messages={messages}
+        onUpdateMessage={onUpdateMessage}
+        onDeleteMessage={onDeleteMessage}
+        editingMessageId={editingMessageId}
+        setEditingMessageId={setEditingMessageId}
+        selectedTaggedUser={selectedTaggedUser}
+        setSelectedTaggedUser={setSelectedTaggedUser}
+        findChannelForTag={findChannelForTag}
+        selectedTaggedChannel={selectedTaggedChannel}
+        setSelectedTaggedChannel={setSelectedTaggedChannel}
+        onReply={setReplyTo}
+      />
+      {selectedTaggedChannel ? (
+        <TaggedChannelFeature
+          channel={selectedTaggedChannel}
+          onClick={() => setSelectedTaggedChannel(undefined)}
+        />
+      ) : null}
+      {selectedTaggedUser ? (
+        <UserInformationsFeature
+          user={{
+            id: selectedTaggedUser.id,
+            username: selectedTaggedUser.username,
+          }}
+          onClose={() => setSelectedTaggedUser(undefined)}
+        />
+      ) : null}
       {/* Message input + bouttons + files */}
       <div className="flex flex-col w-full gap-3">
-        {replyTo && (
+        {replyTo ? (
           <div
             className="replying-to"
             style={{
@@ -137,8 +168,12 @@ export const PageChannel = ({
             }}
           >
             <span>
-              Répondre à <strong>{replyTo.owner?.username}</strong> :{' '}
-              <em>{replyTo.content.length > 15 ? `${replyTo.content.substring(0, 15)} ...` : replyTo.content}</em>
+              Reply to <strong>{replyTo.owner?.username}</strong> :{' '}
+              <em>
+                {replyTo.content.length > 15
+                  ? `${replyTo.content.substring(0, 15)} ...`
+                  : replyTo.content}
+              </em>
             </span>
             <button
               onClick={() => setReplyTo(null)}
@@ -147,7 +182,7 @@ export const PageChannel = ({
               <Icon name="lucide:x" className="w-4 h-4" />
             </button>
           </div>
-        )}
+        ) : null}
 
         {/* files */}
         <div className="flex flex-row gap-3 items-end w-full">
@@ -155,7 +190,7 @@ export const PageChannel = ({
             return (
               <div
                 key={index}
-                className="flex flex-col gap-2 items-center relative w-[180px] relative"
+                className="flex flex-col gap-2 items-center w-[180px] relative"
               >
                 <div className="grid grid-cols-[1fr_16px] items-end gap-2 w-[180px]">
                   <p className="truncate overflow-hidden w-[140px]">
@@ -172,6 +207,7 @@ export const PageChannel = ({
                   <img
                     className="h-[180px] w-[180px] object-cover rounded"
                     src={filesPreview[index].content ?? undefined}
+                    alt="file"
                   />
                 ) : (
                   <div className="h-[180px] w-[180px] bg-violet-600 rounded flex justify-center items-center">
@@ -197,8 +233,8 @@ export const PageChannel = ({
           {/* text input */}
           <div className="w-full h-full">
             <Controller
+              control={messageForm.control}
               name="message"
-              control={control}
               render={({ field }) => (
                 <Input
                   type="text"
@@ -217,7 +253,7 @@ export const PageChannel = ({
                   }
                   onKeyUp={onCursorChange ? (e) => onCursorChange() : undefined}
                   onKeyDown={(e: any) =>
-                    e.key === 'Enter' ? handleSendMessage(field.value) : {}
+                    e.key === 'Enter' ? sendMessage() : {}
                   }
                 />
               )}
@@ -228,7 +264,7 @@ export const PageChannel = ({
           <div className="flex flex-row gap-6">
             <Button
               style={ButtonStyle.SQUARE}
-              onClick={() => handleSendMessage('')}
+              onClick={() => sendMessage()}
               className="!bg-violet-50"
             >
               <Icon name="lucide:send" className="w-5 h-5" />
@@ -251,7 +287,6 @@ export const PageChannel = ({
               type="file"
               className="hidden"
               onChange={(e) => {
-                console.log(e.target?.files)
                 onAddFiles(e.target?.files![0])
               }}
             />

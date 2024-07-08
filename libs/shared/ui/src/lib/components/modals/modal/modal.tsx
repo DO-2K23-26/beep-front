@@ -8,8 +8,8 @@ import {
 } from 'react'
 import { ModalContext } from './modal-root'
 import * as Dialog from '@radix-ui/react-dialog'
-import { Icon } from '@beep/ui'
 import useModalAlert from '../modal-alert/use-modal-alert'
+import { Icon } from '../../icons/icon'
 
 export interface ModalProps {
   children: ReactElement
@@ -17,7 +17,6 @@ export interface ModalProps {
   defaultOpen?: boolean
   buttonClose?: boolean
   width?: number
-  height?: number | undefined | null
   className?: string
   externalOpen?: boolean
   setExternalOpen?: (e: boolean) => void
@@ -32,7 +31,6 @@ export const Modal = (props: ModalProps) => {
     children,
     trigger,
     width = 478,
-    height = null,
     className = '',
     defaultOpen = false,
     buttonClose = true,
@@ -82,7 +80,7 @@ export const Modal = (props: ModalProps) => {
 
   return (
     <Dialog.Root
-      open={externalOpen ? externalOpen : open}
+      open={externalOpen || open}
       onOpenChange={
         setExternalOpen
           ? () => setExternalOpen(!externalOpen)
@@ -112,7 +110,7 @@ export const Modal = (props: ModalProps) => {
         >
           <div className="max-h-[80vh] overflow-auto">
             {cloneElement(children, {
-              setOpen: setExternalOpen ? setExternalOpen : setOpen,
+              setOpen: setExternalOpen || setOpen,
             })}
             {buttonClose && (
               <Dialog.Close className="absolute top-4 right-4">

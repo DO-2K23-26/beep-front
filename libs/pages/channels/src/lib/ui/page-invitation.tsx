@@ -18,7 +18,6 @@ export function PageInvitation() {
   useEffect(() => {
     if (isError) {
       toast.error('Error joining the server. Please try again.')
-      console.error('Error:', error)
     }
     if (isSuccess && data) {
       toast.success('Successfully joined the server!')

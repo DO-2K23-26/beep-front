@@ -1,5 +1,5 @@
-import { InputText, InputTextProps } from '@beep/ui'
 import { StoryFn } from '@storybook/react'
+import { InputText, InputTextProps } from './input-text'
 
 export default {
   title: 'Components/InputText',

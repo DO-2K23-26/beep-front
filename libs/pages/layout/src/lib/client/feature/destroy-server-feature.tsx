@@ -21,7 +21,7 @@ export default function DestroyServerFeature({
 }: DestroyServerFeatureProps) {
   const [confirmation, setConfirmation] = useState('')
   const focusedServer = useSelector(getServersState).server
-  const [deleteServer, result] = useDeleteServerMutation()
+  const [deleteServer] = useDeleteServerMutation()
   const [error, setError] = useState<string | undefined>(undefined)
   const [loading, setLoading] = useState(false)
   const navigate = useNavigate()

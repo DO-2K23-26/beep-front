@@ -1,5 +1,5 @@
-import { InputPicture, InputPictureProps } from '@beep/ui'
 import { StoryFn } from '@storybook/react'
+import { InputPicture, InputPictureProps } from './input-picture'
 
 export default {
   title: 'Components/InputPicture',
@@ -12,5 +12,4 @@ const Template: StoryFn<InputPictureProps> = (args) => (
 export const Default = Template.bind({})
 Default.args = {
   label: 'InputPicture label',
-  name: 'test',
 }

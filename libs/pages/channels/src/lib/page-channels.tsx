@@ -3,12 +3,10 @@ import { ROUTER_CHANNELS } from './router'
 
 export function PageChannels() {
   return (
-    <>
-      <Routes>
+    <Routes>
         {ROUTER_CHANNELS.map((route) => (
           <Route key={route.path} path={route.path} element={route.component} />
         ))}
       </Routes>
-    </>
   )
 }

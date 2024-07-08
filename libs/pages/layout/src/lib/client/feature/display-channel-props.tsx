@@ -10,17 +10,16 @@ interface DisplayChannelProps {
 }
 
 const onDeleteChannel = () => {
-    console.log('Delete channel')
     toast.success('Channel deleted !')
   }
-  
+
   export default function DisplayChannelProps({ channel }: DisplayChannelProps) {
     const navigate = useNavigate()
-  
+
     const onJoinChannel = (serverId: string, channelId: string) => {
       navigate(`/servers/${serverId}/channels/${channelId}`)
     }
-  
+
     return (
       <DisplayChannel
         channel={channel}
@@ -29,4 +28,3 @@ const onDeleteChannel = () => {
       />
     )
   }
-  

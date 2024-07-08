@@ -1,6 +1,5 @@
-import React from 'react'
+import { InputRadioBox, InputRadioBoxProps } from './input-radio-box'
 import { StoryFn } from '@storybook/react'
-import { InputRadioBox, InputRadioBoxProps } from '@beep/ui'
 
 export default {
   title: 'Components/InputRadioBox',

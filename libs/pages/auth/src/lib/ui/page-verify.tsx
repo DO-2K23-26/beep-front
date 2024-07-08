@@ -1,5 +1,4 @@
 import { Button, ButtonStyle } from "@beep/ui"
-import { useNavigate } from "react-router"
 
 interface PageVerifyProps {
     stateVerification: boolean

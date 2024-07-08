@@ -1,6 +1,7 @@
-import { Icon, LoaderSpinner } from '@beep/ui'
 import { ReactNode } from 'react'
 import { Link } from 'react-router-dom'
+import { Icon } from '../icons/icon'
+import { LoaderSpinner } from '../loader-spinner/loader-spinner'
 
 export enum ButtonSize {
   XLARGE = 'xlarge',

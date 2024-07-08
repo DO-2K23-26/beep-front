@@ -11,8 +11,7 @@ import {
   ButtonStyle,
   DialogCloseButton,
   Icon,
-  Input,
-  UseModalProps,
+  UseModalProps
 } from '@beep/ui'
 
 import { FormProvider, UseFormReturn } from 'react-hook-form'

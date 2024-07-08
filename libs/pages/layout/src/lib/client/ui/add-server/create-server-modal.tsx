@@ -1,13 +1,11 @@
-import { Control, Controller, UseFormRegister } from 'react-hook-form'
-import { BaseSyntheticEvent, ChangeEvent } from 'react'
 import { Button, InputPicture, InputText, InputTextArea } from '@beep/ui'
+import { BaseSyntheticEvent } from 'react'
+import { Control, Controller } from 'react-hook-form'
 import {
-  AddServerForm,
-  CreateServerForm,
+  AddServerForm
 } from '../../feature/add-server-feature'
 
 interface CreateServerModalProps {
-  register: UseFormRegister<AddServerForm>
   control: Control<AddServerForm, any>
   onSubmit: (e: BaseSyntheticEvent) => Promise<void>
   loading: boolean
@@ -16,7 +14,6 @@ interface CreateServerModalProps {
 }
 
 export default function CreateServerModal({
-  register,
   onSubmit,
   control,
   loading,

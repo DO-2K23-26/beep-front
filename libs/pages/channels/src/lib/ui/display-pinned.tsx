@@ -1,25 +1,33 @@
-import React, { useState } from 'react';
-import { Button, ButtonSize } from '@beep/ui';
-import PinnedMessagesList from './pinned-messages-list';
-import { useFetchPinnedMessagesQuery } from '@beep/channel';
-import { UserDisplayedEntity } from '@beep/contracts';
+import React, { useState } from 'react'
+import { Button, ButtonSize } from '@beep/ui'
+import PinnedMessagesList from './pinned-messages-list'
+import { useFetchPinnedMessagesQuery } from '@beep/channel'
+import { UserDisplayedEntity } from '@beep/contracts'
 
 interface DisplayPinnedProps {
-  channelId: string;
-  onUpdateMessage: (messageId: string, newContent: string) => void;
-  editingMessageId: string | null;
-  setEditingMessageId: (id: string | null) => void;
-  findUserForTag: (value: string) => UserDisplayedEntity | undefined;
-  selectedTaggedUser: UserDisplayedEntity | undefined;
-  setSelectedTaggedUser: React.Dispatch<React.SetStateAction<UserDisplayedEntity | undefined>>;
+  channelId: string
+  onUpdateMessage: (messageId: string, newContent: string) => void
+  editingMessageId: string | null
+  setEditingMessageId: (id: string | null) => void
+  selectedTaggedUser: UserDisplayedEntity | undefined
+  setSelectedTaggedUser: React.Dispatch<
+    React.SetStateAction<UserDisplayedEntity | undefined>
+  >
 }
 
-const DisplayPinned: React.FC<DisplayPinnedProps> = ({ channelId, onUpdateMessage, editingMessageId, setEditingMessageId, findUserForTag, selectedTaggedUser, setSelectedTaggedUser }) => {
-  const [showPinnedMessages, setShowPinnedMessages] = useState<boolean>(false);
-  const { data: messages} = useFetchPinnedMessagesQuery(channelId);
+const DisplayPinned: React.FC<DisplayPinnedProps> = ({
+  channelId,
+  onUpdateMessage,
+  editingMessageId,
+  setEditingMessageId,
+  selectedTaggedUser,
+  setSelectedTaggedUser,
+}) => {
+  const [showPinnedMessages, setShowPinnedMessages] = useState<boolean>(false)
+  const { data: messages } = useFetchPinnedMessagesQuery(channelId)
 
   return (
-    <div className='relative'>
+    <div className="relative">
       <Button
         iconLeft={'lucide:pin'}
         size={ButtonSize.REGULAR}
@@ -29,10 +37,17 @@ const DisplayPinned: React.FC<DisplayPinnedProps> = ({ channelId, onUpdateMessag
         <p>Pinned messages</p>
       </Button>
       {showPinnedMessages && messages && (
-          <PinnedMessagesList messages={messages} onUpdateMessage={onUpdateMessage} editingMessageId={editingMessageId} setEditingMessageId={setEditingMessageId} findUserForTag={findUserForTag} selectedTaggedUser={selectedTaggedUser} setSelectedTaggedUser={setSelectedTaggedUser}/>
+        <PinnedMessagesList
+          messages={messages}
+          onUpdateMessage={onUpdateMessage}
+          editingMessageId={editingMessageId}
+          setEditingMessageId={setEditingMessageId}
+          selectedTaggedUser={selectedTaggedUser}
+          setSelectedTaggedUser={setSelectedTaggedUser}
+        />
       )}
     </div>
-  );
-};
+  )
+}
 
-export default DisplayPinned;
+export default DisplayPinned

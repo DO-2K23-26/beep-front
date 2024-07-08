@@ -1,8 +1,9 @@
-import { Tooltip, Truncate } from '@beep/ui'
 import { classNames } from '@beep/utils'
 import { type ClickEvent, MenuItem as Item } from '@szhsin/react-menu'
 import { ReactNode } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { Tooltip } from '../tooltip/tooltip'
+import { Truncate } from '../truncate/truncate'
 
 export interface MenuItemProps {
   name?: string
@@ -10,8 +11,6 @@ export interface MenuItemProps {
   contentLeft?: ReactNode
   contentRight?: ReactNode
   onClick?: (e: ClickEvent) => void
-  copy?: string
-  copyTooltip?: string
   containerClassName?: string
   className?: string
   textClassName?: string
@@ -29,8 +28,6 @@ export function MenuItem(props: MenuItemProps) {
     contentLeft,
     contentRight,
     onClick,
-    copy,
-    copyTooltip,
     isActive = false,
     textClassName = 'text-neutral-400 dark:text-neutral-100',
     className = '',
@@ -44,17 +41,9 @@ export function MenuItem(props: MenuItemProps) {
   const navigate = useNavigate()
   const disabledClassName = disabled ? 'opacity-50 cursor-not-allowed' : ''
 
-  const itemContent = itemContentCustom ? (
-    itemContentCustom
-  ) : (
+  const itemContent = itemContentCustom ?? (
     <>
       <div className={classNames('flex items-center truncate', className)}>
-        {/* COPY COMPONENT TOOD */}
-        {/* { copy && 
-					<div onClick={(e) => e.preventDefault()}>
-						
-					</div>
-				} */}
 
         {contentLeft && (
           <span className="mr-3" data-testid="menu-icon">
@@ -116,7 +105,7 @@ export function MenuItem(props: MenuItemProps) {
     </Item>
   )
 
-  const result = tooltip ? <Tooltip content={tooltip}>{item}</Tooltip> : item
+  const result = tooltip ? <Tooltip>{item}</Tooltip> : item
 
   return result
 }

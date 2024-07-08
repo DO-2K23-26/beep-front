@@ -6,7 +6,7 @@ import {
   getUserState,
   useFetchProfilePictureQuery,
   useGetMeQuery,
-  userActions
+  userActions,
 } from '@beep/user'
 import { TransmitSingleton } from '@beep/utils'
 import { voiceSliceSelector } from '@beep/voice'
@@ -16,7 +16,6 @@ import { toast } from 'react-hot-toast'
 import { useDispatch, useSelector } from 'react-redux'
 import CurrentUser from '../ui/current-user'
 
-
 export default function CurrentUserFeature() {
   const { data } = useGetMeQuery()
   const server = useSelector((state: RootState) => state.servers.server)
@@ -25,15 +24,17 @@ export default function CurrentUserFeature() {
 
   const onMicrophone = () => {
     if (server) dispatch(userActions.toggleIsVoiceMuted(server.id))
-    }
+  }
   const onPhone = () => {
     if (server) dispatch(userActions.toggleIsMuted(server.id))
   }
-  
+
   const { refetch } = useGetCurrentStreamingUsersQuery(server?.id ?? '')
   useEffect(() => {
     if (!server?.id) return
-    TransmitSingleton.subscribe(`users/${server?.id}/state`, (message) => { refetch() })
+    TransmitSingleton.subscribe(`users/${server?.id}/state`, (message) => {
+      refetch()
+    })
   }, [refetch, server])
 
   const { currentData } = useFetchProfilePictureQuery(data ? data.id : '1')
@@ -72,7 +73,6 @@ export default function CurrentUserFeature() {
   })
 
   const onSaveParameters = methods.handleSubmit((data) => {
-    console.log('Save parameters')
     toast.success('Settings updated !')
     closeModal()
   })
@@ -109,7 +109,7 @@ export default function CurrentUserFeature() {
           })
         })
       })
-  }, [])
+  }, [dispatch])
 
   useEffect(() => {
     const audioOutputs: Device[] = []

@@ -1,9 +1,6 @@
-import {
-  FullScreenDialog,
-  FullScreenDialogContent,
-  FullScreenDialogTrigger
-} from '@beep/ui'
+
 import { ReactNode } from 'react'
+import { FullScreenDialog, FullScreenDialogContent, FullScreenDialogTrigger } from './full-screen-dialog'
 
 interface DialogCloseButtonProps {
   triggerButton: ReactNode

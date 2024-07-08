@@ -26,7 +26,6 @@ export function DiscoverServerFeature() {
   useEffect(() => {
     refetch()
   }, [refetch, search, page])
-  console.log(data)
 
   return (
     <DiscoverServer

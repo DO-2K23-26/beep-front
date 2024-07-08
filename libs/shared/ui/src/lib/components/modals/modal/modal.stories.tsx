@@ -1,5 +1,6 @@
 import { StoryFn, type Meta } from '@storybook/react'
-import { Button, Modal, ModalContentProps } from '@beep/ui'
+import { Modal, ModalContentProps } from './modal'
+import { Button } from '../../buttons/button'
 
 export default {
   component: Modal,

@@ -1,6 +1,5 @@
-import React from 'react'
 import { StoryFn } from '@storybook/react'
-import { InputSearch, InputSearchProps } from '@beep/ui'
+import { InputSearch, InputSearchProps } from './input-search'
 
 export default {
   title: 'Components/InputSearch',

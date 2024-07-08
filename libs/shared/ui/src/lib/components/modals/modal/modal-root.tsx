@@ -1,4 +1,3 @@
-import { Modal } from '@beep/ui'
 import {
   createContext,
   Dispatch,
@@ -7,6 +6,7 @@ import {
   useState,
 } from 'react'
 import ModalAlert from '../modal-alert/modal-alert'
+import { Modal } from './modal'
 
 export interface ModalOptions {
   width: number
@@ -31,17 +31,25 @@ export const defaultContext: DefaultContextProps = {
   openModal: false,
   setOpenModal: () => true,
   setContentModal: () => <></>,
-  setOptionsModal: () => {},
+  setOptionsModal: () => {
+    /*placehold*/
+  },
   optionsModal: {
     width: 488,
     height: null,
   },
   alertClickOutside: false,
-  enableAlertClickOutside: () => {},
+  enableAlertClickOutside: () => {
+    /*placehold*/
+  },
   modalAlertOpen: false,
-  setModalAlertOpen: () => {},
+  setModalAlertOpen: () => {
+    /*placehold*/
+  },
   alertModalChoice: undefined,
-  setAlertModalChoice: () => {},
+  setAlertModalChoice: () => {
+    /*placehold*/
+  },
 }
 
 export const ModalContext = createContext<DefaultContextProps>(defaultContext)
@@ -83,7 +91,6 @@ export const ModalProvider = (props: ModalProviderProps) => {
         externalOpen={openModal}
         setExternalOpen={setOpenModal}
         width={optionsModal.width}
-        height={optionsModal.height}
       >
         {contentModal}
       </Modal>

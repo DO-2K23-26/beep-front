@@ -1,9 +1,8 @@
-import { RegisterRequest } from '@beep/contracts'
+import { useRegisterMutation } from '@beep/user'
 import { useCallback, useEffect, useState } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
 import { useNavigate } from 'react-router-dom'
 import { PageSignup } from '../ui/page-signup'
-import { useRegisterMutation } from '@beep/user'
 
 export function PageSignupFeature() {
   const navigate = useNavigate()
@@ -23,7 +22,6 @@ export function PageSignupFeature() {
       profilePicture: new File([], ''),
     },
   })
-  
 
   const toSignin = useCallback(
     () => navigate('/authentication/signedup'),
@@ -50,7 +48,6 @@ export function PageSignupFeature() {
   }, [result.isError, result.isSuccess, toSignin])
 
   const onSubmit = methods.handleSubmit((data) => {
-    console.log(data)
     const formData = new FormData()
     formData.append('email', data.email)
     formData.append('username', data.username)
@@ -58,17 +55,6 @@ export function PageSignupFeature() {
     formData.append('lastname', data.lastname)
     formData.append('password', data.password)
     formData.append('profilePicture', data.profilePicture)
-    const request: RegisterRequest = {
-      email: data.email,
-      username: data.username,
-      firstname: data.firstname,
-      lastname: data.lastname,
-      password: data.password,
-      profilePicture: methods.getValues('profilePicture')
-        ? methods.getValues('profilePicture')
-        : undefined,
-    }
-    console.log(formData)
     setLoading(true)
     register(formData)
     setLoading(false)

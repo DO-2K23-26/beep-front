@@ -3,7 +3,7 @@ import {
     getAudioInputDevice,
     getBufferLength,
     getVideoDevice,
-  } from '@beep/voice'  
+  } from '@beep/voice'
 import { FC, memo, useEffect } from 'react'
 import { useLocalMediaStream } from '../hooks/local-media-stream'
 import { Media} from '../ui/media'  //available on branch 17-... when merging the changes
@@ -26,7 +26,6 @@ export const LocalFeed: FC<LocalFeedProps> = memo(
     useEffect(() => {
       if (recorder && localMediaStream) {
         recorder.start(bufferLength)
-        console.log('connecting')
         recorder.ondataavailable = sendData
       }
       return () => {

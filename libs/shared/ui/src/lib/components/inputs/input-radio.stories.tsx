@@ -1,6 +1,5 @@
-import React from 'react';
 import { StoryFn } from '@storybook/react';
-import { InputRadio, InputRadioProps } from '@beep/ui';
+import { InputRadio, InputRadioProps } from './input-radio';
 
 export default {
   title: 'Components/InputRadio',

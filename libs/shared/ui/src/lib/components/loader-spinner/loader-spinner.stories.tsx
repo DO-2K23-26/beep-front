@@ -1,5 +1,5 @@
-import { LoaderSpinner } from '@beep/ui'
 import { StoryFn } from '@storybook/react'
+import { LoaderSpinner } from './loader-spinner'
 
 export default {
   component: LoaderSpinner,

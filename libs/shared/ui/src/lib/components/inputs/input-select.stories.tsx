@@ -1,6 +1,5 @@
-import React from 'react'
 import { StoryFn } from '@storybook/react'
-import { InputSelect, InputSelectProps } from '@beep/ui'
+import { InputSelect, InputSelectProps } from './input-select'
 
 export default {
   title: 'Components/InputSelect',

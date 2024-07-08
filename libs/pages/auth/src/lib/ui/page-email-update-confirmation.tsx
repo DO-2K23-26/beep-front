@@ -1,4 +1,3 @@
-
 export interface PageEmailUpdateConfirmation {
   state: 'pending' | 'error' | 'success'
   onErrorClick: () => void
@@ -6,10 +5,10 @@ export interface PageEmailUpdateConfirmation {
 
 export function PageEmailUpdateConfirmation({
   state,
-  onErrorClick
+  onErrorClick,
 }: PageEmailUpdateConfirmation) {
-  let title: string = ''
-  let subtitle: string = ''
+  let title = ''
+  let subtitle = ''
 
   switch (state) {
     case 'pending':
@@ -21,10 +20,10 @@ export function PageEmailUpdateConfirmation({
       break
     default:
       title = 'Oups something went wrong'
-      subtitle = 'Either the token is expired or you are not allowed to do that.'
+      subtitle =
+        'Either the token is expired or you are not allowed to do that.'
       break
   }
-  
 
   return (
     <div
@@ -35,8 +34,11 @@ export function PageEmailUpdateConfirmation({
         <h1 className="font-extrabold">{title}</h1>
         <div className="flex flex-row gap-2 items-center">
           <h5>{subtitle}</h5>
-          {state == 'error' ? (
-            <button className='hover:underline text-violet-900' onClick={onErrorClick}>
+          {state === 'error' ? (
+            <button
+              className="hover:underline text-violet-900"
+              onClick={onErrorClick}
+            >
               Go to signin
             </button>
           ) : null}

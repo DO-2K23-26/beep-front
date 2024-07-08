@@ -8,7 +8,7 @@ interface DisplayMemberFeatureProps {
 }
 
 const onPrivateMessage = () => {
-  console.log('Private message')
+  //TODO: Implement onPrivateMessage
 }
 
 export default function DisplayMemberFeature({

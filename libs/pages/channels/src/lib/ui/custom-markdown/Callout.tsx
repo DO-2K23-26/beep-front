@@ -44,14 +44,11 @@ export default function Callout({
       copy: "text-green-800",
     },
   };
-  
+
   const contentStyle = new Map<string, TextStyle>();
   for (const [key, value] of Object.entries(contentStyleObj)) {
-    console.log(key);
     contentStyle.set(key, value);
   }
-  console.log(contentStyle.get(type));
-  console.log(type);
 
   return (
     <div className="callout">

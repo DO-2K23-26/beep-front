@@ -12,7 +12,9 @@ import Select, {
   components,
 } from 'react-select'
 import { Value } from '@beep/contracts'
-import { Icon, IconFa, Tooltip } from '@beep/ui'
+import { Tooltip } from '../tooltip/tooltip'
+import { Icon } from '../icons/icon'
+import IconFa from '../icons/icon-fa/icon-fa'
 
 
 export interface InputSelectProps {
@@ -122,7 +124,7 @@ export function InputSelect({
             <div className="w-4 h-full flex items-center justify-center">
               {menuListButton.icon}
             </div>
-            <Tooltip content={menuListButton.label}>
+            <Tooltip>
               <label className="ml-2 truncate">{menuListButton.label}</label>
             </Tooltip>
           </button>

@@ -37,17 +37,14 @@ export function OverviewSettingsServer({
         name: serverName,
         description: serverDescription,
       }
-      console.log('Sending data:', updatedServer)
 
       const updatedData = await updateServer({
         serverId: server.id,
         updatedServer,
       })
 
-      console.log('Server updated successfully', updatedData)
       toast.success('Server updated !')
     } catch (error) {
-      console.error('Failed to update server', result.error)
       toast.error('An error occured while updating the server !')
     }
   }

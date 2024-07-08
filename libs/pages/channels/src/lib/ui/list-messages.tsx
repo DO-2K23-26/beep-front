@@ -12,7 +12,6 @@ interface ListMessagesProps {
   onDeleteMessage: (channelId: string, messageId: string) => void
   editingMessageId: string | null
   setEditingMessageId: React.Dispatch<React.SetStateAction<string | null>>
-  findUserForTag: (value: string) => UserDisplayedEntity | undefined
   selectedTaggedUser: UserDisplayedEntity | undefined
   setSelectedTaggedUser: React.Dispatch<
     React.SetStateAction<UserDisplayedEntity | undefined>
@@ -26,12 +25,11 @@ interface ListMessagesProps {
 
 export default function ListMessages({
   messages,
-  onUpdateMessage, 
+  onUpdateMessage,
   onReply,
   onDeleteMessage,
   editingMessageId,
   setEditingMessageId,
-  findUserForTag,
   selectedTaggedUser,
   setSelectedTaggedUser,
   findChannelForTag,
@@ -54,7 +52,6 @@ export default function ListMessages({
               editingMessageId={editingMessageId}
               setEditingMessageId={setEditingMessageId}
               isPinned={false}
-              findUserForTag={findUserForTag}
               selectedTaggedUser={selectedTaggedUser}
               setSelectedTaggedUser={setSelectedTaggedUser}
               findChannelForTag={findChannelForTag}

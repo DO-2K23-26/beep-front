@@ -1,6 +1,7 @@
-import { Button, ButtonSize, ButtonStyle, ModalContext } from '@beep/ui'
 import * as Dialog from '@radix-ui/react-dialog'
 import { useContext } from 'react'
+import { ModalContext } from '../modal/modal-root'
+import { Button, ButtonSize, ButtonStyle } from '../../buttons/button'
 
 export interface ModalAlertProps {
   isOpen: boolean

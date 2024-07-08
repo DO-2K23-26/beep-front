@@ -13,7 +13,7 @@ export function PageEmailUpdateConfirmationFeature() {
   const [confirmEmail, result] = useConfirmEmailMutation()
   useEffect(() => {
     confirmEmail({ token: token })
-  }, [])
+  }, [confirmEmail, token])
 
   const navigate = useNavigate()
 
@@ -30,7 +30,7 @@ export function PageEmailUpdateConfirmationFeature() {
     } else if (result.isError) {
       setPageState('error')
     }
-  }, [result])
+  }, [result, dispatch, navigate])
   return (
     <PageEmailUpdateConfirmation
       state={pageState}

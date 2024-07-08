@@ -1,35 +1,29 @@
-import { classNames } from '@beep/utils'
-import { RefObject, useEffect, useRef, useState } from 'react'
-import { Icon } from '../icons/icon'
 import { useUpdatePictureMutation } from '@beep/server'
+import { classNames } from '@beep/utils'
+import { useEffect, useRef, useState } from 'react'
+import { Icon } from '../icons/icon'
 
 export interface InputPictureSettingsProps {
   label: string
   name: string
-  disabled?: boolean
-  className?: string
-  customRef?: RefObject<HTMLInputElement>
   serverId?: string
   initialPicture?: string
 }
 
 export function InputPictureSettings({
   label,
-  disabled = false,
-  className = '',
   name,
   serverId = '',
   initialPicture,
 }: InputPictureSettingsProps): JSX.Element {
   const inputRef = useRef<HTMLInputElement>(null)
   const [previewImage, setPreviewImage] = useState<string | ArrayBuffer | null>(
-    initialPicture || null
+    initialPicture ?? null
   )
-  const isDisabled = disabled ? 'input--disabled' : ''
   const uuid = Math.random().toString(36).substring(7)
   const [updatePicture] = useUpdatePictureMutation()
 
-  const activated = previewImage ? true : false
+  const activated = !!previewImage
 
   useEffect(() => {
     if (inputRef.current) {
@@ -50,7 +44,7 @@ export function InputPictureSettings({
           try {
             await updatePicture({ serverId, formData }).unwrap()
           } catch (error) {
-            console.error('Error updating picture:', error)
+            //TODO: handle error
           }
         }
       })

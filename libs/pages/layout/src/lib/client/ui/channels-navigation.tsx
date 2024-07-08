@@ -4,13 +4,7 @@ import {
   OccupiedChannelEntity,
   ServerEntity,
 } from '@beep/contracts'
-import {
-  Button,
-  ButtonSize,
-  ButtonStyle,
-  Icon,
-  UseModalProps
-} from '@beep/ui'
+import { Button, ButtonSize, ButtonStyle, Icon, UseModalProps } from '@beep/ui'
 
 import { getChannelsState } from '@beep/channel'
 import { getResponsiveState } from '@beep/responsive'
@@ -84,7 +78,6 @@ export default function ChannelsNavigation({
         return
       }
       setIsAdmin(server.ownerId === payload.sub)
-      console.log('isAdmin', server.ownerId === payload.sub)
     }
   }, [server, payload])
 
@@ -107,12 +100,12 @@ export default function ChannelsNavigation({
                 alt="Server"
                 className=" rounded-xl hover:rounded-2x3 transition-all object-cover truncate  h-[100px] w-full"
               />
-            ) : (
-              <></>
-            )}
+            ) : null}
           </div>
           <ServerDropdown
-          triggerDropdownButton={<ServerPictureButton icon={icon} server={server}/>}
+            triggerDropdownButton={
+              <ServerPictureButton icon={icon} server={server} />
+            }
             server={server}
             icon={icon}
             onClickId={onClickId}
@@ -157,7 +150,7 @@ export default function ChannelsNavigation({
                 occupiedChannels={streamingUsers}
                 onJoinChannel={onJoinVoiceChannel}
                 onDeleteChannel={(id) => {
-                  console.log('add Logic to delete a channel')
+                  //TODO: Add delete channel
                 }}
               />
             </div>
@@ -185,4 +178,3 @@ export default function ChannelsNavigation({
     </div>
   )
 }
-

@@ -17,7 +17,7 @@ export function ListVoiceChannels({
         <>
         {channels.map((channel) => {
             const occupiedChannel = occupiedChannels.find((occupiedChannel) => {
-                return occupiedChannel.channelId == channel.id
+                return occupiedChannel.channelId === channel.id
             })
 
             return (

@@ -10,9 +10,6 @@ export function ServerPictureButton({ server, icon }: ServerPictureButton) {
   return (
     <Button
       style={ButtonStyle.SQUARE}
-      onClick={() => {
-        console.log('click')
-      }}
     >
       {server ? (
         icon ? (

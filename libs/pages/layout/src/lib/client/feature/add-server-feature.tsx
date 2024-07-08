@@ -53,7 +53,7 @@ export default function AddServerFeature({
   )
   const [joinPublicServer] = useJoinPublicServerMutation()
 
-  const [createServer, result] = useCreateServerMutation()
+  const [createServer] = useCreateServerMutation()
 
   const onCreateServer = (data: CreateServerRequest) => {
     setLoading(true)
@@ -76,7 +76,6 @@ export default function AddServerFeature({
       })
       .catch((e) => {
         setLoading(false)
-        console.error(e)
         toast.error('An error occurred while creating the server')
       })
   }

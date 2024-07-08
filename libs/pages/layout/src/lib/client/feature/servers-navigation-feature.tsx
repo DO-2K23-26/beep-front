@@ -1,12 +1,9 @@
 import {
-  useCreateServerMutation,
-  useGetServersQuery,
-  useJoinPublicServerMutation,
+  useGetServersQuery
 } from '@beep/server'
 import { AppDispatch } from '@beep/store'
 import { useModal } from '@beep/ui'
 import { userActions } from '@beep/user'
-import { useForm } from 'react-hook-form'
 import { toast } from 'react-hot-toast'
 import { useDispatch } from 'react-redux'
 import { NavigateFunction, useNavigate } from 'react-router-dom'
@@ -18,8 +15,6 @@ const onPrivateMessage = (navigation: NavigateFunction) => {
 
 export function ServersNavigationFeature() {
   const { data: servers } = useGetServersQuery()
-  const [createServer] = useCreateServerMutation()
-  const [joinServer] = useJoinPublicServerMutation()
   const { openModal, closeModal } = useModal()
   const dispatch = useDispatch<AppDispatch>()
 
@@ -33,27 +28,13 @@ export function ServersNavigationFeature() {
 
   const navigate = useNavigate()
 
-  const methodsAddChannel = useForm({
-    mode: 'onChange',
-    defaultValues: {
-      name: '',
-    },
-  })
-
-  const onJoinServer = (serverId: string) => {
-    joinServer(serverId)
-    closeModal()
-  }
-
   return (
     <ServersNavigation
       servers={servers}
       onLogout={() => onLogout(navigate)}
       onPrivateMessage={() => onPrivateMessage(navigate)}
-      onJoinServer={onJoinServer}
       openModal={openModal}
       closeModal={closeModal}
-      methods={methodsAddChannel}
     />
   )
 }

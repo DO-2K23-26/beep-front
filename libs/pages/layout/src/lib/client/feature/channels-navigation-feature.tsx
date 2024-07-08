@@ -51,14 +51,14 @@ export function ChannelsNavigationFeature() {
 
   useEffect(() => {
     if (!server && servers && servers.length > 0) {
-      dispatch(serverActions.setServer(servers![0]))
+      dispatch(serverActions.setServer(servers[0]))
 
       // Has the current server changed ? If so, update the server
     } else if (server && servers && servers.length > 0) {
       // First check the current server still exists
       const currentServer = servers.find((s) => s.id === server.id)
       if (!currentServer) {
-        dispatch(serverActions.setServer(servers![0]))
+        dispatch(serverActions.setServer(servers[0]))
         return
       }
 

@@ -23,7 +23,7 @@ toggleListenerMiddleware.startListening({
           })
         )
     } catch (error) {
-      console.error('Failed to update backend:', error)
+      //TODO: handle error
     }
   },
 })
@@ -45,7 +45,7 @@ toggleListenerMiddleware.startListening({
           })
         )
     } catch (error) {
-      console.error('Failed to update backend:', error)
+      //TODO: handle error
     }
   },
 })

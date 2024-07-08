@@ -1,5 +1,5 @@
-import { ModalContext } from '@beep/ui'
 import { ReactNode, useContext, useEffect, useState } from 'react'
+import { ModalContext } from './modal-root'
 
 export interface UseModalProps {
   content: ReactNode

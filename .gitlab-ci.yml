@@ -51,7 +51,7 @@ lint:
     - pnpm config set store-dir .pnpm-store
   script:
     - pnpm install
-    # - pnpm typecheck
+    - pnpm lint
   when: always
 
 build-publish-image:

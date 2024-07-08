@@ -11,7 +11,7 @@ export function PageSigninFeature() {
   const dispatch = useDispatch<AppDispatch>()
   const [login, result] = useLoginMutation()
   const navigate = useNavigate()
-  const [error, setError] = useState('')
+  const [error] = useState('')
   const { isAuthenticated } = useSelector(getUserState)
   const methods = useForm({
     mode: 'onChange',
@@ -32,19 +32,18 @@ export function PageSigninFeature() {
   useEffect(() => {
     if (result) {
       if (result.isSuccess && result.status === 'fulfilled') {
-        console.log('RESULT', result.data)
         sessionStorage.setItem('accessToken', result.data.tokens.accessToken)
         sessionStorage.setItem('refreshToken', result.data.tokens.refreshToken)
         dispatch(userActions.setTokens(result.data.tokens))
       }
     }
-  }, [result])
+  }, [result, dispatch])
 
   useEffect(() => {
     if (isAuthenticated) {
       navigate('/discover')
     }
-  }, [isAuthenticated])
+  }, [isAuthenticated, navigate])
 
   return (
     <FormProvider {...methods}>

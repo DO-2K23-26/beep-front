@@ -1,7 +1,7 @@
 import { classNames } from '@beep/utils'
 import { useEffect, useState } from 'react'
 import { Value } from '@beep/contracts'
-import { Icon } from '@beep/ui'
+import { Icon } from '../icons/icon'
 
 export interface InputSelectSmallProps {
   name: string
@@ -51,7 +51,7 @@ export function InputSelectSmall({
     <div className={classNames('relative flex gap-1 flex-col', className)}>
       {label && <label className="text-sm shrink-0">{label}</label>}
       <select
-        data-testid={dataTestId || 'input-select-small'}
+        data-testid={dataTestId ?? 'input-select-small'}
         name={name}
         value={value}
         className={`input input__select--small ${inputClassName}`}

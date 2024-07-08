@@ -1,0 +1,15 @@
+{
+  "editor.formatOnSave": true,
+  "editor.formatOnPaste": true,
+  "editor.formatOnType": true,
+  "editor.wordWrap": "on",
+  "editor.tabSize": 2,
+  "editor.detectIndentation": false,
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.insertSpaces": true,
+  "prettier.enable": true,
+  "prettier.singleQuote": true,
+  "prettier.trailingComma": "all",
+  "files.insertFinalNewline": true,
+  "files.trimTrailingWhitespace": true
+}

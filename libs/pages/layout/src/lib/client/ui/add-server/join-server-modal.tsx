@@ -1,6 +1,6 @@
-import { Button, ButtonStyle, InputText } from '@beep/ui'
+import { Button, InputText } from '@beep/ui'
 import { BaseSyntheticEvent } from 'react'
-import { Control, Controller, useFormContext } from 'react-hook-form'
+import { Control, Controller } from 'react-hook-form'
 import { AddServerForm } from '../../feature/add-server-feature'
 
 interface JoinServerModalProps {

@@ -3,6 +3,7 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 import {
   backendUrl,
   ConfirmEmailRequest,
+  GetMultipleUsersRequest,
   LoginRequest,
   LoginResponse,
   RefreshRequest,
@@ -62,6 +63,12 @@ export const userApi = createApi({
         method: 'GET',
       }),
       providesTags: ['me'],
+    }),
+    getUsersFrom: builder.query<UserEntity[], GetMultipleUsersRequest>({
+      query: (request) => ({
+        url: `/users?${request.userIds.map((id, i) => `ids[${i}]=${id}`).join('&')}`,
+        method: 'GET',
+      }),
     }),
     fetchProfilePicture: builder.query<string, string>({
       query: (id) => ({
@@ -127,6 +134,7 @@ export const userApi = createApi({
 
 export const {
   useConfirmEmailMutation,
+  useGetUsersFromQuery,
   useLoginMutation,
   useRegisterMutation,
   useRefreshMutation,

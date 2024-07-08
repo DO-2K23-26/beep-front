@@ -12,17 +12,15 @@ export function MembersNavigationFeature() {
 
   const { data: usersConnected, refetch: refetchUsersConnected } =
     useFetchAllUsersConnectedQuery()
-  const { data: users, refetch: refetchUsers } = useFetchAllUsersQuery()
+  const { data: users } = useFetchAllUsersQuery()
 
   useEffect(() => {
     TransmitSingleton.subscribe('users/state', (message) => {
       refetchUsersConnected()
     })
-  }, [])
+  }, [refetchUsersConnected])
 
-  return usersConnected === undefined || users === undefined ? (
-    <></>
-  ) : (
+  return usersConnected === undefined || users === undefined ? null : (
     <MembersNavigation
       usersConnected={usersConnected}
       users={users}

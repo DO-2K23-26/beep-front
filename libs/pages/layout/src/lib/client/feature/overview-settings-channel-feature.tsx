@@ -16,7 +16,6 @@ export default function OverviewSettingsChannelFeature({
   const [updateChannel, result] = useUpdateChannelInServerMutation()
 
   useEffect(() => {
-    console.log('Channel updated successfully', result.data)
     if (result.isSuccess) {
       toast.success('Channel updated !')
     } else if (result.isError) {
@@ -48,7 +47,7 @@ export default function OverviewSettingsChannelFeature({
       channelDescription: channel.description,
     });
   };
-  
+
   return (
     <OverviewSettingsChannel
       handleSave={handleSave}

@@ -1,6 +1,5 @@
-import React from 'react'
 import { StoryFn } from '@storybook/react'
-import { InputTextArea, InputTextAreaProps } from '@beep/ui'
+import { InputTextArea, InputTextAreaProps } from './input-text-area'
 
 export default {
   title: 'Components/InputTextArea',

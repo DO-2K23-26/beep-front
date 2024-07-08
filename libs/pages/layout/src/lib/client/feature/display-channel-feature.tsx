@@ -8,7 +8,6 @@ interface DisplayChannelFeature {
 }
 
 const onDeleteChannel = () => {
-  console.log('Delete channel')
   toast.success('Channel deleted !')
 }
 

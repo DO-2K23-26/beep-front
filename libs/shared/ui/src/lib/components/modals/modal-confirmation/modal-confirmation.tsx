@@ -1,14 +1,12 @@
-import {
-  Button,
-  ButtonStyle,
-  Callout,
-  Icon,
-  InputText,
-  Tooltip,
-  useModal,
-} from '@beep/ui'
+
 import { PropsWithChildren, ReactNode } from 'react'
 import { Controller, useForm } from 'react-hook-form'
+import { useModal } from '../modal/use-modal'
+import { Callout } from '../../callout/callout'
+import { Icon } from '../../icons/icon'
+import { Tooltip } from '../../tooltip/tooltip'
+import { Button, ButtonStyle } from '../../buttons/button'
+import { InputText } from '../../inputs/input-text'
 
 export interface ModalConfirmationProps extends PropsWithChildren {
   title: string
@@ -59,9 +57,7 @@ export function ModalConfirmation({
       )}
       <div className="text-slate-500 text-sm mb-4">
         {isDelete ? (
-          description ? (
-            description
-          ) : (
+          description ?? (
             <>
               To confirm the deletion of <strong>{name}</strong>, please type
               "delete"
@@ -70,7 +66,7 @@ export function ModalConfirmation({
         ) : (
           <>
             {description}
-            <Tooltip content="Copy">
+            <Tooltip>
               <span
                 data-testid="copy-cta"
                 onClick={copyToClipboard}

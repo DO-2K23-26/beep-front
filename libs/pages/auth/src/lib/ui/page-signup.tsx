@@ -1,4 +1,4 @@
-import { Button, ButtonStyle, Icon, InputText } from '@beep/ui'
+import { Button, InputText } from '@beep/ui'
 import { Controller, useFormContext } from 'react-hook-form'
 import { Link } from 'react-router-dom'
 
@@ -179,7 +179,6 @@ export function PageSignup({
           className="hidden"
           accept="image/*"
           onChange={(e) => {
-            console.log(e.target?.files)
             addProfilePicture(e.target?.files![0])
           }}
         />
@@ -187,7 +186,7 @@ export function PageSignup({
           <div className="flex justify-center items-center w-full">
             <img
               src={previewUrl}
-              alt="profile-picture"
+              alt="profile"
               className="w-40 h-40 bg-violet-50 flex justify-center items-center border-2 border-black rounded-2xl"
             />
           </div>

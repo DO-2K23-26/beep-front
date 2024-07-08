@@ -73,16 +73,12 @@ export function ModifyProfileCardFeature() {
   })
   const handleEmailSubmit = emailFormController.handleSubmit((data) => {
     setIsEmailModalOpen(false)
-    console.log(data.email)
     usernameFormController.reset()
   })
   const handlePictureSubmit = pictureFormController.handleSubmit((data) => {
     if (newProfilePicture && data) {
       setIsPictureModalOpen(false)
       const formData = new FormData()
-      const request: UpdateUserRequest = {
-        profilePicture: data.profilePicture,
-      }
       formData.append('profilePicture', data.profilePicture)
       updateMe(formData)
     } else setErrorPictureText(errorPictureNotFilled)
