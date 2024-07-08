@@ -18,7 +18,7 @@ import { AppDispatch, RootState } from '@beep/store'
 import { TransmitSingleton } from '@beep/transmit'
 import { useModal } from '@beep/ui'
 import { skipToken } from '@reduxjs/toolkit/query'
-import { useEffect } from 'react'
+import { useCallback, useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import { toast } from 'react-hot-toast'
 import { useDispatch, useSelector } from 'react-redux'
@@ -34,10 +34,11 @@ export function ChannelsNavigationFeature() {
   const { data: servers } = useGetServersQuery()
   const { data: channels } = useGetServerChannelsQuery(server ? server.id : skipToken)
 
+  const handleReload = useCallback(() => {
+    leaveServer()
+  }, [])
+
   useEffect(() => {
-    const handleReload = () => {
-      leaveServer(); // Call your function to leave the server
-    };
     window.addEventListener('beforeunload', handleReload);
     window.addEventListener('unload', handleReload);
     
