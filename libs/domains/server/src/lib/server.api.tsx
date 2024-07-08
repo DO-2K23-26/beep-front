@@ -11,7 +11,7 @@ import {
   ServerEntity,
   UpdateChannelRequest,
   UserDisplayedEntity,
-  backendUrl
+  backendUrl,
 } from '@beep/contracts'
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 // eslint-disable-next-line @nx/enforce-module-boundaries
@@ -100,8 +100,7 @@ export const serverApi = createApi({
         body: {
           name: request.name,
           type: request.type,
-        
-        }
+        },
       }),
       invalidatesTags: ['channels'],
     }),
@@ -115,7 +114,7 @@ export const serverApi = createApi({
         body: {
           name: request.name,
           description: request.description,
-        }
+        },
       }),
       invalidatesTags: ['channels'],
     }),
@@ -125,7 +124,7 @@ export const serverApi = createApi({
     >({
       query: (request) => ({
         url: `/servers/${request.serverId}/channels/${request.channelId}`,
-        method: 'DELETE'
+        method: 'DELETE',
       }),
       invalidatesTags: ['channels'],
     }),
@@ -165,7 +164,7 @@ export const serverApi = createApi({
             ]
           : ['streamingUsers'],
     }),
-    getUsersByServerId: builder.query<UserDisplayedEntity[], string>({
+    getUsersByServerId: builder.query<UserEntity[], string>({
       query: (serverId) => `servers/${serverId}/users`,
       providesTags: (result, error, serverId) =>
         result

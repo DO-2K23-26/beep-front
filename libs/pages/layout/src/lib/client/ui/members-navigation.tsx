@@ -1,4 +1,4 @@
-import { UserConnectedEntity } from '@beep/contracts'
+import { UserConnectedEntity, UserEntity } from '@beep/contracts'
 import { Icon, UseModalProps } from '@beep/ui'
 import { ListMembers } from './list-members'
 import { useSelector } from 'react-redux'
@@ -7,7 +7,7 @@ import InviteMemberModalFeature from '../feature/invite-member-modal-feature'
 
 interface MembersNavigationProps {
   usersConnected: UserConnectedEntity[]
-  users: UserConnectedEntity[]
+  users: UserEntity[]
   openModal: React.Dispatch<React.SetStateAction<UseModalProps | undefined>>
   closeModal: () => void
 }
