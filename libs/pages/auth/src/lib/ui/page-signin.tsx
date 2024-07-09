@@ -1,4 +1,5 @@
-import { InputText, Button, ButtonStyle } from '@beep/ui'
+import { Button, InputText } from '@beep/ui'
+import { KeyboardEventHandler } from 'react'
 import { Controller, useFormContext } from 'react-hook-form'
 import { Link } from 'react-router-dom'
 
@@ -18,6 +19,8 @@ export function PageSignin({
   error,
 }: PageSigninProps) {
   const { control } = useFormContext()
+  const onKeyDown: KeyboardEventHandler<HTMLInputElement> = (e) =>
+    e.key === 'Enter' ? onSubmit() : {}
   return (
     <div
       className="h-[100dvh] w-full bg-no-repeat bg-cover flex justify-center"
@@ -45,6 +48,7 @@ export function PageSignin({
               value={field.value}
               onChange={field.onChange}
               error={error?.message}
+              onKeyDown={onKeyDown}
             />
           )}
         />
@@ -71,10 +75,11 @@ export function PageSignin({
               value={field.value}
               onChange={field.onChange}
               error={error?.message}
+              onKeyDown={onKeyDown}
             />
           )}
         />
-        <Button
+        {/* <Button
           onClick={toForgetPassword}
           style={ButtonStyle.NONE}
           className="text-purple-600 font-medium hover:!bg-transparent !p-0 !min-w-0 !h-fit hidden"
@@ -82,7 +87,7 @@ export function PageSignin({
           <p className="text-purple-600 font-normal hidden">
             Forgot password ?
           </p>
-        </Button>
+        </Button> */}
         <div className="flex flex-col w-full">
           <Button
             onClick={onSubmit}

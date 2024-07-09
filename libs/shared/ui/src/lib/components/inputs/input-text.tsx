@@ -1,5 +1,6 @@
 import {
   ChangeEventHandler,
+  KeyboardEventHandler,
   ReactNode,
   RefObject,
   useEffect,
@@ -15,6 +16,7 @@ export interface InputTextProps {
   type?: 'text' | 'number' | 'password' | 'email' | 'date' | 'datetime' | 'time'
   className?: string
   onChange?: ChangeEventHandler<HTMLInputElement>
+  onKeyDown?: KeyboardEventHandler<HTMLInputElement>
   error?: string
   disabled?: boolean
   dataTestId?: string
@@ -28,6 +30,7 @@ export function InputText({
   value = '',
   type = 'text',
   onChange,
+  onKeyDown,
   error,
   className = '',
   disabled,
@@ -107,6 +110,7 @@ export function InputText({
                 if (onChange) onChange(e)
                 setCurrentValue(e.currentTarget.value)
               }}
+              onKeyDown={onKeyDown}
               // onKeyDown={(e) => console.log('click', e)}
               onFocus={() => setFocused(true)}
               onBlur={() => setFocused(false)}
