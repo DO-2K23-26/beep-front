@@ -11,7 +11,7 @@ export function PageSigninFeature() {
   const dispatch = useDispatch<AppDispatch>()
   const [login, result] = useLoginMutation()
   const navigate = useNavigate()
-  const [error] = useState('')
+  const [error, setError] = useState('')
   const { isAuthenticated } = useSelector(getUserState)
   const methods = useForm({
     mode: 'onChange',
@@ -30,12 +30,12 @@ export function PageSigninFeature() {
   })
 
   useEffect(() => {
-    if (result) {
-      if (result.isSuccess && result.status === 'fulfilled') {
-        sessionStorage.setItem('accessToken', result.data.tokens.accessToken)
-        sessionStorage.setItem('refreshToken', result.data.tokens.refreshToken)
-        dispatch(userActions.setTokens(result.data.tokens))
-      }
+    if (result?.isSuccess && result?.status === 'fulfilled') {
+      sessionStorage.setItem('accessToken', result.data.tokens.accessToken)
+      sessionStorage.setItem('refreshToken', result.data.tokens.refreshToken)
+      dispatch(userActions.setTokens(result.data.tokens))
+    } else if (result?.isError) {
+      setError('Email/password incorrect')
     }
   }, [result, dispatch])
 

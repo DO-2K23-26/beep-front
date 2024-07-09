@@ -3,6 +3,7 @@ import { Button, ButtonSize } from '@beep/ui'
 import PinnedMessagesList from './pinned-messages-list'
 import { useFetchPinnedMessagesQuery } from '@beep/channel'
 import { UserDisplayedEntity } from '@beep/contracts'
+import { skipToken } from '@reduxjs/toolkit/query'
 
 interface DisplayPinnedProps {
   channelId: string
@@ -24,7 +25,7 @@ const DisplayPinned: React.FC<DisplayPinnedProps> = ({
   setSelectedTaggedUser,
 }) => {
   const [showPinnedMessages, setShowPinnedMessages] = useState<boolean>(false)
-  const { data: messages } = useFetchPinnedMessagesQuery(channelId)
+  const { data: messages } = useFetchPinnedMessagesQuery(channelId ?? skipToken)
 
   return (
     <div className="relative">
