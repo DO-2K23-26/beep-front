@@ -1,17 +1,16 @@
 import { ServerEntity } from '@beep/contracts'
 import {
+  useTransmitBannerQuery,
+  useTransmitPictureQuery
+} from '@beep/server'
+import {
   Button,
   ButtonStyle,
-  InputText,
-  InputPictureSettings,
   InputBannerSettings,
+  InputPictureSettings,
+  InputText,
 } from '@beep/ui'
 import { useState } from 'react'
-import {
-  useTransmitBannerQuery,
-  useTransmitPictureQuery,
-  useUpdateServerMutation,
-} from '@beep/server'
 import toast from 'react-hot-toast'
 
 export interface OverviewSettingsServerProps {
@@ -25,10 +24,9 @@ export function OverviewSettingsServer({
 }: OverviewSettingsServerProps) {
   const [serverName, setServerName] = useState(server.name)
   const [serverDescription, setServerDescription] = useState(server.description)
-  const [updateServer, result] = useUpdateServerMutation()
 
   const banner = useTransmitBannerQuery(server.id).currentData
-  const icon = useTransmitPictureQuery(server.id).currentData
+  const { data: icon } = useTransmitPictureQuery(server.id)
 
   const handleSave = async () => {
     try {
@@ -37,11 +35,6 @@ export function OverviewSettingsServer({
         name: serverName,
         description: serverDescription,
       }
-
-      const updatedData = await updateServer({
-        serverId: server.id,
-        updatedServer,
-      })
 
       toast.success('Server updated !')
     } catch (error) {

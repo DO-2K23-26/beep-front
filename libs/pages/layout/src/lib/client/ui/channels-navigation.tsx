@@ -23,6 +23,7 @@ import { SettingBodyWidth, SubSettings } from '@beep/settings'
 import { CreateChannelModal } from './create-channel-modal'
 import { ServerDropdown } from './server-dropdown'
 import { ServerPictureButton } from './server-picture-button'
+import { skipToken } from '@reduxjs/toolkit/query'
 
 export interface ChannelsNavigationProps {
   textChannels?: ChannelEntity[]
@@ -82,7 +83,7 @@ export default function ChannelsNavigation({
   }, [server, payload])
 
   const banner = useTransmitBannerQuery(server?.id ?? '').currentData ?? ''
-  const icon = useTransmitPictureQuery(server?.id ?? '').currentData ?? ''
+  const { data: icon } = useTransmitPictureQuery(server?.id ?? skipToken)
 
   return (
     <div className={showLeftPane ? 'flex abolute w-full' : 'hidden lg:flex'}>

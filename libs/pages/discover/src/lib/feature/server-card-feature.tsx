@@ -17,8 +17,8 @@ export default function ServerCardFeature({
   name,
   description,
 }: ServerCardFeatureProps) {
-  const icon = useTransmitPictureQuery(id).currentData || ''
-  const banner = useTransmitBannerQuery(id).currentData || ''
+  const { data: icon } = useTransmitPictureQuery(id)
+  const banner = useTransmitBannerQuery(id).currentData ?? ''
   const [joinPublicServer] = useJoinPublicServerMutation()
   const navigate = useNavigate()
 

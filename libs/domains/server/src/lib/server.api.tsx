@@ -29,7 +29,15 @@ const baseQuery = fetchBaseQuery({
 export const serverApi = createApi({
   reducerPath: 'serverApi',
   baseQuery,
-  tagTypes: ['servers', 'channels', 'streamingUsers', 'users', 'publicServers'],
+  tagTypes: [
+    'servers',
+    'channels',
+    'streamingUsers',
+    'users',
+    'publicServers',
+    'transmitPicture',
+    'transmitBanner'
+  ],
   endpoints: (builder) => ({
     getServers: builder.query<ServerEntity[], void>({
       query: () => `/servers`,
@@ -164,7 +172,7 @@ export const serverApi = createApi({
             ]
           : ['streamingUsers'],
     }),
-    getUsersByServerId: builder.query<UserEntity[], string>({
+    getUsersByServerId: builder.query<UserDisplayedEntity[], string>({
       query: (serverId) => `servers/${serverId}/users`,
       providesTags: (result, error, serverId) =>
         result
@@ -219,6 +227,7 @@ export const serverApi = createApi({
           return URL.createObjectURL(blob)
         },
       }),
+      providesTags: (_, __, id) => [{ type: 'transmitBanner', id: id }],
     }),
 
     transmitPicture: builder.query<string, string>({
@@ -229,6 +238,7 @@ export const serverApi = createApi({
           return URL.createObjectURL(blob)
         },
       }),
+      providesTags: (_, __, id) => [{ type: 'transmitPicture', id: id }],
     }),
   }),
 })

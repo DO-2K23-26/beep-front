@@ -69,6 +69,11 @@ export const userApi = createApi({
         url: `/users?${request.userIds.map((id, i) => `ids[${i}]=${id}`).join('&')}`,
         method: 'GET',
       }),
+      providesTags: (result) =>
+        (result)
+          ? [
+            ...result.map(({ id }) => ({ type: "users" as const, id: id })),
+          ] : [{ type: 'users' }]
     }),
     fetchProfilePicture: builder.query<string, string>({
       query: (id) => ({
@@ -78,7 +83,7 @@ export const userApi = createApi({
           return URL.createObjectURL(blob)
         },
       }),
-      providesTags: ['profilePicture', 'me'],
+      providesTags: (_, __, id) => [{ type: "profilePicture", id: id }],
     }),
     refresh: builder.mutation<RefreshResponse, RefreshRequest>({
       query: (refreshToken) => ({
