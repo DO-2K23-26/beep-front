@@ -13,7 +13,7 @@ import { getServersState } from '@beep/server'
 import {
   getUserState,
   useFetchProfilePictureQuery,
-  useGetUsersFromQuery
+  useGetUsersFromQuery,
 } from '@beep/user'
 import React, { ReactNode, useEffect } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
@@ -21,6 +21,7 @@ import { toast } from 'react-hot-toast'
 import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import Message from '../ui/message'
+import { SideDialog } from '@beep/ui'
 
 interface MessageFeatureProps {
   message: MessageEntity
@@ -173,15 +174,22 @@ export default function MessageFeature({
         const user = taggedUsers.find((u) => u.id === match.slice(2))
         parts.push(text.slice(lastIndex, offset))
         parts.push(
-          <span
-            key={offset}
-            className={
-              'bg-violet-300 p-1 rounded ' + (user ? 'cursor-pointer' : '')
+          <SideDialog
+            title={''}
+            triggerModalButton={
+              <span
+                key={offset}
+                className={
+                  'bg-violet-300 p-1 rounded ' + (user ? 'cursor-pointer' : '')
+                }
+              >
+                {user ? '@' + user.username : 'undefined user'}
+              </span>
             }
-            onClick={() => user && onClickTagUser(user)}
-          >
-            {user ? '@' + user.username : 'undefined user'}
-          </span>
+            content={<p>zob dans le zob</p>}
+            isModalOpen={false}
+            setIsModalOpen={function (value: boolean): void {}}
+          />
         )
         lastIndex = offset + match.length
         return match
