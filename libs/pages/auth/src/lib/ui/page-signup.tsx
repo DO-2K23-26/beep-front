@@ -33,7 +33,7 @@ export function PageSignup({
           rules={{
             required: 'First name is required',
             pattern: {
-              value: /^[a-zA-Z]+$/,
+              value: /^[a-zA-ZÀ-ÿ]+$/, 
               message:
                 'First name should only contain letters of the alphabet (uppercase or lowercase)',
             },
@@ -56,7 +56,7 @@ export function PageSignup({
           rules={{
             required: 'Last name is required',
             pattern: {
-              value: /^[a-zA-Z]+$/,
+              value: /^[a-zA-ZÀ-ÿ]+$/,
               message:
                 'Last name should only contain letters of the alphabet (uppercase or lowercase)',
             },
