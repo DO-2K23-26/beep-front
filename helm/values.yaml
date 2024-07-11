@@ -4,7 +4,7 @@ imagePullSecrets:
   - name: beep-registry
 
 image:
-  repository: 'gitlab.polytech.umontpellier.fr:5050/beep/front'
+  repository: 'milou666/beep-front'
   pullPolicy: Always
   port: 8080
 service:

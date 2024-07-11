@@ -70,9 +70,9 @@ build-publish-image:
     - echo "Building image with tag $CI_REGISTRY_IMAGE/$CHART_NAME:$GitVersion_MajorMinorPatchr and for api ${API_URL_ENDPOINT}"
     - >-
       echo
-      "{\"auths\":{\"$CI_REGISTRY\":{\"username\":\"$CI_REGISTRY_USER\",\"password\":\"$CI_REGISTRY_PASSWORD\"}}}"
+      "{\"auths\":{\"https://index.docker.io/v1/\":{\"username\":\"$USER_DOCKERHUB\",\"password\":\"$PASSWORD_DOCKERHUB\"}}}"
       > /kaniko/.docker/config.json
-    - /kaniko/executor --context $CI_PROJECT_DIR --dockerfile $CI_PROJECT_DIR/Dockerfile --build-arg "VITE_BACKEND_URL=${API_URL_ENDPOINT}" --destination $CI_REGISTRY_IMAGE/$CHART_NAME:$GitVersion_MajorMinorPatch
+    - /kaniko/executor --context $CI_PROJECT_DIR --dockerfile $CI_PROJECT_DIR/Dockerfile --build-arg "VITE_BACKEND_URL=${API_URL_ENDPOINT}" --destination milou666/beep-front:$GitVersion_MajorMinorPatch
   environment:
     name: $DEPLOY_VARIABLE
 
@@ -89,13 +89,13 @@ package-publish-helm:
     - wget https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd64 -O yq && chmod +x ./yq
     - export VERSION=$GitVersion_MajorMinorPatch
     # Echo pour débogage des variables d'environnement
-    - "echo \"FRONT_URL_ENDPOINT: $FRONT_URL_ENDPOINT\""
-    - "echo \"API_URL_ENDPOINT: $API_URL_ENDPOINT\""
-    - "echo \"VERSION: $VERSION\""
-    - "echo \"CHART_NAME: $CHART_NAME\""
+    - 'echo "FRONT_URL_ENDPOINT: $FRONT_URL_ENDPOINT"'
+    - 'echo "API_URL_ENDPOINT: $API_URL_ENDPOINT"'
+    - 'echo "VERSION: $VERSION"'
+    - 'echo "CHART_NAME: $CHART_NAME"'
     # Extraire le domaine de FRONT_URL_ENDPOINT
     - DOMAIN=$(echo $FRONT_URL_ENDPOINT | awk -F[/:] '{print $4}')
-    - "echo \"Extracted DOMAIN: $DOMAIN\""
+    - 'echo "Extracted DOMAIN: $DOMAIN"'
     # Modifier le fichier values.yaml avec les variables extraites
     - ./yq -i ".ingress.hosts[0].host=\"$DOMAIN\"" helm/values.yaml
     - ./yq -i ".backend.url=\"$API_URL_ENDPOINT\"" helm/values.yaml
