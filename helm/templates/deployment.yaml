@@ -2,7 +2,8 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: {{ include "beep-frontend-files.fullname" . }}
-  labels: {{- include "beep-frontend-files.labels" . | nindent 4 }}
+  labels:
+    {{- include "beep-frontend-files.labels" . | nindent 4 }}
 spec:
   replicas: {{ .Values.replicaCount }}
   selector:
@@ -13,7 +14,8 @@ spec:
       labels:
         {{- include "beep-frontend-files.selectorLabels" . | nindent 8 }}
     spec:
-      imagePullSecrets: {{- toYaml .Values.imagePullSecrets | nindent 8 }}
+      imagePullSecrets:
+        {{- toYaml .Values.imagePullSecrets | nindent 8 }}
       containers:
         - name: {{ .Chart.Name }}
           image: "{{ .Values.image.repository }}:{{ .Chart.AppVersion }}"
@@ -22,7 +24,8 @@ spec:
             - name: http
               containerPort: {{ .Values.image.port }}
               protocol: TCP
-          resources: {{- toYaml .Values.resources | nindent 12 }}
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
           env:
             - name: VITE_BACKEND_URL
               value: {{ .Values.backend.url }}
