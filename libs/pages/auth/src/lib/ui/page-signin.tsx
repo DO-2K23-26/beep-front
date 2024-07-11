@@ -1,4 +1,4 @@
-import { Button, InputText } from '@beep/ui'
+import { Button, ButtonStyle, InputText } from '@beep/ui'
 import { KeyboardEventHandler } from 'react'
 import { Controller, useFormContext } from 'react-hook-form'
 import { Link } from 'react-router-dom'
@@ -79,15 +79,14 @@ export function PageSignin({
             />
           )}
         />
-        {/* <Button
-          onClick={toForgetPassword}
-          style={ButtonStyle.NONE}
-          className="text-purple-600 font-medium hover:!bg-transparent !p-0 !min-w-0 !h-fit hidden"
-        >
-          <p className="text-purple-600 font-normal hidden">
-            Forgot password ?
-          </p>
-        </Button> */}
+        <div className="flex flex-row gap-1">
+          <Link
+            className="text-purple-600 font-medium hover:!bg-transparent !p-0 !min-w-0 !h-fit"
+            to="/authentication/forget-password"
+          >
+            <p className="text-purple-600 font-normal">You forgot your password ?</p>
+          </Link>
+        </div>
         <div className="flex flex-col w-full">
           <Button
             onClick={onSubmit}
