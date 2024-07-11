@@ -16,7 +16,7 @@ spec:
       imagePullSecrets: { { - toYaml .Values.imagePullSecrets | nindent 8 } }
       containers:
         - name: { { .Chart.Name } }
-          image: '{{ .Values.image.repository }}:{{ .Chart.AppVersion }}'
+          image: "{{ .Values.image.repository }}:{{ .Chart.AppVersion }}"
           imagePullPolicy: { { .Values.image.pullPolicy } }
           ports:
             - name: http
