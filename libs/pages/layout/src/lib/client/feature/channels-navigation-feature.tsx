@@ -1,9 +1,9 @@
-import { voiceChannelActions } from '@beep/channel'
+import { voiceChannelActions } from '@beep/channel';
 import {
   ChannelEntity,
   ChannelType,
-  CreateChannelRequest,
-} from '@beep/contracts'
+  CreateChannelRequest, UserConnectedEntity
+} from '@beep/contracts';
 import { responsiveActions } from '@beep/responsive'
 import {
   serverActions,
@@ -17,64 +17,88 @@ import {
 import { AppDispatch, RootState } from '@beep/store'
 import { TransmitSingleton } from '@beep/transmit'
 import { useModal } from '@beep/ui'
-import { skipToken } from '@reduxjs/toolkit/query'
-import { useCallback, useEffect } from 'react'
+import { useCallback, useEffect } from 'react';
 import { useForm } from 'react-hook-form'
 import { toast } from 'react-hot-toast'
 import { useDispatch, useSelector } from 'react-redux'
 import ChannelsNavigation from '../ui/channels-navigation'
+import { skipToken } from '@reduxjs/toolkit/query';
+import { getVoiceState, setCurrentChannelId, setSortedMembers } from '@beep/voice';
+import { getUserState, useGetMeQuery } from '@beep/user';
 
 export function ChannelsNavigationFeature() {
   const server = useSelector((state: RootState) => state.servers.server)
   const { data: streamingUsers } = useGetCurrentStreamingUsersQuery(
     server?.id ?? ''
   )
+  const {remoteStreams, currentChannelId, videoDevice, audioInputDevice} = useSelector(getVoiceState)
+  const { isMuted, isVoiceMuted, isCamera } = useSelector(getUserState)
+  const { data } = useGetMeQuery()
+
   const dispatch = useDispatch<AppDispatch>()
   const { openModal, closeModal } = useModal()
   const { data: servers } = useGetServersQuery()
   const { data: channels } = useGetServerChannelsQuery(server ? server.id : skipToken)
 
+  const [joinServer] = useJoinVoiceChannelMutation()
+  const [leaveServer] = useLeaveVoiceChannelMutation()
+
+  useEffect(() => {
+    //match the received streams with the users connected in the channel and filter them if the user want it
+    const filteredUserStreamsAssociation: { user: UserConnectedEntity; stream: MediaStream; }[] = []
+    remoteStreams.map((stream) => {
+      const usersChannel = streamingUsers?.find((value) => value.channelId === currentChannelId)
+      return usersChannel?.users?.map((currentUser) => {
+        //the mid is composed like this userSerialNumber + '-' + id of track (incremental number)
+        if(stream.mid?.substring(0, stream.mid?.length - 2) === currentUser.userSn) {
+          const toEdit = filteredUserStreamsAssociation.find((entity) => entity.user.id === currentUser.id)
+          if (toEdit === undefined) {
+            filteredUserStreamsAssociation.push({user: currentUser, stream: new MediaStream([stream.receiver.track])})
+          } else {
+            toEdit.stream.addTrack(stream.receiver.track)
+          }
+        }
+        return stream
+      })
+    })
+    filteredUserStreamsAssociation.filter((entity) => {
+      if (!entity.user.camera && entity.user.id !== data?.id) {
+        entity.stream.getVideoTracks().map((video) => entity.stream.removeTrack(video))
+      }
+      if (entity.user.voiceMuted || isMuted){
+        entity.stream.getAudioTracks().map((audio) => entity.stream.removeTrack(audio))
+      }
+      return entity
+    })
+    dispatch(setSortedMembers(filteredUserStreamsAssociation))
+  }, [streamingUsers, remoteStreams, isCamera, currentChannelId, data?.id, dispatch]);
+
+
+
+
   const handleReload = useCallback(() => {
     leaveServer()
-  }, [])
+  }, [leaveServer])
 
   useEffect(() => {
     window.addEventListener('beforeunload', handleReload);
     window.addEventListener('unload', handleReload);
-    
+
     // Clean up the event listeners on component unmount
     return () => {
       window.removeEventListener('beforeunload', handleReload);
       window.removeEventListener('unload', handleReload);
     };
-  }, []); // Make sure to include any dependencies if your leaveServer function depends on props or state
+  }, [handleReload]); // Make sure to include any dependencies if your leaveServer function depends on props or state
 
   useEffect(() => {
     if (!server && servers && servers.length > 0) {
       dispatch(serverActions.setServer(servers[0]))
-
-      // Has the current server changed ? If so, update the server
-    } else if (server && servers && servers.length > 0) {
-      // First check the current server still exists
-      const currentServer = servers.find((s) => s.id === server.id)
-      if (!currentServer) {
-        dispatch(serverActions.setServer(servers[0]))
-        return
-      }
-
-      const isDifferent = Object.keys(server).some(
-        (key) => (server as any)[key] !== (currentServer as any)[key]
-      )
-
-      // If the current server has been updated, update the server
-      if (isDifferent) {
-        dispatch(serverActions.setServer(currentServer))
-      }
     }
   }, [server, servers, dispatch])
 
-  
-  
+
+
   const [createChannel, resultCreatedChannel] =
   useCreateChannelInServerMutation()
   useEffect(() => {
@@ -91,11 +115,11 @@ export function ChannelsNavigationFeature() {
   const { refetch } = useGetCurrentStreamingUsersQuery(server?.id ?? '')
   useEffect(() => {
     if (!server?.id) return
-    TransmitSingleton.subscribe(`servers/${server?.id}/movement`, (message) => {
+    TransmitSingleton.subscribe(`servers/${server?.id}/movement`, () => {
       refetch()
     })
   }, [refetch, server])
-  
+
   const methodsAddChannel = useForm({
     mode: 'onChange',
     defaultValues: {
@@ -103,9 +127,9 @@ export function ChannelsNavigationFeature() {
       type: ChannelType.TEXT,
     },
   })
-  const [joinServer] = useJoinVoiceChannelMutation()
-  const [leaveServer] = useLeaveVoiceChannelMutation()
-  const onJoinVoiceChannel = (channel: ChannelEntity) => {
+
+
+  const onJoinVoiceChannel = async (channel: ChannelEntity) => {
     if (server?.id) {
       dispatch(
         voiceChannelActions.setFocusedVoiceChannel({
@@ -114,12 +138,15 @@ export function ChannelsNavigationFeature() {
           serverName: server.name,
         })
       )
-      joinServer({ serverId: server.id, channelId: channel.id })
+      const token = await joinServer({serverId: server.id, channelId: channel.id, userState: {muted:isMuted, voiceMuted: isVoiceMuted, camera: isCamera}})
+      dispatch(setCurrentChannelId(channel.id))
+      dispatch({type: 'INITIALIZE_WEBRTC', payload: { token: token, videoDevice: videoDevice, audioInputDevice: audioInputDevice, isVoiceMuted: isVoiceMuted, isCamera: isCamera }})
     }
   }
   const onLeaveVoiceChannel = () => {
     dispatch(voiceChannelActions.unsetFocusedVoiceChannel())
     leaveServer()
+    dispatch({type: 'CLOSE_WEBRTC'})
   }
 
   const onCreateChannel = methodsAddChannel.handleSubmit((data) => {
@@ -134,8 +161,8 @@ export function ChannelsNavigationFeature() {
   const hideLeftDiv = () => {
     dispatch(responsiveActions.manageLeftPane())
   }
-  const onClickId = (text: string) => {
-    navigator.clipboard.writeText(text)
+  const onClickId = async (text: string) => {
+    await navigator.clipboard.writeText(text)
     toast.success('Server ID copied to clipboard')
   }
 

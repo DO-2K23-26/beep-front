@@ -1,12 +1,9 @@
 import { useSelector } from 'react-redux'
-import {
-    getAudioInputDevice,
-    getBufferLength,
-    getVideoDevice,
-  } from '@beep/voice'
-import { FC, memo, useEffect } from 'react'
-import { useLocalMediaStream } from '../hooks/local-media-stream'
-import { Media} from '../ui/media'  //available on branch 17-... when merging the changes
+import { getVoiceState } from '@beep/voice'
+import { FC, memo } from 'react'
+// eslint-disable-next-line @nx/enforce-module-boundaries
+import { Media } from '../ui/media';
+
 interface LocalFeedProps {
   sendData: (e: BlobEvent) => void
   channelId: string
@@ -14,32 +11,15 @@ interface LocalFeedProps {
 }
 
 export const LocalFeed: FC<LocalFeedProps> = memo(
-  ({ sendData, channelId, username }) => {
-    const videoDevice = useSelector(getVideoDevice)
-    const audioInputDevice = useSelector(getAudioInputDevice)
-    const bufferLength = useSelector(getBufferLength)
-    const { localMediaStream, recorder } = useLocalMediaStream({
-      audio: audioInputDevice ? { deviceId: audioInputDevice.id } : true,
-      video: videoDevice ? { deviceId: videoDevice.id } : true,
-    })
+  ({ username }) => {
+    const { localStream } = useSelector(getVoiceState)
 
-    useEffect(() => {
-      if (recorder && localMediaStream) {
-        recorder.start(bufferLength)
-        recorder.ondataavailable = sendData
-      }
-      return () => {
-        if (recorder) {
-          recorder.stop()
-        }
-      }
-    }, [recorder, bufferLength, localMediaStream, sendData, channelId]) //stop local feed when changing channel id
 
-    if (!localMediaStream) {
+    if (!localStream) {
       return
     }
 
-    return <Media url={null} username={username} stream={localMediaStream} />
+    return <Media url={null} username={username} stream={localStream} />
   },
   (prevProps, nextProps) => prevProps.channelId === nextProps.channelId
 )

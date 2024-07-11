@@ -1,6 +1,6 @@
 import {
-  useGetServersQuery
-} from '@beep/server'
+  useGetServersQuery, useLeaveVoiceChannelMutation
+} from '@beep/server';
 import { AppDispatch } from '@beep/store'
 import { useModal } from '@beep/ui'
 import { userActions } from '@beep/user'
@@ -17,11 +17,14 @@ export function ServersNavigationFeature() {
   const { data: servers } = useGetServersQuery()
   const { openModal, closeModal } = useModal()
   const dispatch = useDispatch<AppDispatch>()
+  const [leaveServer] = useLeaveVoiceChannelMutation()
 
   const onLogout = (navigation: NavigateFunction) => {
     sessionStorage.removeItem('accessToken')
     sessionStorage.removeItem('refreshToken')
     dispatch(userActions.setTokens({}))
+    dispatch({ type: 'CLOSE_WEBRTC' })
+    leaveServer()
     toast.success('Successfully logged out !')
     navigation('/authentication/signin')
   }

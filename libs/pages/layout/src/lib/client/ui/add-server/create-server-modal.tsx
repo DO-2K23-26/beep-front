@@ -6,7 +6,7 @@ import {
 } from '../../feature/add-server-feature'
 
 interface CreateServerModalProps {
-  control: Control<AddServerForm, any>
+  control: Control<AddServerForm>
   onSubmit: (e: BaseSyntheticEvent) => Promise<void>
   loading: boolean
   closeModal: () => void
@@ -51,7 +51,7 @@ export default function CreateServerModal({
             },
           }}
           control={control}
-          render={({ field, fieldState: { error } }) => (
+          render={({ field, fieldState: {  } }) => (
             <InputText
               label="Server name"
               type="text"

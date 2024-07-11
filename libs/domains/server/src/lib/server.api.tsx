@@ -142,11 +142,12 @@ export const serverApi = createApi({
     }),
     joinVoiceChannel: builder.mutation<
       void,
-      { serverId: string; channelId: string }
+      { serverId: string; channelId: string, userState: {muted: boolean, voiceMuted: boolean, camera: boolean} }
     >({
-      query: ({ serverId, channelId }) => ({
+      query: ({ serverId, channelId, userState }) => ({
         url: `/servers/${serverId}/channels/${channelId}/join`,
         method: 'POST',
+        body: userState
       }),
       invalidatesTags: (result, error, arg) => [
         { type: 'streamingUsers', channelId: arg.channelId },

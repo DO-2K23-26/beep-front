@@ -4,11 +4,12 @@ import { useFetchProfilePictureQuery } from "@beep/user"
 interface ConnectedUserRowProps {
     userId: string,
     name: string,
-    muted: boolean,
-    voiceMuted: boolean
+    muted?: boolean,
+    voiceMuted?: boolean,
+    camera?: boolean
   }
   
-export default function ConnectedUserRow({ userId, name, muted, voiceMuted }: ConnectedUserRowProps) {
+export default function ConnectedUserRow({ userId, name, muted, voiceMuted, camera }: ConnectedUserRowProps) {
     const userProfilePicture = useFetchProfilePictureQuery(userId).currentData
     return (
       <div className="flex flex-row justify-between items-center p-2 hover:bg-violet-400 rounded-xl transition-all cursor-pointer w-full group gap-2">
@@ -22,11 +23,10 @@ export default function ConnectedUserRow({ userId, name, muted, voiceMuted }: Co
             {name}
           </h5>
         </div>
-        <Icon name={muted ? "lucide:volume-x" : "lucide:volume-2"} className="h-5 w-5" />
-        <Icon name={voiceMuted ? "lucide:mic-off" : "lucide:mic"} className="h-5 w-5" />
-        <div className="flex-row gap-3 items-center flex">
-          <button className="hidden sm:flex invisible group-hover:visible"></button>
-          <span className="flex flex-row gap-2"></span>
+        <div className="flex flex-row gap-2 bg-white bg-opacity-10 p-2 rounded-full">
+          <Icon name={voiceMuted ? "lucide:mic-off" : "lucide:mic"} className="h-4 w-4" />
+          <Icon name={muted ? "lucide:volume-x" : "lucide:volume-2"} className="h-4 w-4" />
+          {camera && <Icon name="lucide:video" className="h-4 w-4" />}
         </div>
       </div>
     )

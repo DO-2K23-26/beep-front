@@ -9,30 +9,49 @@ import {
   userActions,
 } from '@beep/user'
 import { TransmitSingleton } from '@beep/utils'
-import { voiceSliceSelector } from '@beep/voice'
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form'
 import { toast } from 'react-hot-toast'
 import { useDispatch, useSelector } from 'react-redux'
 import CurrentUser from '../ui/current-user'
+import { getVoiceState, setAudioInputDevice, setDevices, setVideoDevice } from '@beep/voice';
 
 export default function CurrentUserFeature() {
   const { data } = useGetMeQuery()
   const server = useSelector((state: RootState) => state.servers.server)
-  const { isMuted, isVoiceMuted } = useSelector(getUserState)
+  const { isMuted, isVoiceMuted, isCamera } = useSelector(getUserState)
   const dispatch = useDispatch()
-
+  const [audioOutputs, setAudioOutputs] = useState<Device[]>([])
+  const [audioInputs, setAudioInputs] = useState<Device[]>([])
+  const [videoInputs, setVideoInputs] = useState<Device[]>([])
+  const { devices , videoDevice, audioInputDevice} = useSelector(getVoiceState)
   const onMicrophone = () => {
     if (server) dispatch(userActions.toggleIsVoiceMuted(server.id))
+    if (isVoiceMuted) {
+      dispatch({ type: 'START_MIC', payload: audioInputDevice });
+    } else {
+      dispatch({ type: 'STOP_MIC' })
+    }
   }
+
   const onPhone = () => {
     if (server) dispatch(userActions.toggleIsMuted(server.id))
+  }
+  const onCamera = () => {
+    if (server) {
+      dispatch(userActions.toggleIsCamera(server.id))
+      if (!isCamera) {
+        dispatch({ type: 'START_CAM', payload: videoDevice });
+      } else {
+        dispatch({ type: 'STOP_CAM' });
+      }
+    }
   }
 
   const { refetch } = useGetCurrentStreamingUsersQuery(server?.id ?? '')
   useEffect(() => {
     if (!server?.id) return
-    TransmitSingleton.subscribe(`users/${server?.id}/state`, (message) => {
+    TransmitSingleton.subscribe(`users/${server?.id}/state`, () => {
       refetch()
     })
   }, [refetch, server])
@@ -43,23 +62,23 @@ export default function CurrentUserFeature() {
 
   const currentUser: UserEntity = data
     ? {
-        id: data.id,
-        email: data.email,
-        username: data.username,
-        firstname: data.firstname,
-        lastname: data.lastname,
-        profilePicture: currentData ?? '/picture.svg',
-        verifiedAt: new Date(),
-      }
+      id: data.id,
+      email: data.email,
+      username: data.username,
+      firstname: data.firstname,
+      lastname: data.lastname,
+      profilePicture: currentData ?? '/picture.svg',
+      verifiedAt: new Date(),
+    }
     : {
-        id: '1',
-        email: 'rapidement@gmail.com',
-        username: 'rapidement',
-        firstname: 'Dorian',
-        lastname: 'Grasset',
-        profilePicture: '/picture.svg',
-        verifiedAt: new Date(),
-      }
+      id: '1',
+      email: 'rapidement@gmail.com',
+      username: 'rapidement',
+      firstname: 'Dorian',
+      lastname: 'Grasset',
+      profilePicture: '/picture.svg',
+      verifiedAt: new Date(),
+    }
 
   const methods = useForm({
     mode: 'onChange',
@@ -72,43 +91,24 @@ export default function CurrentUserFeature() {
     },
   })
 
-  const onSaveParameters = methods.handleSubmit((data) => {
+  const onSaveParameters = methods.handleSubmit(() => {
     toast.success('Settings updated !')
     closeModal()
   })
 
-  const [audioOutputs, setAudioOutputs] = useState<Device[]>([])
-  const [audioInputs, setAudioInputs] = useState<Device[]>([])
-  const [videoInputs, setVideoInputs] = useState<Device[]>([])
-  const devices = useSelector(voiceSliceSelector.selectDevices)
 
-  const handleDeviceChange = () => {
-    navigator.mediaDevices.enumerateDevices().then((devices) => {
-      dispatch({
-        type: 'voice/setDevices',
-        payload: devices.map((device) => ({
-          kind: device.kind,
-          label: device.label,
-          deviceId: device.deviceId,
-        })),
-      })
+
+  const handleDeviceChange = useCallback(() => {
+    navigator.mediaDevices.enumerateDevices().then((streams) => {
+      dispatch(setDevices(streams))
     })
-  }
+  }, [dispatch])
   useEffect(() => {
-    navigator.mediaDevices
-      .getUserMedia({ audio: true, video: true })
-      .then(() => {
-        navigator.mediaDevices.enumerateDevices().then((devices) => {
-          dispatch({
-            type: 'voice/setDevices',
-            payload: devices.map((device) => ({
-              kind: device.kind,
-              label: device.label,
-              deviceId: device.deviceId,
-            })),
-          })
-        })
-      })
+    navigator.mediaDevices.enumerateDevices().then((streams) => {
+      dispatch(setDevices(streams))
+      dispatch(setAudioInputDevice(streams.filter((info) => info.kind === 'audioinput')?.[0]))
+      dispatch(setVideoDevice(streams.filter((info) => info.kind === 'videoinput')?.[0]))
+    })
   }, [dispatch])
 
   useEffect(() => {
@@ -118,14 +118,7 @@ export default function CurrentUserFeature() {
     navigator.mediaDevices.addEventListener('devicechange', handleDeviceChange)
     if (devices.length === 0) {
       navigator.mediaDevices.enumerateDevices().then((devices) => {
-        dispatch({
-          type: 'voice/setDevices',
-          payload: devices.map((device) => ({
-            kind: device.kind,
-            label: device.label,
-            deviceId: device.deviceId,
-          })),
-        })
+        dispatch(setDevices(devices))
       })
     }
     devices.forEach(function (device: Device) {
@@ -194,15 +187,17 @@ export default function CurrentUserFeature() {
         handleDeviceChange
       )
     }
-  }, [dispatch, devices])
+  }, [devices, handleDeviceChange, dispatch])
 
   return (
     <CurrentUser
       user={currentUser}
       isMuted={isMuted}
       isVoiceMuted={isVoiceMuted}
+      isCamera={isCamera}
       onMicrophone={onMicrophone}
       onPhone={onPhone}
+      onCamera={onCamera}
       onSaveParameters={onSaveParameters}
       openModal={openModal}
       closeModal={closeModal}

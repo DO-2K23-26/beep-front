@@ -1,93 +1,77 @@
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 // eslint-disable-next-line @nx/enforce-module-boundaries
-import { Device, IVoice, Media, defaultMedia } from '@beep/contracts'
-// eslint-disable-next-line @nx/enforce-module-boundaries
-import { RootState } from '@beep/store'
-import { PayloadAction, createSlice } from '@reduxjs/toolkit'
+import { RootState } from '@beep/store';
+import { IVoice, Media, UserConnectedEntity } from '@beep/contracts';
 
-const VOICE_KEY = 'voice'
-
-function getDevice(key: string): Media {
-  const initialValue = localStorage.getItem(key) || '{}'
-  const parsedValue = JSON.parse(initialValue)
-  return {
-    id: parsedValue.id || '',
-    name: parsedValue.name || '',
-  }
-}
-
+// TODO Implement audioOutputDevice
 const initialState: IVoice = {
-  codec: 'video/webm;codecs=vp8,opus',
-  videoBitsPerSecond: Math.trunc(128000 * 4),
-  audioBitsPerSecond: 128000,
-  bufferLength: 1500,
-  videoDevice: getDevice('videoDevice') || defaultMedia,
-  audioInputDevice: getDevice('audioInputDevice') || defaultMedia,
-  audioOutputDevice: getDevice('audioOutputDevice') || defaultMedia,
+  currentChannelId: '',
+  localStream: null,
+  remoteStreams: [],
+  connectionState: 'Waiting',
+  channelStatus: 'Click Join Button...',
+  audioInputDevice: null,
+  audioOutputDevice: null,
+  videoDevice: null,
   devices: [],
-  onlyAudio: false,
-  permissions: {
-    audio: 'prompt',
-    video: 'prompt',
-  },
-}
-
-export const voiceSlice = createSlice({
-  name: VOICE_KEY,
+  sortedMembers: []
+};
+//
+const webrtcSlice = createSlice({
+  name: 'webRTC',
   initialState: initialState,
   reducers: {
-    setCodec: (state: IVoice, action: PayloadAction<string>) => {
-      state.codec = action.payload
-    },
-    setBitsPerSecond: (
-      state: IVoice,
-      action: PayloadAction<{ video: number; audio: number }>
-    ) => {
-      state.videoBitsPerSecond = action.payload.video
-      state.audioBitsPerSecond = action.payload.audio
-    },
-    setDevices(state: IVoice, action: PayloadAction<Device[]>) {
-      state.devices = action.payload
-    },
-    setVideoDevice: (state: IVoice, action: PayloadAction<Media>) => {
-      state.videoDevice = action.payload
-      localStorage.setItem('videoDevice', JSON.stringify(action.payload))
-    },
-    setAudioInputDevice: (state: IVoice, action: PayloadAction<Media>) => {
-      state.audioInputDevice = action.payload
-      localStorage.setItem('audioInputDevice', JSON.stringify(action.payload))
-    },
-    setAudioOutputDevice: (state: IVoice, action: PayloadAction<Media>) => {
-      state.audioOutputDevice = action.payload
-      localStorage.setItem('audioOutputDevice', JSON.stringify(action.payload))
-    },
-    setCameraPermission: (
-      state: IVoice,
-      action: PayloadAction<PermissionState>
-    ) => {
-      state.permissions.video = action.payload
-    },
-    setMicrophonePermission: (
-      state: IVoice,
-      action: PayloadAction<PermissionState>
-    ) => {
-      state.permissions.audio = action.payload
-    },
-    setOnlyAudio: (state: IVoice, action: PayloadAction<boolean>) => {
-      state.onlyAudio = action.payload
-    },
-  },
-  selectors: {
-    selectDevices: (state: IVoice) => state.devices,
-  },
-})
 
-export const voiceSliceSelector = voiceSlice.selectors
-export const voiceSliceReducer = voiceSlice.reducer
-export const getVoiceState = (root: RootState) => root[VOICE_KEY]
-export const voiceActions = voiceSlice.actions
-export const getAudioInputDevice = (root: RootState) =>
-  getVoiceState(root).audioInputDevice
-export const getVideoDevice = (root: RootState) =>
-  getVoiceState(root).videoDevice
-export const getBufferLength = (root: RootState) =>
-  getVoiceState(root).bufferLength
+    setLocalStream(state, action: PayloadAction<MediaStream | null>) {
+      state.localStream = action.payload;
+    },
+    addRemoteStream(state, action: PayloadAction<RTCRtpTransceiver>) {
+      state.remoteStreams.push(action.payload);
+    },
+    setRemoteStreams(state, action: PayloadAction<RTCRtpTransceiver[]>) {
+      state.remoteStreams = action.payload
+    },
+    setConnectionState(state, action: PayloadAction<string>) {
+      state.connectionState = action.payload;
+    },
+    setChannelStatus(state, action: PayloadAction<string>) {
+      state.channelStatus = action.payload;
+    },
+    setAudioInputDevice(state, action: PayloadAction<MediaDeviceInfo>) {
+      state.audioInputDevice = action.payload;
+    },
+    setAudioOutputDevice(state, action: PayloadAction<Media>) {
+      state.audioOutputDevice = action.payload;
+    },
+    setVideoDevice(state, action: PayloadAction<MediaDeviceInfo>) {
+      state.videoDevice = action.payload;
+    },
+    setDevices(state, action: PayloadAction<MediaDeviceInfo[]>) {
+      state.devices = action.payload;
+    },
+    setCurrentChannelId(state, action: PayloadAction<string>) {
+      state.currentChannelId = action.payload;
+    },
+    setSortedMembers(state, action: PayloadAction<{ user: UserConnectedEntity, stream: MediaStream }[]>) {
+      state.sortedMembers = action.payload;
+    }
+  },
+});
+
+export const {
+  setLocalStream,
+  addRemoteStream,
+  setConnectionState,
+  setChannelStatus,
+  setAudioInputDevice,
+  setVideoDevice,
+  setAudioOutputDevice,
+  setRemoteStreams,
+  setDevices,
+  setCurrentChannelId,
+  setSortedMembers
+} = webrtcSlice.actions;
+
+export const getVoiceState = (root: RootState) => root['webRTC'];
+
+export const webrtcSliceReducer = webrtcSlice.reducer;

@@ -8,33 +8,23 @@ interface MediaProps {
 }
 
 export function Media({ stream, url, username }: MediaProps) {
-  const videoRef = useRef<HTMLVideoElement>(null)
-
-  useEffect(() => {
-    if (videoRef.current && url) {
-      videoRef.current.src = url
-      videoRef.current.play()
-    }
-  }, [videoRef, url])
+  const videoRef = useRef(null)
 
   return (
-    <Draggable>
-      <div className="w-[70%] absolute">
-        <h4>{username}</h4>
+    <Draggable nodeRef={videoRef}>
+      <div className="w-fit absolute" ref={videoRef}>
+        <h4>{stream && stream.getVideoTracks().length > 0 && username}</h4>
         {stream && (
           <video
             className="rounded-lg"
             ref={(ref) => {
               if (ref) {
                 ref.srcObject = stream
-                ref.muted = true 
               }
             }}
             autoPlay
-            muted
           />
         )}
-        {url && <video className="rounded-lg" ref={videoRef} />}
       </div>
     </Draggable>
   )

@@ -9,3 +9,8 @@ export const backendUrl =
   backendUrlRaw[backendUrlRaw.length - 1] === '/'
     ? backendUrlRaw.slice(0, -1)
     : backendUrlRaw
+const webrtcUrlRaw = import.meta.env.VITE_WEBRTC_URL
+export const webrtcUrl =
+  webrtcUrlRaw[webrtcUrlRaw.length - 1] === '/'
+    ? webrtcUrlRaw.slice(0, -1)
+    : webrtcUrlRaw

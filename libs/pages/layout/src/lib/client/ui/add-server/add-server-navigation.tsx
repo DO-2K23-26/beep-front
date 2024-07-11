@@ -13,5 +13,5 @@ export default function AddServerNavigation({
   render,
 }: AddServerNavigationProps) {
 
-  return serverStep === undefined ? render.undefined : (render as any)[serverStep]
+  return serverStep === undefined ? render.undefined : (render as never)[serverStep]
 }

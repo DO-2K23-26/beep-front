@@ -1,7 +1,7 @@
 import { DeleteChannelRequest } from '@beep/contracts'
 import { ChannelEntity } from '@beep/contracts'
 import { useDeleteChannelInServerMutation } from '@beep/server'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import toast from 'react-hot-toast'
 import { DeleteChannel } from '../ui/delete-channel'
 import { useNavigate } from 'react-router'
@@ -40,7 +40,7 @@ export default function DeleteChannelFeature({
         toast.success('Channel deleted successfully')
         navigate(`/servers/${channel.serverId}`)
       })
-      .catch((err) => {
+      .catch(() => {
         setError('An error occured while deleting the channel')
         setLoading(false)
         toast.error('An error occured while deleting the channel')

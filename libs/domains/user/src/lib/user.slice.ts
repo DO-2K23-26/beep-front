@@ -14,6 +14,7 @@ export const initialUserState: UserState = {
   tokens: {},
   isMuted: false,
   isVoiceMuted: false,
+  isCamera: false,
 }
 export const userSlice = createSlice({
   name: USER_KEY,
@@ -43,6 +44,9 @@ export const userSlice = createSlice({
     },
     toggleIsVoiceMuted(state : UserState, payload: PayloadAction<string>) {
       state.isVoiceMuted = !state.isVoiceMuted
+    },
+    toggleIsCamera(state: UserState, payload: PayloadAction<string>) {
+      state.isCamera = !state.isCamera
     }
   },
 })
@@ -51,3 +55,4 @@ export const userReducer = userSlice.reducer
 export const userActions = userSlice.actions
 export const { toggleIsMuted } = userActions;
 export const { toggleIsVoiceMuted } = userActions;
+export const { toggleIsCamera } = userActions;

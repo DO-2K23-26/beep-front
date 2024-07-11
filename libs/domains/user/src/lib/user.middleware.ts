@@ -1,8 +1,8 @@
 /* eslint-disable @nx/enforce-module-boundaries */
 import { RootState } from '@beep/store'
 import { createListenerMiddleware } from '@reduxjs/toolkit'
-import { userApi } from '../lib/user.api'
-import { toggleIsMuted, toggleIsVoiceMuted } from './user.slice'
+import { userApi } from './user.api'
+import { toggleIsCamera, toggleIsMuted, toggleIsVoiceMuted } from './user.slice'
 
 const toggleListenerMiddleware = createListenerMiddleware()
 
@@ -19,6 +19,7 @@ toggleListenerMiddleware.startListening({
             payload: {
               muted: newValue.user.isMuted,
               voiceMuted: newValue.user.isVoiceMuted,
+              camera: newValue.user.isCamera,
             },
           })
         )
@@ -41,6 +42,28 @@ toggleListenerMiddleware.startListening({
             payload: {
               muted: newValue.user.isMuted,
               voiceMuted: newValue.user.isVoiceMuted,
+              camera: newValue.user.isCamera,
+            },
+          })
+        )
+    } catch (error) { /* empty */ }
+  },
+})
+
+toggleListenerMiddleware.startListening({
+  actionCreator: toggleIsCamera,
+  effect: async (action, listenerApi) => {
+    const newValue = listenerApi.getState() as RootState;
+    const serverId = action.payload
+    try {
+      await listenerApi
+        .dispatch(
+          userApi.endpoints.updateState.initiate({
+            serverId,
+            payload: {
+              muted: newValue.user.isMuted,
+              voiceMuted: newValue.user.isVoiceMuted,
+              camera: newValue.user.isCamera,
             },
           })
         )

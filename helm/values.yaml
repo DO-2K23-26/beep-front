@@ -23,3 +23,6 @@ resources: {}
 
 backend:
   url: 'if you see this, it means that the backend url is not working properly'
+
+webrtc:
+  url: 'if you see this, it means that the backend url is not working properly'

@@ -24,6 +24,7 @@ export function OverviewSettingsServer({
 }: OverviewSettingsServerProps) {
   const [serverName, setServerName] = useState(server.name)
   const [serverDescription, setServerDescription] = useState(server.description)
+  const [updateServer] = useUpdateServerMutation()
 
   const banner = useTransmitBannerQuery(server.id).currentData
   const { data: icon } = useTransmitPictureQuery(server.id)
@@ -35,6 +36,11 @@ export function OverviewSettingsServer({
         name: serverName,
         description: serverDescription,
       }
+
+      await updateServer({
+        serverId: server.id,
+        updatedServer,
+      })
 
       toast.success('Server updated !')
     } catch (error) {

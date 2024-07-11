@@ -1,17 +1,9 @@
 /* eslint-disable @nx/enforce-module-boundaries */
-import { ChannelEntity, ChannelType, JoinVoiceChannelRequest } from '@beep/contracts'
+import { ChannelEntity, JoinVoiceChannelRequest } from '@beep/contracts'
 import { RootState } from '@beep/store'
-import { createEntityAdapter, createSlice } from '@reduxjs/toolkit'
+import { createSlice } from '@reduxjs/toolkit'
 
 export const CHANNELS_KEY = 'channels'
-export const channelsAdapter = createEntityAdapter<ChannelEntity>()
-export const initialChannel: ChannelEntity = {
-  id: '',
-  name: '',
-  type: ChannelType.VOICE,
-  serverId: ''
-}
-
 export interface VoiceChannelState {
   focusedChannel: ChannelEntity
   serverName: string
@@ -41,6 +33,7 @@ export const voiceChannelSlice = createSlice({
 
 export const voiceChannelReducer = voiceChannelSlice.reducer;
 export const voiceChannelActions = voiceChannelSlice.actions;
+export const { setFocusedVoiceChannel } = voiceChannelActions;
 
 
 export const getChannelsState = (root: RootState) => root[CHANNELS_KEY]

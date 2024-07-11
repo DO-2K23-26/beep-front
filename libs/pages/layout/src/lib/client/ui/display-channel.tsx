@@ -6,7 +6,6 @@ import {
   useModal
 } from '@beep/ui'
 import OverviewSettingsChannelFeature from '../feature/overview-settings-channel-feature'
-import { DeleteChannel } from './delete-channel'
 import DeleteChannelFeature from '../feature/delete-channel-feature'
 
 interface DisplayChannelProps {
@@ -20,8 +19,6 @@ export default function DisplayChannel({
   onJoinChannel,
   onDeleteChannel,
 }: DisplayChannelProps) {
-  const { openModal, closeModal } = useModal()
-
   // List of setting in the user setting modal
   const subSetting: SubSettings = {
     subGroupSettingTitle: 'Channel',

@@ -1,4 +1,4 @@
-import { UserConnectedEntity, UserEntity } from '@beep/contracts'
+import { UserEntity } from '@beep/contracts'
 import { Badge, BadgeType, Button, ButtonStyle, Icon } from '@beep/ui'
 
 interface DisplayMemberProps {

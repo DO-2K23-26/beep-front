@@ -46,7 +46,7 @@ export interface ServerStepsRender {
 export default function AddServerFeature({
   closeModal,
 }: AddServerFeatureProps) {
-  const { register, handleSubmit, control } = useForm<AddServerForm>()
+  const { handleSubmit, control } = useForm<AddServerForm>()
   const [loading, setLoading] = useState<boolean>(false)
   const [serverStep, setServerStep] = useState<AddServerStep | undefined>(
     undefined
@@ -74,7 +74,7 @@ export default function AddServerFeature({
         setLoading(false)
         closeModal()
       })
-      .catch((e) => {
+      .catch(() => {
         setLoading(false)
         toast.error('An error occurred while creating the server')
       })
@@ -104,7 +104,6 @@ export default function AddServerFeature({
       <CreateServerModal
         closeModal={() => setServerStep('create')}
         onSubmit={handleSubmit(onSubmit)}
-        register={register}
         control={control}
         loading={loading}
         visibility="private"
@@ -114,7 +113,6 @@ export default function AddServerFeature({
       <CreateServerModal
         closeModal={() => setServerStep('create')}
         onSubmit={handleSubmit(onSubmit)}
-        register={register}
         control={control}
         loading={loading}
         visibility="public"
@@ -145,10 +143,7 @@ export default function AddServerFeature({
 
   return (
     <AddServerNavigation
-      closeModal={() => setServerStep('create')}
-      onCreateServer={() => setServerStep('private')}
       serverStep={serverStep}
-      setServerStep={setServerStep}
       render={render}
     />
   )

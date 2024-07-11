@@ -107,13 +107,13 @@ export const userApi = createApi({
       query: () => '/users/onlines',
       providesTags: ['users'],
     }),
-    sendEmail: builder.mutation<any, void>({
+    sendEmail: builder.mutation<undefined, void>({
       query: () => ({
         url: '/authentication/send-email',
         method: 'POST',
       }),
     }),
-    verifyEmail: builder.mutation<any, { token: string }>({
+    verifyEmail: builder.mutation<{ token: string }, { token: string }>({
       query: (data) => ({
         url: '/authentication/verify',
         method: 'POST',

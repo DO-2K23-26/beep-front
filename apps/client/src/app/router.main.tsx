@@ -42,7 +42,7 @@ export const ROUTER: RouteProps[] = [
     path: '/discover',
     component: <PageDiscover />,
     layout: {
-      leftPanel: <></>,
+      leftPanel: <div/>,
       rightPanel: <ServersNavigationFeature />,
     },
   },

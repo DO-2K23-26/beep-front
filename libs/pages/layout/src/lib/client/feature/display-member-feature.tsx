@@ -1,4 +1,4 @@
-import { UserConnectedEntity, UserEntity } from '@beep/contracts'
+import { UserEntity } from '@beep/contracts'
 import DisplayMember from '../ui/display-member'
 import { useFetchProfilePictureQuery } from '@beep/user'
 

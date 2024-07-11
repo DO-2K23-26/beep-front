@@ -5,7 +5,7 @@ import { AddServerForm } from '../../feature/add-server-feature'
 
 interface JoinServerModalProps {
   onSubmit: (e: BaseSyntheticEvent) => Promise<void>
-  control: Control<AddServerForm, any>
+  control: Control<AddServerForm>
   loading: boolean
   closeModal: () => void
 }

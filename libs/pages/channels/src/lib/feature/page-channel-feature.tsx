@@ -20,7 +20,6 @@ import {
 } from '@beep/server'
 import { AppDispatch } from '@beep/store'
 import { DynamicSelectorProps, useModal } from '@beep/ui'
-import { useGetUserByIdQuery } from '@beep/user'
 import { TransmitSingleton } from '@beep/utils'
 import { useEffect, useRef, useState } from 'react'
 import { useForm } from 'react-hook-form'
@@ -173,6 +172,7 @@ export function PageChannelFeature() {
     if (value === undefined || value === '') return
 
     const cursorPos: number = inputRef.current
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       ? inputRef.current.selectionStart!
       : 0
 
@@ -183,6 +183,7 @@ export function PageChannelFeature() {
     if (inputRef.current) {
       const value = inputRef.current.value
       const cursorPos: number = inputRef.current
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
         ? inputRef.current.selectionStart!
         : 0
 
@@ -299,7 +300,7 @@ export function PageChannelFeature() {
   })
 
   useEffect(() => {
-    TransmitSingleton.subscribe(`channels/${channelId}/messages`, (message) => {
+    TransmitSingleton.subscribe(`channels/${channelId}/messages`, () => {
       refetch()
     })
     if (availableServers) {

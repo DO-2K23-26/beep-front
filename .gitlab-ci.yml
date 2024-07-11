@@ -72,7 +72,7 @@ build-publish-image:
       echo
       "{\"auths\":{\"https://index.docker.io/v1/\":{\"username\":\"$USER_DOCKERHUB\",\"password\":\"$PASSWORD_DOCKERHUB\"}}}"
       > /kaniko/.docker/config.json
-    - /kaniko/executor --context $CI_PROJECT_DIR --dockerfile $CI_PROJECT_DIR/Dockerfile --build-arg "VITE_BACKEND_URL=${API_URL_ENDPOINT}" --destination milou666/beep-front:$GitVersion_MajorMinorPatch
+    - /kaniko/executor --context $CI_PROJECT_DIR --dockerfile $CI_PROJECT_DIR/Dockerfile --build-arg "VITE_BACKEND_URL=${API_URL_ENDPOINT}" --build-arg "VITE_WEBRTC_URL=${WEBRTC_URL_ENDPOINT}" --destination milou666/beep-front:$GitVersion_MajorMinorPatch
   environment:
     name: $DEPLOY_VARIABLE
 
@@ -99,6 +99,7 @@ package-publish-helm:
     # Modifier le fichier values.yaml avec les variables extraites
     - ./yq -i ".ingress.hosts[0].host=\"$DOMAIN\"" helm/values.yaml
     - ./yq -i ".backend.url=\"$API_URL_ENDPOINT\"" helm/values.yaml
+    - ./yq -i ".webrtc.url=\"$WEBRTC_URL_ENDPOINT\"" helm/values.yaml
     - ./yq -i ".name=\"$CHART_NAME\"" helm/Chart.yaml
     # Vérifier le contenu de values.yaml après modification
     - cat helm/values.yaml

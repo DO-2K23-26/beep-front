@@ -4,4 +4,6 @@ export interface UserConnectedEntity {
     expiresAt: number | null
     muted?: boolean
     voiceMuted?: boolean
+    userSn?: string
+    camera?: boolean
 }

@@ -1,18 +1,15 @@
-import { Device } from './device.entity'
-import { Media } from './media.entity'
+import { UserConnectedEntity } from './user-connected.entity';
+import { Media } from './media.entity';
 
 export interface IVoice {
-  codec: string
-  videoBitsPerSecond: number
-  audioBitsPerSecond: number
-  bufferLength: number
-  videoDevice: Media | null
-  audioInputDevice: Media | null
-  audioOutputDevice: Media | null
-  devices: Device[]
-  onlyAudio: boolean
-  permissions: {
-    audio: PermissionState
-    video: PermissionState
-  }
+  currentChannelId: string;
+  localStream: MediaStream | null;
+  remoteStreams: RTCRtpTransceiver[];
+  audioInputDevice: MediaDeviceInfo | null;
+  audioOutputDevice: Media | null;
+  videoDevice: MediaDeviceInfo | null;
+  devices: MediaDeviceInfo[];
+  connectionState: string;
+  channelStatus: string;
+  sortedMembers: {user: UserConnectedEntity, stream: MediaStream}[]
 }

@@ -21,6 +21,7 @@ interface CurrentUserProps {
   user: UserEntity
   onMicrophone?: () => void
   onPhone?: () => void
+  onCamera?: () => void
   onSaveParameters: () => void
   openModal: React.Dispatch<React.SetStateAction<UseModalProps | undefined>>
   closeModal: () => void
@@ -36,14 +37,17 @@ interface CurrentUserProps {
   videoInputs: Device[]
   isMuted?: boolean
   isVoiceMuted?: boolean
+  isCamera?: boolean
 }
 
 export default function CurrentUser({
   user,
   isMuted,
   isVoiceMuted,
+  isCamera,
   onMicrophone,
   onPhone,
+  onCamera,
   onSaveParameters,
   openModal,
   closeModal,
@@ -73,6 +77,16 @@ export default function CurrentUser({
       <div className="flex-row flex gap-4 ">
         <Button
           style={ButtonStyle.NONE}
+          onClick={onMicrophone}
+          className="cursor-pointer "
+        >
+          <Icon
+            name={isVoiceMuted ? 'lucide:mic-off' : 'lucide:mic'}
+            className="!w-5 !h-5"
+          />
+        </Button>
+        <Button
+          style={ButtonStyle.NONE}
           onClick={onPhone}
           className="cursor-pointer"
         >
@@ -81,13 +95,13 @@ export default function CurrentUser({
             className="!w-5 !h-5"
           />
         </Button>
-        <Button
+      <Button
           style={ButtonStyle.NONE}
-          onClick={onMicrophone}
-          className="cursor-pointer "
+          onClick={onCamera}
+          className="cursor-pointer"
         >
           <Icon
-            name={isVoiceMuted ? 'lucide:mic-off' : 'lucide:mic'}
+            name={isCamera ? 'lucide:video' : 'lucide:video-off' }
             className="!w-5 !h-5"
           />
         </Button>

@@ -1,10 +1,10 @@
 import { Button, ButtonStyle, InputText, InputTextArea } from '@beep/ui'
-import { Controller } from 'react-hook-form'
+import { Controller, UseFormReturn } from 'react-hook-form';
 
 interface OverviewSettingsChannelProps {
   handleSave: () => void,
   handleReset: () => void,
-  form: any
+  form:  UseFormReturn<{channelName: string, channelDescription: string}>
 }
 
 export function OverviewSettingsChannel({

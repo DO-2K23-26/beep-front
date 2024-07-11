@@ -18,19 +18,12 @@ import { UserInformationsFeature } from '../feature/user-informations-feature'
 import DisplayPinned from './display-pinned'
 import ListMessages from './list-messages'
 
-export type MessageFormValues = {
-  content: string
-  files: FileList | null
-}
-
 export interface PageChannelProps {
   messageForm: UseFormReturn<
     {
       message: string
       replyTo: MessageEntity | null
-    },
-    any,
-    undefined
+    }
   >
   channel: ChannelEntity
   messages: MessageEntity[]
@@ -249,10 +242,10 @@ export const PageChannel = ({
                       : field.onChange
                   }
                   onMouseUp={
-                    onCursorChange ? (e) => onCursorChange() : undefined
+                    onCursorChange ? () => onCursorChange() : undefined
                   }
-                  onKeyUp={onCursorChange ? (e) => onCursorChange() : undefined}
-                  onKeyDown={(e: any) =>
+                  onKeyUp={onCursorChange ? () => onCursorChange() : undefined}
+                  onKeyDown={(e) =>
                     e.key === 'Enter' ? sendMessage() : {}
                   }
                 />
@@ -287,7 +280,9 @@ export const PageChannel = ({
               type="file"
               className="hidden"
               onChange={(e) => {
-                onAddFiles(e.target?.files![0])
+                if (e.target?.files?.[0]) {
+                  onAddFiles(e.target?.files?.[0])
+                }
               }}
             />
           </div>

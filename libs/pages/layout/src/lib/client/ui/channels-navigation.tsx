@@ -4,8 +4,13 @@ import {
   OccupiedChannelEntity,
   ServerEntity,
 } from '@beep/contracts'
-import { Button, ButtonSize, ButtonStyle, Icon, UseModalProps } from '@beep/ui'
-
+import {
+  Button,
+  ButtonSize,
+  ButtonStyle,
+  Icon,
+  UseModalProps
+} from '@beep/ui'
 import { getChannelsState } from '@beep/channel'
 import { getResponsiveState } from '@beep/responsive'
 import { useTransmitBannerQuery, useTransmitPictureQuery } from '@beep/server'
@@ -23,6 +28,7 @@ import { SettingBodyWidth, SubSettings } from '@beep/settings'
 import { CreateChannelModal } from './create-channel-modal'
 import { ServerDropdown } from './server-dropdown'
 import { ServerPictureButton } from './server-picture-button'
+import { getVoiceState } from '@beep/voice';
 import { skipToken } from '@reduxjs/toolkit/query'
 
 export interface ChannelsNavigationProps {
@@ -58,7 +64,7 @@ export default function ChannelsNavigation({
   const { connected, focusedChannel, serverName } =
     useSelector(getChannelsState)
   const [isAdmin, setIsAdmin] = useState(false)
-
+  const {connectionState} = useSelector(getVoiceState)
   const { payload } = useSelector(getUserState)
   // List of setting in the user setting modal
   const subSetting: SubSettings = {
@@ -159,6 +165,7 @@ export default function ChannelsNavigation({
         </div>
         {connected && (
           <ConnectedChannelRow
+            connectionState={connectionState}
             onLeave={onLeaveVoiceChannel}
             channelName={focusedChannel.name}
             serverName={serverName}

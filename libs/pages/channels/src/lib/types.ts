@@ -1,3 +1,0 @@
-interface UserConnectedPayload {
-  message: string
-}

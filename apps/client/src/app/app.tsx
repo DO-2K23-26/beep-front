@@ -102,7 +102,7 @@ export default function App() {
 
   return (
     <div>
-      <Toaster />
+      <Toaster/>
       <Routes>
         {ROUTER.map((route) =>
           match(route)
