@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react'
+import { useRef } from 'react'
 import Draggable from 'react-draggable'
 
 interface MediaProps {
@@ -12,11 +12,16 @@ export function Media({ stream, url, username }: MediaProps) {
 
   return (
     <Draggable nodeRef={videoRef}>
-      <div className="w-fit absolute" ref={videoRef}>
-        <h4>{stream && stream.getVideoTracks().length > 0 && username}</h4>
+      <div
+        className="w-fit absolute bg-violet-800 rounded-lg z-[1]"
+        ref={videoRef}
+      >
+        <h4 className="pl-1 text-base text-violet-50">
+          {stream && stream.getVideoTracks().length > 0 && username}
+        </h4>
         {stream && (
           <video
-            className="rounded-lg"
+            className="rounded-b-lg"
             ref={(ref) => {
               if (ref) {
                 ref.srcObject = stream
