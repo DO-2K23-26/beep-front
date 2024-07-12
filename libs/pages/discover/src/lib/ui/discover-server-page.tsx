@@ -23,7 +23,7 @@ export default function DiscoverServer({
   const page = parseInt(searchParams.get('page') || '1') || 1
   const limit = parseInt(searchParams.get('limit') || '8') || 8
   return (
-    <div className="bg-violet-200 rounded-r-3xl w-full p-6 overflow-y-scroll custom-scrollbar">
+    <div className="bg-violet-200 rounded-r-3xl w-full p-3 md:p-6 overflow-y-scroll custom-scrollbar">
       <section
         id="search"
         className="rounded-3xl relative overflow-hidden z-10 bg-gradient-to-b from-violet-700 from-5% to-90%"
@@ -43,9 +43,9 @@ export default function DiscoverServer({
 
           <rect width="100%" height="100%" filter="url(#noiseFilter)" />
         </svg>
-        <div className="flex flex-col justify-between items-center gap-10 py-[12dvh] z-20 relative">
-          <h2 className="font-bold text-5xl">Find your community on Beep</h2>
-          <h3 className="text-sm">
+        <div className="flex flex-col justify-between items-center gap-10 py-[12dvh] z-20 relative px-2">
+          <h2 className="font-bold text-center md:text-5xl">Find your community on Beep</h2>
+          <h3 className="text-sm text-center">
             From studying to music, there's a place for you.
           </h3>
           <span className="flex flex-row align-center justify-center w-full gap-4 ">
@@ -53,7 +53,7 @@ export default function DiscoverServer({
               type="text"
               value={search}
               placeholder="Find a server..."
-              className="w-1/2 rounded-lg bg-violet-50 px-4 shadow-md focus:outline-none focus:ring-2 focus:ring-violet-500 focus:ring-opacity-50 transition-all duration-200 ease-in-out"
+              className="w-2/3 md:w-1/2 rounded-lg bg-violet-50 px-4 shadow-md focus:outline-none focus:ring-2 focus:ring-violet-500 focus:ring-opacity-50 transition-all duration-200 ease-in-out"
               onChange={(e) => setSearch(e.target.value)}
             />
             <button className="btn  btn--regular btn--square !bg-violet-50 shadow-md ">
@@ -83,7 +83,7 @@ export default function DiscoverServer({
           }}
         />
       </div>
-      <div className="grid grid-cols-4 gap-7 grid-rows-2">
+      <div className="grid grid-cols-1 gap-0 sm:gap-7 sm:grid-cols-2 sm:grid-rows-4 xl:grid-cols-4 xl:grid-rows-2">
         <AnimatePresence>
           {servers.map((server) => (
             <ServerCardFeature
