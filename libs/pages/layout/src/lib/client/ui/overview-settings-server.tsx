@@ -1,7 +1,8 @@
 import { ServerEntity } from '@beep/contracts'
 import {
   useTransmitBannerQuery,
-  useTransmitPictureQuery
+  useTransmitPictureQuery,
+  useUpdateServerMutation
 } from '@beep/server'
 import {
   Button,
