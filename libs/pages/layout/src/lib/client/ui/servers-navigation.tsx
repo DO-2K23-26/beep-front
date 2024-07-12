@@ -25,7 +25,7 @@ export default function ServersNavigation({
         <Button
           onClick={onPrivateMessage}
           style={ButtonStyle.SQUARE}
-          className="!bg-violet-50"
+          className="!bg-violet-50 !cursor-not-allowed"
         >
           <Icon name="lucide:mail" className="w-5 h-5" />
         </Button>
@@ -61,4 +61,3 @@ export default function ServersNavigation({
     </div>
   )
 }
-

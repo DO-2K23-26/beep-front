@@ -1,6 +1,4 @@
-import {
-  useGetServersQuery, useLeaveVoiceChannelMutation
-} from '@beep/server';
+import { useGetServersQuery, useLeaveVoiceChannelMutation } from '@beep/server'
 import { AppDispatch } from '@beep/store'
 import { useModal } from '@beep/ui'
 import { userActions } from '@beep/user'
@@ -10,7 +8,7 @@ import { NavigateFunction, useNavigate } from 'react-router-dom'
 import ServersNavigation from '../ui/servers-navigation'
 
 const onPrivateMessage = (navigation: NavigateFunction) => {
-  navigation('/servers/@me')
+  // navigation('/discover')
 }
 
 export function ServersNavigationFeature() {
