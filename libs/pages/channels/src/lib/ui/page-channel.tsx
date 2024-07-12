@@ -85,42 +85,46 @@ export const PageChannel = ({
     <div className="bg-violet-200 w-full p-6 flex flex-col gap-6 justify-between h-[100dvh]">
       {/* Message page Header */}
       <div className="flex flex-row justify-between gap-6">
-        <div className="flex flex-row gap-6 justify-between lg:w-full">
-          <Button
-            style={ButtonStyle.SQUARE}
-            className="lg:hidden !bg-violet-300"
-            onClick={hideLeftDiv}
-          >
-            <Icon name="lucide:arrow-left" className="w-4 h-4" />
-          </Button>
-          {channel.id && (
-            <div className="flex flex-row gap-2 items-center justify-center p-3 bg-violet-300 rounded-xl h-14">
-              {channel.type === ChannelType.VOICE ? (
-                <Icon name="lucide:volume-2" className="w-4 h-4" />
-              ) : (
-                <Icon name="lucide:hash" className="w-4 h-4" />
-              )}
-              <p className="font-semibold">{channel.name}</p>
-            </div>
-          )}
-          {channel.id && (
-            <DisplayPinned
-              channelId={channel.id}
-              onUpdateMessage={onUpdateMessage}
-              editingMessageId={editingMessageId}
-              setEditingMessageId={setEditingMessageId}
-              selectedTaggedUser={selectedTaggedUser}
-              setSelectedTaggedUser={setSelectedTaggedUser}
-            />
-          )}
+        <div className="flex flex-row gap-6 justify-between w-full">
+          <div className="flex flex-row gap-6">
+            <Button
+              style={ButtonStyle.SQUARE}
+              className="lg:hidden !bg-violet-300"
+              onClick={hideLeftDiv}
+            >
+              <Icon name="lucide:arrow-left" className="w-4 h-4" />
+            </Button>
+            {channel.id && (
+              <div className="flex flex-row gap-2 items-center justify-center p-3 bg-violet-300 rounded-xl h-14">
+                {channel.type === ChannelType.VOICE ? (
+                  <Icon name="lucide:volume-2" className="w-4 h-4" />
+                ) : (
+                  <Icon name="lucide:hash" className="w-4 h-4" />
+                )}
+                <p className="font-semibold">{channel.name}</p>
+              </div>
+            )}
+          </div>
+          <div className="flex flex-row gap-6 ">
+            {channel.id && (
+              <DisplayPinned
+                channelId={channel.id}
+                onUpdateMessage={onUpdateMessage}
+                editingMessageId={editingMessageId}
+                setEditingMessageId={setEditingMessageId}
+                selectedTaggedUser={selectedTaggedUser}
+                setSelectedTaggedUser={setSelectedTaggedUser}
+              />
+            )}
+            <Button
+              style={ButtonStyle.SQUARE}
+              className="lg:hidden !bg-violet-300"
+              onClick={hideRightDiv}
+            >
+              <Icon name="lucide:user" className="w-4 h-4" />
+            </Button>
+          </div>
         </div>
-        <Button
-          style={ButtonStyle.SQUARE}
-          className="lg:hidden !bg-violet-300"
-          onClick={hideRightDiv}
-        >
-          <Icon name="lucide:user" className="w-4 h-4" />
-        </Button>
       </div>
       {/* Message list */}
       <ListMessages
