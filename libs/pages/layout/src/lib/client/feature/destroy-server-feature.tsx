@@ -58,9 +58,7 @@ export default function DestroyServerFeature({
       .then(() => {
         setLoading(false)
         if (!availableServers) {
-          //TODO: replace it with discovery page once its done
           dispatch(serverActions.setServer(emptyServer))
-          navigate('/servers/@me')
           toast.success('Server deleted successfully')
           closeModal()
           return
@@ -70,11 +68,11 @@ export default function DestroyServerFeature({
         )
         if (!serverToNavigate) {
           dispatch(serverActions.setServer(emptyServer))
-          navigate('/servers/@me')
           toast.success('Server deleted successfully')
           closeModal()
           return
         }
+        navigate('/discover')
         dispatch(serverActions.setServer(serverToNavigate))
         toast.success('Server deleted successfully')
         closeModal()
