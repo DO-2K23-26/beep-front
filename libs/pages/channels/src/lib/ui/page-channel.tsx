@@ -19,12 +19,10 @@ import DisplayPinned from './display-pinned'
 import ListMessages from './list-messages'
 
 export interface PageChannelProps {
-  messageForm: UseFormReturn<
-    {
-      message: string
-      replyTo: MessageEntity | null
-    }
-  >
+  messageForm: UseFormReturn<{
+    message: string
+    replyTo: MessageEntity | null
+  }>
   channel: ChannelEntity
   messages: MessageEntity[]
   sendMessage: () => void
@@ -95,22 +93,26 @@ export const PageChannel = ({
           >
             <Icon name="lucide:arrow-left" className="w-4 h-4" />
           </Button>
-          <div className="flex flex-row gap-2 items-center justify-center p-3 bg-violet-300 rounded-xl h-14">
-            {channel.type === ChannelType.VOICE ? (
-              <Icon name="lucide:volume-2" className="w-4 h-4" />
-            ) : (
-              <Icon name="lucide:hash" className="w-4 h-4" />
-            )}
-            <p className="font-semibold">{channel.name}</p>
-          </div>
-          <DisplayPinned
-            channelId={channel.id}
-            onUpdateMessage={onUpdateMessage}
-            editingMessageId={editingMessageId}
-            setEditingMessageId={setEditingMessageId}
-            selectedTaggedUser={selectedTaggedUser}
-            setSelectedTaggedUser={setSelectedTaggedUser}
-          />
+          {channel.id && (
+            <div className="flex flex-row gap-2 items-center justify-center p-3 bg-violet-300 rounded-xl h-14">
+              {channel.type === ChannelType.VOICE ? (
+                <Icon name="lucide:volume-2" className="w-4 h-4" />
+              ) : (
+                <Icon name="lucide:hash" className="w-4 h-4" />
+              )}
+              <p className="font-semibold">{channel.name}</p>
+            </div>
+          )}
+          {channel.id && (
+            <DisplayPinned
+              channelId={channel.id}
+              onUpdateMessage={onUpdateMessage}
+              editingMessageId={editingMessageId}
+              setEditingMessageId={setEditingMessageId}
+              selectedTaggedUser={selectedTaggedUser}
+              setSelectedTaggedUser={setSelectedTaggedUser}
+            />
+          )}
         </div>
         <Button
           style={ButtonStyle.SQUARE}
@@ -245,9 +247,7 @@ export const PageChannel = ({
                     onCursorChange ? () => onCursorChange() : undefined
                   }
                   onKeyUp={onCursorChange ? () => onCursorChange() : undefined}
-                  onKeyDown={(e) =>
-                    e.key === 'Enter' ? sendMessage() : {}
-                  }
+                  onKeyDown={(e) => (e.key === 'Enter' ? sendMessage() : {})}
                 />
               )}
             />
