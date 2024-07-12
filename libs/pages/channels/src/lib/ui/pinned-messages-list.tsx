@@ -22,7 +22,7 @@ const PinnedMessagesList: React.FC<PinnedMessagesListProps> = ({
   setSelectedTaggedUser,
 }) => {
   return (
-    <div className="flex absolute flex-col-reverse gap-6 overflow-y-scroll no-scrollbar scroll-smooth bg-violet-400 rounded-xl h-80">
+    <div className="flex absolute flex-col-reverse overflow-y-scroll no-scrollbar scroll-smooth bg-violet-400 rounded-xl h-80 p-2">
       {messages &&
         messages
           .slice()

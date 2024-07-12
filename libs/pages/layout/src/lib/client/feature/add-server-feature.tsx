@@ -124,7 +124,6 @@ export default function AddServerFeature({
         goToJoinServer={() => setServerStep('invite')}
       />
     ),
-    //TODO: Dorian - Add the Invite components
     invite: (
       <JoinServerModal
         onSubmit={handleSubmit(onSubmit)}
