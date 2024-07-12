@@ -33,7 +33,6 @@ export default function LayoutPage({
       {/* Right members & servers navigation pane */}
       <div className={showRightPane ? 'flex abolute w-full' : 'hidden lg:flex'}>
         {/* Responsive button */}
-        {rightPanel}
         <div className="p-6 bg-violet-200 lg:hidden">
           <Button
             style={ButtonStyle.SQUARE}
@@ -43,6 +42,7 @@ export default function LayoutPage({
             <Icon name="lucide:user" className="w-4 h-4" />
           </Button>
         </div>
+        {rightPanel}
       </div>
     </div>
   )
