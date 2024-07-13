@@ -79,14 +79,14 @@ export function PageSignin({
             />
           )}
         />
-        <div className="flex flex-row gap-1">
+        {/* <div className="flex flex-row gap-1">
           <Link
             className="text-purple-600 font-medium hover:!bg-transparent !p-0 !min-w-0 !h-fit"
             to="/authentication/forget-password"
           >
             <p className="text-purple-600 font-normal">You forgot your password ?</p>
           </Link>
-        </div>
+        </div> */}
         <div className="flex flex-col w-full">
           <Button
             onClick={onSubmit}
