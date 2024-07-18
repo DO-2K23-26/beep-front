@@ -3,6 +3,7 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 import {
   backendUrl,
   ConfirmEmailRequest,
+  ForgotPasswordRequest,
   GetMultipleUsersRequest,
   LoginRequest,
   LoginResponse,
@@ -113,7 +114,14 @@ export const userApi = createApi({
         method: 'POST',
       }),
     }),
-    verifyEmail: builder.mutation<{ token: string }, { token: string }>({
+    resetPassword: builder.mutation<void, ForgotPasswordRequest>({
+      query: (request) => ({
+        url: '/authentication/reset-password',
+        method: 'POST',
+        body: request
+      }),
+    }),
+    verifyEmail: builder.mutation<any, { token: string }>({
       query: (data) => ({
         url: '/authentication/verify',
         method: 'POST',
@@ -141,6 +149,7 @@ export const {
   useConfirmEmailMutation,
   useGetUsersFromQuery,
   useLoginMutation,
+  useResetPasswordMutation,
   useRegisterMutation,
   useRefreshMutation,
   useGetMeQuery,

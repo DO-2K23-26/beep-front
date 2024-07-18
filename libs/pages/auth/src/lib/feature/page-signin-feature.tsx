@@ -18,7 +18,7 @@ export function PageSigninFeature() {
   })
 
   const toForgetPassword = () => {
-    navigate('/authentication/forget-password')
+    navigate('/authentication/forgot-password')
   }
 
   const toSignup = () => {

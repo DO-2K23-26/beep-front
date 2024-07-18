@@ -5,6 +5,7 @@ import { PageEmailUpdateConfirmationFeature } from './feature/page-email-update-
 import { PageSigninFeature } from './feature/page-signin-feature'
 import { PageSignupFeature } from './feature/page-signup-feature'
 import { PageVerifyFeature } from './feature/page-verify-feature'
+import { PageForgotPasswordFeature } from './feature/page-forgot-password-feature'
 
 export const ROUTER_AUTH: Route[] = [
   {
@@ -31,7 +32,8 @@ export const ROUTER_AUTH: Route[] = [
     path: '/verify/:token',
     component: <PageVerifyFeature />,
   },
-  // {
-  //   path: '/forget-password',
-  // }
+  {
+    path: '/forgot-password',
+    component: <PageForgotPasswordFeature />,
+  },
 ]
