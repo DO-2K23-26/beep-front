@@ -1,9 +1,9 @@
-import { UserConnectedEntity, UserEntity } from '@beep/contracts'
+import { UserConnectedEntity, UserDisplayedEntity } from '@beep/contracts'
 import DisplayMemberFeature from '../feature/display-member-feature'
 
 export interface ListMembersProps {
   usersConnected: UserConnectedEntity[]
-  users: UserEntity[]
+  users: UserDisplayedEntity[]
 }
 
 export function ListMembers({ usersConnected, users }: ListMembersProps) {

@@ -9,6 +9,7 @@ export * from './channel/create-channel.request'
 export * from './channel/update-channel.request'
 export * from './channel/delete-channel.request'
 export * from './channel/join-voice-channel.request'
+export * from './channel/get-channel.request'
 
 export * from './server/create-server.request'
 export * from './server/search-server.request'

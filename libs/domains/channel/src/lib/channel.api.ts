@@ -1,19 +1,20 @@
 /* eslint-disable @nx/enforce-module-boundaries */
 /* eslint-disable react-hooks/rules-of-hooks */
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
-import { 
-  ChannelEntity, 
-  CreateChannelRequest, 
-  CreateChannelResponse, 
-  CreateMessageRequest, 
-  DeleteMessageRequest, 
-  GetMessageFromChannelRequest, 
-  MessageEntity, 
-  PinMessageRequest, 
+import {
+  ChannelEntity,
+  CreateChannelRequest,
+  CreateChannelResponse,
+  CreateMessageRequest,
+  DeleteMessageRequest,
+  GetChannelRequest,
+  GetMessageFromChannelRequest,
+  MessageEntity,
+  PinMessageRequest,
   ShowMessageRequest,
-  UpdateMessageRequest, 
-  UserEntity, 
-  backendUrl 
+  UpdateMessageRequest,
+  UserEntity,
+  backendUrl
 } from '@beep/contracts';
 import { RootState } from '@beep/store';
 
@@ -40,23 +41,9 @@ export const channelApi = createApi({
       providesTags: ['channels']
     }),
 
-    getChannel: builder.query<any, { serverId: string, channelId: string }>({
-      query: (request: { serverId: string, channelId: string }) => ({
+    getChannel: builder.query<ChannelEntity, GetChannelRequest>({
+      query: (request) => ({
         url: `/servers/${request.serverId}/channels/${request.channelId}`,
-        //   responseHandler : async (response: Response) => {
-        //   const data = await response.json();
-        //   if (response.ok) {
-        //     for (const message of data.messages) {
-        //       message.owner.profilePicture = useFetchProfilePictureQuery(message.owner.id);
-        //       for (const attachment of message.attachments) {
-        //         attachment.url = useFetchAttachmentImageQuery(attachment.id);
-        //       }
-        //     }
-        //     return data;
-        //   } else {
-        //     return Promise.reject(data);
-        //   }
-        // }
       })
     }),
     getUsers: builder.query<UserEntity[], void>({

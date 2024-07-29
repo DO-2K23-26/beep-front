@@ -5,8 +5,8 @@ import { useSelector } from 'react-redux'
 
 export interface LayoutPageProps {
   hideRightDiv?: () => void
-  rightPanel?: ReactElement | undefined
-  leftPanel?: ReactElement | undefined
+  rightPanel?: ReactElement
+  leftPanel?: ReactElement
 }
 
 export default function LayoutPage({

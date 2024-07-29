@@ -1,6 +1,5 @@
 import {
   ChannelEntity,
-  ChannelType,
   MessageEntity,
   UserDisplayedEntity,
 } from '@beep/contracts'
@@ -11,11 +10,13 @@ import {
   DynamicSelectorProps,
   Icon,
   Input,
+  Skeleton,
 } from '@beep/ui'
 import { Controller, UseFormReturn } from 'react-hook-form'
 import { TaggedChannelFeature } from '../feature/tagged-channel-feature'
 import { UserInformationsFeature } from '../feature/user-informations-feature'
 import DisplayPinned from './display-pinned'
+import { ListMessageSkeleton } from './list-message-skeleton'
 import ListMessages from './list-messages'
 
 export interface PageChannelProps {
@@ -23,8 +24,8 @@ export interface PageChannelProps {
     message: string
     replyTo: MessageEntity | null
   }>
-  channel: ChannelEntity
-  messages: MessageEntity[]
+  channel?: ChannelEntity
+  messages?: MessageEntity[]
   sendMessage: () => void
   onUpdateMessage: (messageId: string, newContent: string) => void
   onDeleteMessage: (channelId: string, messageId: string) => void
@@ -49,6 +50,8 @@ export interface PageChannelProps {
   setSelectedTaggedChannel: React.Dispatch<
     React.SetStateAction<ChannelEntity | undefined>
   >
+  isLoadingMessages: boolean
+  isLoadingChannel: boolean
 }
 
 export const PageChannel = ({
@@ -57,7 +60,6 @@ export const PageChannel = ({
   messages,
   sendMessage,
   onUpdateMessage,
-  onDeleteMessage,
   files,
   onAddFiles,
   onDeleteFile,
@@ -69,12 +71,15 @@ export const PageChannel = ({
   setEditingMessageId,
   onChange,
   onCursorChange,
+  findChannelForTag,
+  onDeleteMessage,
   dynamicSelector,
   selectedTaggedUser,
   setSelectedTaggedUser,
-  findChannelForTag,
   selectedTaggedChannel,
   setSelectedTaggedChannel,
+  isLoadingMessages,
+  isLoadingChannel,
 }: PageChannelProps) => {
   const replyTo = messageForm.watch('replyTo')
   const setReplyTo = (message: MessageEntity | null) => {
@@ -84,9 +89,11 @@ export const PageChannel = ({
   return (
     <div className="bg-violet-200 w-full p-6 flex flex-col gap-6 justify-between h-[100dvh]">
       {/* Message page Header */}
+
       <div className="flex flex-row justify-between gap-6">
         <div className="flex flex-row gap-6 justify-between w-full">
           <div className="flex flex-row gap-6">
+            {/* Button to hide the the left pane and icon to show channel name */}
             <Button
               style={ButtonStyle.SQUARE}
               className="lg:hidden !bg-violet-300"
@@ -94,19 +101,18 @@ export const PageChannel = ({
             >
               <Icon name="lucide:arrow-left" className="w-4 h-4" />
             </Button>
-            {channel.id && (
+            {channel != undefined && !isLoadingChannel ? (
               <div className="flex flex-row gap-2 items-center justify-center p-3 bg-violet-300 rounded-xl h-14">
-                {channel.type === ChannelType.VOICE ? (
-                  <Icon name="lucide:volume-2" className="w-4 h-4" />
-                ) : (
-                  <Icon name="lucide:hash" className="w-4 h-4" />
-                )}
+                <Icon name="lucide:hash" className="w-4 h-4" />
                 <p className="font-semibold">{channel.name}</p>
               </div>
+            ) : (
+              <Skeleton className="h-14 w-24 rounded-xl bg-violet-300" />
             )}
           </div>
+          {/* Button to display the list of pinned messages of a channel */}
           <div className="flex flex-row gap-6 ">
-            {channel.id && (
+            {channel != undefined && !isLoadingChannel ? (
               <DisplayPinned
                 channelId={channel.id}
                 onUpdateMessage={onUpdateMessage}
@@ -115,6 +121,8 @@ export const PageChannel = ({
                 selectedTaggedUser={selectedTaggedUser}
                 setSelectedTaggedUser={setSelectedTaggedUser}
               />
+            ) : (
+              <Skeleton className="h-14 w-44 rounded-xl bg-violet-300" />
             )}
             <Button
               style={ButtonStyle.SQUARE}
@@ -126,20 +134,25 @@ export const PageChannel = ({
           </div>
         </div>
       </div>
+
       {/* Message list */}
-      <ListMessages
-        messages={messages}
-        onUpdateMessage={onUpdateMessage}
-        onDeleteMessage={onDeleteMessage}
-        editingMessageId={editingMessageId}
-        setEditingMessageId={setEditingMessageId}
-        selectedTaggedUser={selectedTaggedUser}
-        setSelectedTaggedUser={setSelectedTaggedUser}
-        findChannelForTag={findChannelForTag}
-        selectedTaggedChannel={selectedTaggedChannel}
-        setSelectedTaggedChannel={setSelectedTaggedChannel}
-        onReply={setReplyTo}
-      />
+      {isLoadingMessages || messages == undefined ? (
+        <ListMessageSkeleton />
+      ) : (
+        <ListMessages
+          messages={messages}
+          onUpdateMessage={onUpdateMessage}
+          onDeleteMessage={onDeleteMessage}
+          editingMessageId={editingMessageId}
+          setEditingMessageId={setEditingMessageId}
+          selectedTaggedUser={selectedTaggedUser}
+          setSelectedTaggedUser={setSelectedTaggedUser}
+          findChannelForTag={findChannelForTag}
+          selectedTaggedChannel={selectedTaggedChannel}
+          setSelectedTaggedChannel={setSelectedTaggedChannel}
+          onReply={setReplyTo}
+        />
+      )}
       {selectedTaggedChannel ? (
         <TaggedChannelFeature
           channel={selectedTaggedChannel}
@@ -266,13 +279,6 @@ export const PageChannel = ({
             >
               <Icon name="lucide:send" className="w-5 h-5" />
             </Button>
-            {/* <Button
-              style={ButtonStyle.SQUARE}
-              onClick={onFiles}
-              className="!bg-violet-50"
-            >
-              <Icon name="lucide:plus" className="w-5 h-5" />
-            </Button> */}
             <label
               htmlFor="file"
               className="cursor-pointer btn btn--regular btn--square !bg-violet-50"

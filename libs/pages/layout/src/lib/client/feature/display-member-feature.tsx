@@ -1,9 +1,9 @@
-import { UserEntity } from '@beep/contracts'
-import DisplayMember from '../ui/display-member'
+import { UserDisplayedEntity } from '@beep/contracts'
 import { useFetchProfilePictureQuery } from '@beep/user'
+import DisplayMember from '../ui/display-member'
 
 interface DisplayMemberFeatureProps {
-  user: UserEntity
+  user: UserDisplayedEntity
   isConnected: boolean
 }
 

@@ -37,7 +37,7 @@ export function PageChannelFeature() {
     channelId: string
   }>()
   const { data: channels } = useGetServerChannelsQuery(serverId)
-  const { data: channel } = useGetChannelQuery({
+  const { data: channel, isLoading: isLoadingChannel } = useGetChannelQuery({
     serverId: serverId,
     channelId: channelId,
   })
@@ -45,6 +45,7 @@ export function PageChannelFeature() {
 
   const {
     data: messages,
+    isLoading: isLoadingMessages,
     refetch,
     isSuccess,
   } = useGetMessagesByChannelIdQuery({ channelId })
@@ -172,8 +173,8 @@ export function PageChannelFeature() {
     if (value === undefined || value === '') return
 
     const cursorPos: number = inputRef.current
-      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-      ? inputRef.current.selectionStart!
+      ? // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        inputRef.current.selectionStart!
       : 0
 
     updateDynamicSelector(value, cursorPos)
@@ -183,8 +184,8 @@ export function PageChannelFeature() {
     if (inputRef.current) {
       const value = inputRef.current.value
       const cursorPos: number = inputRef.current
-        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-        ? inputRef.current.selectionStart!
+        ? // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+          inputRef.current.selectionStart!
         : 0
 
       updateDynamicSelector(value, cursorPos)
@@ -317,17 +318,11 @@ export function PageChannelFeature() {
     }
   }, [serverId, refetch, isSuccess, availableServers, dispatch, channelId])
 
-  return messages !== undefined && channel !== undefined ? (
+  return (
     <PageChannel
       messageForm={messageForm}
       messages={messages}
-      channel={{
-        id: channel.id,
-        name: channel.name,
-        description: channel.description,
-        serverId: channelId,
-        type: ChannelType.TEXT,
-      }}
+      channel={channel}
       sendMessage={onSendMessage}
       onUpdateMessage={onUpdateMessage}
       onDeleteMessage={onDeleteMessage}
@@ -348,8 +343,8 @@ export function PageChannelFeature() {
       setSelectedTaggedChannel={setSelectedTaggedChannel}
       selectedTaggedUser={selectedTaggedUser}
       setSelectedTaggedUser={setSelectedTaggedUser}
+      isLoadingMessages={isLoadingMessages}
+      isLoadingChannel={isLoadingChannel}
     />
-  ) : (
-    <p>Data is loading... Beboup beboup</p>
   )
 }
