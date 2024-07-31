@@ -1,16 +1,16 @@
-import { useFetchAttachmentImageQuery } from '@beep/channel';
-import { Attachment } from '@beep/contracts';
-import { Icon } from '@beep/ui';
+import { useFetchAttachmentImageQuery } from '@beep/channel'
+import { Attachment } from '@beep/contracts'
+import { Icon } from '@beep/ui'
 
 interface AttachmentFeatureProps {
-  attachment: Attachment,
-  key: number
+  attachment: Attachment
 }
 
-export default function AttachmentFeature({ attachment }: AttachmentFeatureProps) {
-
-  const blob = useFetchAttachmentImageQuery(attachment.id).currentData;
-  const name  = attachment.name.split('/').slice(-1);
+export default function AttachmentFeature({
+  attachment,
+}: AttachmentFeatureProps) {
+  const blob = useFetchAttachmentImageQuery(attachment.id).currentData
+  const name = attachment.name.split('/').slice(-1)
   if (attachment.contentType.includes('image')) {
     return (
       <img
@@ -18,7 +18,7 @@ export default function AttachmentFeature({ attachment }: AttachmentFeatureProps
         alt={`Attachment`}
         style={{ maxWidth: '200px', maxHeight: '200px' }}
       />
-    );
+    )
   }
 
   if (attachment.contentType.includes('video')) {
@@ -30,18 +30,15 @@ export default function AttachmentFeature({ attachment }: AttachmentFeatureProps
       >
         Votre navigateur ne permet pas de visualiser la vidéo.
       </video>
-    );
+    )
   }
 
   if (attachment.contentType.includes('audio')) {
     return (
-      <audio
-        src={blob}
-        controls
-      >
+      <audio src={blob} controls>
         Votre navigateur ne permet pas de lire l'audio.
       </audio>
-    );
+    )
   }
   if (attachment.contentType.includes('application/pdf')) {
     return (
@@ -50,14 +47,13 @@ export default function AttachmentFeature({ attachment }: AttachmentFeatureProps
         <a
           href={blob}
           download={name}
-          style={{ display: 'block', marginTop: '10px', }}
-          className='underline'
-
+          style={{ display: 'block', marginTop: '10px' }}
+          className="underline"
         >
           {name}
         </a>
       </div>
-    );
+    )
   }
 
   if (attachment.contentType.includes('text')) {
@@ -68,29 +64,27 @@ export default function AttachmentFeature({ attachment }: AttachmentFeatureProps
           href={blob}
           download={name}
           style={{ display: 'block', marginTop: '10px' }}
-          className='underline'
+          className="underline"
         >
           {name}
         </a>
       </div>
-    );
+    )
   }
 
   // Pour les autres types de fichiers
   return (
-    <div
-      className="flex align-middle m-2"
-    >
+    <div className="flex align-middle m-2">
       <Icon name="lucide:file-up" className="w-10 h-10" />
       <a
         href={blob}
         download={name}
-        target="_blank" rel="noopener noreferrer"
-        className='underline'
+        target="_blank"
+        rel="noopener noreferrer"
+        className="underline"
       >
         {name}
       </a>
     </div>
-  );
-
+  )
 }

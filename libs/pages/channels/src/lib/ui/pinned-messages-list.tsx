@@ -1,6 +1,10 @@
 import React from 'react'
 import MessageFeature from '../feature/message-feature'
-import { MessageEntity, UserDisplayedEntity } from '@beep/contracts'
+import {
+  ChannelEntity,
+  MessageEntity,
+  UserDisplayedEntity,
+} from '@beep/contracts'
 
 interface PinnedMessagesListProps {
   messages: MessageEntity[]
@@ -27,23 +31,32 @@ const PinnedMessagesList: React.FC<PinnedMessagesListProps> = ({
         messages.length > 0 ? 'p-2' : ''
       }`}
     >
-      {messages &&
-        messages
-          .slice()
-          .map((message) => (
-            <MessageFeature
-              key={message.id}
-              user={message.owner}
-              message={message}
-              onUpdateMessage={onUpdateMessage}
-              createdAt={message.createdAt || ''}
-              editingMessageId={editingMessageId}
-              setEditingMessageId={setEditingMessageId}
-              isPinned={true}
-              selectedTaggedUser={selectedTaggedUser}
-              setSelectedTaggedUser={setSelectedTaggedUser}
-            />
-          ))}
+      {messages.slice().map((message) => (
+        <MessageFeature
+          key={'pinned' + message.id}
+          message={message}
+          isDisplayedAsPinned={true}
+          onUpdateMessage={onUpdateMessage}
+          editingMessageId={editingMessageId}
+          setEditingMessageId={setEditingMessageId}
+          selectedTaggedUser={selectedTaggedUser}
+          setSelectedTaggedUser={setSelectedTaggedUser}
+          onDeleteMessage={function (
+            channelId: string,
+            messageId: string
+          ): void {
+            // not implemented
+          }}
+          onReply={function (message: MessageEntity): void {
+            // not implemented
+          }}
+          findChannelForTag={function (tag: string): ChannelEntity | undefined {
+            // not implemented
+            return undefined
+          }}
+          selectedTaggedChannel={undefined}
+        />
+      ))}
     </div>
   )
 }

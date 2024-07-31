@@ -107,8 +107,7 @@ export const channelApi = createApi({
     }),
     pinMessage: builder.mutation<MessageEntity, PinMessageRequest>({
       query: (request) => ({
-        url: `/channels/${request.channelId}/messages/${request.messageId}/pin`,
-        body: request,
+        url: `/channels/${request.channelId}/messages/${request.messageId}/pinning?action=${request.action}`,
         method: 'PATCH',
       }),
       invalidatesTags: ['messages']
@@ -120,14 +119,7 @@ export const channelApi = createApi({
       }),
       providesTags: ['messages'],
     }),
-    findAndDeleteMessage: builder.mutation<MessageEntity, DeleteMessageRequest>({
-      query: (request) => ({
-        url: `/channels/${request.channelId}/messages/${request.messageId}/find-and-delete`,
-        method: 'DELETE',
-        body: request,
-      }),
-      invalidatesTags: ['messages']
-    }),
+
   })
 })
 
@@ -144,5 +136,4 @@ export const {
   useFetchAttachmentImageQuery,
   usePinMessageMutation,
   useFetchPinnedMessagesQuery,
-  useFindAndDeleteMessageMutation
 } = channelApi

@@ -1,13 +1,8 @@
-import {
-  useCreateMessageMutation,
-  useFindAndDeleteMessageMutation,
-  usePinMessageMutation,
-} from '@beep/channel'
+import { usePinMessageMutation } from '@beep/channel'
 import {
   ChannelEntity,
   MessageEntity,
   UserDisplayedEntity,
-  UserEntity,
 } from '@beep/contracts'
 import { getServersState } from '@beep/server'
 import {
@@ -17,20 +12,18 @@ import {
 } from '@beep/user'
 import React, { ReactNode, useEffect } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
-import { toast } from 'react-hot-toast'
 import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import Message from '../ui/message'
+import toast from 'react-hot-toast'
 
 interface MessageFeatureProps {
   message: MessageEntity
-  user?: UserEntity
-  createdAt: string
+  isDisplayedAsPinned?: boolean
   onUpdateMessage: (messageId: string, newContent: string) => void
   onDeleteMessage: (channelId: string, messageId: string) => void
   editingMessageId: string | null
   setEditingMessageId: (id: string | null) => void
-  isPinned: boolean
   onReply: (message: MessageEntity) => void
   selectedTaggedUser: UserDisplayedEntity | undefined
   setSelectedTaggedUser: React.Dispatch<
@@ -45,13 +38,11 @@ interface MessageFeatureProps {
 
 export default function MessageFeature({
   message,
-  user,
-  createdAt,
   onUpdateMessage,
   onDeleteMessage,
+  isDisplayedAsPinned,
   editingMessageId,
   setEditingMessageId,
-  isPinned,
   onReply,
   selectedTaggedUser,
   setSelectedTaggedUser,
@@ -59,14 +50,14 @@ export default function MessageFeature({
   selectedTaggedChannel,
 }: MessageFeatureProps) {
   const [pinMessage, result] = usePinMessageMutation()
-  const [createMessage] = useCreateMessageMutation()
-  const [findAndDeleteMessage] = useFindAndDeleteMessageMutation()
   const serverData = useSelector(getServersState)
   const userId: string | undefined = useSelector(getUserState).payload?.sub
   const navigate = useNavigate()
-  const userProfilePicture = useFetchProfilePictureQuery(
-    user?.id ?? ''
-  ).currentData
+  const { data: owner } = useGetUsersFromQuery({ userIds: [message.ownerId] })
+  const { currentData: userProfilePicture } = useFetchProfilePictureQuery(
+    message.ownerId
+  )
+
   const regex =
     /@\$[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}/gi
   const matches = message.content.match(regex) || []
@@ -93,15 +84,15 @@ export default function MessageFeature({
   }
 
   const onPin = async () => {
-    try {
-      await pinMessage({ channelId: message.channelId, messageId: message.id })
-    } catch (error) {
-      toast.error('Failure while trying to pin the message')
-    }
+    await pinMessage({
+      channelId: message.channelId,
+      messageId: message.id,
+      action: message.pinned ? 'unpin' : 'pin',
+    })
   }
 
   function isUserMessageOwner(): boolean {
-    if (userId) return userId === user?.id
+    if (userId) return userId === message.ownerId
     return false
   }
 
@@ -111,58 +102,32 @@ export default function MessageFeature({
   }
 
   useEffect(() => {
-    if (result.isSuccess) {
-      if (result.data.pinned) {
-        toast.success('Message pinned!')
-        const notificationMessage = `The message with ID ${message.id} is pinned.`
-        const formData = new FormData()
-        formData.set('content', notificationMessage)
-
-        createMessage({
-          channelId: message.channelId,
-          body: formData,
-        })
-      } else {
-        findAndDeleteMessage({
-          channelId: message.channelId,
-          messageId: message.id,
-        })
-        toast.success('Message unpinned!')
-      }
-    } else if (result.isError) {
-      toast.error('Failure while trying to pin the message')
+    const pinning = message.pinned ? 'unpin' : 'pin'
+    if (result.error) {
+      toast.error(
+        `Failure while trying to ${pinning}
+         the message`
+      )
+    } else if (result.isSuccess) {
+      toast.success(`Message ${pinning}!`)
     }
-  }, [
-    createMessage,
-    findAndDeleteMessage,
-    message.channelId,
-    message.id,
-    result,
-  ])
+  }, [result])
 
   const onUpdateMessageSubmit = methods.handleSubmit((data) => {
-    try {
-      if (
-        data.message !== '' &&
-        data.message !== undefined &&
-        isUserMessageOwner()
-      ) {
-        onUpdateMessage(message.id, data.message)
-        methods.setValue('message', '')
-        setEditingMessageId(null)
-      }
-    } catch (error) {
-      //TODO: Handle error
+    if (
+      data.message !== '' &&
+      data.message !== undefined &&
+      isUserMessageOwner()
+    ) {
+      onUpdateMessage(message.id, data.message)
+      methods.setValue('message', '')
+      setEditingMessageId(null)
     }
   })
 
   const onDeleteMessageSubmit = methods.handleSubmit(() => {
-    try {
-      if (isUserMessageOwner() || isUserServerOwner()) {
-        onDeleteMessage(message.channelId, message.id)
-      }
-    } catch (error) {
-      //TODO: Handle error
+    if (isUserMessageOwner() || isUserServerOwner()) {
+      onDeleteMessage(message.channelId, message.id)
     }
   })
 
@@ -281,10 +246,11 @@ export default function MessageFeature({
   return (
     <FormProvider {...methods}>
       <Message
-        user={user}
         message={message}
         profilePicture={userProfilePicture}
         isEditing={isEditing}
+        isDisplayedAsPinned={isDisplayedAsPinned}
+        ownerEntity={owner?.[0]}
         onDelete={
           isUserMessageOwner() || isUserServerOwner()
             ? onDeleteMessageSubmit
@@ -293,12 +259,10 @@ export default function MessageFeature({
         switchEditing={isUserMessageOwner() ? switchEditing : null}
         cancelEditing={cancelEditing}
         onUpdateMessage={onUpdateMessageSubmit}
-        createdAt={createdAt}
         replaceMentionChannel={replaceMentionChannel}
         replaceTagEntity={replaceTagEntity}
         isHighlighted={message.content.includes('@$' + userId)}
         onPin={onPin}
-        isPinned={isPinned}
         onReply={() => onReply(message)}
       />
     </FormProvider>

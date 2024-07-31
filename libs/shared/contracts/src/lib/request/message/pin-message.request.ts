@@ -1,4 +1,5 @@
 export interface PinMessageRequest {
-    channelId: string
-    messageId: string
+  channelId: string
+  messageId: string
+  action: "pin" | "unpin"
 }

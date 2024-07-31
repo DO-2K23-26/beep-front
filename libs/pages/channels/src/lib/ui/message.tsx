@@ -6,23 +6,19 @@ import { Controller, useFormContext } from 'react-hook-form'
 import AttachmentFeature from '../feature/attachment-feature'
 import { config, markdownComponents } from '../utils/markdown-config'
 import { preprocessMarkdown } from '../utils/markdown-parser'
+import { DateTime } from 'luxon'
 
 interface MessageProps {
   message: MessageEntity
-  user?: UserEntity
-  image?: string
-  gif?: string
-  video?: string
+  ownerEntity?: UserEntity
   isEditing: boolean
   profilePicture?: string
+  isDisplayedAsPinned?: boolean
   switchEditing: (() => void) | null
   onUpdateMessage: () => void
   onDelete: (() => void) | null
   cancelEditing: () => void
-  createdAt: string
-  updatedAt?: string
   onPin: () => void
-  isPinned?: boolean
   replaceTagEntity: (message: ReactNode) => ReactNode
   replaceMentionChannel: (content: React.ReactNode) => React.ReactNode
   isHighlighted: boolean
@@ -31,26 +27,35 @@ interface MessageProps {
 
 export default function Message({
   message,
-  user,
-  image,
-  gif,
-  video,
   isEditing,
   profilePicture,
+  ownerEntity,
+  isHighlighted,
+  isDisplayedAsPinned,
   switchEditing,
   onUpdateMessage,
   onDelete,
   cancelEditing,
-  createdAt,
-  updatedAt,
   onPin,
-  isPinned,
   onReply,
   replaceTagEntity,
   replaceMentionChannel,
-  isHighlighted,
 }: Readonly<MessageProps>) {
   const { control } = useFormContext()
+  const formatDate = (dateString: string): string => {
+    const date = DateTime.fromISO(dateString)
+    const now = DateTime.now()
+
+    if (
+      date.hasSame(now, 'day') &&
+      date.hasSame(now, 'year') &&
+      date.hasSame(now, 'month')
+    ) {
+      return `Today ${date.toFormat('HH:mm')}`
+    } else {
+      return date.toFormat('dd/MM/yyyy HH:mm')
+    }
+  }
 
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
@@ -87,34 +92,47 @@ export default function Message({
 
   // Ajoutez cette logique dans le composant Message
   return (
-    <div className={'flex flex-col gap-2 p-3 rounded-xl group' + (isHighlighted ? ' bg-green-100/60 hover:bg-green-100' : ' hover:bg-violet-300')}>
-  {message.parentMessage && (
-    <div className={'flex items-center ml-4 opacity-60'}>
-      <Icon name="lucide:corner-up-right" className="w-4 h-4 mr-2" />
-      <div className="reply-to bg-violet-100 p-2 rounded">
-        <span className="text-sm text-gray-600">
-          <strong>{message.parentMessage?.owner?.username}</strong> :{' '}
-          <i>{message.parentMessage?.content.length > 30 ? message.parentMessage?.content.substring(0, 30) + " ..." : message.parentMessage?.content}</i>
-        </span>{' '}
-      </div>
-    </div>
-  )}
+    <div
+      className={
+        'flex flex-col gap-2 p-3 rounded-xl group' +
+        (isHighlighted
+          ? ' bg-green-100/60 hover:bg-green-100'
+          : ' hover:bg-violet-300')
+      }
+    >
+      {message.parentMessage && (
+        <div className={'flex items-center ml-4 opacity-60'}>
+          <Icon name="lucide:corner-up-right" className="w-4 h-4 mr-2" />
+          <div className="reply-to bg-violet-100 p-2 rounded">
+            <span className="text-sm text-gray-600">
+              <strong>{message.parentMessage?.owner?.username}</strong> :{' '}
+              <i>
+                {message.parentMessage?.content.length > 30
+                  ? message.parentMessage?.content.substring(0, 30) + ' ...'
+                  : message.parentMessage?.content}
+              </i>
+            </span>{' '}
+          </div>
+        </div>
+      )}
       <div className="flex flex-row justify-between">
         <div className="flex flex-row gap-4 items-center">
           <div className="flex flex-row gap-3 items-center overflow-hidden">
             <img
               className="w-9 min-w-[36px] h-9 min-h-[36px] object-cover bg-violet-50 rounded-xl"
-              src={(profilePicture && profilePicture) || '/picture.svg'}
-              alt={user && user.username + '-img'}
+              src={profilePicture ?? '/picture.svg'}
+              alt={ownerEntity?.username ?? 'Caspser'}
             />
             <h5 className="font-semibold text-xs truncate">
-              {(user && user.username) || 'Casper'}
+              {ownerEntity?.username ?? 'Caspser'}
             </h5>
           </div>
-          <p className="font-normal text-xs truncate">{createdAt}</p>
+          <p className="font-normal text-xs truncate">
+            {formatDate(message.createdAt ?? '')}
+          </p>
         </div>
         <div className="flex flex-row gap-4 items-center invisible group-hover:visible pr-2">
-          {!isPinned && (
+          {!isDisplayedAsPinned && (
             <>
               {switchEditing && !isEditing && (
                 <Button style={ButtonStyle.NONE} onClick={switchEditing}>
@@ -160,7 +178,6 @@ export default function Message({
                     onClick={() => onUpdateMessage()}
                   >
                     <Icon name="lucide:save" className="w-10 h-10 visible" />
-                    
                   </Button>
                 </div>
               )}
@@ -172,10 +189,12 @@ export default function Message({
               {renderedMessage}
             </div>
 
-            {message.attachments &&
-              message.attachments.map((attachment, i) => (
-                <AttachmentFeature attachment={attachment} key={i} />
-              ))}
+            {message.attachments?.map((attachment, i) => (
+              <AttachmentFeature
+                key={'attachment_' + i.toString()}
+                attachment={attachment}
+              />
+            ))}
           </div>
         )}
       </div>
