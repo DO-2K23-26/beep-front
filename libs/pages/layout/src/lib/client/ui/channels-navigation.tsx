@@ -4,13 +4,7 @@ import {
   OccupiedChannelEntity,
   ServerEntity,
 } from '@beep/contracts'
-import {
-  Button,
-  ButtonSize,
-  ButtonStyle,
-  Icon,
-  UseModalProps
-} from '@beep/ui'
+import { Button, ButtonSize, ButtonStyle, Icon, UseModalProps } from '@beep/ui'
 import { getChannelsState } from '@beep/channel'
 import { getResponsiveState } from '@beep/responsive'
 import { useTransmitBannerQuery, useTransmitPictureQuery } from '@beep/server'
@@ -28,7 +22,7 @@ import { SettingBodyWidth, SubSettings } from '@beep/settings'
 import { CreateChannelModal } from './create-channel-modal'
 import { ServerDropdown } from './server-dropdown'
 import { ServerPictureButton } from './server-picture-button'
-import { getVoiceState } from '@beep/voice';
+import { getVoiceState } from '@beep/voice'
 import { skipToken } from '@reduxjs/toolkit/query'
 
 export interface ChannelsNavigationProps {
@@ -40,6 +34,7 @@ export interface ChannelsNavigationProps {
   onCreateChannel: () => void
   onLeaveVoiceChannel: () => void
   onJoinVoiceChannel: (channel: ChannelEntity) => void
+  onJoinTextChannel: (serverId: string, channelId: string) => void
   openModal: React.Dispatch<React.SetStateAction<UseModalProps | undefined>>
   closeModal: () => void
   methodsAddChannel: UseFormReturn<{ name: string; type: ChannelType }>
@@ -54,6 +49,7 @@ export default function ChannelsNavigation({
   onClickId,
   onCreateChannel,
   onJoinVoiceChannel,
+  onJoinTextChannel,
   onLeaveVoiceChannel,
   openModal,
   closeModal,
@@ -64,7 +60,7 @@ export default function ChannelsNavigation({
   const { connected, focusedChannel, serverName } =
     useSelector(getChannelsState)
   const [isAdmin, setIsAdmin] = useState(false)
-  const {connectionState} = useSelector(getVoiceState)
+  const { connectionState } = useSelector(getVoiceState)
   const { payload } = useSelector(getUserState)
   // List of setting in the user setting modal
   const subSetting: SubSettings = {
@@ -88,7 +84,9 @@ export default function ChannelsNavigation({
     }
   }, [server, payload])
 
-  const banner = useTransmitBannerQuery(server?.id ?? '').currentData ?? ''
+  const { currentData: banner } = useTransmitBannerQuery(
+    server?.id ?? skipToken
+  )
   const { data: icon } = useTransmitPictureQuery(server?.id ?? skipToken)
 
   return (
@@ -151,7 +149,10 @@ export default function ChannelsNavigation({
         <div className="flex flex-col gap-6 min-w-max flex-grow overflow-y-scroll no-scrollbar scroll-smooth">
           <div className="flex flex-col flex-grow gap-6">
             <div className="flex flex-col gap-1">
-              <ListTextChannels channels={textChannels || []} />
+              <ListTextChannels
+                channels={textChannels || []}
+                onJoinTextChannel={onJoinTextChannel}
+              />
               <ListVoiceChannels
                 channels={voiceChannels || []}
                 occupiedChannels={streamingUsers}

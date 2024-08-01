@@ -1,6 +1,7 @@
 import { UserDisplayedEntity } from '@beep/contracts'
 import { Button, ButtonStyle, Icon } from '@beep/ui'
 import { useFetchProfilePictureQuery } from '@beep/user'
+import { skipToken } from '@reduxjs/toolkit/query'
 
 export interface UserInformationsFeatureProps {
   user: UserDisplayedEntity
@@ -11,9 +12,9 @@ export const UserInformationsFeature = ({
   user,
   onClose,
 }: UserInformationsFeatureProps) => {
-  const userProfilePicture = useFetchProfilePictureQuery(user.id, {
-    skip: !user,
-  }).currentData
+  const { currentData: userProfilePicture } = useFetchProfilePictureQuery(
+    user.id ?? skipToken
+  )
 
   return (
     <div

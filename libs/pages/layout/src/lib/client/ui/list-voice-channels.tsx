@@ -1,5 +1,5 @@
 import { ChannelEntity, OccupiedChannelEntity } from '@beep/contracts'
-import VoiceChannelProps from '../feature/voice-channel-props'
+import VoiceChannel from '../feature/voice-channel'
 
 export interface ListVoiceChannelsProps {
 	channels: ChannelEntity[]
@@ -21,7 +21,7 @@ export function ListVoiceChannels({
             })
 
             return (
-                <VoiceChannelProps
+                <VoiceChannel
                   key={channel.id}
                   channel={channel}
                   users={occupiedChannel ? occupiedChannel.users : []}
@@ -32,5 +32,5 @@ export function ListVoiceChannels({
         })}
         </>
     )
-      
+
 }

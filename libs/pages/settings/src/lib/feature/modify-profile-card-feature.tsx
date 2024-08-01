@@ -1,16 +1,16 @@
-import { UpdateUserRequest } from '@beep/contracts'
 import {
   useFetchProfilePictureQuery,
   useGetMeQuery,
   useUpdateMeMutation,
 } from '@beep/user'
+import { skipToken } from '@reduxjs/toolkit/query'
 import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import toast from 'react-hot-toast'
 import { ModifyEmailDialog } from '../components/modify-email-dialog'
+import { ModifyProfileCard } from '../components/modify-profile-card'
 import { ModifyProfilePictureDialog } from '../components/modify-profile-picture-dialog'
 import { ModifyUsernameDialog } from '../components/modify-username-dialog'
-import { ModifyProfileCard } from '../components/modify-profile-card'
 
 export function ModifyProfileCardFeature() {
   const [isUsernameModalOpen, setIsUsernameModalOpen] = useState(false)
@@ -21,7 +21,7 @@ export function ModifyProfileCardFeature() {
   )
   const [errorPictureText, setErrorPictureText] = useState('')
   const [updateMe, result] = useUpdateMeMutation()
-  const { data } = useGetMeQuery()
+  const { data: userMe } = useGetMeQuery()
   useEffect(() => {
     if (result.isSuccess) {
       toast.success('Update successful')
@@ -62,7 +62,9 @@ export function ModifyProfileCardFeature() {
       reader.readAsDataURL(file)
     }
   }
-  const { currentData } = useFetchProfilePictureQuery(data ? data.id : '1')
+  const { currentData: userProfilePicture } = useFetchProfilePictureQuery(
+    userMe?.id ?? skipToken
+  )
   const handleUsernameSubmit = usernameFormController.handleSubmit((data) => {
     setIsPictureModalOpen(false)
     const formData = new FormData()
@@ -102,7 +104,7 @@ export function ModifyProfileCardFeature() {
   )
   const pictureChangeButton = (
     <ModifyProfilePictureDialog
-      currentPicture={currentData}
+      currentPicture={userProfilePicture}
       isModalOpen={isPictureModalOpen}
       selectedProfilePicture={newProfilePicture}
       errorMessage={errorPictureText}
@@ -113,8 +115,8 @@ export function ModifyProfileCardFeature() {
   )
   return (
     <ModifyProfileCard
-      email={data?.email ?? ''}
-      username={data?.username ?? ''}
+      email={userMe?.email ?? ''}
+      username={userMe?.username ?? ''}
       usernameButtonModal={usernameChangeButton}
       emailButtonModal={emailChangeButton}
       pictureButtonModal={pictureChangeButton}

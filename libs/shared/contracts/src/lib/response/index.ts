@@ -3,6 +3,7 @@ export * from './user/register.reponse'
 export * from './refresh.response'
 
 export * from './channel/create-channel.response'
+export * from './channel/get-channels.response'
 export * from './message/get-messages.response'
 export * from './user/update.response'
 

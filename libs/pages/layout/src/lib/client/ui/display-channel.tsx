@@ -2,11 +2,10 @@ import { ChannelEntity, ChannelType } from '@beep/contracts'
 import { SettingBodyWidth, SettingsModal, SubSettings } from '@beep/settings'
 import {
   DialogCloseButton,
-  Icon,
-  useModal
+  Icon
 } from '@beep/ui'
-import OverviewSettingsChannelFeature from '../feature/overview-settings-channel-feature'
 import DeleteChannelFeature from '../feature/delete-channel-feature'
+import OverviewSettingsChannelFeature from '../feature/overview-settings-channel-feature'
 
 interface DisplayChannelProps {
   channel: ChannelEntity

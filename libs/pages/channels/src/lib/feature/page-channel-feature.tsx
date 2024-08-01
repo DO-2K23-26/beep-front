@@ -1,19 +1,18 @@
 import {
   useCreateMessageMutation,
   useDeleteMessageMutation,
-  useGetChannelQuery,
   useGetMessagesByChannelIdQuery,
   useUpdateMessageMutation,
 } from '@beep/channel'
 import {
   ChannelEntity,
-  ChannelType,
   MessageEntity,
-  UserDisplayedEntity,
+  UserDisplayedEntity
 } from '@beep/contracts'
 import { responsiveActions } from '@beep/responsive'
 import {
   serverActions,
+  useGetChannelQuery,
   useGetServerChannelsQuery,
   useGetServersQuery,
   useGetUsersByServerIdQuery,
@@ -21,6 +20,7 @@ import {
 import { AppDispatch } from '@beep/store'
 import { DynamicSelectorProps, useModal } from '@beep/ui'
 import { TransmitSingleton } from '@beep/utils'
+import { skipToken } from '@reduxjs/toolkit/query'
 import { useEffect, useRef, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import toast from 'react-hot-toast'
@@ -49,7 +49,9 @@ export function PageChannelFeature() {
     refetch,
     isSuccess,
   } = useGetMessagesByChannelIdQuery({ channelId })
-  const { data: usersServer } = useGetUsersByServerIdQuery(serverId)
+  const { data: usersServer } = useGetUsersByServerIdQuery(
+    serverId ?? skipToken
+  )
   const { openModal, closeModal } = useModal()
   const [files, setFiles] = useState<File[]>([])
   const [previewUrls, setPreviewUrls] = useState<{ content: string | null }[]>(
@@ -137,11 +139,10 @@ export function PageChannelFeature() {
       setDynamicSelector({
         title: 'Text channels',
         elements:
-          channels
-            ?.filter(
-              (c: { type: ChannelType; name: string }) =>
-                (c.type === ChannelType.TEXT &&
-                  c.name.toLowerCase().includes(text.slice(1).toLowerCase())) ||
+          channels?.textChannels
+            .filter(
+              (c) =>
+                c.name.toLowerCase().includes(text.slice(1).toLowerCase()) ||
                 text.slice(1) === ''
             )
             .map((channel) => ({
@@ -194,7 +195,7 @@ export function PageChannelFeature() {
 
   const findChannelForTag = (tag: string): ChannelEntity | undefined => {
     if (channels) {
-      return channels.find((c) => c.id === tag.slice(2))
+      return channels.textChannels.find((c) => c.id === tag.slice(2))
     }
     return undefined
   }

@@ -5,12 +5,14 @@ import {
   CreateInvitationRequest,
   CreateInvitationResponse,
   DeleteChannelRequest,
+  GetChannelRequest,
   JoinInvitationResponse,
   OccupiedChannelEntity,
   SearchServerRequest,
   ServerEntity,
   UpdateChannelRequest,
   UserDisplayedEntity,
+  GetChannelsResponse,
   backendUrl,
 } from '@beep/contracts'
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
@@ -31,17 +33,19 @@ export const serverApi = createApi({
   baseQuery,
   tagTypes: [
     'servers',
-    'channels',
+    'channel',
+    'textChannel',
+    'voiceChannel',
     'streamingUsers',
     'users',
     'publicServers',
     'transmitPicture',
-    'transmitBanner'
+    'transmitBanner',
   ],
   endpoints: (builder) => ({
     getServers: builder.query<ServerEntity[], void>({
       query: () => `/servers`,
-      providesTags: ['servers'],
+      providesTags: (result) => [],
     }),
     discoverServers: builder.query<ServerEntity[], SearchServerRequest>({
       query: (params) => {
@@ -110,7 +114,10 @@ export const serverApi = createApi({
           type: request.type,
         },
       }),
-      invalidatesTags: ['channels'],
+
+      invalidatesTags: (_result, _error, req) => [
+        { type: 'channel', id: `LIST-${req.serverId}` },
+      ],
     }),
     updateChannelInServer: builder.mutation<
       ChannelEntity,
@@ -124,7 +131,10 @@ export const serverApi = createApi({
           description: request.description,
         },
       }),
-      invalidatesTags: ['channels'],
+      invalidatesTags: (result, __, req) =>
+        result
+          ? [{ type: `${result.type}Channel`, id: result.id }]
+          : [{ type: 'channel', id: `LIST-${req.serverId}` }],
     }),
     deleteChannelInServer: builder.mutation<
       ChannelEntity,
@@ -134,22 +144,56 @@ export const serverApi = createApi({
         url: `/servers/${request.serverId}/channels/${request.channelId}`,
         method: 'DELETE',
       }),
-      invalidatesTags: ['channels'],
+      invalidatesTags: (result, __, req) =>
+        result
+          ? [{ type: `${result.type}Channel`, id: result.id }]
+          : [{ type: 'channel', id: `LIST-${req.serverId}` }],
     }),
-    getServerChannels: builder.query<ChannelEntity[], string>({
+    getChannel: builder.query<ChannelEntity, GetChannelRequest>({
+      query: (request) => ({
+        url: `/servers/${request.serverId}/channels/${request.channelId}`,
+      }),
+      providesTags: (result, _error, _request) => {
+        if (result) return [{ type: `${result.type}Channel`, id: result.id }];
+        return [];
+      },
+    }),
+    getServerChannels: builder.query<GetChannelsResponse, string>({
       query: (serverId) => `/servers/${serverId}/channels`,
-      providesTags: ['channels'],
+      transformResponse: (response: ChannelEntity[]) => {
+        const voice = response.filter((channel) => channel.type === 'voice')
+        const text = response.filter((channel) => channel.type === 'text')
+        return { voiceChannels: voice, textChannels: text }
+      },
+      providesTags: (result, _error, serverId) =>
+        result
+          ? [
+              ...result.voiceChannels.map(({ id }) => ({
+                type: 'voiceChannel' as const,
+                id,
+              })),
+              ...result.textChannels.map(({ id }) => ({
+                type: 'textChannel' as const,
+                id,
+              })),
+              { type: 'channel', id: `LIST-${serverId}` },
+            ]
+          : [{ type: 'channel', id: `LIST-${serverId}` }],
     }),
     joinVoiceChannel: builder.mutation<
       void,
-      { serverId: string; channelId: string, userState: {muted: boolean, voiceMuted: boolean, camera: boolean} }
+      {
+        serverId: string
+        channelId: string
+        userState: { muted: boolean; voiceMuted: boolean; camera: boolean }
+      }
     >({
       query: ({ serverId, channelId, userState }) => ({
         url: `/servers/${serverId}/channels/${channelId}/join`,
         method: 'POST',
-        body: userState
+        body: userState,
       }),
-      invalidatesTags: (result, error, arg) => [
+      invalidatesTags: (_result, _error, arg) => [
         { type: 'streamingUsers', channelId: arg.channelId },
       ],
     }),
@@ -162,7 +206,7 @@ export const serverApi = createApi({
     }),
     getCurrentStreamingUsers: builder.query<OccupiedChannelEntity[], string>({
       query: (serverId) => `/servers/${serverId}/streaming/users`,
-      providesTags: (result, error, arg) =>
+      providesTags: (result, _error, _arg) =>
         result
           ? [
               ...result.map(({ channelId }) => ({
@@ -175,7 +219,7 @@ export const serverApi = createApi({
     }),
     getUsersByServerId: builder.query<UserDisplayedEntity[], string>({
       query: (serverId) => `servers/${serverId}/users`,
-      providesTags: (result, error, serverId) =>
+      providesTags: (result, _error, serverId) =>
         result
           ? [
               ...result.map(({ id }) => ({ type: 'users' as const, id })),
@@ -195,7 +239,6 @@ export const serverApi = createApi({
       }),
       invalidatesTags: ['servers'],
     }),
-
     updateBanner: builder.mutation<
       void,
       { serverId: string; formData: FormData }
@@ -228,7 +271,9 @@ export const serverApi = createApi({
           return URL.createObjectURL(blob)
         },
       }),
-      providesTags: (_, __, id) => [{ type: 'transmitBanner', id: id }],
+      providesTags: (_result, _error, id) => [
+        { type: 'transmitBanner', id: id },
+      ],
     }),
 
     transmitPicture: builder.query<string, string>({
@@ -239,7 +284,9 @@ export const serverApi = createApi({
           return URL.createObjectURL(blob)
         },
       }),
-      providesTags: (_, __, id) => [{ type: 'transmitPicture', id: id }],
+      providesTags: (_result, _error, id) => [
+        { type: 'transmitPicture', id: id },
+      ],
     }),
   }),
 })
@@ -251,6 +298,7 @@ export const {
   useJoinPrivateServerMutation,
   useCreateServerMutation,
   useGetServerChannelsQuery,
+  useGetChannelQuery,
   useCreateChannelInServerMutation,
   useUpdateChannelInServerMutation,
   useDeleteChannelInServerMutation,

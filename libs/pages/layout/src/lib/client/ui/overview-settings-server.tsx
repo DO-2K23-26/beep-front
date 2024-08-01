@@ -2,7 +2,7 @@ import { ServerEntity } from '@beep/contracts'
 import {
   useTransmitBannerQuery,
   useTransmitPictureQuery,
-  useUpdateServerMutation
+  useUpdateServerMutation,
 } from '@beep/server'
 import {
   Button,
@@ -11,6 +11,7 @@ import {
   InputPictureSettings,
   InputText,
 } from '@beep/ui'
+import { skipToken } from '@reduxjs/toolkit/query'
 import { useState } from 'react'
 import toast from 'react-hot-toast'
 
@@ -27,7 +28,9 @@ export function OverviewSettingsServer({
   const [serverDescription, setServerDescription] = useState(server.description)
   const [updateServer] = useUpdateServerMutation()
 
-  const banner = useTransmitBannerQuery(server.id).currentData
+  const { currentData: banner } = useTransmitBannerQuery(
+    server?.id ?? skipToken
+  )
   const { data: icon } = useTransmitPictureQuery(server.id)
 
   const handleSave = async () => {

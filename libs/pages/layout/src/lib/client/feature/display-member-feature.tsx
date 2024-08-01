@@ -15,13 +15,15 @@ export default function DisplayMemberFeature({
   user,
   isConnected,
 }: DisplayMemberFeatureProps) {
-  const profilePicture = useFetchProfilePictureQuery(user.id).currentData
+  const { currentData: userProfilePicture } = useFetchProfilePictureQuery(
+    user.id
+  )
   return (
     <DisplayMember
       isConnected={isConnected}
       user={user}
       onPrivateMessage={onPrivateMessage}
-      profilePicture={profilePicture}
+      profilePicture={userProfilePicture}
     />
   )
 }

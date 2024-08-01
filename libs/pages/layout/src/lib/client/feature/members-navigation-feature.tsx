@@ -6,9 +6,10 @@ import { TransmitSingleton } from '@beep/utils'
 import { useEffect } from 'react'
 import { useSelector } from 'react-redux'
 import MembersNavigation from '../ui/members-navigation'
+import { skipToken } from '@reduxjs/toolkit/query'
 
 export function MembersNavigationFeature() {
-  const { openModal, closeModal } = useModal()
+  const { openModal } = useModal()
 
   const {
     data: usersConnected,
@@ -18,7 +19,7 @@ export function MembersNavigationFeature() {
 
   const server = useSelector((state: RootState) => state.servers.server)
   const { data: users, isLoading: isLoadingUsers } = useGetUsersByServerIdQuery(
-    server?.id ?? ''
+    server?.id ?? skipToken
   )
 
   useEffect(() => {
@@ -29,6 +30,8 @@ export function MembersNavigationFeature() {
 
   return (
     <MembersNavigation
+      isLoadingConnected={isLoadingConnected}
+      isLoadingUsers={isLoadingUsers}
       usersConnected={usersConnected}
       users={users}
       openModal={openModal}

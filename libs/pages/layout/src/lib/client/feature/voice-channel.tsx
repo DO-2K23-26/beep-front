@@ -10,7 +10,7 @@ interface VoiceChannelProps {
 	onDeleteChannel: (id: string) => void
 }
 
-export default function VoiceChannelProps({ channel, users, onJoinChannel, onDeleteChannel }: VoiceChannelProps) {
+export default function VoiceChannel({ channel, users, onJoinChannel, onDeleteChannel }: VoiceChannelProps) {
     const onJoin = () => {
         onJoinChannel(channel)
     }

@@ -5,23 +5,21 @@ import { useNavigate } from 'react-router-dom'
 
 interface DisplayChannelFeature {
   channel: ChannelEntity
+  onJoinTextChannel: (serverId: string, channelId: string) => void
 }
 
 const onDeleteChannel = () => {
   toast.success('Channel deleted !')
 }
 
-export default function DisplayChannelFeature({ channel }: DisplayChannelFeature) {
-  const navigate = useNavigate()
-
-  const onJoinChannel = (serverId: string, channelId: string) => {
-    navigate(`/servers/${serverId}/channels/${channelId}`)
-  }
-
+export default function DisplayChannelFeature({
+  channel,
+  onJoinTextChannel,
+}: DisplayChannelFeature) {
   return (
     <DisplayChannel
       channel={channel}
-      onJoinChannel={onJoinChannel}
+      onJoinChannel={onJoinTextChannel}
       onDeleteChannel={onDeleteChannel}
     />
   )

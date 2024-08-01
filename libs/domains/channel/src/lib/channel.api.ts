@@ -1,22 +1,16 @@
 /* eslint-disable @nx/enforce-module-boundaries */
-/* eslint-disable react-hooks/rules-of-hooks */
-import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import {
-  ChannelEntity,
-  CreateChannelRequest,
-  CreateChannelResponse,
   CreateMessageRequest,
   DeleteMessageRequest,
-  GetChannelRequest,
   GetMessageFromChannelRequest,
   MessageEntity,
   PinMessageRequest,
   ShowMessageRequest,
   UpdateMessageRequest,
-  UserEntity,
   backendUrl
 } from '@beep/contracts';
 import { RootState } from '@beep/store';
+import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
 const baseQuery = fetchBaseQuery({
   baseUrl: backendUrl,
@@ -31,39 +25,11 @@ const baseQuery = fetchBaseQuery({
 export const channelApi = createApi({
   reducerPath: 'channelApi',
   baseQuery,
-  tagTypes: ['channels', 'messages', 'users'],
+  tagTypes: ['message', 'users'],
   endpoints: (builder) => ({
-    getChannels: builder.query<ChannelEntity[], void>({
-      query: () => ({
-        url: `/channels`,
-        method: 'GET',
-      }),
-      providesTags: ['channels']
-    }),
-
-    getChannel: builder.query<ChannelEntity, GetChannelRequest>({
-      query: (request) => ({
-        url: `/servers/${request.serverId}/channels/${request.channelId}`,
-      })
-    }),
-    getUsers: builder.query<UserEntity[], void>({
-      query: (credentials) => ({
-        url: `/users`,
-        method: 'GET',
-        body: credentials,
-      }),
-    }),
     getMessagesByChannelId: builder.query<MessageEntity[], GetMessageFromChannelRequest>({
       query: (request) => `/channels/${request.channelId}/messages`,
-      providesTags: ['messages'],
-    }),
-    createChannel: builder.mutation<CreateChannelResponse, CreateChannelRequest>({
-      query: (channel) => ({
-        url: `channels`,
-        method: 'POST',
-        body: channel,
-      }),
-      invalidatesTags: ['channels'],
+      providesTags: (result, _error, request) => result ? [...result.map(({ id }) => ({ type: 'message' as const, id })), { type: 'message', id: `LIST-${request.channelId}` }] : [{ type: 'message', id: `LIST-${request.channelId}` }]
     }),
     createMessage: builder.mutation<MessageEntity, CreateMessageRequest>({
       query: (request) => ({
@@ -72,13 +38,15 @@ export const channelApi = createApi({
         body: request.body,
         formData: true
       }),
-      invalidatesTags: ['messages']
+      invalidatesTags: (_result, _error, request) => [{ type: 'message', id: `LIST-${request.channelId}` }]
     }),
     getOneMessage: builder.query<MessageEntity, ShowMessageRequest>({
       query: (request) => ({
         url: `/channels/${request.channelId}/messages`,
         method: 'GET',
+
       }),
+      providesTags: (_result, _error, request) => [{ type: 'message', id: request.messageId }]
     }),
     updateMessage: builder.mutation<MessageEntity, UpdateMessageRequest>({
       query: (request) => ({
@@ -87,14 +55,14 @@ export const channelApi = createApi({
         body: { content: request.content },
         formData: true,
       }),
-      invalidatesTags: ['messages']
+      invalidatesTags: (_result, _error, request) => [{ type: 'message', id: request.messageId }]
     }),
     deleteMessage: builder.mutation<void, DeleteMessageRequest>({
       query: (request) => ({
         url: `/channels/${request.channelId}/messages/${request.messageId}`,
         method: 'DELETE',
       }),
-      invalidatesTags: ['messages']
+      invalidatesTags: (_result, _error, request) => [{ type: 'message', id: request.messageId }]
     }),
     fetchAttachmentImage: builder.query<string, string>({
       query: (id) => ({
@@ -110,25 +78,24 @@ export const channelApi = createApi({
         url: `/channels/${request.channelId}/messages/${request.messageId}/pinning?action=${request.action}`,
         method: 'PATCH',
       }),
-      invalidatesTags: ['messages']
+      invalidatesTags: (_result, _error, request) => [{
+        type: 'message', id: `LIST-PINNED-${request.channelId}`
+      }]
     }),
     fetchPinnedMessages: builder.query<MessageEntity[], string>({
       query: (channelId) => ({
         url: `/channels/${channelId}/messages/pinned`,
         method: 'GET',
       }),
-      providesTags: ['messages'],
+      providesTags: (result, _error, req) => result ? [...result.map(({ id }) => ({ type: 'message' as const, id: id })),
+      { type: 'message', id: `LIST-PINNED-${req}` }] : [{ type: 'message', id: `LIST-PINNED-${req}` }],
     }),
 
   })
 })
 
 export const {
-  useGetChannelsQuery,
-  useGetChannelQuery,
-  useGetUsersQuery,
   useGetMessagesByChannelIdQuery,
-  useCreateChannelMutation,
   useCreateMessageMutation,
   useGetOneMessageQuery,
   useUpdateMessageMutation,

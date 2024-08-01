@@ -9,26 +9,32 @@ import {
   userActions,
 } from '@beep/user'
 import { TransmitSingleton } from '@beep/utils'
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { toast } from 'react-hot-toast'
 import { useDispatch, useSelector } from 'react-redux'
 import CurrentUser from '../ui/current-user'
-import { getVoiceState, setAudioInputDevice, setDevices, setVideoDevice } from '@beep/voice';
+import {
+  getVoiceState,
+  setAudioInputDevice,
+  setDevices,
+  setVideoDevice,
+} from '@beep/voice'
+import { skipToken } from '@reduxjs/toolkit/query'
 
 export default function CurrentUserFeature() {
-  const { data } = useGetMeQuery()
+  const { data: userMe } = useGetMeQuery()
   const server = useSelector((state: RootState) => state.servers.server)
   const { isMuted, isVoiceMuted, isCamera } = useSelector(getUserState)
   const dispatch = useDispatch()
   const [audioOutputs, setAudioOutputs] = useState<Device[]>([])
   const [audioInputs, setAudioInputs] = useState<Device[]>([])
   const [videoInputs, setVideoInputs] = useState<Device[]>([])
-  const { devices , videoDevice, audioInputDevice} = useSelector(getVoiceState)
+  const { devices, videoDevice, audioInputDevice } = useSelector(getVoiceState)
   const onMicrophone = () => {
     if (server) dispatch(userActions.toggleIsVoiceMuted(server.id))
     if (isVoiceMuted) {
-      dispatch({ type: 'START_MIC', payload: audioInputDevice });
+      dispatch({ type: 'START_MIC', payload: audioInputDevice })
     } else {
       dispatch({ type: 'STOP_MIC' })
     }
@@ -41,9 +47,9 @@ export default function CurrentUserFeature() {
     if (server) {
       dispatch(userActions.toggleIsCamera(server.id))
       if (!isCamera) {
-        dispatch({ type: 'START_CAM', payload: videoDevice });
+        dispatch({ type: 'START_CAM', payload: videoDevice })
       } else {
-        dispatch({ type: 'STOP_CAM' });
+        dispatch({ type: 'STOP_CAM' })
       }
     }
   }
@@ -56,29 +62,31 @@ export default function CurrentUserFeature() {
     })
   }, [refetch, server])
 
-  const { currentData } = useFetchProfilePictureQuery(data ? data.id : '1')
+  const { currentData: userProfilePicture } = useFetchProfilePictureQuery(
+    userMe?.id ?? skipToken
+  )
 
   const { openModal, closeModal } = useModal()
 
-  const currentUser: UserEntity = data
+  const currentUser: UserEntity = userMe
     ? {
-      id: data.id,
-      email: data.email,
-      username: data.username,
-      firstname: data.firstname,
-      lastname: data.lastname,
-      profilePicture: currentData ?? '/picture.svg',
-      verifiedAt: new Date(),
-    }
+        id: userMe.id,
+        email: userMe.email,
+        username: userMe.username,
+        firstname: userMe.firstname,
+        lastname: userMe.lastname,
+        profilePicture: userProfilePicture ?? '/picture.svg',
+        verifiedAt: new Date(),
+      }
     : {
-      id: '1',
-      email: 'rapidement@gmail.com',
-      username: 'rapidement',
-      firstname: 'Dorian',
-      lastname: 'Grasset',
-      profilePicture: '/picture.svg',
-      verifiedAt: new Date(),
-    }
+        id: '1',
+        email: 'rapidement@gmail.com',
+        username: 'rapidement',
+        firstname: 'Dorian',
+        lastname: 'Grasset',
+        profilePicture: '/picture.svg',
+        verifiedAt: new Date(),
+      }
 
   const methods = useForm({
     mode: 'onChange',
@@ -96,8 +104,6 @@ export default function CurrentUserFeature() {
     closeModal()
   })
 
-
-
   const handleDeviceChange = useCallback(() => {
     navigator.mediaDevices.enumerateDevices().then((streams) => {
       dispatch(setDevices(streams))
@@ -106,8 +112,16 @@ export default function CurrentUserFeature() {
   useEffect(() => {
     navigator.mediaDevices.enumerateDevices().then((streams) => {
       dispatch(setDevices(streams))
-      dispatch(setAudioInputDevice(streams.filter((info) => info.kind === 'audioinput')?.[0]))
-      dispatch(setVideoDevice(streams.filter((info) => info.kind === 'videoinput')?.[0]))
+      dispatch(
+        setAudioInputDevice(
+          streams.filter((info) => info.kind === 'audioinput')?.[0]
+        )
+      )
+      dispatch(
+        setVideoDevice(
+          streams.filter((info) => info.kind === 'videoinput')?.[0]
+        )
+      )
     })
   }, [dispatch])
 
