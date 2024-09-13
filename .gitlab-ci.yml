@@ -1,23 +1,17 @@
 stages:
   - test
-  - publish
+  - build
   - deploy
 
 include:
   - template: Jobs/Dependency-Scanning.gitlab-ci.yml
-  - local: gitversion-ci-cd-plugin-extension.gitlab-ci.yml
 
 variables:
-  DEPLOY_VARIABLE: garbage
-  CHART_NAME: garbage
+  DEPLOY_VARIABLE: unset
+  CHART_NAME: unset
 
 workflow:
   rules:
-    # - if: '$CI_COMMIT_BRANCH == "main" && $CI_PIPELINE_SOURCE == "merge_request_event"'
-    # - if: '$CI_COMMIT_BRANCH == "feat/ci-environment"'
-    #   variables:
-    #     DEPLOY_VARIABLE: develop
-    #     CHART_NAME: beep-frontend-develop
     - if: '$CI_COMMIT_TAG =~ /^[0-9]+\.[0-9]+\.[0-9]+-staging$/'
       variables:
         DEPLOY_VARIABLE: staging
@@ -28,19 +22,6 @@ workflow:
         CHART_NAME: beep-frontend
     - if: '$CI_PIPELINE_SOURCE == "push"'
 
-determineversion:
-  stage: .pre
-  rules:
-    # - if: '$CI_COMMIT_BRANCH == "main" && $CI_PIPELINE_SOURCE == "merge_request_event"'
-    # - if: '$CI_COMMIT_BRANCH == "feat/ci-environment"'
-    - if: $CI_COMMIT_TAG
-  extends: .gitversion_function
-
-gemnasium-dependency_scanning:
-  stage: test
-  rules:
-    - if: $CI_COMMIT_BRANCH == "main"
-    - if: $CI_MERGE_REQUEST_IID
 
 lint:
   stage: test
@@ -54,40 +35,36 @@ lint:
     - pnpm lint
   when: always
 
-build-publish-image:
-  stage: publish
+build:
+  stage: build
+  dependencies:
+    - lint
   rules:
-    # - if: '$CI_COMMIT_BRANCH == "main" && $CI_PIPELINE_SOURCE == "merge_request_event"'
-    # - if: '$CI_COMMIT_BRANCH == "feat/ci-environment"'
     - if: $CI_COMMIT_TAG
   image:
     name: 'gcr.io/kaniko-project/executor:v1.14.0-debug'
     entrypoint:
       - ''
-  dependencies:
-    - determineversion
   script:
-    - echo "Building image with tag $CI_REGISTRY_IMAGE/$CHART_NAME:$GitVersion_MajorMinorPatchr and for api ${API_URL_ENDPOINT}"
+    - echo "Building image with tag $CI_REGISTRY_IMAGE/$CHART_NAME:$CI_COMMIT_TAG and for api ${API_URL_ENDPOINT}"
     - >-
       echo
       "{\"auths\":{\"https://index.docker.io/v1/\":{\"username\":\"$USER_DOCKERHUB\",\"password\":\"$PASSWORD_DOCKERHUB\"}}}"
       > /kaniko/.docker/config.json
-    - /kaniko/executor --context $CI_PROJECT_DIR --dockerfile $CI_PROJECT_DIR/Dockerfile --build-arg "VITE_BACKEND_URL=${API_URL_ENDPOINT}" --build-arg "VITE_WEBRTC_URL=${WEBRTC_URL_ENDPOINT}" --destination milou666/beep-front:$GitVersion_MajorMinorPatch
+    - /kaniko/executor --context $CI_PROJECT_DIR --dockerfile $CI_PROJECT_DIR/Dockerfile --build-arg "VITE_BACKEND_URL=${API_URL_ENDPOINT}" --build-arg "VITE_WEBRTC_URL=${WEBRTC_URL_ENDPOINT}" --destination milou666/beep-front:$CI_COMMIT_TAG
   environment:
     name: $DEPLOY_VARIABLE
 
-package-publish-helm:
-  stage: publish
+package-helm:
+  stage: deploy
   rules:
-    # - if: '$CI_COMMIT_BRANCH == "main" && $CI_PIPELINE_SOURCE == "merge_request_event"'
-    # - if: '$CI_COMMIT_BRANCH == "feat/ci-environment"'
     - if: $CI_COMMIT_TAG
   image: 'alpine/helm:latest'
   dependencies:
-    - determineversion
+    - build
   script:
     - wget https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd64 -O yq && chmod +x ./yq
-    - export VERSION=$GitVersion_MajorMinorPatch
+    - export VERSION=$CI_COMMIT_TAG
     # Echo pour débogage des variables d'environnement
     - 'echo "FRONT_URL_ENDPOINT: $FRONT_URL_ENDPOINT"'
     - 'echo "API_URL_ENDPOINT: $API_URL_ENDPOINT"'
