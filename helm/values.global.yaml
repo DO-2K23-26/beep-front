@@ -1,0 +1,14 @@
+replicaCount: 1
+imagePullSecrets:
+  - name: beep-registry
+resources: {}
+service:
+  type: ClusterIP
+  port: 80
+image:
+  pullPolicy: Always
+  port: 8080
+ingress:
+  enabled: true
+  annotations:
+    traefik.ingress.kubernetes.io/router.entrypoints: web

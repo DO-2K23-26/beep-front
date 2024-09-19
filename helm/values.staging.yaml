@@ -1,0 +1,14 @@
+image:
+  repository: 'hugo08/beep-front-staging'
+
+ingress:
+  hosts:
+    - host: 'staging.beep.ovh'
+      paths:
+        - /
+
+backend:
+  url: 'api-staging.beep.ovh'
+
+webrtc:
+  url: 'voice-staging.beep.ovh'

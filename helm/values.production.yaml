@@ -1,0 +1,14 @@
+image:
+  repository: 'milou666/beep-front'
+
+ingress:
+  hosts:
+    - host: 'beep.ovh'
+      paths:
+        - /
+
+backend:
+  url: 'api.beep.ovh'
+
+webrtc:
+  url: 'voice.beep.ovh'
