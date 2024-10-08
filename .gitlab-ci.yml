@@ -17,13 +17,15 @@ workflow:
         ENVIRONMENT: staging
         CHART_NAME: beep-frontend-staging
         IMAGE_NAME: 'hugo08/beep-front-staging'
-        WEBRTC_URL_ENDPOINT: voice-staging.beep.ovh
+        WEBRTC_URL_ENDPOINT: https://voice-staging.beep.ovh/
+        API_URL_ENDPOINT: https://api-staging.beep.ovh/
     - if: '$CI_COMMIT_TAG =~ /^[0-9]+\.[0-9]+\.[0-9]+$/'
       variables:
         ENVIRONMENT: production
         CHART_NAME: beep-frontend
         IMAGE_NAME: 'milou666/beep-front'
-        WEBRTC_URL_ENDPOINT: voice.beep.ovh
+        WEBRTC_URL_ENDPOINT: https://voice.beep.ovh/
+        API_URL_ENDPOINT: https://api.beep.ovh/
     - if: '$CI_PIPELINE_SOURCE == "push"'
 
 before_script:
@@ -73,7 +75,6 @@ deploy:
   needs: ['build']
   script:
     - wget https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd64 -O yq && chmod +x ./yq
-    - DOMAIN=$(echo $FRONT_URL_ENDPOINT | awk -F[/:] '{print $4}')
     - ./yq '. *= load("helm/values.'$ENVIRONMENT'.yaml")' helm/values.global.yaml > helm/values.yaml
     - ./yq -i ".name=\"$CHART_NAME\"" helm/Chart.yaml
     - helm package helm/ --version $VERSION --app-version $VERSION
