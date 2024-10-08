@@ -6,9 +6,3 @@ ingress:
     - host: 'staging.beep.ovh'
       paths:
         - /
-
-backend:
-  url: 'api-staging.beep.ovh'
-
-webrtc:
-  url: 'voice-staging.beep.ovh'

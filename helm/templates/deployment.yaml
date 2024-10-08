@@ -26,8 +26,3 @@ spec:
               protocol: TCP
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
-          env:
-            - name: VITE_BACKEND_URL
-              value: {{ .Values.backend.url }}
-            - name: VITE_WEBRTC_URL
-              value: {{ .Values.webrtc.url }}
