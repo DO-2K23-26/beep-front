@@ -35,6 +35,7 @@ lint:
     - corepack prepare pnpm@latest-9 --activate
     - pnpm config set store-dir .pnpm-store
   script:
+    - echo "Building image with tag ${WEBRTC_URL_ENDPOINT}"
     - pnpm install
     - pnpm lint
   when: always
@@ -50,6 +51,8 @@ build:
       - ''
   script:
     - echo "Building image with tag $CI_REGISTRY_IMAGE/$CHART_NAME:$VERSION and for api ${API_URL_ENDPOINT}"
+    - echo "Building image with tag ${WEBRTC_URL_ENDPOINT}"
+
     - >-
       echo
       "{\"auths\":{\"https://index.docker.io/v1/\":{\"username\":\"$USER_DOCKERHUB\",\"password\":\"$PASSWORD_DOCKERHUB\"}}}"
