@@ -6,9 +6,3 @@ ingress:
     - host: 'beep.ovh'
       paths:
         - /
-
-backend:
-  url: 'api.beep.ovh'
-
-webrtc:
-  url: 'voice.beep.ovh'

@@ -1,6 +1,6 @@
 import { Middleware } from '@reduxjs/toolkit';
 import { addRemoteStream, setConnectionState, setLocalStream, setRemoteStreams } from './voice.slice';
-import { Media } from '@beep/contracts';
+import { webrtcUrl } from '@beep/contracts';
 
 const WebRTCMiddleware: Middleware = (store) => {
   let peerConnection: RTCPeerConnection | null = null;
@@ -15,8 +15,7 @@ const WebRTCMiddleware: Middleware = (store) => {
   let remoteAnswer
   let audio: MediaStream | null;
   let video: MediaStream | null;
-  const endpoint = import.meta.env.VITE_WEBRTC_URL;
-
+  const endpoint = webrtcUrl
   async function negotiate() {
     if (!peerConnection) return;
     const negotiate_offer = await peerConnection.createOffer()
@@ -78,7 +77,7 @@ const WebRTCMiddleware: Middleware = (store) => {
         };
 
         offerChannel.onmessage = (event: MessageEvent) => {
-          if ( event.data === 'leaving'){
+          if (event.data === 'leaving') {
             store.dispatch(setRemoteStreams([]));
           }
           const json = JSON.parse(event.data);
@@ -148,7 +147,7 @@ const WebRTCMiddleware: Middleware = (store) => {
       case 'STOP_CAM':
         await camTransceiver?.sender?.replaceTrack(null);
         store.dispatch(setLocalStream(null));
-        video?.getTracks().forEach((track) => {track.stop()});
+        video?.getTracks().forEach((track) => { track.stop() });
         video = null
         break;
 
@@ -186,7 +185,7 @@ const WebRTCMiddleware: Middleware = (store) => {
         await camTransceiver?.sender?.replaceTrack(null);
         camTransceiver?.stop()
         camTransceiver = undefined
-        video?.getTracks().forEach((track) => {track.stop()});
+        video?.getTracks().forEach((track) => { track.stop() });
         video = null
         await micTransceiver?.sender?.replaceTrack(null);
         micTransceiver?.stop()
