@@ -1,11 +1,11 @@
-import { useResetPasswordMutation } from '@beep/user'
+import { useSendResetPasswordMailMutation } from '@beep/user'
 import { useState } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
 import toast from 'react-hot-toast'
 import { PageForgotPassword } from '../ui/page-forgot-password'
 
 export function PageForgotPasswordFeature() {
-  const [reset, result] = useResetPasswordMutation()
+  const [reset, result] = useSendResetPasswordMailMutation()
   const [error] = useState('')
   const methods = useForm({
     mode: 'onChange',
@@ -15,7 +15,9 @@ export function PageForgotPasswordFeature() {
   })
 
   const onSubmit = methods.handleSubmit((data) => {
-    reset({ email: data.email })
+    reset({
+      email: data.email,
+    })
     toast(
       'If this email address is in our records, a reset link will be sent. Please check your inbox.'
     )

@@ -4,6 +4,7 @@ import {
   backendUrl,
   ConfirmEmailRequest,
   ForgotPasswordRequest,
+  ResetPasswordRequest,
   GetMultipleUsersRequest,
   LoginRequest,
   LoginResponse,
@@ -67,14 +68,15 @@ export const userApi = createApi({
     }),
     getUsersFrom: builder.query<UserEntity[], GetMultipleUsersRequest>({
       query: (request) => ({
-        url: `/users?${request.userIds.map((id, i) => `ids[${i}]=${id}`).join('&')}`,
+        url: `/users?${request.userIds
+          .map((id, i) => `ids[${i}]=${id}`)
+          .join('&')}`,
         method: 'GET',
       }),
       providesTags: (result) =>
-        (result)
-          ? [
-            ...result.map(({ id }) => ({ type: "users" as const, id: id })),
-          ] : [{ type: 'users' }]
+        result
+          ? [...result.map(({ id }) => ({ type: 'users' as const, id: id }))]
+          : [{ type: 'users' }],
     }),
     fetchProfilePicture: builder.query<string, string>({
       query: (id) => ({
@@ -84,7 +86,7 @@ export const userApi = createApi({
           return URL.createObjectURL(blob)
         },
       }),
-      providesTags: (_, __, id) => [{ type: "profilePicture", id: id }],
+      providesTags: (_, __, id) => [{ type: 'profilePicture', id: id }],
     }),
     refresh: builder.mutation<RefreshResponse, RefreshRequest>({
       query: (refreshToken) => ({
@@ -114,16 +116,23 @@ export const userApi = createApi({
         method: 'POST',
       }),
     }),
-    resetPassword: builder.mutation<void, ForgotPasswordRequest>({
+    sendResetPasswordMail: builder.mutation<void, ForgotPasswordRequest>({
       query: (request) => ({
         url: '/authentication/reset-password',
         method: 'POST',
-        body: request
+        body: request,
       }),
     }),
     verifyEmail: builder.mutation<any, { token: string }>({
       query: (data) => ({
         url: '/authentication/verify',
+        method: 'POST',
+        body: data,
+      }),
+    }),
+    resetPassword: builder.mutation<unknown, ResetPasswordRequest>({
+      query: (data) => ({
+        url: '/authentication/verify-reset-password',
         method: 'POST',
         body: data,
       }),
@@ -149,6 +158,7 @@ export const {
   useConfirmEmailMutation,
   useGetUsersFromQuery,
   useLoginMutation,
+  useSendResetPasswordMailMutation,
   useResetPasswordMutation,
   useRegisterMutation,
   useRefreshMutation,
