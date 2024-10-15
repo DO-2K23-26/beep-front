@@ -1,26 +1,31 @@
 import { Children, cloneElement, isValidElement, ReactNode } from 'react'
 import { Tag } from '../ui/tag'
-import { UserDisplayedEntity } from '@beep/contracts'
 
 const regexUserTagging =
   /@\$[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}/gi
 
+const regexChannelTagging =
+  /#\$[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}/gi
+
 const replaceTextByTag = (
   text: string,
-  findEntity: (entity: any) => any
+  regex: RegExp,
+  prefix: string,
+  findEntity: (entity: any) => any,
+  onClick: (entity: any) => void
 ): ReactNode => {
   const parts: ReactNode[] = []
   let lastIndex = 0
 
-  text.replace(regexUserTagging, (match, offset) => {
-    const user = taggedUsers.find((u) => u.id === match.slice(2))
+  text.replace(regex, (match, offset) => {
+    const entity = findEntity(match)
     parts.push(text.slice(lastIndex, offset))
     parts.push(
-      Tag({
-        entity: user,
-        displayedName: user?.username ?? '',
-        onClick: () => onClickTagUser(user as UserDisplayedEntity),
-      })
+      <Tag
+        prefix={prefix}
+        entity={entity}
+        onClick={() => entity && onClick(entity)}
+      />
     )
     lastIndex = offset + match.length
     return match
@@ -30,20 +35,35 @@ const replaceTextByTag = (
   return parts
 }
 
-const recurseChildren = (node: ReactNode): ReactNode => {
+const recurseChildren = (
+  node: ReactNode,
+  regex: RegExp,
+  prefix: string,
+  findEntity: (entity: string) => any,
+  onClick: (entity: any) => void
+): ReactNode => {
   if (typeof node === 'string') {
-    return replaceText(node)
+    return replaceTextByTag(node, regex, prefix, findEntity, onClick)
   } else if (isValidElement(node)) {
     return cloneElement(
       node,
       {},
-      Children.map(node.props.children, (child) => recurseChildren(child))
+      Children.map(node.props.children, (child) =>
+        recurseChildren(child, regex, prefix, findEntity, onClick)
+      )
     )
   } else if (Array.isArray(node)) {
-    return node.map(recurseChildren)
+    return node.map(() =>
+      recurseChildren(node, regex, prefix, findEntity, onClick)
+    )
   } else {
     return node
   }
 }
 
-export { recurseChildren, regexUserTagging }
+export {
+  recurseChildren,
+  replaceTextByTag,
+  regexChannelTagging,
+  regexUserTagging,
+}

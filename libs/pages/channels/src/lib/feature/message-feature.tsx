@@ -12,12 +12,15 @@ import {
 } from '@beep/user'
 import React, { ReactNode, useEffect } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
+import toast from 'react-hot-toast'
 import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import Message from '../ui/message'
-import toast from 'react-hot-toast'
-import { recurseChildren, regexUserTagging } from '../utils/tagging-utils'
-import { Tag } from '../ui/tag'
+import {
+  recurseChildren,
+  regexChannelTagging,
+  regexUserTagging,
+} from '../utils/tagging-utils'
 
 interface MessageFeatureProps {
   message: MessageEntity
@@ -140,41 +143,25 @@ export default function MessageFeature({
 
   const replaceTagEntity = (message: ReactNode): ReactNode => {
     if (!taggedUsers) return message
-
-    return recurseChildren(message)
+    const findUserForTag = (userId: string) =>
+      taggedUsers.find((u) => u.id === userId.slice(2))
+    return recurseChildren(
+      message,
+      regexUserTagging,
+      '@',
+      findUserForTag,
+      onClickTagUser
+    )
   }
 
   const replaceMentionChannel = (content: ReactNode): ReactNode => {
-    const regex =
-      /#\$[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}/gi
-
-    const replaceText = (text: string): ReactNode => {
-      const parts: ReactNode[] = []
-      let lastIndex = 0
-
-      text.replace(regex, (match, tag) => {
-        const channel = findChannelForTag(match)
-        parts.push(text.slice(lastIndex, tag))
-        parts.push(
-          <span
-            key={tag}
-            className={
-              'bg-violet-300 p-1 rounded ' + (channel ? 'cursor-pointer' : '')
-            }
-            onClick={() => channel && onClickTagChannel(channel)}
-          >
-            {channel ? '#' + channel.name : 'undefined channel'}
-          </span>
-        )
-        lastIndex = tag + match.length
-        return match
-      })
-
-      parts.push(text.slice(lastIndex))
-      return parts
-    }
-
-    return recurseChildren(content)
+    return recurseChildren(
+      content,
+      regexChannelTagging,
+      '#',
+      findChannelForTag,
+      onClickTagChannel
+    )
   }
 
   const onClickTagChannel = (channel: ChannelEntity) => {
