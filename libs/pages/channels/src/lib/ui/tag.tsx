@@ -1,12 +1,11 @@
 import { ChannelEntity, UserDisplayedEntity } from '@beep/contracts'
+import { DisplayedEntity } from '../utils/tagging-utils'
 
 interface TagProps<T> {
   entity: T | null
   prefix: string
   onClick: (entity: T) => void
 }
-
-type DisplayedEntity = UserDisplayedEntity | ChannelEntity
 
 export function Tag<T extends DisplayedEntity>({
   entity,
@@ -35,7 +34,7 @@ export function Tag<T extends DisplayedEntity>({
       }
       onClick={() => entity && onClick(entity)}
     >
-      {entity ? prefix + displayedName : 'undefined user'}
+      {entity ? prefix + displayedName : 'undefined tag'}
     </span>
   )
 }

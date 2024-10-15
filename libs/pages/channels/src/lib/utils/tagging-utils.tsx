@@ -1,5 +1,6 @@
 import { Children, cloneElement, isValidElement, ReactNode } from 'react'
 import { Tag } from '../ui/tag'
+import { ChannelEntity, UserDisplayedEntity } from '@beep/contracts'
 
 const regexUserTagging =
   /@\$[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}/gi
@@ -7,12 +8,14 @@ const regexUserTagging =
 const regexChannelTagging =
   /#\$[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}/gi
 
+type DisplayedEntity = UserDisplayedEntity | ChannelEntity
+
 const replaceTextByTag = (
   text: string,
   regex: RegExp,
   prefix: string,
-  findEntity: (entity: any) => any,
-  onClick: (entity: any) => void
+  findEntity: (entity: string) => DisplayedEntity,
+  onClick: (entity: DisplayedEntity) => void
 ): ReactNode => {
   const parts: ReactNode[] = []
   let lastIndex = 0
@@ -39,8 +42,8 @@ const recurseChildren = (
   node: ReactNode,
   regex: RegExp,
   prefix: string,
-  findEntity: (entity: string) => any,
-  onClick: (entity: any) => void
+  findEntity: (entity: string) => DisplayedEntity,
+  onClick: (entity: DisplayedEntity) => void
 ): ReactNode => {
   if (typeof node === 'string') {
     return replaceTextByTag(node, regex, prefix, findEntity, onClick)
@@ -62,6 +65,7 @@ const recurseChildren = (
 }
 
 export {
+  DisplayedEntity,
   recurseChildren,
   replaceTextByTag,
   regexChannelTagging,
