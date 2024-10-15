@@ -1,6 +1,4 @@
-import { classNames } from '@beep/transmit'
-import { AnimatePresence, motion } from 'framer-motion'
-import { useCallback, useEffect, useRef, useState } from 'react'
+import { motion } from 'framer-motion'
 
 export interface ServerCardProps {
   name: string

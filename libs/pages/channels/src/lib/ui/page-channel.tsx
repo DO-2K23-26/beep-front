@@ -101,7 +101,7 @@ export const PageChannel = ({
             >
               <Icon name="lucide:arrow-left" className="w-4 h-4" />
             </Button>
-            {channel != undefined && !isLoadingChannel ? (
+            {channel !== undefined && !isLoadingChannel ? (
               <div className="flex flex-row gap-2 items-center justify-center p-3 bg-violet-300 rounded-xl h-14">
                 <Icon name="lucide:hash" className="w-4 h-4" />
                 <p className="font-semibold">{channel.name}</p>
@@ -112,7 +112,7 @@ export const PageChannel = ({
           </div>
           {/* Button to display the list of pinned messages of a channel */}
           <div className="flex flex-row gap-6 ">
-            {channel != undefined && !isLoadingChannel ? (
+            {channel !== undefined && !isLoadingChannel ? (
               <DisplayPinned
                 channelId={channel.id}
                 onUpdateMessage={onUpdateMessage}
@@ -136,7 +136,7 @@ export const PageChannel = ({
       </div>
 
       {/* Message list */}
-      {isLoadingMessages || messages == undefined ? (
+      {isLoadingMessages || messages === undefined ? (
         <ListMessageSkeleton />
       ) : (
         <ListMessages
@@ -201,7 +201,7 @@ export const PageChannel = ({
           {files.map((file: File, index: number) => {
             return (
               <div
-                key={index}
+                key={'files' + index}
                 className="flex flex-col gap-2 items-center w-[180px] relative"
               >
                 <div className="grid grid-cols-[1fr_16px] items-end gap-2 w-[180px]">

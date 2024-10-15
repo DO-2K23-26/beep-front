@@ -44,7 +44,10 @@ export default function MembersNavigation({
       </div>
       {/* Members list */}
       <div className="flex flex-col gap-1 overflow-y-scroll no-scrollbar scroll-smooth">
-        {(users != undefined && usersConnected != undefined) && !isLoadingConnected && !isLoadingUsers ? (
+        {users !== undefined &&
+        usersConnected !== undefined &&
+        !isLoadingConnected &&
+        !isLoadingUsers ? (
           <ListMembers usersConnected={usersConnected} users={users} />
         ) : (
           <ListMemberSkeleton />
