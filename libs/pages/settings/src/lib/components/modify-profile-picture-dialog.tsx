@@ -46,7 +46,7 @@ export function ModifyProfilePictureDialog({
             className="hidden"
             accept="image/*"
             onChange={(e) => {
-              addProfilePicture(e.target?.files![0])
+              if (e.target?.files) addProfilePicture(e.target.files[0])
             }}
           />
           {selectedProfilePicture && (

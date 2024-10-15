@@ -1,7 +1,6 @@
 import { ChannelEntity } from '@beep/contracts'
-import DisplayChannel from '../ui/display-channel'
 import { toast } from 'react-hot-toast'
-import { useNavigate } from 'react-router-dom'
+import DisplayChannel from '../ui/display-channel'
 
 interface DisplayChannelFeature {
   channel: ChannelEntity

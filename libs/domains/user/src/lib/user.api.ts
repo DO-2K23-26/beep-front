@@ -123,14 +123,14 @@ export const userApi = createApi({
         body: request,
       }),
     }),
-    verifyEmail: builder.mutation<any, { token: string }>({
+    verifyEmail: builder.mutation<void, { token: string }>({
       query: (data) => ({
         url: '/authentication/verify',
         method: 'POST',
         body: data,
       }),
     }),
-    resetPassword: builder.mutation<unknown, ResetPasswordRequest>({
+    resetPassword: builder.mutation<void, ResetPasswordRequest>({
       query: (data) => ({
         url: '/authentication/verify-reset-password',
         method: 'POST',
