@@ -38,8 +38,8 @@ lint:
     - pnpm config set store-dir .pnpm-store
   script:
     - echo "Building image with tag ${WEBRTC_URL_ENDPOINT}"
-    - pnpm lint
     - pnpm install
+    - pnpm lint
   when: always
 
 build:
