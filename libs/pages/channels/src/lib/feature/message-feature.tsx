@@ -16,6 +16,8 @@ import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import Message from '../ui/message'
 import toast from 'react-hot-toast'
+import { recurseChildren, regexUserTagging } from '../utils/tagging-utils'
+import { Tag } from '../ui/tag'
 
 interface MessageFeatureProps {
   message: MessageEntity
@@ -58,9 +60,7 @@ export default function MessageFeature({
     message.ownerId
   )
 
-  const regex =
-    /@\$[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}/gi
-  const matches = message.content.match(regex) || []
+  const matches = RegExp(regexUserTagging).exec(message.content) || []
   const ids = matches.map((match) => match.slice(2))
   const { data: taggedUsers } = useGetUsersFromQuery({ userIds: ids })
 
@@ -131,60 +131,17 @@ export default function MessageFeature({
     }
   })
 
-  const replaceTagEntity = (message: ReactNode): ReactNode => {
-    if (!taggedUsers) return message
-    const replaceText = (text: string): ReactNode => {
-      const parts: ReactNode[] = []
-      let lastIndex = 0
-
-      text.replace(regex, (match, offset) => {
-        const user = taggedUsers.find((u) => u.id === match.slice(2))
-        parts.push(text.slice(lastIndex, offset))
-        parts.push(
-          <span
-            key={offset}
-            className={
-              'bg-violet-300 p-1 rounded ' + (user ? 'cursor-pointer' : '')
-            }
-            onClick={() => user && onClickTagUser(user)}
-          >
-            {user ? '@' + user.username : 'undefined user'}
-          </span>
-        )
-        lastIndex = offset + match.length
-        return match
-      })
-
-      parts.push(text.slice(lastIndex))
-      return parts
-    }
-
-    const recurseChildren = (node: ReactNode): ReactNode => {
-      if (typeof node === 'string') {
-        return replaceText(node)
-      } else if (React.isValidElement(node)) {
-        return React.cloneElement(
-          node,
-          {},
-          React.Children.map(node.props.children, (child) =>
-            recurseChildren(child)
-          )
-        )
-      } else if (Array.isArray(node)) {
-        return node.map(recurseChildren)
-      } else {
-        return node
-      }
-    }
-
-    return recurseChildren(message)
-  }
-
   const onClickTagUser = (user: UserDisplayedEntity) => {
     !selectedTaggedUser ||
     (selectedTaggedUser && selectedTaggedUser.id !== user.id)
       ? setSelectedTaggedUser(user)
       : setSelectedTaggedUser(undefined)
+  }
+
+  const replaceTagEntity = (message: ReactNode): ReactNode => {
+    if (!taggedUsers) return message
+
+    return recurseChildren(message)
   }
 
   const replaceMentionChannel = (content: ReactNode): ReactNode => {
@@ -206,7 +163,6 @@ export default function MessageFeature({
             }
             onClick={() => channel && onClickTagChannel(channel)}
           >
-            {/* <DisplayChannelFeature key={channel?.id} channel={channel?} /> */}
             {channel ? '#' + channel.name : 'undefined channel'}
           </span>
         )
@@ -218,23 +174,6 @@ export default function MessageFeature({
       return parts
     }
 
-    const recurseChildren = (children: ReactNode): ReactNode => {
-      if (typeof children === 'string') {
-        return replaceText(children)
-      } else if (React.isValidElement(children)) {
-        return React.cloneElement(
-          children,
-          {},
-          React.Children.map(children.props.children, (child) =>
-            recurseChildren(child)
-          )
-        )
-      } else if (Array.isArray(children)) {
-        return children.map(recurseChildren)
-      } else {
-        return children
-      }
-    }
     return recurseChildren(content)
   }
 
