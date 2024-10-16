@@ -16,8 +16,6 @@ interface ListMessagesProps {
   setSelectedTaggedUser: React.Dispatch<
     React.SetStateAction<UserDisplayedEntity | undefined>
   >
-  findChannelForTag: (tag: string) => ChannelEntity | undefined
-  selectedTaggedChannel: ChannelEntity | undefined
   setSelectedTaggedChannel: React.Dispatch<
     React.SetStateAction<ChannelEntity | undefined>
   >
@@ -32,8 +30,6 @@ export default function ListMessages({
   setEditingMessageId,
   selectedTaggedUser,
   setSelectedTaggedUser,
-  findChannelForTag,
-  selectedTaggedChannel,
   setSelectedTaggedChannel,
 }: ListMessagesProps) {
 
@@ -50,8 +46,6 @@ export default function ListMessages({
           setEditingMessageId={setEditingMessageId}
           selectedTaggedUser={selectedTaggedUser}
           setSelectedTaggedUser={setSelectedTaggedUser}
-          findChannelForTag={findChannelForTag}
-          selectedTaggedChannel={selectedTaggedChannel}
           setSelectedTaggedChannel={setSelectedTaggedChannel}
           onReply={() => {
             onReply(message)

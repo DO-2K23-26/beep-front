@@ -45,7 +45,6 @@ export interface PageChannelProps {
   setSelectedTaggedUser: React.Dispatch<
     React.SetStateAction<UserDisplayedEntity | undefined>
   >
-  findChannelForTag: (value: string) => ChannelEntity | undefined
   selectedTaggedChannel: ChannelEntity | undefined
   setSelectedTaggedChannel: React.Dispatch<
     React.SetStateAction<ChannelEntity | undefined>
@@ -71,7 +70,6 @@ export const PageChannel = ({
   setEditingMessageId,
   onChange,
   onCursorChange,
-  findChannelForTag,
   onDeleteMessage,
   dynamicSelector,
   selectedTaggedUser,
@@ -147,8 +145,6 @@ export const PageChannel = ({
           setEditingMessageId={setEditingMessageId}
           selectedTaggedUser={selectedTaggedUser}
           setSelectedTaggedUser={setSelectedTaggedUser}
-          findChannelForTag={findChannelForTag}
-          selectedTaggedChannel={selectedTaggedChannel}
           setSelectedTaggedChannel={setSelectedTaggedChannel}
           onReply={setReplyTo}
         />

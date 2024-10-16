@@ -7,7 +7,7 @@ import {
 import {
   ChannelEntity,
   MessageEntity,
-  UserDisplayedEntity
+  UserDisplayedEntity,
 } from '@beep/contracts'
 import { responsiveActions } from '@beep/responsive'
 import {
@@ -193,13 +193,6 @@ export function PageChannelFeature() {
     }
   }
 
-  const findChannelForTag = (tag: string): ChannelEntity | undefined => {
-    if (channels) {
-      return channels.textChannels.find((c) => c.id === tag.slice(2))
-    }
-    return undefined
-  }
-
   const dispatch = useDispatch<AppDispatch>()
   const hideRightDiv = () => {
     dispatch(responsiveActions.manageRightPane())
@@ -339,7 +332,6 @@ export function PageChannelFeature() {
       onChange={handleInputChange}
       onCursorChange={handleCursorChange}
       dynamicSelector={dynamicSelector}
-      findChannelForTag={findChannelForTag}
       selectedTaggedChannel={selectedTaggedChannel}
       setSelectedTaggedChannel={setSelectedTaggedChannel}
       selectedTaggedUser={selectedTaggedUser}

@@ -4,7 +4,7 @@ import {
   MessageEntity,
   UserDisplayedEntity,
 } from '@beep/contracts'
-import { getServersState } from '@beep/server'
+import { getServersState, useGetServerChannelsQuery } from '@beep/server'
 import {
   getUserState,
   useFetchProfilePictureQuery,
@@ -14,7 +14,7 @@ import React, { ReactNode, useEffect } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
 import toast from 'react-hot-toast'
 import { useSelector } from 'react-redux'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import Message from '../ui/message'
 import {
   DisplayedEntity,
@@ -22,6 +22,7 @@ import {
   regexChannelTagging,
   regexUserTagging,
 } from '../utils/tagging-utils'
+import { skipToken } from '@reduxjs/toolkit/query'
 
 interface MessageFeatureProps {
   message: MessageEntity
@@ -35,8 +36,6 @@ interface MessageFeatureProps {
   setSelectedTaggedUser: React.Dispatch<
     React.SetStateAction<UserDisplayedEntity | undefined>
   >
-  findChannelForTag: (tag: string) => ChannelEntity | undefined
-  selectedTaggedChannel: ChannelEntity | undefined
   setSelectedTaggedChannel?: React.Dispatch<
     React.SetStateAction<ChannelEntity | undefined>
   >
@@ -52,13 +51,15 @@ export default function MessageFeature({
   onReply,
   selectedTaggedUser,
   setSelectedTaggedUser,
-  findChannelForTag,
-  selectedTaggedChannel,
 }: MessageFeatureProps) {
   const [pinMessage, result] = usePinMessageMutation()
   const serverData = useSelector(getServersState)
   const userId: string | undefined = useSelector(getUserState).payload?.sub
   const navigate = useNavigate()
+  const { serverId } = useParams<{
+    serverId: string
+  }>()
+  const { data: channels } = useGetServerChannelsQuery(serverId ?? skipToken)
   const { data: owner } = useGetUsersFromQuery({ userIds: [message.ownerId] })
   const { currentData: userProfilePicture } = useFetchProfilePictureQuery(
     message.ownerId
@@ -156,6 +157,12 @@ export default function MessageFeature({
   }
 
   const replaceMentionChannel = (content: ReactNode): ReactNode => {
+    const findChannelForTag = (tag: string): ChannelEntity | undefined => {
+      if (channels) {
+        return channels.textChannels.find((c) => c.id === tag.slice(2))
+      }
+      return undefined
+    }
     return recurseChildren(
       content,
       regexChannelTagging,
