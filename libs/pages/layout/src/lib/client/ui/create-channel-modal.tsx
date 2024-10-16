@@ -47,21 +47,23 @@ export function CreateChannelModal({
       />
       <div className="ml-4 pb-2">
         <input
+          id="text"
           className="mr-2"
           type="radio"
           value={ChannelType.TEXT}
           {...methodsAddChannel.register('type')}
         />
-        Text
+        <label htmlFor="text">Text</label>
       </div>
       <div className="ml-4 pb-6">
         <input
+          id="voice"
           className="mr-2"
           type="radio"
           value={ChannelType.VOICE}
           {...methodsAddChannel.register('type')}
         />
-        Voice
+        <label htmlFor="voice">Voice</label>
       </div>
       <div className="flex gap-3 justify-between">
         <Button
