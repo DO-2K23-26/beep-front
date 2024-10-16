@@ -3,7 +3,7 @@ import { useSocket } from './events'
 
 interface SocketEventProps {
   event: string
-  handler: (...args: any[]) => void
+  handler: (...args: []) => void
 }
 
 function SocketEvent({ event, handler }: SocketEventProps): null {

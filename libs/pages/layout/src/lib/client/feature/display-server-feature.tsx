@@ -18,7 +18,7 @@ export default function DisplayServerFeature({
   const params = useParams()
   const onServerChange = () => {
     // Check if we are not already on the server
-    if (channels && params['*']?.split('/')[0] != server.id) {
+    if (channels && params['*']?.split('/')[0] !== server.id) {
       const firstChan = channels.textChannels[0]
       dispatch(serverActions.setServer(server))
       // If no channel are on the server display the default page
