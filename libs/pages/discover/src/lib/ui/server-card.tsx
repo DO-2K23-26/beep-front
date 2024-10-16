@@ -29,19 +29,19 @@ export default function ServerCard({
             <img
               src={banner}
               alt="Server banner"
-              className="w-full h-full object-cover rounded-3xl bg-violet-400 relative z-50 opacity-100"
+              className="w-full h-full object-cover rounded-3xl bg-violet-400 relative z-10 opacity-100"
             />
             <img
               src={banner}
               alt="Server banner"
-              className="object-cover rounded-3xl bg-violet-400 absolute left-0 top-0 blur-lg w-full h-full z-10 opacity-100 saturate-150"
+              className="object-cover rounded-3xl bg-violet-400 absolute left-0 top-0 blur-lg w-full h-full z-0 opacity-100 saturate-150"
             />
           </div>
         ) : (
           <div className="w-full h-full bg-violet-400 rounded-3xl" />
         )}
       </div>
-      <section className="flex flex-col gap-2 p-4 -translate-y-16 relative z-50 group-hover:translate-y-[-4.25rem] transition-all duration-300 ease-in-out">
+      <section className="flex flex-col gap-2 p-4 -translate-y-16 relative z-10 group-hover:translate-y-[-4.25rem] transition-all duration-300 ease-in-out">
         <img
           src={icon}
           alt="Server icon"
