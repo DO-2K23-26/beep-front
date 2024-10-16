@@ -69,12 +69,10 @@ export function ServerDropdown({
           {server && (
             <DialogCloseButton
               triggerButton={
-                <button>
-                  <DropdownMenuItemCustom
-                    label="Settings"
-                    iconName="lucide:settings"
-                  />
-                </button>
+                <DropdownMenuItemCustom
+                  label="Settings"
+                  iconName="lucide:settings"
+                />
               }
               content={<SettingsModal settings={settings} />}
             />
