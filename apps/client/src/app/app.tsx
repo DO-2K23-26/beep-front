@@ -26,8 +26,8 @@ export default function App() {
   const { pathname } = useLocation()
 
   useEffect(() => {
-    const accessToken = sessionStorage.getItem('accessToken')
-    const refreshToken = sessionStorage.getItem('refreshToken')
+    const accessToken = localStorage.getItem('accessToken')
+    const refreshToken = localStorage.getItem('refreshToken')
 
     if (accessToken && refreshToken) {
       dispatch(userActions.setTokens({ accessToken, refreshToken }))
@@ -59,8 +59,8 @@ export default function App() {
         try {
           refresh({ refreshToken: tokens.refreshToken })
         } catch (e) {
-          sessionStorage.removeItem('accessToken')
-          sessionStorage.removeItem('refreshToken')
+          localStorage.removeItem('accessToken')
+          localStorage.removeItem('refreshToken')
         }
       }
     }
@@ -70,13 +70,13 @@ export default function App() {
     if (result) {
       if (!result.isLoading && result.data) {
         dispatch(userActions.setTokens(result.data))
-        sessionStorage.setItem('accessToken', result.data.accessToken)
-        sessionStorage.setItem('refreshToken', result.data.refreshToken)
+        localStorage.setItem('accessToken', result.data.accessToken)
+        localStorage.setItem('refreshToken', result.data.refreshToken)
       }
 
       if (!result.isLoading && result.isError) {
-        sessionStorage.removeItem('accessToken')
-        sessionStorage.removeItem('refreshToken')
+        localStorage.removeItem('accessToken')
+        localStorage.removeItem('refreshToken')
 
         dispatch(userActions.setTokens({}))
         navigate('/authentication/signin')
@@ -102,7 +102,7 @@ export default function App() {
 
   return (
     <div>
-      <Toaster/>
+      <Toaster />
       <Routes>
         {ROUTER.map((route) =>
           match(route)

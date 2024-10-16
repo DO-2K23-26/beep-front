@@ -20,8 +20,8 @@ export function PageEmailUpdateConfirmationFeature() {
   useEffect(() => {
     if (result.isSuccess) {
       setPageState('success')
-      sessionStorage.removeItem('accessToken')
-      sessionStorage.removeItem('refreshToken')
+      localStorage.removeItem('accessToken')
+      localStorage.removeItem('refreshToken')
       dispatch(userActions.setTokens({}))
       navigate('/authentication/signin')
       setTimeout(() => {

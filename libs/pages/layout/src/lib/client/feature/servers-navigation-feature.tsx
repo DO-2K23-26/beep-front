@@ -18,8 +18,8 @@ export function ServersNavigationFeature() {
   const [leaveServer] = useLeaveVoiceChannelMutation()
 
   const onLogout = (navigation: NavigateFunction) => {
-    sessionStorage.removeItem('accessToken')
-    sessionStorage.removeItem('refreshToken')
+    localStorage.removeItem('accessToken')
+    localStorage.removeItem('refreshToken')
     dispatch(userActions.setTokens({}))
     dispatch({ type: 'CLOSE_WEBRTC' })
     leaveServer()

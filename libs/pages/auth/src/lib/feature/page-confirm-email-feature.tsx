@@ -8,11 +8,11 @@ export default function PageConfirmEmailFeature() {
   const navigate = useNavigate()
   const dispatch = useDispatch<AppDispatch>()
 
-  const onSignin = (navigation: NavigateFunction ) => {
-      sessionStorage.removeItem('accessToken')
-      sessionStorage.removeItem('refreshToken')
-      dispatch(userActions.setTokens({}))
-      navigation('/authentication/signin')
+  const onSignin = (navigation: NavigateFunction) => {
+    localStorage.removeItem('accessToken')
+    localStorage.removeItem('refreshToken')
+    dispatch(userActions.setTokens({}))
+    navigation('/authentication/signin')
   }
 
   return <PageConfirmEmail onSignin={() => onSignin(navigate)} />
