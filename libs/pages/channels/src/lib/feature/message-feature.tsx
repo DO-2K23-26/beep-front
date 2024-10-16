@@ -17,6 +17,7 @@ import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import Message from '../ui/message'
 import {
+  DisplayedEntity,
   recurseChildren,
   regexChannelTagging,
   regexUserTagging,
@@ -134,17 +135,17 @@ export default function MessageFeature({
     }
   })
 
-  const onClickTagUser = (user: UserDisplayedEntity) => {
+  const onClickTagUser = (user: DisplayedEntity) => {
     !selectedTaggedUser ||
     (selectedTaggedUser && selectedTaggedUser.id !== user.id)
-      ? setSelectedTaggedUser(user)
+      ? setSelectedTaggedUser(user as UserDisplayedEntity)
       : setSelectedTaggedUser(undefined)
   }
 
   const replaceTagEntity = (message: ReactNode): ReactNode => {
     if (!taggedUsers) return message
     const findUserForTag = (userId: string) =>
-      taggedUsers.find((u) => u.id === userId.slice(2))
+      taggedUsers.find((u) => u.id === userId.slice(2)) as DisplayedEntity
     return recurseChildren(
       message,
       regexUserTagging,
@@ -159,14 +160,15 @@ export default function MessageFeature({
       content,
       regexChannelTagging,
       '#',
-      findChannelForTag,
+      findChannelForTag as (entity: string) => DisplayedEntity,
       onClickTagChannel
     )
   }
 
-  const onClickTagChannel = (channel: ChannelEntity) => {
-    if (selectedTaggedChannel && selectedTaggedChannel.id !== channel.id)
-      navigate(`/servers/${channel.serverId}/channels/${channel.id}`)
+  const onClickTagChannel = (channel: DisplayedEntity) => {
+    navigate(
+      `/servers/${(channel as ChannelEntity).serverId}/channels/${channel.id}`
+    )
   }
 
   return (
