@@ -86,7 +86,7 @@ export function PageChannelFeature() {
     ChannelEntity | undefined
   >(undefined)
 
-  const inputRef = useRef<HTMLInputElement>(null)
+  const inputRef = useRef<HTMLTextAreaElement>(null)
   const [selectedTaggedUser, setSelectedTaggedUser] = useState<
     UserDisplayedEntity | undefined
   >(undefined)

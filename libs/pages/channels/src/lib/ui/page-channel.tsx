@@ -10,6 +10,7 @@ import {
   DynamicSelectorProps,
   Icon,
   Input,
+  InputMessageArea,
   Skeleton,
 } from '@beep/ui'
 import { Controller, UseFormReturn } from 'react-hook-form'
@@ -17,6 +18,7 @@ import { TaggedChannelFeature } from '../feature/tagged-channel-feature'
 import { UserInformationsFeature } from '../feature/user-informations-feature'
 import DisplayPinned from './display-pinned'
 import ListMessages from './list-messages'
+import { useCallback } from 'react'
 
 export interface PageChannelProps {
   messageForm: UseFormReturn<{
@@ -36,7 +38,7 @@ export interface PageChannelProps {
   filesPreview: { content: string | null }[]
   hideRightDiv?: () => void
   hideLeftDiv?: () => void
-  inputRef?: React.RefObject<HTMLInputElement>
+  inputRef?: React.RefObject<HTMLTextAreaElement>
   editingMessageId: string | null
   setEditingMessageId: React.Dispatch<React.SetStateAction<string | null>>
   onChange?: (value: string, onChange: (value: string) => void) => void
@@ -86,6 +88,19 @@ export const PageChannel = ({
   const setReplyTo = (message: MessageEntity | null) => {
     messageForm.setValue('replyTo', message)
   }
+
+  const handleKeyDownOnMessage = useCallback(
+    (event: React.KeyboardEvent<HTMLTextAreaElement>) => {
+      if (event.shiftKey) {
+        return
+      }
+      if (event.key === 'Enter') {
+        event.preventDefault()
+        sendMessage()
+      }
+    },
+    [sendMessage]
+  )
 
   return (
     <div className="bg-violet-200 w-full p-6 flex flex-col gap-6 justify-between h-[100dvh]">
@@ -247,7 +262,7 @@ export const PageChannel = ({
               control={messageForm.control}
               name="message"
               render={({ field }) => (
-                <Input
+                <InputMessageArea
                   type="text"
                   name={'message'}
                   value={field.value}
@@ -263,7 +278,7 @@ export const PageChannel = ({
                     onCursorChange ? () => onCursorChange() : undefined
                   }
                   onKeyUp={onCursorChange ? () => onCursorChange() : undefined}
-                  onKeyDown={(e) => (e.key === 'Enter' ? sendMessage() : {})}
+                  onKeyDown={handleKeyDownOnMessage}
                 />
               )}
             />
