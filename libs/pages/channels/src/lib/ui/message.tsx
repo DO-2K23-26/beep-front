@@ -1,5 +1,5 @@
 import { MessageEntity, UserEntity } from '@beep/contracts'
-import { Button, ButtonStyle, Icon, Input } from '@beep/ui'
+import { Button, ButtonStyle, Icon, Input, InputMessageArea } from '@beep/ui'
 import Markdoc from '@markdoc/markdoc'
 import React, { ReactNode, useEffect } from 'react'
 import { Controller, useFormContext } from 'react-hook-form'
@@ -66,7 +66,7 @@ export default function Message({
     const handleKeyDown = (event: KeyboardEvent) => {
       if (event.key === 'Escape') {
         cancelEditing()
-      } else if (event.key === 'Enter' && onUpdateMessage) {
+      } else if (event.key === 'Enter' && !event.shiftKey && onUpdateMessage) {
         event.preventDefault()
         onUpdateMessage()
       }
@@ -97,7 +97,7 @@ export default function Message({
   return (
     <div
       className={
-        'flex flex-col gap-2 p-3 rounded-xl group' +
+        'flex flex-col gap-2 p-3 rounded-xl group w-full' +
         (isHighlighted
           ? ' bg-green-100/60 hover:bg-green-100'
           : ' hover:bg-violet-300')
@@ -168,19 +168,19 @@ export default function Message({
           )}
         </div>
       </div>
-      <div className="flex flex-row gap-2">
+      <div className="flex flex-row gap-2 w-full">
         {isEditing ? (
-          <div className="flex flex-row justify-between items-center gap-3">
+          <div className="flex flex-row justify-between items-center gap-3 w-full">
             <Controller
               name="message"
               control={control}
               defaultValue={message.content || ''}
               render={({ field }) => (
-                <div className="flex flex-row justify-between items-center gap-3">
-                  <Input
+                <div className="flex flex-row justify-between items-center gap-5 w-full">
+                  <InputMessageArea
                     {...field}
                     type="text"
-                    className="rounded-xl bg-violet-50 px-4 h-full w-full"
+                    className="rounded-xl bg-violet-50 px-4 flex-grow w-full"
                   />
                   <Button
                     style={ButtonStyle.NONE}
