@@ -20,8 +20,10 @@ export * from './message/update-message.request'
 export * from './message/delete-message.request'
 export * from './message/show-message.request'
 export * from './message/get-messages-from-channel.request'
+export * from './message/pin-message.request'
+export * from './message/send-message.request'
+
 export * from './user/update.request'
 export * from './user/confirm-email.request'
 
-export * from './message/pin-message.request'
 export * from './invitation/create-invitation.request'

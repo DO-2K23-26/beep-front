@@ -4,6 +4,7 @@ import {
   UserDisplayedEntity,
 } from '@beep/contracts'
 import MessageFeature from '../feature/message-feature'
+import { ListMessageSkeleton } from './list-message-skeleton'
 
 interface ListMessagesProps {
   messages: MessageEntity[]
@@ -19,10 +20,12 @@ interface ListMessagesProps {
   setSelectedTaggedChannel: React.Dispatch<
     React.SetStateAction<ChannelEntity | undefined>
   >
+  isLoading: boolean
 }
 
 export default function ListMessages({
   messages,
+  isLoading,
   onUpdateMessage,
   onReply,
   onDeleteMessage,
@@ -32,8 +35,6 @@ export default function ListMessages({
   setSelectedTaggedUser,
   setSelectedTaggedChannel,
 }: ListMessagesProps) {
-
-
   return (
     <div className="flex flex-col-reverse gap-6 overflow-y-scroll no-scrollbar scroll-smooth h-full">
       {messages.slice().map((message) => (
@@ -52,6 +53,7 @@ export default function ListMessages({
           }}
         />
       ))}
+      {isLoading && <ListMessageSkeleton />}
     </div>
   )
 }

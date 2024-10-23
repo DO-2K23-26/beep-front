@@ -111,7 +111,6 @@ export function InputText({
                 setCurrentValue(e.currentTarget.value)
               }}
               onKeyDown={onKeyDown}
-              // onKeyDown={(e) => console.log('click', e)}
               onFocus={() => setFocused(true)}
               onBlur={() => setFocused(false)}
             />

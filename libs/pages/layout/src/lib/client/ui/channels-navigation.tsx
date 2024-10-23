@@ -8,7 +8,7 @@ import { Button, ButtonSize, ButtonStyle, Icon, UseModalProps } from '@beep/ui'
 import { getChannelsState } from '@beep/channel'
 import { getResponsiveState } from '@beep/responsive'
 import { useTransmitBannerQuery, useTransmitPictureQuery } from '@beep/server'
-import { getUserState } from '@beep/user'
+import { getUserState, useGetMeQuery } from '@beep/user'
 import { useEffect, useState } from 'react'
 import { FormProvider, UseFormReturn } from 'react-hook-form'
 import { useSelector } from 'react-redux'
@@ -56,6 +56,8 @@ export default function ChannelsNavigation({
   methodsAddChannel,
   hideLeftDiv,
 }: ChannelsNavigationProps) {
+  const { data: userMe } = useGetMeQuery()
+
   const { showLeftPane } = useSelector(getResponsiveState)
   const { connected, focusedChannel, serverName } =
     useSelector(getChannelsState)

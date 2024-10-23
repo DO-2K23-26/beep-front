@@ -4,6 +4,7 @@ export * from './lib/value.interface'
 export * from './lib/state'
 export * from './lib/response'
 export * from './lib/request'
+export * from './lib/signaling-message'
 const backendUrlRaw = import.meta.env.VITE_BACKEND_URL
 export const backendUrl =
   backendUrlRaw[backendUrlRaw.length - 1] === '/'

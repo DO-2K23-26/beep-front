@@ -7,6 +7,7 @@ import AttachmentFeature from '../feature/attachment-feature'
 import { config, markdownComponents } from '../utils/markdown-config'
 import { preprocessMarkdown } from '../utils/markdown-parser'
 import { DateTime } from 'luxon'
+import { cn } from '@beep/utils'
 
 interface MessageProps {
   message: MessageEntity
@@ -14,6 +15,7 @@ interface MessageProps {
   isEditing: boolean
   profilePicture?: string
   isDisplayedAsPinned?: boolean
+  isLoadingCreate: boolean | null
   switchEditing: (() => void) | null
   onUpdateMessage: () => void
   onDelete: (() => void) | null
@@ -32,6 +34,7 @@ export default function Message({
   ownerEntity,
   isHighlighted,
   isDisplayedAsPinned,
+  isLoadingCreate,
   switchEditing,
   onUpdateMessage,
   onDelete,
@@ -89,8 +92,6 @@ export default function Message({
       })
     )
   )
-
-  // Ajoutez cette logique dans le composant Message
   return (
     <div
       className={
@@ -100,6 +101,7 @@ export default function Message({
           : ' hover:bg-violet-300')
       }
     >
+      {/* {isLoadingCreate && 'pouett'} */}
       {message.parentMessage && (
         <div className={'flex items-center ml-4 opacity-60'}>
           <Icon name="lucide:corner-up-right" className="w-4 h-4 mr-2" />
@@ -127,8 +129,9 @@ export default function Message({
               {ownerEntity?.username ?? 'Caspser'}
             </h5>
           </div>
+
           <p className="font-normal text-xs truncate">
-            {formatDate(message.createdAt ?? '')}
+            {!isLoadingCreate && formatDate(message.createdAt ?? '')}
           </p>
         </div>
         <div className="flex flex-row gap-4 items-center invisible group-hover:visible pr-2">
@@ -184,15 +187,23 @@ export default function Message({
             />
           </div>
         ) : (
-          <div className="bg-violet-50 rounded-xl rounded-tl-none p-6 flex flex-col gap-3">
-            <div className="text-xs font-semibold break-all">
+          <div
+            className={cn(
+              'rounded-xl rounded-tl-none p-6 flex flex-col gap-3',
+              {
+                'bg-violet-50': !isLoadingCreate,
+                'bg-slate-500/30': isLoadingCreate,
+              }
+            )}
+          >
+            <div className={'text-xs font-semibold break-all'}>
               {renderedMessage}
             </div>
-
             {message.attachments?.map((attachment, i) => (
               <AttachmentFeature
                 key={'attachment_' + i.toString()}
                 attachment={attachment}
+                isLoading={isLoadingCreate}
               />
             ))}
           </div>

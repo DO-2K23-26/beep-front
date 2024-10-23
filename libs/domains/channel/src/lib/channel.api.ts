@@ -9,6 +9,7 @@ import {
   UpdateMessageRequest,
   backendUrl
 } from '@beep/contracts';
+import { messageActions } from '@beep/message';
 import { RootState } from '@beep/store';
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
@@ -29,6 +30,13 @@ export const channelApi = createApi({
   endpoints: (builder) => ({
     getMessagesByChannelId: builder.query<MessageEntity[], GetMessageFromChannelRequest>({
       query: (request) => `/channels/${request.channelId}/messages`,
+      async onCacheEntryAdded(
+        arg,
+        { cacheDataLoaded, dispatch }
+      ) {
+        const { data } = await cacheDataLoaded;
+        dispatch(messageActions.syncRemoteState(data));
+      },
       providesTags: (result, _error, request) => result ? [...result.map(({ id }) => ({ type: 'message' as const, id })), { type: 'message', id: `LIST-${request.channelId}` }] : [{ type: 'message', id: `LIST-${request.channelId}` }]
     }),
     createMessage: builder.mutation<MessageEntity, CreateMessageRequest>({
@@ -38,7 +46,7 @@ export const channelApi = createApi({
         body: request.body,
         formData: true
       }),
-      invalidatesTags: (_result, _error, request) => [{ type: 'message', id: `LIST-${request.channelId}` }]
+      // invalidatesTags: (_result, _error, request) => [{ type: 'message', id: `LIST-${request.channelId}` }]
     }),
     getOneMessage: builder.query<MessageEntity, ShowMessageRequest>({
       query: (request) => ({

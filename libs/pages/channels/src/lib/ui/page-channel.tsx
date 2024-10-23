@@ -110,9 +110,9 @@ export const PageChannel = ({
           </div>
           {/* Button to display the list of pinned messages of a channel */}
           <div className="flex flex-row gap-6 ">
-            {channel !== undefined && !isLoadingChannel ? (
+            {messages !== undefined && !isLoadingMessages ? (
               <DisplayPinned
-                channelId={channel.id}
+                messages={messages.filter((m) => m.pinned)}
                 onUpdateMessage={onUpdateMessage}
                 editingMessageId={editingMessageId}
                 setEditingMessageId={setEditingMessageId}
@@ -134,21 +134,18 @@ export const PageChannel = ({
       </div>
 
       {/* Message list */}
-      {isLoadingMessages || messages === undefined ? (
-        <ListMessageSkeleton />
-      ) : (
-        <ListMessages
-          messages={messages}
-          onUpdateMessage={onUpdateMessage}
-          onDeleteMessage={onDeleteMessage}
-          editingMessageId={editingMessageId}
-          setEditingMessageId={setEditingMessageId}
-          selectedTaggedUser={selectedTaggedUser}
-          setSelectedTaggedUser={setSelectedTaggedUser}
-          setSelectedTaggedChannel={setSelectedTaggedChannel}
-          onReply={setReplyTo}
-        />
-      )}
+      <ListMessages
+        messages={messages ?? []}
+        isLoading={isLoadingMessages}
+        onUpdateMessage={onUpdateMessage}
+        onDeleteMessage={onDeleteMessage}
+        editingMessageId={editingMessageId}
+        setEditingMessageId={setEditingMessageId}
+        selectedTaggedUser={selectedTaggedUser}
+        setSelectedTaggedUser={setSelectedTaggedUser}
+        setSelectedTaggedChannel={setSelectedTaggedChannel}
+        onReply={setReplyTo}
+      />
       {selectedTaggedChannel ? (
         <TaggedChannelFeature
           channel={selectedTaggedChannel}

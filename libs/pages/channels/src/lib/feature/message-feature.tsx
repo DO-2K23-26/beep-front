@@ -1,19 +1,22 @@
-import { usePinMessageMutation } from '@beep/channel'
+import { useCreateMessageMutation, usePinMessageMutation } from '@beep/channel'
 import {
   ChannelEntity,
   MessageEntity,
   UserDisplayedEntity,
 } from '@beep/contracts'
+import { messageActions } from '@beep/message'
 import { getServersState, useGetServerChannelsQuery } from '@beep/server'
+import { AppDispatch } from '@beep/store'
 import {
   getUserState,
   useFetchProfilePictureQuery,
   useGetUsersFromQuery,
 } from '@beep/user'
+import { skipToken } from '@reduxjs/toolkit/query'
 import React, { ReactNode, useEffect } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
 import toast from 'react-hot-toast'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate, useParams } from 'react-router-dom'
 import Message from '../ui/message'
 import {
@@ -22,7 +25,6 @@ import {
   regexChannelTagging,
   regexUserTagging,
 } from '../utils/tagging-utils'
-import { skipToken } from '@reduxjs/toolkit/query'
 
 interface MessageFeatureProps {
   message: MessageEntity
@@ -52,6 +54,27 @@ export default function MessageFeature({
   selectedTaggedUser,
   setSelectedTaggedUser,
 }: MessageFeatureProps) {
+  const [createMessage, createResult] = useCreateMessageMutation()
+  const dispatch = useDispatch<AppDispatch>()
+  // This is ignored if the message come from the server
+  // In the case the message is sent by the current client it will be true
+  // when the message is post correctly
+  useEffect(() => {
+    if (message.isSentByCurrentClient && message.request !== undefined) {
+      dispatch(messageActions.removeRequest(message))
+      createMessage(message.request)
+    }
+  }, [createMessage, dispatch, message])
+
+  useEffect(() => {
+    if (createResult?.data && message.isSentByCurrentClient)
+      dispatch(
+        messageActions.replaceFromServer({
+          messageId: message.id,
+          message: createResult.data,
+        })
+      )
+  }, [createResult, dispatch, message.id, message.isSentByCurrentClient])
   const [pinMessage, result] = usePinMessageMutation()
   const serverData = useSelector(getServersState)
   const userId: string | undefined = useSelector(getUserState).payload?.sub
@@ -107,7 +130,7 @@ export default function MessageFeature({
   }
 
   useEffect(() => {
-    const pinning = message.pinned ? 'unpin' : 'pin'
+    const pinning = message.pinned ? 'pin' : 'unpin'
     if (result.error) {
       toast.error(
         `Failure while trying to ${pinning}
@@ -181,7 +204,7 @@ export default function MessageFeature({
   return (
     <FormProvider {...methods}>
       <Message
-        message={message}
+        message={createResult.data ?? message}
         profilePicture={userProfilePicture}
         isEditing={isEditing}
         isDisplayedAsPinned={isDisplayedAsPinned}
@@ -191,6 +214,7 @@ export default function MessageFeature({
             ? onDeleteMessageSubmit
             : null
         }
+        isLoadingCreate={createResult.isLoading}
         switchEditing={isUserMessageOwner() ? switchEditing : null}
         cancelEditing={cancelEditing}
         onUpdateMessage={onUpdateMessageSubmit}

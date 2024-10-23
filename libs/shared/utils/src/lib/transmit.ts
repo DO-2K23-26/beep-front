@@ -1,5 +1,6 @@
 import { Subscription, Transmit } from '@adonisjs/transmit-client'
-import { backendUrl } from '@beep/contracts'
+import { backendUrl, Token } from '@beep/contracts'
+import { jwtDecode } from 'jwt-decode'
 
 export class TransmitSingleton {
   private static instance: Transmit
@@ -14,8 +15,17 @@ export class TransmitSingleton {
 
   public static getInstance(): Transmit {
     if (!TransmitSingleton.instance) {
+      const token = sessionStorage.getItem('accessToken')
+      const decoded = jwtDecode<Token>(token ?? '')
       TransmitSingleton.instance = new Transmit({
+        uidGenerator: () => decoded.sub,
         baseUrl: backendUrl,
+        beforeSubscribe(request) {
+          if (request.headers)
+            // This type error is a bug in the library
+            // Don't mind sending a PR to transmit-client to fix it
+            request.headers.append('authorization', `Bearer ${token}`)
+        },
       })
     }
     return TransmitSingleton.instance
@@ -33,5 +43,11 @@ export class TransmitSingleton {
       channel,
       TransmitSingleton.subscriptions.get(channel)?.onMessage(callback)
     )
+  }
+
+  public static unsubscribeChannel(channel: string) {
+    TransmitSingleton.subscriptions.delete(channel)
+    TransmitSingleton.unsubscribe.get(channel)?.()
+    TransmitSingleton.unsubscribe.delete(channel)
   }
 }

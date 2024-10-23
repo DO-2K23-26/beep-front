@@ -1,4 +1,4 @@
-import { Button, ButtonStyle } from "@beep/ui";
+import { Button, ButtonStyle } from '@beep/ui'
 
 interface DeleteMessageModalProps {
   closeModal: () => void
@@ -9,7 +9,6 @@ export function DeleteMessageModal({
   closeModal,
   onDeleteMessage,
 }: DeleteMessageModalProps) {
-
   return (
     <div className="p-6">
       <h3 className=" text-slate-700 font-bold mb-2 max-w-sm">
@@ -31,6 +30,7 @@ export function DeleteMessageModal({
           style={ButtonStyle.ERROR}
           onClick={() => {
             onDeleteMessage()
+            closeModal()
           }}
         >
           Delete

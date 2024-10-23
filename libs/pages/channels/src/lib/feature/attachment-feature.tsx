@@ -4,13 +4,24 @@ import { Icon } from '@beep/ui'
 
 interface AttachmentFeatureProps {
   attachment: Attachment
+  isLoading: boolean | null
 }
 
 export default function AttachmentFeature({
   attachment,
+  isLoading,
 }: AttachmentFeatureProps) {
   const blob = useFetchAttachmentImageQuery(attachment.id).currentData
   const name = attachment.name.split('/').slice(-1)
+
+  if (isLoading) {
+    return (
+      <div className="flex">
+        <Icon name="lucide:file-up" className="w-10 h-10" />
+        <span>{attachment.name}</span>
+      </div>
+    )
+  }
   if (attachment.contentType.includes('image')) {
     return (
       <img

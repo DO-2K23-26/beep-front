@@ -1,5 +1,6 @@
 /* eslint-disable @nx/enforce-module-boundaries */
 import { channelApi, voiceChannelReducer } from '@beep/channel'
+import { messageReducer } from '@beep/message'
 import { responsiveReducer } from '@beep/responsive'
 import { serverApi, serverReducer } from '@beep/server'
 import { toggleListenerMiddleware, userApi, userReducer } from '@beep/user'
@@ -11,10 +12,11 @@ export const rootReducer = combineReducers({
   channels: voiceChannelReducer,
   responsive: responsiveReducer,
   servers: serverReducer,
+  message: messageReducer,
+  webRTC: webrtcSliceReducer,
   [userApi.reducerPath]: userApi.reducer,
   [channelApi.reducerPath]: channelApi.reducer,
   [serverApi.reducerPath]: serverApi.reducer,
-  webRTC: webrtcSliceReducer
 })
 
 export function setupStore(preloadedState?: never) {

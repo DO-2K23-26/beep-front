@@ -1,12 +1,10 @@
-import React, { useState } from 'react'
+import { MessageEntity, UserDisplayedEntity } from '@beep/contracts'
 import { Button, ButtonSize } from '@beep/ui'
+import React, { useState } from 'react'
 import PinnedMessagesList from './pinned-messages-list'
-import { useFetchPinnedMessagesQuery } from '@beep/channel'
-import { UserDisplayedEntity } from '@beep/contracts'
-import { skipToken } from '@reduxjs/toolkit/query'
 
 interface DisplayPinnedProps {
-  channelId: string
+  messages: MessageEntity[]
   onUpdateMessage: (messageId: string, newContent: string) => void
   editingMessageId: string | null
   setEditingMessageId: (id: string | null) => void
@@ -17,7 +15,7 @@ interface DisplayPinnedProps {
 }
 
 const DisplayPinned: React.FC<DisplayPinnedProps> = ({
-  channelId,
+  messages,
   onUpdateMessage,
   editingMessageId,
   setEditingMessageId,
@@ -25,8 +23,6 @@ const DisplayPinned: React.FC<DisplayPinnedProps> = ({
   setSelectedTaggedUser,
 }) => {
   const [showPinnedMessages, setShowPinnedMessages] = useState<boolean>(false)
-  const { data: messages } = useFetchPinnedMessagesQuery(channelId ?? skipToken)
-
   return (
     <div className="relative">
       <Button

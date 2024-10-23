@@ -1,14 +1,16 @@
 import {
-  useCreateMessageMutation,
   useDeleteMessageMutation,
   useGetMessagesByChannelIdQuery,
   useUpdateMessageMutation,
 } from '@beep/channel'
 import {
+  ActionSignalMessage,
   ChannelEntity,
   MessageEntity,
+  SignalMessage,
   UserDisplayedEntity,
 } from '@beep/contracts'
+import { messageActions } from '@beep/message'
 import { responsiveActions } from '@beep/responsive'
 import {
   serverActions,
@@ -17,14 +19,15 @@ import {
   useGetServersQuery,
   useGetUsersByServerIdQuery,
 } from '@beep/server'
-import { AppDispatch } from '@beep/store'
+import { AppDispatch, RootState } from '@beep/store'
 import { DynamicSelectorProps, useModal } from '@beep/ui'
+import { useGetMeQuery } from '@beep/user'
 import { TransmitSingleton } from '@beep/utils'
 import { skipToken } from '@reduxjs/toolkit/query'
 import { useEffect, useRef, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import toast from 'react-hot-toast'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { useParams } from 'react-router'
 import { DeleteMessageModal } from '../ui/delete-message-modal'
 import { PageChannel } from '../ui/page-channel'
@@ -32,6 +35,8 @@ import { DynamicSelectorChannelFeature } from './dynamic-selector-channel-featur
 import { DynamicSelectorFeature } from './dynamic-selector-item-feature'
 
 export function PageChannelFeature() {
+  const dispatch = useDispatch<AppDispatch>()
+  const { data: user } = useGetMeQuery()
   const { serverId = '', channelId = '' } = useParams<{
     serverId: string
     channelId: string
@@ -43,12 +48,17 @@ export function PageChannelFeature() {
   })
   const { data: availableServers } = useGetServersQuery()
 
-  const {
-    data: messages,
-    isLoading: isLoadingMessages,
-    refetch,
-    isSuccess,
-  } = useGetMessagesByChannelIdQuery({ channelId })
+  const { isLoading: isLoadingMessages, isSuccess: isSuccessGetMessage } =
+    useGetMessagesByChannelIdQuery(
+      { channelId },
+      {
+        refetchOnMountOrArgChange: true,
+      }
+    )
+
+  const messageState = useSelector(
+    (state: RootState) => state.message.channels_messages[channelId]
+  )
   const { data: usersServer } = useGetUsersByServerIdQuery(
     serverId ?? skipToken
   )
@@ -66,7 +76,6 @@ export function PageChannelFeature() {
     UserDisplayedEntity | undefined
   >(undefined)
   const [editingMessageId, setEditingMessageId] = useState<string | null>(null)
-  const [createMessage] = useCreateMessageMutation()
 
   const messageForm = useForm({
     mode: 'onChange',
@@ -193,7 +202,6 @@ export function PageChannelFeature() {
     }
   }
 
-  const dispatch = useDispatch<AppDispatch>()
   const hideRightDiv = () => {
     dispatch(responsiveActions.manageRightPane())
   }
@@ -234,57 +242,46 @@ export function PageChannelFeature() {
     }).unwrap()
   }
 
-  const [deleteMessage] = useDeleteMessageMutation()
+  const [deleteMessage, resultDeleteMessage] = useDeleteMessageMutation()
 
   const onDeleteMessage = async (channelId: string, messageId: string) => {
-    try {
-      openModal({
-        content: (
-          <DeleteMessageModal
-            closeModal={closeModal}
-            onDeleteMessage={async () => {
-              await deleteMessage({
-                channelId: channelId,
-                messageId: messageId,
-              }).unwrap()
-              closeModal()
-            }}
-          />
-        ),
-      })
-    } catch (error) {
+    openModal({
+      content: (
+        <DeleteMessageModal
+          closeModal={closeModal}
+          onDeleteMessage={async () => {
+            await deleteMessage({
+              channelId: channelId,
+              messageId: messageId,
+            }).unwrap()
+          }}
+        />
+      ),
+    })
+  }
+
+  useEffect(() => {
+    if (resultDeleteMessage.isError) {
       toast.error('Failure while trying to delete the message')
     }
-  }
+  }, [resultDeleteMessage])
 
   const onSendMessage = messageForm.handleSubmit(async (data) => {
     // check if message is not empty OR files are not empty
+
     if (
       'message' in data &&
       ((data.message !== '' && data.message !== undefined) || files.length > 0)
     ) {
-      // create a form data object for the http request
-      const formData: FormData = new FormData()
-
-      // set the content of the message -> { content: data.message }
-      formData.set(
-        'content',
-        data.message === '' || data.message === undefined ? ' ' : data.message
-      )
-
-      // if files are present, append them to the form data object
-      if (files.length > 0) {
-        formData.set('attachments', JSON.stringify([]))
-        files.forEach((file, i) => {
-          formData.append(`attachments[${i}]`, file)
+      dispatch(
+        messageActions.send({
+          channelId: channelId,
+          files: files,
+          message: data.message,
+          replyTo: data.replyTo,
+          userId: user?.id ?? '',
         })
-      }
-      formData.set('parentMessageId', data.replyTo?.id ?? '')
-      // send the http request to the server and create a new message
-      createMessage({
-        channelId: channelId,
-        body: formData,
-      })
+      )
 
       // reset the form
       messageForm.reset()
@@ -295,8 +292,21 @@ export function PageChannelFeature() {
   })
 
   useEffect(() => {
-    TransmitSingleton.subscribe(`channels/${channelId}/messages`, () => {
-      refetch()
+    TransmitSingleton.subscribe(`channels/${channelId}/messages`, (data) => {
+      const signal: SignalMessage = JSON.parse(data)
+      switch (signal.action) {
+        case ActionSignalMessage.create:
+          dispatch(messageActions.create(signal.message))
+          break
+        case ActionSignalMessage.update:
+          dispatch(messageActions.update(signal.message))
+          break
+        case ActionSignalMessage.delete:
+          dispatch(messageActions.delete(signal.message))
+          break
+        default:
+          break
+      }
     })
     if (availableServers) {
       const curServer = availableServers.find((s) => s.id === serverId) ?? {
@@ -310,12 +320,15 @@ export function PageChannelFeature() {
       }
       dispatch(serverActions.setServer(curServer))
     }
-  }, [serverId, refetch, isSuccess, availableServers, dispatch, channelId])
+    return () => {
+      TransmitSingleton.unsubscribeChannel(`channels/${channelId}/messages`)
+    }
+  }, [serverId, isSuccessGetMessage, availableServers, dispatch, channelId])
 
   return (
     <PageChannel
       messageForm={messageForm}
-      messages={messages}
+      messages={messageState ?? []}
       channel={channel}
       sendMessage={onSendMessage}
       onUpdateMessage={onUpdateMessage}

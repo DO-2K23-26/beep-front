@@ -49,7 +49,6 @@ export const Modal = (props: ModalProps) => {
   } = useContext(ModalContext)
 
   useEffect(() => {
-    // console.log(open)
     if (!open)
       // when the modal just open nothing should be dirty in the modal
       enableAlertClickOutside && enableAlertClickOutside(false)
