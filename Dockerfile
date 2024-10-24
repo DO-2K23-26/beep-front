@@ -13,7 +13,7 @@ COPY pnpm-lock.yaml .
 
 RUN npm install -g pnpm
 
-RUN pnpm ci
+RUN pnpm i --frozen-lockfile
 
 ENV NODE_ENV=production
 
