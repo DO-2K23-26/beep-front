@@ -13,13 +13,16 @@ COPY pnpm-lock.yaml .
 
 RUN npm install -g pnpm
 
-RUN pnpm install
+RUN pnpm i --frozen-lockfile
+
+ENV NODE_ENV=production
 
 COPY . .
 RUN npx nx reset
 RUN npx nx build client
 
 FROM nginxinc/nginx-unprivileged:alpine3.18
+ENV NODE_ENV=production
 
 RUN rm -rf /etc/nginx/html/*
 COPY --from=builder --chown=nginx:nginx /app/dist/apps/* /etc/nginx/html
