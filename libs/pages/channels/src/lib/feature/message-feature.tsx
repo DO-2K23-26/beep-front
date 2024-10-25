@@ -1,4 +1,8 @@
-import { useCreateMessageMutation, usePinMessageMutation } from '@beep/channel'
+import {
+  useCreateMessageMutation,
+  useGetOneMessageQuery,
+  usePinMessageMutation,
+} from '@beep/channel'
 import {
   ChannelEntity,
   MessageEntity,
@@ -13,7 +17,7 @@ import {
   useGetUsersFromQuery,
 } from '@beep/user'
 import { skipToken } from '@reduxjs/toolkit/query'
-import React, { ReactNode, useEffect } from 'react'
+import React, { ReactNode, useEffect, useState } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
 import toast from 'react-hot-toast'
 import { useDispatch, useSelector } from 'react-redux'
@@ -54,6 +58,22 @@ export default function MessageFeature({
   selectedTaggedUser,
   setSelectedTaggedUser,
 }: MessageFeatureProps) {
+  const [replyToMessage, setReplyToMessage] = useState<
+    MessageEntity | undefined | null
+  >(message.parentMessage)
+  const { data: replyMessage, isLoading: isLoadingReplyMessage } =
+    useGetOneMessageQuery(
+      {
+        channelId: message.channelId,
+        messageId: message.parentMessageId ?? '',
+      },
+      {
+        skip:
+          !message.parentMessageId ||
+          (message.parentMessage !== undefined &&
+            message.parentMessage !== null),
+      }
+    )
   const [createMessage, createResult] = useCreateMessageMutation()
   const dispatch = useDispatch<AppDispatch>()
   // This is ignored if the message come from the server
@@ -93,6 +113,12 @@ export default function MessageFeature({
   const { data: taggedUsers } = useGetUsersFromQuery({ userIds: ids })
 
   const isEditing = editingMessageId === message.id
+
+  useEffect(() => {
+    if (replyMessage !== undefined && !isLoadingReplyMessage) {
+      setReplyToMessage(replyMessage)
+    }
+  }, [replyMessage, isLoadingReplyMessage])
 
   const methods = useForm({
     mode: 'onChange',
@@ -205,6 +231,7 @@ export default function MessageFeature({
     <FormProvider {...methods}>
       <Message
         message={createResult.data ?? message}
+        replyTo={replyToMessage}
         profilePicture={userProfilePicture}
         isEditing={isEditing}
         isDisplayedAsPinned={isDisplayedAsPinned}

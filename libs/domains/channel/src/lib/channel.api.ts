@@ -46,11 +46,10 @@ export const channelApi = createApi({
         body: request.body,
         formData: true
       }),
-      // invalidatesTags: (_result, _error, request) => [{ type: 'message', id: `LIST-${request.channelId}` }]
     }),
     getOneMessage: builder.query<MessageEntity, ShowMessageRequest>({
       query: (request) => ({
-        url: `/channels/${request.channelId}/messages`,
+        url: `/channels/${request.channelId}/messages/${request.messageId}`,
         method: 'GET',
 
       }),

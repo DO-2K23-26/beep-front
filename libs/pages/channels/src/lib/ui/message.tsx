@@ -11,6 +11,7 @@ import { cn } from '@beep/utils'
 
 interface MessageProps {
   message: MessageEntity
+  replyTo?: MessageEntity | null
   ownerEntity?: UserEntity
   isEditing: boolean
   profilePicture?: string
@@ -29,6 +30,7 @@ interface MessageProps {
 
 export default function Message({
   message,
+  replyTo,
   isEditing,
   profilePicture,
   ownerEntity,
@@ -101,19 +103,18 @@ export default function Message({
           : ' hover:bg-violet-300')
       }
     >
-      {/* {isLoadingCreate && 'pouett'} */}
-      {message.parentMessage && (
+      {replyTo && replyTo !== undefined && (
         <div className={'flex items-center ml-4 opacity-60'}>
           <Icon name="lucide:corner-up-right" className="w-4 h-4 mr-2" />
           <div className="reply-to bg-violet-100 p-2 rounded">
             <span className="text-sm text-gray-600">
-              <strong>{message.parentMessage?.owner?.username}</strong> :{' '}
+              <strong>{replyTo?.owner?.username}</strong> :{' '}
               <i>
-                {message.parentMessage?.content.length > 30
-                  ? message.parentMessage?.content.substring(0, 30) + ' ...'
-                  : message.parentMessage?.content}
+                {replyTo?.content?.length > 30
+                  ? replyTo?.content?.substring(0, 30) + ' ...'
+                  : replyTo?.content}
               </i>
-            </span>{' '}
+            </span>
           </div>
         </div>
       )}
