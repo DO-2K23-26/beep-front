@@ -16,7 +16,6 @@ import { Controller, UseFormReturn } from 'react-hook-form'
 import { TaggedChannelFeature } from '../feature/tagged-channel-feature'
 import { UserInformationsFeature } from '../feature/user-informations-feature'
 import DisplayPinned from './display-pinned'
-import { ListMessageSkeleton } from './list-message-skeleton'
 import ListMessages from './list-messages'
 
 export interface PageChannelProps {
@@ -24,9 +23,11 @@ export interface PageChannelProps {
     message: string
     replyTo: MessageEntity | null
   }>
+  messageListRef: React.RefObject<HTMLDivElement>
   channel?: ChannelEntity
   messages?: MessageEntity[]
   sendMessage: () => void
+  onScrollMessage: () => void
   onUpdateMessage: (messageId: string, newContent: string) => void
   onDeleteMessage: (channelId: string, messageId: string) => void
   files: File[]
@@ -57,6 +58,8 @@ export const PageChannel = ({
   messageForm,
   channel,
   messages,
+  messageListRef,
+  onScrollMessage,
   sendMessage,
   onUpdateMessage,
   files,
@@ -110,9 +113,10 @@ export const PageChannel = ({
           </div>
           {/* Button to display the list of pinned messages of a channel */}
           <div className="flex flex-row gap-6 ">
-            {messages !== undefined && !isLoadingMessages ? (
+            {channel?.id !== undefined ? (
               <DisplayPinned
-                messages={messages.filter((m) => m.pinned)}
+                key={'display_pinned_' + channel?.id}
+                channelId={channel?.id ?? ''}
                 onUpdateMessage={onUpdateMessage}
                 editingMessageId={editingMessageId}
                 setEditingMessageId={setEditingMessageId}
@@ -137,6 +141,8 @@ export const PageChannel = ({
       <ListMessages
         messages={messages ?? []}
         isLoading={isLoadingMessages}
+        messageListRef={messageListRef}
+        onScroll={onScrollMessage}
         onUpdateMessage={onUpdateMessage}
         onDeleteMessage={onDeleteMessage}
         editingMessageId={editingMessageId}

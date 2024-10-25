@@ -33,11 +33,11 @@ import {
 interface MessageFeatureProps {
   message: MessageEntity
   isDisplayedAsPinned?: boolean
-  onUpdateMessage: (messageId: string, newContent: string) => void
-  onDeleteMessage: (channelId: string, messageId: string) => void
+  onUpdateMessage?: (messageId: string, newContent: string) => void
+  onDeleteMessage?: (channelId: string, messageId: string) => void
   editingMessageId: string | null
   setEditingMessageId: (id: string | null) => void
-  onReply: (message: MessageEntity) => void
+  onReply?: (message: MessageEntity) => void
   selectedTaggedUser: UserDisplayedEntity | undefined
   setSelectedTaggedUser: React.Dispatch<
     React.SetStateAction<UserDisplayedEntity | undefined>
@@ -171,7 +171,8 @@ export default function MessageFeature({
     if (
       data.message !== '' &&
       data.message !== undefined &&
-      isUserMessageOwner()
+      isUserMessageOwner() &&
+      onUpdateMessage !== undefined
     ) {
       onUpdateMessage(message.id, data.message)
       methods.setValue('message', '')
@@ -180,7 +181,10 @@ export default function MessageFeature({
   })
 
   const onDeleteMessageSubmit = methods.handleSubmit(() => {
-    if (isUserMessageOwner() || isUserServerOwner()) {
+    if (
+      (isUserMessageOwner() || isUserServerOwner()) &&
+      onDeleteMessage !== undefined
+    ) {
       onDeleteMessage(message.channelId, message.id)
     }
   })
@@ -237,19 +241,20 @@ export default function MessageFeature({
         isDisplayedAsPinned={isDisplayedAsPinned}
         ownerEntity={owner?.[0]}
         onDelete={
-          isUserMessageOwner() || isUserServerOwner()
+          (isUserMessageOwner() || isUserServerOwner()) &&
+          onDeleteMessage !== undefined
             ? onDeleteMessageSubmit
             : null
         }
         isLoadingCreate={createResult.isLoading}
         switchEditing={isUserMessageOwner() ? switchEditing : null}
         cancelEditing={cancelEditing}
-        onUpdateMessage={onUpdateMessageSubmit}
+        onUpdateMessage={onUpdateMessage ? onUpdateMessageSubmit : null}
         replaceMentionChannel={replaceMentionChannel}
         replaceTagEntity={replaceTagEntity}
         isHighlighted={message.content.includes('@$' + userId)}
         onPin={onPin}
-        onReply={() => onReply(message)}
+        onReply={onReply !== undefined ? () => onReply(message) : null}
       />
     </FormProvider>
   )

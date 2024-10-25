@@ -1,6 +1,7 @@
 import {
   useDeleteMessageMutation,
   useGetMessagesByChannelIdQuery,
+  useLazyGetMessagesByChannelIdQuery,
   useUpdateMessageMutation,
 } from '@beep/channel'
 import {
@@ -36,25 +37,39 @@ import { DynamicSelectorFeature } from './dynamic-selector-item-feature'
 
 export function PageChannelFeature() {
   const dispatch = useDispatch<AppDispatch>()
+  const limit = 50
   const { data: user } = useGetMeQuery()
   const { serverId = '', channelId = '' } = useParams<{
     serverId: string
     channelId: string
   }>()
+  const messageListRef = useRef<HTMLDivElement>(null)
+
   const { data: channels } = useGetServerChannelsQuery(serverId)
   const { data: channel, isLoading: isLoadingChannel } = useGetChannelQuery({
     serverId: serverId,
     channelId: channelId,
   })
   const { data: availableServers } = useGetServersQuery()
+  const [fetchBeforeId, setFetchBeforeId] = useState<string | null>(null)
 
-  const { isLoading: isLoadingMessages, isSuccess: isSuccessGetMessage } =
-    useGetMessagesByChannelIdQuery(
-      { channelId },
-      {
-        refetchOnMountOrArgChange: true,
-      }
-    )
+  const {
+    isLoading: isLoadingMessages,
+    isSuccess: isSuccessGetMessage,
+    isFetching: isFetchingMessage,
+  } = useGetMessagesByChannelIdQuery(
+    { channelId, before: fetchBeforeId, limit },
+    {
+      refetchOnFocus: true,
+      skip: channelId === undefined,
+      refetchOnMountOrArgChange: true,
+    }
+  )
+
+
+  useEffect(() => {
+    setFetchBeforeId(null)
+  }, [channelId])
 
   const messageState = useSelector(
     (state: RootState) => state.message.channels_messages[channelId]
@@ -172,6 +187,19 @@ export function PageChannelFeature() {
       })
     } else {
       setDynamicSelector(undefined)
+    }
+  }
+  const onScrollMessage = () => {
+    if (messageListRef.current && messageState !== undefined) {
+      const { scrollTop, scrollHeight, clientHeight } = messageListRef.current
+
+      if (
+        ((scrollTop - clientHeight) / scrollHeight) * -1 >= 0.75 &&
+        messageState?.[messageState.length - 1] !== undefined &&
+        messageState?.length >= limit
+      ) {
+        setFetchBeforeId(messageState[messageState.length - 1].id ?? null)
+      }
     }
   }
 
@@ -327,9 +355,12 @@ export function PageChannelFeature() {
 
   return (
     <PageChannel
+      key={'page_channel' + channelId}
       messageForm={messageForm}
       messages={messageState ?? []}
       channel={channel}
+      messageListRef={messageListRef}
+      onScrollMessage={onScrollMessage}
       sendMessage={onSendMessage}
       onUpdateMessage={onUpdateMessage}
       onDeleteMessage={onDeleteMessage}
@@ -349,7 +380,7 @@ export function PageChannelFeature() {
       setSelectedTaggedChannel={setSelectedTaggedChannel}
       selectedTaggedUser={selectedTaggedUser}
       setSelectedTaggedUser={setSelectedTaggedUser}
-      isLoadingMessages={isLoadingMessages}
+      isLoadingMessages={isLoadingMessages || isFetchingMessage}
       isLoadingChannel={isLoadingChannel}
     />
   )

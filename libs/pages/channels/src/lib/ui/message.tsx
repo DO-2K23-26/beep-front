@@ -18,14 +18,14 @@ interface MessageProps {
   isDisplayedAsPinned?: boolean
   isLoadingCreate: boolean | null
   switchEditing: (() => void) | null
-  onUpdateMessage: () => void
+  onUpdateMessage: (() => void) | null
   onDelete: (() => void) | null
   cancelEditing: () => void
   onPin: () => void
   replaceTagEntity: (message: ReactNode) => ReactNode
   replaceMentionChannel: (content: React.ReactNode) => React.ReactNode
   isHighlighted: boolean
-  onReply: (message: MessageEntity) => void
+  onReply: ((message: MessageEntity) => void) | null
 }
 
 export default function Message({
@@ -66,7 +66,7 @@ export default function Message({
     const handleKeyDown = (event: KeyboardEvent) => {
       if (event.key === 'Escape') {
         cancelEditing()
-      } else if (event.key === 'Enter') {
+      } else if (event.key === 'Enter' && onUpdateMessage) {
         event.preventDefault()
         onUpdateMessage()
       }
@@ -151,9 +151,14 @@ export default function Message({
               <Button style={ButtonStyle.NONE} onClick={onPin}>
                 <Icon name="lucide:pin" className="w-5 h-5" />
               </Button>
-              <Button style={ButtonStyle.NONE} onClick={() => onReply(message)}>
-                <Icon name="lucide:corner-up-left" className="w-5 h-5" />
-              </Button>
+              {onReply && (
+                <Button
+                  style={ButtonStyle.NONE}
+                  onClick={() => onReply(message)}
+                >
+                  <Icon name="lucide:corner-up-left" className="w-5 h-5" />
+                </Button>
+              )}
             </>
           )}
           {isEditing && (
@@ -179,7 +184,9 @@ export default function Message({
                   />
                   <Button
                     style={ButtonStyle.NONE}
-                    onClick={() => onUpdateMessage()}
+                    onClick={() => {
+                      if (onUpdateMessage) onUpdateMessage()
+                    }}
                   >
                     <Icon name="lucide:save" className="w-10 h-10 visible" />
                   </Button>

@@ -1,5 +1,5 @@
 /* eslint-disable @nx/enforce-module-boundaries */
-import { MessageEntity, MessageState, ReplaceMessage, SendMessageForm } from '@beep/contracts';
+import { MessageEntity, MessageState, PaginatedMessage, ReplaceMessage, SendMessageForm, SyncMessages } from '@beep/contracts';
 import { RootState } from '@beep/store';
 import { createSlice } from '@reduxjs/toolkit';
 import { sortMessagesByCreation, toFormData, toMessage } from './utils';
@@ -19,13 +19,18 @@ export const messageSlice = createSlice({
   reducers: {
     // This method is called every time the user selects a new channel
     syncRemoteState(state, { payload }: {
-      payload: MessageEntity[]
+      payload: SyncMessages
     }) {
-      if (payload.length === 0) return;
-      const { channelId } = payload[0];
-      if (!state.channels_messages[channelId])
-        state.channels_messages[channelId] = []
-      state.channels_messages[channelId] = sortMessagesByCreation(payload)
+      if (!state.channels_messages[payload.channelId])
+        state.channels_messages[payload.channelId] = []
+      state.channels_messages[payload.channelId] = sortMessagesByCreation(payload.messages)
+    },
+    addPaginated(state, { payload }: {
+      payload: PaginatedMessage
+    }) {
+      if (payload.messages.length === 0) return;
+      const currentMessages = state.channels_messages[payload.channelId] || [];
+      state.channels_messages[payload.channelId] = sortMessagesByCreation([...currentMessages, ...payload.messages]);
     },
     // Append a message from the local client to the state
     // This message will be later sent by message-feature.tsx

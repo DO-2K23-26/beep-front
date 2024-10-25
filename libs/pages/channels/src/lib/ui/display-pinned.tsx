@@ -1,10 +1,11 @@
-import { MessageEntity, UserDisplayedEntity } from '@beep/contracts'
+import { useFetchPinnedMessagesQuery } from '@beep/channel'
+import { UserDisplayedEntity } from '@beep/contracts'
 import { Button, ButtonSize } from '@beep/ui'
 import React, { useState } from 'react'
 import PinnedMessagesList from './pinned-messages-list'
 
 interface DisplayPinnedProps {
-  messages: MessageEntity[]
+  channelId: string
   onUpdateMessage: (messageId: string, newContent: string) => void
   editingMessageId: string | null
   setEditingMessageId: (id: string | null) => void
@@ -15,13 +16,17 @@ interface DisplayPinnedProps {
 }
 
 const DisplayPinned: React.FC<DisplayPinnedProps> = ({
-  messages,
+  channelId,
   onUpdateMessage,
   editingMessageId,
   setEditingMessageId,
   selectedTaggedUser,
   setSelectedTaggedUser,
 }) => {
+  const { data: pinnedMessage, isLoading: isLoadingPinned } =
+    useFetchPinnedMessagesQuery({
+      channelId,
+    })
   const [showPinnedMessages, setShowPinnedMessages] = useState<boolean>(false)
   return (
     <div className="relative">
@@ -33,16 +38,18 @@ const DisplayPinned: React.FC<DisplayPinnedProps> = ({
       >
         <p>Pinned messages</p>
       </Button>
-      {showPinnedMessages && messages && (
-        <PinnedMessagesList
-          messages={messages}
-          onUpdateMessage={onUpdateMessage}
-          editingMessageId={editingMessageId}
-          setEditingMessageId={setEditingMessageId}
-          selectedTaggedUser={selectedTaggedUser}
-          setSelectedTaggedUser={setSelectedTaggedUser}
-        />
-      )}
+      {showPinnedMessages &&
+        !isLoadingPinned &&
+        pinnedMessage !== undefined && (
+          <PinnedMessagesList
+            messages={pinnedMessage}
+            onUpdateMessage={onUpdateMessage}
+            editingMessageId={editingMessageId}
+            setEditingMessageId={setEditingMessageId}
+            selectedTaggedUser={selectedTaggedUser}
+            setSelectedTaggedUser={setSelectedTaggedUser}
+          />
+        )}
     </div>
   )
 }

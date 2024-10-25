@@ -3,6 +3,7 @@ import {
   CreateMessageRequest,
   DeleteMessageRequest,
   GetMessageFromChannelRequest,
+  GetPinnedMessageRequest,
   MessageEntity,
   PinMessageRequest,
   ShowMessageRequest,
@@ -29,15 +30,21 @@ export const channelApi = createApi({
   tagTypes: ['message', 'users'],
   endpoints: (builder) => ({
     getMessagesByChannelId: builder.query<MessageEntity[], GetMessageFromChannelRequest>({
-      query: (request) => `/channels/${request.channelId}/messages`,
-      async onCacheEntryAdded(
-        arg,
-        { cacheDataLoaded, dispatch }
-      ) {
-        const { data } = await cacheDataLoaded;
-        dispatch(messageActions.syncRemoteState(data));
+      onQueryStarted: async (arg, { dispatch, queryFulfilled }) => {
+        const { data } = await queryFulfilled;
+        if (arg.before) {
+          dispatch(messageActions.addPaginated({ channelId: arg.channelId, messages: data }));
+        } else {
+          dispatch(messageActions.syncRemoteState({ channelId: arg.channelId, messages: data }));
+        }
       },
-      providesTags: (result, _error, request) => result ? [...result.map(({ id }) => ({ type: 'message' as const, id })), { type: 'message', id: `LIST-${request.channelId}` }] : [{ type: 'message', id: `LIST-${request.channelId}` }]
+      query: (request) => {
+        let baseUrl = `/channels/${request.channelId}/messages?limit=${request.limit}`;
+        if (request.before) {
+          baseUrl += `&before=${request.before}`;
+        }
+        return baseUrl
+      },
     }),
     createMessage: builder.mutation<MessageEntity, CreateMessageRequest>({
       query: (request) => ({
@@ -89,13 +96,13 @@ export const channelApi = createApi({
         type: 'message', id: `LIST-PINNED-${request.channelId}`
       }]
     }),
-    fetchPinnedMessages: builder.query<MessageEntity[], string>({
-      query: (channelId) => ({
-        url: `/channels/${channelId}/messages/pinned`,
+    fetchPinnedMessages: builder.query<MessageEntity[], GetPinnedMessageRequest>({
+      query: (request) => ({
+        url: `/channels/${request.channelId}/messages/pinned`,
         method: 'GET',
       }),
       providesTags: (result, _error, req) => result ? [...result.map(({ id }) => ({ type: 'message' as const, id: id })),
-      { type: 'message', id: `LIST-PINNED-${req}` }] : [{ type: 'message', id: `LIST-PINNED-${req}` }],
+      { type: 'message', id: `LIST-PINNED-${req.channelId}` }] : [{ type: 'message', id: `LIST-PINNED-${req}` }],
     }),
 
   })
@@ -110,4 +117,5 @@ export const {
   useFetchAttachmentImageQuery,
   usePinMessageMutation,
   useFetchPinnedMessagesQuery,
+  useLazyGetMessagesByChannelIdQuery
 } = channelApi

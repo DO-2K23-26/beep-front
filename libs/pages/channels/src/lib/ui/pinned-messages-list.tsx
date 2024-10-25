@@ -1,14 +1,13 @@
+import {
+  MessageEntity,
+  UserDisplayedEntity
+} from '@beep/contracts'
 import React from 'react'
 import MessageFeature from '../feature/message-feature'
-import {
-  ChannelEntity,
-  MessageEntity,
-  UserDisplayedEntity,
-} from '@beep/contracts'
+import { EmptyPinnedMessageList } from './empty-pinned-message-list'
 
 interface PinnedMessagesListProps {
   messages: MessageEntity[]
-  onUpdateMessage: (messageId: string, newContent: string) => void
   editingMessageId: string | null
   setEditingMessageId: (id: string | null) => void
   selectedTaggedUser: UserDisplayedEntity | undefined
@@ -19,7 +18,6 @@ interface PinnedMessagesListProps {
 
 const PinnedMessagesList: React.FC<PinnedMessagesListProps> = ({
   messages,
-  onUpdateMessage,
   editingMessageId,
   setEditingMessageId,
   selectedTaggedUser,
@@ -31,32 +29,23 @@ const PinnedMessagesList: React.FC<PinnedMessagesListProps> = ({
         messages.length > 0 ? 'p-2' : ''
       }`}
     >
-      {messages.slice().map((message) => (
-        <MessageFeature
-          key={'pinned' + message.id}
-          message={message}
-          isDisplayedAsPinned={true}
-          onUpdateMessage={onUpdateMessage}
-          editingMessageId={editingMessageId}
-          setEditingMessageId={setEditingMessageId}
-          selectedTaggedUser={selectedTaggedUser}
-          setSelectedTaggedUser={setSelectedTaggedUser}
-          onDeleteMessage={function (
-            channelId: string,
-            messageId: string
-          ): void {
-            // not implemented
-          }}
-          onReply={function (message: MessageEntity): void {
-            // not implemented
-          }}
-          findChannelForTag={function (tag: string): ChannelEntity | undefined {
-            // not implemented
-            return undefined
-          }}
-          selectedTaggedChannel={undefined}
-        />
-      ))}
+      {messages.length === 0 ? (
+        <EmptyPinnedMessageList />
+      ) : (
+        messages
+          .slice()
+          .map((message) => (
+            <MessageFeature
+              key={'pinned' + message.id}
+              message={message}
+              isDisplayedAsPinned={true}
+              editingMessageId={editingMessageId}
+              setEditingMessageId={setEditingMessageId}
+              selectedTaggedUser={selectedTaggedUser}
+              setSelectedTaggedUser={setSelectedTaggedUser}
+            />
+          ))
+      )}
     </div>
   )
 }
