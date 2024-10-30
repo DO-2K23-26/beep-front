@@ -2,10 +2,11 @@ import { ReactNode } from 'react'
 import {
   Dialog,
   DialogContent,
+  DialogDescription,
   DialogFooter,
   DialogHeader,
   DialogTitle,
-  DialogTrigger
+  DialogTrigger,
 } from './dialog'
 import { Button } from '../../buttons/button'
 
@@ -30,10 +31,11 @@ export function DialogComponent({
 }: DialogComponentProps) {
   return (
     <Dialog open={isModalOpen} onOpenChange={setIsModalOpen} modal={true}>
-      <DialogTrigger asChild>{triggerModalButton}</DialogTrigger>
-      <DialogContent className="sm:max-w-[425px] bg-white">
+        <DialogTrigger asChild>{triggerModalButton}</DialogTrigger>
+      <DialogContent title="Dialog" className="sm:max-w-[425px] bg-white">
         <DialogHeader>
           <DialogTitle>{title}</DialogTitle>
+          <DialogDescription hidden>Description</DialogDescription>
         </DialogHeader>
         {content}
         <DialogFooter>

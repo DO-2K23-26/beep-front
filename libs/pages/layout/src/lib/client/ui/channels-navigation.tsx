@@ -109,18 +109,19 @@ export default function ChannelsNavigation({
               />
             ) : null}
           </div>
+
           <ServerDropdown
-            triggerDropdownButton={
-              <ServerPictureButton icon={icon} server={server} />
-            }
             server={server}
-            icon={icon}
             onClickId={onClickId}
             openModal={openModal}
             closeModal={closeModal}
             settings={[subSetting]}
             isAdmin={isAdmin}
-          />
+          >
+            <div>
+              <ServerPictureButton icon={icon} server={server} />
+            </div>
+          </ServerDropdown>
         </div>
 
         {/* Create channel modal */}

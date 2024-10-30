@@ -29,6 +29,7 @@
     "@radix-ui/react-slot": "^1.0.2",
     "@radix-ui/react-switch": "^1.0.3",
     "@radix-ui/react-tooltip": "^1.0.7",
+    "@radix-ui/react-visually-hidden": "^1.1.0",
     "@reduxjs/toolkit": "^2.2.3",
     "@szhsin/react-menu": "^4.1.0",
     "autosize": "^6.0.1",

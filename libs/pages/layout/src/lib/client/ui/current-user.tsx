@@ -1,4 +1,4 @@
-import { Device, UserEntity } from '@beep/contracts'
+import { UserEntity } from '@beep/contracts'
 import {
   ModifyProfileCardFeature,
   SettingsModal,
@@ -10,21 +10,17 @@ import {
   Button,
   ButtonStyle,
   DialogCloseButton,
-  Icon,
-  UseModalProps
+  Icon
 } from '@beep/ui'
 
-import { FormProvider, UseFormReturn } from 'react-hook-form'
-import { UserMediaModal } from './user-media-modal'
+import { UseFormReturn } from 'react-hook-form'
+import { UserMediaFeature } from '../feature/user-media-feature'
 
 interface CurrentUserProps {
   user: UserEntity
   onMicrophone?: () => void
   onPhone?: () => void
   onCamera?: () => void
-  onSaveParameters: () => void
-  openModal: React.Dispatch<React.SetStateAction<UseModalProps | undefined>>
-  closeModal: () => void
   methods: UseFormReturn<{
     username: string
     email: string
@@ -32,9 +28,7 @@ interface CurrentUserProps {
     'new-password': string
     'confirm-password': string
   }>
-  audioOutputs: Device[]
-  audioInputs: Device[]
-  videoInputs: Device[]
+
   isMuted?: boolean
   isVoiceMuted?: boolean
   isCamera?: boolean
@@ -48,13 +42,6 @@ export default function CurrentUser({
   onMicrophone,
   onPhone,
   onCamera,
-  onSaveParameters,
-  openModal,
-  closeModal,
-  methods,
-  audioOutputs,
-  audioInputs,
-  videoInputs,
 }: CurrentUserProps) {
   return (
     <div className="flex flex-row justify-between items-center gap-4">
@@ -95,40 +82,19 @@ export default function CurrentUser({
             className="!w-5 !h-5"
           />
         </Button>
-      <Button
+        <Button
           style={ButtonStyle.NONE}
           onClick={onCamera}
           className="cursor-pointer"
         >
           <Icon
-            name={isCamera ? 'lucide:video' : 'lucide:video-off' }
+            name={isCamera ? 'lucide:video' : 'lucide:video-off'}
             className="!w-5 !h-5"
           />
         </Button>
-        <DialogCloseButton
-          triggerButton={<Icon name="lucide:settings" className="!w-5 !h-5" />}
-          content={<SettingsModal settings={[subSetting]} />}
-        />
-        <button
-          className="cursor-pointer"
-          onClick={() => {
-            openModal({
-              content: (
-                <FormProvider {...methods}>
-                  <UserMediaModal
-                    closeModal={closeModal}
-                    audioOutputs={audioOutputs}
-                    audioInputs={audioInputs}
-                    videoInputs={videoInputs}
-                    onSaveMediaParameters={onSaveParameters}
-                  />
-                </FormProvider>
-              ),
-            })
-          }}
-        >
-          <Icon name="lucide:audio-lines" className="!w-5 !h-5" />
-        </button>
+        <DialogCloseButton content={<SettingsModal settings={[subSetting]} />}>
+          <Icon name="lucide:settings" className="!w-5 !h-5" />
+        </DialogCloseButton>
       </div>
     </div>
   )
@@ -138,6 +104,10 @@ export default function CurrentUser({
 const subSetting: SubSettings = {
   subGroupSettingTitle: 'Account',
   settings: [
-    { title: 'profile', settingComponent: <ModifyProfileCardFeature /> },
+    { title: 'Profile', settingComponent: <ModifyProfileCardFeature /> },
+    {
+      title: 'Voice & Video',
+      settingComponent: <UserMediaFeature />,
+    },
   ],
 }

@@ -15,7 +15,6 @@ interface DestroyServerFeatureProps {
   closeModal: () => void
 }
 
-//TODO : finish this tomorrow
 export default function DestroyServerFeature({
   closeModal,
 }: DestroyServerFeatureProps) {

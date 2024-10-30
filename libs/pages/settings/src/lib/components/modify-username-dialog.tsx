@@ -2,7 +2,7 @@ import { Button, DialogComponent, InputText } from '@beep/ui'
 import { Controller, UseFormReturn } from 'react-hook-form'
 
 interface ModifyUsernameDialogProps {
-  usernameFormController: UseFormReturn<{ username: string; }, any, undefined>
+  usernameFormController: UseFormReturn<{ username: string }, any, undefined>
   isModalOpen: boolean
   setIsModalOpen: (value: boolean) => void
   action: () => void
@@ -16,7 +16,11 @@ export function ModifyUsernameDialog({
   return (
     <DialogComponent
       title={'Choose a new username'}
-      triggerModalButton={<Button>Modify</Button>}
+      triggerModalButton={
+        <div>
+          <Button>Modify</Button>
+        </div>
+      }
       content={
         <Controller
           name="username"

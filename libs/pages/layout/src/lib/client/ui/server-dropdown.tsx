@@ -18,77 +18,42 @@ import { DropdownMenuItemCustom } from './dropdown-menu-item-custom'
 
 interface ServerDropdownProps {
   server?: ServerEntity
-  icon?: string
   onClickId: (id: string) => void
   openModal: React.Dispatch<React.SetStateAction<UseModalProps | undefined>>
   closeModal: () => void
   settings: SubSettings[]
   isAdmin: boolean
-  triggerDropdownButton: ReactNode
+  children: ReactNode
 }
 
 export function ServerDropdown({
   server,
-  icon,
   onClickId,
   openModal,
   closeModal,
-  triggerDropdownButton,
   settings,
   isAdmin,
+  children,
 }: ServerDropdownProps) {
   return (
     <div className="relative z-0 flex flex-row gap-6 p-5 bg-white bg-opacity-10 rounded-xl">
       {/* <div className="flex flex-row gap-6"> */}
       <DropdownMenu>
-        <DropdownMenuTrigger>{triggerDropdownButton}</DropdownMenuTrigger>
+        <div>
+          <DropdownMenuTrigger asChild>{children}</DropdownMenuTrigger>
+        </div>
         <DropdownMenuContent className="rounded-lg bg-violet-50 mt-4 mx-5 py-4 px-3">
-          {/* <DropdownMenuItemCustom
-        label="Invite users"
-        iconName="lucide:credit-card"
-      /> //need dorian PR*/}
-          {/* {isAdmin && (
-        <DropdownMenuItemCustom
-          label="Create channel"
-          iconName="lucide:plus"
-          onClick={() =>
-            openModal({
-              content: (
-                <FormProvider {...methodsAddChannel}>
-                  <CreateChannelModal
-                    closeModal={closeModal}
-                    onCreateChannel={onCreateChannel}
-                    methodsAddChannel={methodsAddChannel}
-                  />
-                </FormProvider>
-              ),
-            })
-          }
-        />
-    )} */}
           {server && (
-            <DialogCloseButton
-              triggerButton={
-                <button>
-                  <DropdownMenuItemCustom
-                    label="Settings"
-                    iconName="lucide:settings"
-                  />
-                </button>
-              }
-              content={<SettingsModal settings={settings} />}
-            />
+            <DialogCloseButton content={<SettingsModal settings={settings} />}>
+              <DropdownMenuItemCustom
+                label="Settings"
+                iconName="lucide:settings"
+              />
+            </DialogCloseButton>
           )}
-
-          {/* <DropdownMenuItemCustom
-        label="Leave server"
-        iconName="charm:sign-out"
-        warning
-      /> */}
           {isAdmin && (
             <div>
               <hr className="bg-slate-400 h-[1px] my-2 text-slate-400" />
-
               <DropdownMenuItemCustom
                 label="Destroy server"
                 iconName="lucide:trash-2"

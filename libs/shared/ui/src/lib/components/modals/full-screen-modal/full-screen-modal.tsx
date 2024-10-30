@@ -1,21 +1,41 @@
-
 import { ReactNode } from 'react'
-import { FullScreenDialog, FullScreenDialogContent, FullScreenDialogTrigger } from './full-screen-dialog'
-
+import {
+  FullScreenDialog,
+  FullScreenDialogContent,
+  FullScreenDialogDescription,
+  FullScreenDialogHeader,
+  FullScreenDialogTitle,
+  FullScreenDialogTrigger,
+} from './full-screen-dialog'
+import * as VisuallyHidden from '@radix-ui/react-visually-hidden'
 interface DialogCloseButtonProps {
-  triggerButton: ReactNode
+  children: ReactNode
   content: ReactNode
 }
 
-export function DialogCloseButton({ content, triggerButton }: DialogCloseButtonProps) {
+export function DialogCloseButton({
+  content,
+  children,
+}: DialogCloseButtonProps) {
   return (
     <FullScreenDialog>
+      
       <FullScreenDialogTrigger asChild>
-        <button className="cursor-pointer">
-          {triggerButton}
-        </button>
+        <button className="cursor-pointer">{children}</button>
       </FullScreenDialogTrigger>
-      <FullScreenDialogContent className="w-full h-full bg-white">
+      <VisuallyHidden.Root>
+        <FullScreenDialogHeader hidden>
+          <FullScreenDialogTitle hidden>Settings</FullScreenDialogTitle>
+          <FullScreenDialogDescription hidden>
+            SettingsPage
+          </FullScreenDialogDescription>
+        </FullScreenDialogHeader>
+      </VisuallyHidden.Root>
+      <FullScreenDialogContent
+        aria-describedby="Settings"
+        title={'Setting Modal'}
+        className="w-full h-full bg-white"
+      >
         {content}
       </FullScreenDialogContent>
     </FullScreenDialog>
