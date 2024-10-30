@@ -11,9 +11,11 @@ import {
   SearchServerRequest,
   ServerEntity,
   UpdateChannelRequest,
-  UserDisplayedEntity,
+  MemberEntity,
   GetChannelsResponse,
   backendUrl,
+  GetMembersResponse,
+  GetMemberRequest,
 } from '@beep/contracts'
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 // eslint-disable-next-line @nx/enforce-module-boundaries
@@ -37,16 +39,12 @@ export const serverApi = createApi({
     'textChannel',
     'voiceChannel',
     'streamingUsers',
-    'users',
+    'members',
     'publicServers',
     'transmitPicture',
     'transmitBanner',
   ],
   endpoints: (builder) => ({
-    getServers: builder.query<ServerEntity[], void>({
-      query: () => `/servers`,
-      providesTags: (result) => [],
-    }),
     discoverServers: builder.query<ServerEntity[], SearchServerRequest>({
       query: (params) => {
         const url = new URL(`/servers/discover`, backendUrl)
@@ -82,14 +80,14 @@ export const serverApi = createApi({
     }),
     joinPrivateServer: builder.mutation<JoinInvitationResponse, string>({
       query: (inviteId) => ({
-        url: `/servers/join/${inviteId}`,
+        url: `/v1/servers/join/${inviteId}`,
         method: 'POST',
       }),
       invalidatesTags: ['servers'],
     }),
     joinPublicServer: builder.mutation<void, string>({
       query: (serverId) => ({
-        url: `/servers/${serverId}/join`,
+        url: `/v1/servers/${serverId}/join`,
         method: 'POST',
       }),
       invalidatesTags: ['servers'],
@@ -217,15 +215,26 @@ export const serverApi = createApi({
             ]
           : ['streamingUsers'],
     }),
-    getUsersByServerId: builder.query<UserDisplayedEntity[], string>({
-      query: (serverId) => `servers/${serverId}/users`,
+    getMember: builder.query<MemberEntity, GetMemberRequest>({
+      query: ({ serverId, userId }) =>
+        `v1/servers/${serverId}/members/${userId}`,
+      providesTags: (result, _error, { serverId, userId }) => [
+        { type: 'members', id: `${serverId}:${userId}` },
+      ],
+    }),
+
+    getMembers: builder.query<MemberEntity[], string>({
+      query: (serverId) => `v1/servers/${serverId}/members`,
+      transformResponse: (response: GetMembersResponse) => {
+        return response.data
+      },
       providesTags: (result, _error, serverId) =>
         result
           ? [
-              ...result.map(({ id }) => ({ type: 'users' as const, id })),
-              { type: 'users', id: `LIST-${serverId}` },
+              ...result.map(({ id }) => ({ type: 'members' as const, id })),
+              { type: 'members', id: `LIST-${serverId}` },
             ]
-          : [{ type: 'users', id: `LIST-${serverId}` }],
+          : [{ type: 'members', id: `LIST-${serverId}` }],
     }),
 
     updateServer: builder.mutation<
@@ -292,7 +301,8 @@ export const serverApi = createApi({
 })
 
 export const {
-  useGetServersQuery,
+  useGetMembersQuery,
+  useGetMemberQuery,
   useCreateInvitationMutation,
   useJoinPublicServerMutation,
   useJoinPrivateServerMutation,
@@ -305,7 +315,6 @@ export const {
   useJoinVoiceChannelMutation,
   useLeaveVoiceChannelMutation,
   useGetCurrentStreamingUsersQuery,
-  useGetUsersByServerIdQuery,
   useUpdateServerMutation,
   useUpdateBannerMutation,
   useUpdatePictureMutation,

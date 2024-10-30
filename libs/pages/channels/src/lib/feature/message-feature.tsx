@@ -9,7 +9,11 @@ import {
   UserDisplayedEntity,
 } from '@beep/contracts'
 import { messageActions } from '@beep/message'
-import { getServersState, useGetServerChannelsQuery } from '@beep/server'
+import {
+  getServersState,
+  useGetMemberQuery,
+  useGetServerChannelsQuery,
+} from '@beep/server'
 import { AppDispatch } from '@beep/store'
 import {
   getUserState,
@@ -21,7 +25,7 @@ import React, { ReactNode, useEffect, useState } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
 import toast from 'react-hot-toast'
 import { useDispatch, useSelector } from 'react-redux'
-import { useNavigate, useParams } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import Message from '../ui/message'
 import {
   DisplayedEntity,
@@ -45,10 +49,12 @@ interface MessageFeatureProps {
   setSelectedTaggedChannel?: React.Dispatch<
     React.SetStateAction<ChannelEntity | undefined>
   >
+  serverId?: string
 }
 
 export default function MessageFeature({
   message,
+  serverId,
   onUpdateMessage,
   onDeleteMessage,
   isDisplayedAsPinned,
@@ -61,6 +67,10 @@ export default function MessageFeature({
   const [replyToMessage, setReplyToMessage] = useState<
     MessageEntity | undefined | null
   >(message.parentMessage)
+  const { data: member } = useGetMemberQuery(
+    { serverId: serverId ?? '', userId: message.ownerId },
+    { skip: serverId === undefined }
+  )
   const { data: replyMessage, isLoading: isLoadingReplyMessage } =
     useGetOneMessageQuery(
       {
@@ -74,6 +84,7 @@ export default function MessageFeature({
             message.parentMessage !== null),
       }
     )
+
   const [createMessage, createResult] = useCreateMessageMutation()
   const dispatch = useDispatch<AppDispatch>()
   // This is ignored if the message come from the server
@@ -99,11 +110,12 @@ export default function MessageFeature({
   const serverData = useSelector(getServersState)
   const userId: string | undefined = useSelector(getUserState).payload?.sub
   const navigate = useNavigate()
-  const { serverId } = useParams<{
-    serverId: string
-  }>()
+
   const { data: channels } = useGetServerChannelsQuery(serverId ?? skipToken)
-  const { data: owner } = useGetUsersFromQuery({ userIds: [message.ownerId] })
+  const { data: owner } = useGetUsersFromQuery(
+    { userIds: [message.ownerId] },
+    { skip: serverId !== undefined }
+  )
   const { currentData: userProfilePicture } = useFetchProfilePictureQuery(
     message.ownerId
   )
@@ -239,7 +251,7 @@ export default function MessageFeature({
         profilePicture={userProfilePicture}
         isEditing={isEditing}
         isDisplayedAsPinned={isDisplayedAsPinned}
-        ownerEntity={owner?.[0]}
+        displayedUsername={owner?.[0]?.username ?? member?.nickname ?? 'Casper'}
         onDelete={
           (isUserMessageOwner() || isUserServerOwner()) &&
           onDeleteMessage !== undefined

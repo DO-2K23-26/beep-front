@@ -16,6 +16,7 @@ import {
   UserConnectedEntity,
   UserDisplayedEntity,
   UserEntity,
+  ServerEntity,
 } from '@beep/contracts'
 // eslint-disable-next-line @nx/enforce-module-boundaries
 import { RootState } from '@beep/store'
@@ -33,7 +34,7 @@ export const userApi = createApi({
       return headers
     },
   }),
-  tagTypes: ['users', 'profilePicture', 'me'],
+  tagTypes: ['users', 'profilePicture', 'me', 'servers'],
   endpoints: (builder) => ({
     login: builder.mutation<LoginResponse, LoginRequest>({
       query: (credentials) => ({
@@ -151,6 +152,14 @@ export const userApi = createApi({
         body: payload,
       }),
     }),
+    getMyServers: builder.query<ServerEntity[], void>({
+      query: () => ({
+        url: `/v1/users/@me/servers`,
+        method: 'GET',
+
+      }),
+      providesTags: ['servers'],
+    }),
   }),
 })
 
@@ -171,4 +180,5 @@ export const {
   useVerifyEmailMutation,
   useGetUserByIdQuery,
   useUpdateStateMutation,
+  useGetMyServersQuery,
 } = userApi

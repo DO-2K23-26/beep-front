@@ -11,14 +11,13 @@ import {
   useCreateChannelInServerMutation,
   useGetCurrentStreamingUsersQuery,
   useGetServerChannelsQuery,
-  useGetServersQuery,
   useJoinVoiceChannelMutation,
   useLeaveVoiceChannelMutation,
 } from '@beep/server'
 import { AppDispatch, RootState } from '@beep/store'
 import { TransmitSingleton } from '@beep/transmit'
 import { useModal } from '@beep/ui'
-import { getUserState, useGetMeQuery } from '@beep/user'
+import { getUserState, useGetMeQuery, useGetMyServersQuery } from '@beep/user'
 import {
   getVoiceState,
   setCurrentChannelId,
@@ -44,7 +43,7 @@ export function ChannelsNavigationFeature() {
 
   const dispatch = useDispatch<AppDispatch>()
   const { openModal, closeModal } = useModal()
-  const { data: servers } = useGetServersQuery()
+  const { data: servers } = useGetMyServersQuery()
   const { data: channels } = useGetServerChannelsQuery(
     server ? server.id : skipToken
   )

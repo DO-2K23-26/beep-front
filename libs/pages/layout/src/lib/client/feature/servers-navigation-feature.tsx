@@ -1,39 +1,39 @@
-import { useGetServersQuery, useLeaveVoiceChannelMutation } from '@beep/server'
-import { AppDispatch } from '@beep/store'
+import { useLeaveVoiceChannelMutation } from '@beep/server'
+import { AppDispatch, resetStore } from '@beep/store'
 import { useModal } from '@beep/ui'
-import { userActions } from '@beep/user'
+import { useGetMyServersQuery, userActions } from '@beep/user'
 import { toast } from 'react-hot-toast'
 import { useDispatch } from 'react-redux'
-import { NavigateFunction, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import ServersNavigation from '../ui/servers-navigation'
 
-const onPrivateMessage = (navigation: NavigateFunction) => {
+const onPrivateMessage = () => {
   // navigation('/discover')
 }
 
 export function ServersNavigationFeature() {
-  const { data: servers } = useGetServersQuery()
+  const { data: servers } = useGetMyServersQuery()
   const { openModal, closeModal } = useModal()
   const dispatch = useDispatch<AppDispatch>()
   const [leaveServer] = useLeaveVoiceChannelMutation()
 
-  const onLogout = (navigation: NavigateFunction) => {
+  const navigate = useNavigate()
+  const onLogout = () => {
     sessionStorage.removeItem('accessToken')
     sessionStorage.removeItem('refreshToken')
     dispatch(userActions.setTokens({}))
     dispatch({ type: 'CLOSE_WEBRTC' })
     leaveServer()
+    dispatch(resetStore())
     toast.success('Successfully logged out !')
-    navigation('/authentication/signin')
+    navigate('/authentication/signin')
   }
-
-  const navigate = useNavigate()
 
   return (
     <ServersNavigation
       servers={servers}
-      onLogout={() => onLogout(navigate)}
-      onPrivateMessage={() => onPrivateMessage(navigate)}
+      onLogout={onLogout}
+      onPrivateMessage={onPrivateMessage}
       openModal={openModal}
       closeModal={closeModal}
     />

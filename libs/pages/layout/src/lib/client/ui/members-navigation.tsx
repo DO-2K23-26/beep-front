@@ -1,14 +1,14 @@
-import { UserConnectedEntity, UserDisplayedEntity } from '@beep/contracts'
+import { MemberEntity, UserConnectedEntity } from '@beep/contracts'
 import { getResponsiveState } from '@beep/responsive'
 import { Icon, UseModalProps } from '@beep/ui'
 import { useSelector } from 'react-redux'
 import InviteMemberModalFeature from '../feature/invite-member-modal-feature'
-import { ListMembers } from './list-members'
 import { ListMemberSkeleton } from './list-member-skeleton'
+import { ListMembers } from './list-members'
 
 interface MembersNavigationProps {
   usersConnected?: UserConnectedEntity[]
-  users?: UserDisplayedEntity[]
+  members?: MemberEntity[]
   openModal: React.Dispatch<React.SetStateAction<UseModalProps | undefined>>
   isLoadingUsers: boolean
   isLoadingConnected: boolean
@@ -16,7 +16,7 @@ interface MembersNavigationProps {
 
 export default function MembersNavigation({
   usersConnected,
-  users,
+  members,
   openModal,
   isLoadingConnected,
   isLoadingUsers,
@@ -44,11 +44,11 @@ export default function MembersNavigation({
       </div>
       {/* Members list */}
       <div className="flex flex-col gap-1 overflow-y-scroll no-scrollbar scroll-smooth">
-        {users !== undefined &&
+        {members !== undefined &&
         usersConnected !== undefined &&
         !isLoadingConnected &&
         !isLoadingUsers ? (
-          <ListMembers usersConnected={usersConnected} users={users} />
+          <ListMembers usersConnected={usersConnected} members={members} />
         ) : (
           <ListMemberSkeleton />
         )}

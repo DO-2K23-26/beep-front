@@ -1,14 +1,14 @@
-import { UserDisplayedEntity } from '@beep/contracts'
+import { MemberEntity } from '@beep/contracts'
 import { useFetchProfilePictureQuery } from '@beep/user'
 import { skipToken } from '@reduxjs/toolkit/query'
 
 export interface DynamicSelectorProps {
-  user: UserDisplayedEntity
+  user: MemberEntity
 }
 
 export const DynamicSelectorFeature = ({ user }: DynamicSelectorProps) => {
   const { currentData: userProfilePicture } = useFetchProfilePictureQuery(
-    user.id ?? skipToken
+    user.userId ?? skipToken
   )
 
   return (
@@ -16,9 +16,9 @@ export const DynamicSelectorFeature = ({ user }: DynamicSelectorProps) => {
       <img
         className="w-9 min-w-[36px] h-9 min-h-[36px] object-cover bg-violet-50 rounded-xl"
         src={userProfilePicture ?? '/picture.svg'}
-        alt={user.username + "'s profile picture"}
+        alt={user.nickname + "'s profile picture"}
       />
-      <p>{user.username}</p>
+      <p>{user.nickname}</p>
     </div>
   )
 }

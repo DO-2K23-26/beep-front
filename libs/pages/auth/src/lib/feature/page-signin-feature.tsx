@@ -33,6 +33,7 @@ export function PageSigninFeature() {
     if (result?.isSuccess && result?.status === 'fulfilled') {
       sessionStorage.setItem('accessToken', result.data.tokens.accessToken)
       sessionStorage.setItem('refreshToken', result.data.tokens.refreshToken)
+      dispatch(userActions.updateIsLoading(false))
       dispatch(userActions.setTokens(result.data.tokens))
     } else if (result?.isError) {
       setError('Email/password incorrect')

@@ -23,12 +23,14 @@ interface ListMessagesProps {
   isLoading: boolean
   messageListRef: React.RefObject<HTMLDivElement>
   onScroll: () => void
+  serverId?: string
 }
 
 export default function ListMessages({
   messages,
   isLoading,
   messageListRef,
+  serverId,
   onScroll,
   onUpdateMessage,
   onReply,
@@ -59,6 +61,7 @@ export default function ListMessages({
           onReply={() => {
             onReply(message)
           }}
+          serverId={serverId}
         />
       ))}
       {isLoading && <ListMessageSkeleton />}

@@ -1,12 +1,12 @@
-import { useGetUsersByServerIdQuery } from '@beep/server'
+import { useGetMembersQuery } from '@beep/server'
 import { RootState } from '@beep/store'
 import { useModal } from '@beep/ui'
 import { useFetchAllUsersConnectedQuery } from '@beep/user'
 import { TransmitSingleton } from '@beep/utils'
+import { skipToken } from '@reduxjs/toolkit/query'
 import { useEffect } from 'react'
 import { useSelector } from 'react-redux'
 import MembersNavigation from '../ui/members-navigation'
-import { skipToken } from '@reduxjs/toolkit/query'
 
 export function MembersNavigationFeature() {
   const { openModal } = useModal()
@@ -18,7 +18,7 @@ export function MembersNavigationFeature() {
   } = useFetchAllUsersConnectedQuery()
 
   const server = useSelector((state: RootState) => state.servers.server)
-  const { data: users, isLoading: isLoadingUsers } = useGetUsersByServerIdQuery(
+  const { data: members, isLoading: isLoadingUsers } = useGetMembersQuery(
     server?.id ?? skipToken
   )
 
@@ -27,13 +27,14 @@ export function MembersNavigationFeature() {
       refetchUsersConnected()
     })
   }, [refetchUsersConnected])
-
+  
   return (
     <MembersNavigation
+      key={server?.id}
       isLoadingConnected={isLoadingConnected}
       isLoadingUsers={isLoadingUsers}
       usersConnected={usersConnected}
-      users={users}
+      members={members}
       openModal={openModal}
     />
   )

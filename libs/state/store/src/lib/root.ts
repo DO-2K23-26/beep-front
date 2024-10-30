@@ -4,10 +4,10 @@ import { messageReducer } from '@beep/message'
 import { responsiveReducer } from '@beep/responsive'
 import { serverApi, serverReducer } from '@beep/server'
 import { toggleListenerMiddleware, userApi, userReducer } from '@beep/user'
-import { webrtcSliceReducer, webRTCMiddleware } from '@beep/voice'
-import { combineReducers, configureStore } from '@reduxjs/toolkit'
+import { webRTCMiddleware, webrtcSliceReducer } from '@beep/voice'
+import { Action, combineReducers, configureStore } from '@reduxjs/toolkit'
 
-export const rootReducer = combineReducers({
+export const appReducer = combineReducers({
   user: userReducer,
   channels: voiceChannelReducer,
   responsive: responsiveReducer,
@@ -18,6 +18,13 @@ export const rootReducer = combineReducers({
   [channelApi.reducerPath]: channelApi.reducer,
   [serverApi.reducerPath]: serverApi.reducer,
 })
+
+const rootReducer = (state: RootState | undefined, action: Action) => {
+  if (action.type === 'RESET') {
+    state = undefined
+  }
+  return appReducer(state, action)
+}
 
 export function setupStore(preloadedState?: never) {
   return configureStore({
@@ -37,6 +44,8 @@ export function setupStore(preloadedState?: never) {
   })
 }
 
-export type RootState = ReturnType<typeof rootReducer>
+
+export const resetStore = () => ({ type: 'RESET' })
+export type RootState = ReturnType<typeof appReducer>
 export type AppStore = ReturnType<typeof setupStore>
 export type AppDispatch = AppStore['dispatch']

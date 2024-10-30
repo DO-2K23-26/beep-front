@@ -1,18 +1,18 @@
 import { MessageEntity, UserEntity } from '@beep/contracts'
-import { Button, ButtonStyle, Icon, Input, InputMessageArea } from '@beep/ui'
+import { Button, ButtonStyle, Icon, InputMessageArea } from '@beep/ui'
+import { cn } from '@beep/utils'
 import Markdoc from '@markdoc/markdoc'
+import { DateTime } from 'luxon'
 import React, { ReactNode, useEffect } from 'react'
 import { Controller, useFormContext } from 'react-hook-form'
 import AttachmentFeature from '../feature/attachment-feature'
 import { config, markdownComponents } from '../utils/markdown-config'
 import { preprocessMarkdown } from '../utils/markdown-parser'
-import { DateTime } from 'luxon'
-import { cn } from '@beep/utils'
 
 interface MessageProps {
   message: MessageEntity
   replyTo?: MessageEntity | null
-  ownerEntity?: UserEntity
+  displayedUsername: string
   isEditing: boolean
   profilePicture?: string
   isDisplayedAsPinned?: boolean
@@ -31,9 +31,9 @@ interface MessageProps {
 export default function Message({
   message,
   replyTo,
+  displayedUsername,
   isEditing,
   profilePicture,
-  ownerEntity,
   isHighlighted,
   isDisplayedAsPinned,
   isLoadingCreate,
@@ -124,10 +124,10 @@ export default function Message({
             <img
               className="w-9 min-w-[36px] h-9 min-h-[36px] object-cover bg-violet-50 rounded-xl"
               src={profilePicture ?? '/picture.svg'}
-              alt={ownerEntity?.username ?? 'Caspser'}
+              alt={displayedUsername}
             />
             <h5 className="font-semibold text-xs truncate">
-              {ownerEntity?.username ?? 'Caspser'}
+              {displayedUsername}
             </h5>
           </div>
 

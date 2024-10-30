@@ -1,13 +1,13 @@
 import {
   useDeleteMessageMutation,
   useGetMessagesByChannelIdQuery,
-  useLazyGetMessagesByChannelIdQuery,
   useUpdateMessageMutation,
 } from '@beep/channel'
 import {
   ActionSignalMessage,
   ChannelEntity,
   MessageEntity,
+  ServerEntity,
   SignalMessage,
   UserDisplayedEntity,
 } from '@beep/contracts'
@@ -16,13 +16,12 @@ import { responsiveActions } from '@beep/responsive'
 import {
   serverActions,
   useGetChannelQuery,
+  useGetMembersQuery,
   useGetServerChannelsQuery,
-  useGetServersQuery,
-  useGetUsersByServerIdQuery,
 } from '@beep/server'
 import { AppDispatch, RootState } from '@beep/store'
 import { DynamicSelectorProps, useModal } from '@beep/ui'
-import { useGetMeQuery } from '@beep/user'
+import { useGetMeQuery, useGetMyServersQuery } from '@beep/user'
 import { TransmitSingleton } from '@beep/utils'
 import { skipToken } from '@reduxjs/toolkit/query'
 import { useEffect, useRef, useState } from 'react'
@@ -50,7 +49,7 @@ export function PageChannelFeature() {
     serverId: serverId,
     channelId: channelId,
   })
-  const { data: availableServers } = useGetServersQuery()
+  const { data: availableServers } = useGetMyServersQuery()
   const [fetchBeforeId, setFetchBeforeId] = useState<string | null>(null)
 
   const {
@@ -66,7 +65,6 @@ export function PageChannelFeature() {
     }
   )
 
-
   useEffect(() => {
     setFetchBeforeId(null)
   }, [channelId])
@@ -74,9 +72,7 @@ export function PageChannelFeature() {
   const messageState = useSelector(
     (state: RootState) => state.message.channels_messages[channelId]
   )
-  const { data: usersServer } = useGetUsersByServerIdQuery(
-    serverId ?? skipToken
-  )
+  const { data: usersServer } = useGetMembersQuery(serverId ?? skipToken)
   const { openModal, closeModal } = useModal()
   const [files, setFiles] = useState<File[]>([])
   const [previewUrls, setPreviewUrls] = useState<{ content: string | null }[]>(
@@ -130,7 +126,7 @@ export function PageChannelFeature() {
         ? usersServer
             .filter(
               (u) =>
-                u.username
+                u.nickname
                   .toLowerCase()
                   .includes(text.slice(1).toLowerCase()) || text.slice(1) === ''
             )
@@ -337,7 +333,9 @@ export function PageChannelFeature() {
       }
     })
     if (availableServers) {
-      const curServer = availableServers.find((s) => s.id === serverId) ?? {
+      const curServer = availableServers.find(
+        (s: ServerEntity) => s.id === serverId
+      ) ?? {
         id: '',
         name: 'You have no servers',
         createdAt: '',
@@ -357,6 +355,7 @@ export function PageChannelFeature() {
     <PageChannel
       key={'page_channel' + channelId}
       messageForm={messageForm}
+      serverId={serverId}
       messages={messageState ?? []}
       channel={channel}
       messageListRef={messageListRef}

@@ -9,16 +9,15 @@ import {
   DynamicSelector,
   DynamicSelectorProps,
   Icon,
-  Input,
   InputMessageArea,
-  Skeleton,
+  Skeleton
 } from '@beep/ui'
+import { useCallback } from 'react'
 import { Controller, UseFormReturn } from 'react-hook-form'
 import { TaggedChannelFeature } from '../feature/tagged-channel-feature'
 import { UserInformationsFeature } from '../feature/user-informations-feature'
 import DisplayPinned from './display-pinned'
 import ListMessages from './list-messages'
-import { useCallback } from 'react'
 
 export interface PageChannelProps {
   messageForm: UseFormReturn<{
@@ -54,6 +53,7 @@ export interface PageChannelProps {
   >
   isLoadingMessages: boolean
   isLoadingChannel: boolean
+  serverId?: string
 }
 
 export const PageChannel = ({
@@ -83,6 +83,7 @@ export const PageChannel = ({
   setSelectedTaggedChannel,
   isLoadingMessages,
   isLoadingChannel,
+  serverId,
 }: PageChannelProps) => {
   const replyTo = messageForm.watch('replyTo')
   const setReplyTo = (message: MessageEntity | null) => {
@@ -166,6 +167,7 @@ export const PageChannel = ({
         setSelectedTaggedUser={setSelectedTaggedUser}
         setSelectedTaggedChannel={setSelectedTaggedChannel}
         onReply={setReplyTo}
+        serverId={serverId}
       />
       {selectedTaggedChannel ? (
         <TaggedChannelFeature

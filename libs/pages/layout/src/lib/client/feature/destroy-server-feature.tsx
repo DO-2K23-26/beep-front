@@ -2,7 +2,6 @@ import {
   getServersState,
   serverActions,
   useDeleteServerMutation,
-  useGetServersQuery,
 } from '@beep/server'
 import { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
@@ -10,6 +9,7 @@ import DestroyServerModal from '../ui/server-settings-modal/delete-server-modal'
 import { useNavigate } from 'react-router'
 import { ServerEntity } from '@beep/contracts'
 import toast from 'react-hot-toast'
+import { useGetMyServersQuery } from '@beep/user'
 
 interface DestroyServerFeatureProps {
   closeModal: () => void
@@ -24,7 +24,7 @@ export default function DestroyServerFeature({
   const [error, setError] = useState<string | undefined>(undefined)
   const [loading, setLoading] = useState(false)
   const navigate = useNavigate()
-  const { data: availableServers } = useGetServersQuery()
+  const { data: availableServers } = useGetMyServersQuery()
   const dispatch = useDispatch()
 
   const CONFIRMATION_TEXT =
@@ -63,7 +63,7 @@ export default function DestroyServerFeature({
           return
         }
         const serverToNavigate = availableServers.find(
-          (server) => server.id !== focusedServerId
+          (server: ServerEntity) => server.id !== focusedServerId
         )
         if (!serverToNavigate) {
           dispatch(serverActions.setServer(emptyServer))
