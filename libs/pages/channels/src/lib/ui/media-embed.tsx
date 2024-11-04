@@ -90,7 +90,7 @@ const MediaEmbed: React.FC<MediaEmbedProps> = ({ text }) => {
 
       {media.type === 'else' && (
         <blockquote className="url">
-          <a href={`https://twitter.com/i/web/status/${media.id}`}>
+          <a href={`${media.id}`}>
             Click to access the URL
           </a>
         </blockquote>
