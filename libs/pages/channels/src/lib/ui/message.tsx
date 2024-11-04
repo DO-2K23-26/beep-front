@@ -8,6 +8,7 @@ import { Controller, useFormContext } from 'react-hook-form'
 import AttachmentFeature from '../feature/attachment-feature'
 import { config, markdownComponents } from '../utils/markdown-config'
 import { preprocessMarkdown } from '../utils/markdown-parser'
+import MediaEmbed from './media-embed'
 
 interface MessageProps {
   message: MessageEntity
@@ -26,6 +27,7 @@ interface MessageProps {
   replaceMentionChannel: (content: React.ReactNode) => React.ReactNode
   isHighlighted: boolean
   onReply: ((message: MessageEntity) => void) | null
+  containsUrl: () => boolean
 }
 
 export default function Message({
@@ -45,6 +47,7 @@ export default function Message({
   onReply,
   replaceTagEntity,
   replaceMentionChannel,
+  containsUrl,
 }: Readonly<MessageProps>) {
   const { control } = useFormContext()
   const formatDate = (dateString: string): string => {
@@ -207,6 +210,7 @@ export default function Message({
             <div className={'text-xs font-semibold break-all'}>
               {renderedMessage}
             </div>
+            {containsUrl() && <MediaEmbed text={message.content} />}
             {message.attachments?.map((attachment, i) => (
               <AttachmentFeature
                 key={'attachment_' + i.toString()}
