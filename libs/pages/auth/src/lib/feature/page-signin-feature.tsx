@@ -13,6 +13,7 @@ export function PageSigninFeature() {
   const navigate = useNavigate()
   const [error, setError] = useState('')
   const { isAuthenticated } = useSelector(getUserState)
+  const qrCodeFeatureFlag = false
   const qrCodeLink = `https://${window.location.hostname}${window.location.port?":":""}${window.location.port}/authentication/qrcode`
   const methods = useForm({
     mode: 'onChange',
@@ -55,6 +56,7 @@ export function PageSigninFeature() {
         toSignup={toSignup}
         toForgetPassword={toForgetPassword}
         error={error}
+        qrCodeFeatureFlag={qrCodeFeatureFlag}
         qrCodeLink={qrCodeLink}
       />
     </FormProvider>
