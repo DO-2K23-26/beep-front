@@ -10,6 +10,7 @@ export interface PageSigninProps {
   toSignup?: () => void
   toForgetPassword?: () => void
   error?: string
+  qrCodeFeatureFlag?: boolean
   qrCodeLink: string
 }
 
@@ -19,6 +20,7 @@ export function PageSignin({
   toSignup,
   toForgetPassword,
   error,
+  qrCodeFeatureFlag,
   qrCodeLink,
 }: PageSigninProps) {
   const { control } = useFormContext()
@@ -117,13 +119,17 @@ export function PageSignin({
             </Link>
           </div>
         </div>
-        <hr className="border-r-2 border-[#9382C2] h-[300px]" />
-        <div className="flex flex-col gap-5 justify-center h-full p-4">
-          <p>QRCode Login</p>
-          <div className="flex flex-row gap-1 p-4 bg-white !rounded-lg">
-            <QRCodeSVG value={qrCodeLink} />
-          </div>
-        </div>
+        {qrCodeFeatureFlag && (
+          <>
+            <hr className="border-r-2 border-[#9382C2] h-[300px]" />
+            <div className="flex flex-col gap-5 justify-center h-full p-4">
+              <p>QRCode Login</p>
+                <div className="flex flex-row gap-1 p-4 bg-white !rounded-lg">
+                  <QRCodeSVG value={qrCodeLink} />
+                </div>
+            </div>
+          </>
+        )}
       </div>
     </div>
   )
