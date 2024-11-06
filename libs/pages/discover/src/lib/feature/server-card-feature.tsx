@@ -3,23 +3,28 @@ import {
   useTransmitBannerQuery,
   useTransmitPictureQuery,
 } from '@beep/server'
-import ServerCard from '../ui/server-card'
 import { useNavigate } from 'react-router'
-import { skipToken } from '@reduxjs/toolkit/query'
+import ServerCard from '../ui/server-card'
 
 interface ServerCardFeatureProps {
   id: string
   name: string
   description: string
+  hasBanner: boolean
+  hasIcon: boolean
 }
 
 export default function ServerCardFeature({
   id,
   name,
   description,
+  hasBanner,
+  hasIcon,
 }: ServerCardFeatureProps) {
-  const { data: icon } = useTransmitPictureQuery(id)
-  const { currentData: banner } = useTransmitBannerQuery(id ?? skipToken)
+  const { data: icon } = useTransmitPictureQuery(id, { skip: !hasIcon })
+  const { currentData: banner } = useTransmitBannerQuery(id, {
+    skip: !hasBanner,
+  })
   const [joinPublicServer] = useJoinPublicServerMutation()
   const navigate = useNavigate()
 

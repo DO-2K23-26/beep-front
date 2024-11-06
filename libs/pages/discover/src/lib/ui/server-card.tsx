@@ -42,11 +42,17 @@ export default function ServerCard({
         )}
       </div>
       <section className="flex flex-col gap-2 p-4 -translate-y-16 relative z-10 group-hover:translate-y-[-4.25rem] transition-all duration-300 ease-in-out">
-        <img
-          src={icon}
-          alt="Server icon"
-          className="w-20 h-20 rounded-xl object-cover border-2 border-violet-200 bg-violet-400 group-hover:scale-110 transition-all duration-300 ease-in-out"
-        />
+        {icon ? (
+          <img
+            src={icon}
+            alt="Server icon"
+            className="w-20 h-20 rounded-xl object-cover border-2 border-violet-200 bg-violet-400 group-hover:scale-110 transition-all duration-300 ease-in-out"
+          />
+        ) : (
+          <div className="flex w-20 h-20 rounded-xl object-cover border-2 border-violet-200 bg-violet-400 group-hover:scale-110 transition-all duration-300 ease-in-out items-center">
+            <p className="w-full truncate text-center text-3xl">{name[0]}</p>
+          </div>
+        )}
         <h4 className="font-bold text-md">{name}</h4>
         <p className="text-xs opacity-70 truncate">{description}</p>
       </section>

@@ -4,19 +4,19 @@ import {
   backendUrl,
   ConfirmEmailRequest,
   ForgotPasswordRequest,
-  ResetPasswordRequest,
   GetMultipleUsersRequest,
+  GetUserRequest,
   LoginRequest,
   LoginResponse,
   RefreshRequest,
   RefreshResponse,
   RegisterResponse,
+  ResetPasswordRequest,
   UpdateMicRequest,
   UpdateUserResponse,
   UserConnectedEntity,
   UserDisplayedEntity,
-  UserEntity,
-  ServerEntity,
+  UserEntity
 } from '@beep/contracts'
 // eslint-disable-next-line @nx/enforce-module-boundaries
 import { RootState } from '@beep/store'
@@ -138,9 +138,12 @@ export const userApi = createApi({
         body: data,
       }),
     }),
-    getUserById: builder.query<UserDisplayedEntity, string>({
-      query: (id) => `/users/${id}`,
-      providesTags: ['users'],
+    getUserById: builder.query<UserDisplayedEntity, GetUserRequest>({
+      query: ({ id }) => `/users/${id}`,
+      providesTags: (result) => {
+        if (result !== undefined) return [{ type: 'users', id: result.id }]
+        else return [{ type: 'users' }]
+      },
     }),
     updateState: builder.mutation<
       void,
@@ -152,14 +155,7 @@ export const userApi = createApi({
         body: payload,
       }),
     }),
-    getMyServers: builder.query<ServerEntity[], void>({
-      query: () => ({
-        url: `/v1/users/@me/servers`,
-        method: 'GET',
 
-      }),
-      providesTags: ['servers'],
-    }),
   }),
 })
 
@@ -180,5 +176,4 @@ export const {
   useVerifyEmailMutation,
   useGetUserByIdQuery,
   useUpdateStateMutation,
-  useGetMyServersQuery,
 } = userApi

@@ -2,6 +2,7 @@ import {
   getServersState,
   serverActions,
   useDeleteServerMutation,
+  useGetMyServersQuery,
 } from '@beep/server'
 import { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
@@ -9,7 +10,6 @@ import DestroyServerModal from '../ui/server-settings-modal/delete-server-modal'
 import { useNavigate } from 'react-router'
 import { ServerEntity } from '@beep/contracts'
 import toast from 'react-hot-toast'
-import { useGetMyServersQuery } from '@beep/user'
 
 interface DestroyServerFeatureProps {
   closeModal: () => void
@@ -49,7 +49,7 @@ export default function DestroyServerFeature({
       createdAt: '',
       updatedAt: '',
       ownerId: '',
-      picture: '',
+      icon: '',
       visibility: 'private',
     }
     deleteServer(focusedServerId)

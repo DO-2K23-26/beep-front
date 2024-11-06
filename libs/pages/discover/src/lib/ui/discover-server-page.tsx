@@ -44,7 +44,9 @@ export default function DiscoverServer({
           <rect width="100%" height="100%" filter="url(#noiseFilter)" />
         </svg>
         <div className="flex flex-col justify-between items-center gap-10 py-[12dvh] z-20 relative px-2">
-          <h2 className="font-bold text-center md:text-5xl">Find your community on Beep</h2>
+          <h2 className="font-bold text-center md:text-5xl">
+            Find your community on Beep
+          </h2>
           <h3 className="text-sm text-center">
             From studying to music, there's a place for you.
           </h3>
@@ -91,6 +93,8 @@ export default function DiscoverServer({
               name={server.name}
               description={server.description ?? ''}
               id={server.id}
+              hasBanner={server.banner !== ''}
+              hasIcon={server.icon !== ''}
             />
           ))}
         </AnimatePresence>

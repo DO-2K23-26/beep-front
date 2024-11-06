@@ -45,6 +45,13 @@ export const serverApi = createApi({
     'transmitBanner',
   ],
   endpoints: (builder) => ({
+    getMyServers: builder.query<ServerEntity[], void>({
+      query: () => ({
+        url: `/v1/users/@me/servers`,
+        method: 'GET',
+      }),
+      providesTags: [{ type: 'servers' }],
+    }),
     discoverServers: builder.query<ServerEntity[], SearchServerRequest>({
       query: (params) => {
         const url = new URL(`/servers/discover`, backendUrl)
@@ -301,6 +308,7 @@ export const serverApi = createApi({
 })
 
 export const {
+  useGetMyServersQuery,
   useGetMembersQuery,
   useGetMemberQuery,
   useCreateInvitationMutation,

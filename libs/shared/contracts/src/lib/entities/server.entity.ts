@@ -3,7 +3,7 @@ export interface ServerEntity {
   name: string
   ownerId: string
   visibility: 'public' | 'private'
-  picture?: string
+  icon?: string
   createdAt?: string
   updatedAt?: string
   invite_code?: string | ''

@@ -17,11 +17,12 @@ import {
   serverActions,
   useGetChannelQuery,
   useGetMembersQuery,
+  useGetMyServersQuery,
   useGetServerChannelsQuery,
 } from '@beep/server'
 import { AppDispatch, RootState } from '@beep/store'
 import { DynamicSelectorProps, useModal } from '@beep/ui'
-import { useGetMeQuery, useGetMyServersQuery } from '@beep/user'
+import { useGetMeQuery } from '@beep/user'
 import { TransmitSingleton } from '@beep/utils'
 import { skipToken } from '@reduxjs/toolkit/query'
 import { useEffect, useRef, useState } from 'react'
@@ -341,7 +342,7 @@ export function PageChannelFeature() {
         createdAt: '',
         updatedAt: '',
         ownerId: '',
-        picture: '',
+        icon: '',
         visibility: 'private',
       }
       dispatch(serverActions.setServer(curServer))

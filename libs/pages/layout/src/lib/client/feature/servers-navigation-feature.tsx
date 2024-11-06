@@ -1,7 +1,10 @@
-import { useLeaveVoiceChannelMutation } from '@beep/server'
+import {
+  useGetMyServersQuery,
+  useLeaveVoiceChannelMutation,
+} from '@beep/server'
 import { AppDispatch, resetStore } from '@beep/store'
 import { useModal } from '@beep/ui'
-import { useGetMyServersQuery, userActions } from '@beep/user'
+import { userActions } from '@beep/user'
 import { toast } from 'react-hot-toast'
 import { useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
@@ -19,11 +22,11 @@ export function ServersNavigationFeature() {
 
   const navigate = useNavigate()
   const onLogout = () => {
+    leaveServer()
     sessionStorage.removeItem('accessToken')
     sessionStorage.removeItem('refreshToken')
     dispatch(userActions.setTokens({}))
     dispatch({ type: 'CLOSE_WEBRTC' })
-    leaveServer()
     dispatch(resetStore())
     toast.success('Successfully logged out !')
     navigate('/authentication/signin')

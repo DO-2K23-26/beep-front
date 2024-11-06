@@ -21,7 +21,12 @@ export default function CurrentUserFeature() {
   const { isMuted, isVoiceMuted, isCamera } = useSelector(getUserState)
   const dispatch = useDispatch()
   const { currentData: userProfilePicture } = useFetchProfilePictureQuery(
-    userMe?.id ?? skipToken
+    userMe?.id ?? skipToken,
+    {
+      skip:
+        userMe === undefined ||
+        userMe.profilePicture === 'default_profile_picture.png',
+    }
   )
   const { videoDevice, audioInputDevice } = useSelector(getVoiceState)
   const onMicrophone = () => {

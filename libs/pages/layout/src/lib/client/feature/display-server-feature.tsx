@@ -1,9 +1,14 @@
 import { ServerEntity } from '@beep/contracts'
-import { serverActions, useGetServerChannelsQuery } from '@beep/server'
+import {
+  serverActions,
+  useGetServerChannelsQuery,
+  useTransmitPictureQuery,
+} from '@beep/server'
 import { AppDispatch } from '@beep/store'
 import { useDispatch } from 'react-redux'
 import { useNavigate, useParams } from 'react-router-dom'
 import DisplayServer from '../ui/display-server'
+import { skipToken } from '@reduxjs/toolkit/query'
 
 interface DisplayServerFeatureProps {
   server: ServerEntity
@@ -15,6 +20,10 @@ export default function DisplayServerFeature({
   const navigate = useNavigate()
   const dispatch = useDispatch<AppDispatch>()
   const { data: channels } = useGetServerChannelsQuery(server.id)
+  const { data: icon } = useTransmitPictureQuery(server?.id ?? skipToken, {
+    skip: server?.icon === '',
+  })
+
   const params = useParams()
   const onServerChange = () => {
     // Check if we are not already on the server
@@ -29,5 +38,11 @@ export default function DisplayServerFeature({
       }
     }
   }
-  return <DisplayServer server={server} onServerChange={onServerChange} />
+  return (
+    <DisplayServer
+      server={server}
+      onServerChange={onServerChange}
+      icon={icon}
+    />
+  )
 }

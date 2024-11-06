@@ -10,14 +10,17 @@ import {
   serverActions,
   useCreateChannelInServerMutation,
   useGetCurrentStreamingUsersQuery,
+  useGetMyServersQuery,
   useGetServerChannelsQuery,
   useJoinVoiceChannelMutation,
   useLeaveVoiceChannelMutation,
+  useTransmitBannerQuery,
+  useTransmitPictureQuery,
 } from '@beep/server'
 import { AppDispatch, RootState } from '@beep/store'
 import { TransmitSingleton } from '@beep/transmit'
 import { useModal } from '@beep/ui'
-import { getUserState, useGetMeQuery, useGetMyServersQuery } from '@beep/user'
+import { getUserState, useGetMeQuery } from '@beep/user'
 import {
   getVoiceState,
   setCurrentChannelId,
@@ -48,6 +51,15 @@ export function ChannelsNavigationFeature() {
     server ? server.id : skipToken
   )
 
+  const { currentData: banner } = useTransmitBannerQuery(
+    server?.id ?? skipToken,
+    {
+      skip: server?.banner === undefined || server?.banner === '',
+    }
+  )
+  const { data: icon } = useTransmitPictureQuery(server?.id ?? skipToken, {
+    skip: server?.icon === undefined || server?.icon === '',
+  })
   const [joinServer] = useJoinVoiceChannelMutation()
   const [leaveServer] = useLeaveVoiceChannelMutation()
 
@@ -217,6 +229,7 @@ export function ChannelsNavigationFeature() {
 
   return (
     <ChannelsNavigation
+      key={'server_' + server?.id}
       onJoinTextChannel={onJoinTextChannel}
       textChannels={channels?.textChannels ?? []}
       voiceChannels={channels?.voiceChannels ?? []}
@@ -230,6 +243,8 @@ export function ChannelsNavigationFeature() {
       closeModal={closeModal}
       methodsAddChannel={methodsAddChannel}
       hideLeftDiv={hideLeftDiv}
+      banner={server?.banner !== '' ? banner : undefined}
+      icon={server?.icon !== '' ? icon : undefined}
     />
   )
 }

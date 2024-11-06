@@ -1,14 +1,13 @@
+import { getChannelsState } from '@beep/channel'
 import {
   ChannelEntity,
   ChannelType,
   OccupiedChannelEntity,
   ServerEntity,
 } from '@beep/contracts'
-import { Button, ButtonSize, ButtonStyle, Icon, UseModalProps } from '@beep/ui'
-import { getChannelsState } from '@beep/channel'
 import { getResponsiveState } from '@beep/responsive'
-import { useTransmitBannerQuery, useTransmitPictureQuery } from '@beep/server'
-import { getUserState, useGetMeQuery } from '@beep/user'
+import { Button, ButtonSize, ButtonStyle, Icon, UseModalProps } from '@beep/ui'
+import { getUserState } from '@beep/user'
 import { useEffect, useState } from 'react'
 import { FormProvider, UseFormReturn } from 'react-hook-form'
 import { useSelector } from 'react-redux'
@@ -19,17 +18,18 @@ import { ListVoiceChannels } from './list-voice-channels'
 import { OverviewSettingsServer } from './overview-settings-server'
 
 import { SettingBodyWidth, SubSettings } from '@beep/settings'
+import { getVoiceState } from '@beep/voice'
 import { CreateChannelModal } from './create-channel-modal'
 import { ServerDropdown } from './server-dropdown'
 import { ServerPictureButton } from './server-picture-button'
-import { getVoiceState } from '@beep/voice'
-import { skipToken } from '@reduxjs/toolkit/query'
 
 export interface ChannelsNavigationProps {
   textChannels?: ChannelEntity[]
   voiceChannels?: ChannelEntity[]
   streamingUsers: OccupiedChannelEntity[]
   server?: ServerEntity
+  icon?: string
+  banner?: string
   onClickId: (id: string) => void
   onCreateChannel: () => void
   onLeaveVoiceChannel: () => void
@@ -46,6 +46,8 @@ export default function ChannelsNavigation({
   voiceChannels,
   server,
   streamingUsers,
+  banner,
+  icon,
   onClickId,
   onCreateChannel,
   onJoinVoiceChannel,
@@ -56,8 +58,6 @@ export default function ChannelsNavigation({
   methodsAddChannel,
   hideLeftDiv,
 }: ChannelsNavigationProps) {
-  const { data: userMe } = useGetMeQuery()
-
   const { showLeftPane } = useSelector(getResponsiveState)
   const { connected, focusedChannel, serverName } =
     useSelector(getChannelsState)
@@ -85,11 +85,6 @@ export default function ChannelsNavigation({
       setIsAdmin(server.ownerId === payload.sub)
     }
   }, [server, payload])
-
-  const { currentData: banner } = useTransmitBannerQuery(
-    server?.id ?? skipToken
-  )
-  const { data: icon } = useTransmitPictureQuery(server?.id ?? skipToken)
 
   return (
     <div className={showLeftPane ? 'flex abolute w-full' : 'hidden lg:flex'}>

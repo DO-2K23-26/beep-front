@@ -18,6 +18,7 @@ import { AppDispatch } from '@beep/store'
 import {
   getUserState,
   useFetchProfilePictureQuery,
+  useGetUserByIdQuery,
   useGetUsersFromQuery,
 } from '@beep/user'
 import { skipToken } from '@reduxjs/toolkit/query'
@@ -112,17 +113,25 @@ export default function MessageFeature({
   const navigate = useNavigate()
 
   const { data: channels } = useGetServerChannelsQuery(serverId ?? skipToken)
-  const { data: owner } = useGetUsersFromQuery(
-    { userIds: [message.ownerId] },
-    { skip: serverId !== undefined }
+  const { data: owner } = useGetUserByIdQuery(
+    { id: message.ownerId },
+    { skip: message.ownerId === undefined }
   )
   const { currentData: userProfilePicture } = useFetchProfilePictureQuery(
-    message.ownerId
+    message.ownerId,
+    {
+      skip:
+        owner === undefined ||
+        owner.profilePicture === 'default_profile_picture.png' ||
+        owner.profilePicture === '',
+    }
   )
-
   const matches = RegExp(regexUserTagging).exec(message.content) || []
   const ids = matches.map((match) => match.slice(2))
-  const { data: taggedUsers } = useGetUsersFromQuery({ userIds: ids })
+  const { data: taggedUsers } = useGetUsersFromQuery(
+    { userIds: ids },
+    { skip: ids.length === 0 }
+  )
 
   const isEditing = editingMessageId === message.id
 

@@ -1,19 +1,17 @@
 import { ServerEntity } from '@beep/contracts'
-import { useTransmitPictureQuery } from '@beep/server'
 import { Button, ButtonStyle } from '@beep/ui'
-import { skipToken } from '@reduxjs/toolkit/query'
 
 interface DisplayServerProps {
   server: ServerEntity
+  icon?: string
   onServerChange?: () => void
 }
 
 export default function DisplayServer({
   server,
+  icon,
   onServerChange,
 }: DisplayServerProps) {
-  const {data: icon} = useTransmitPictureQuery(server?.id ?? skipToken)
-
   return (
     <Button
       key={server.id}

@@ -1,9 +1,7 @@
 import { Button, InputPicture, InputText, InputTextArea } from '@beep/ui'
 import { BaseSyntheticEvent } from 'react'
 import { Control, Controller } from 'react-hook-form'
-import {
-  AddServerForm
-} from '../../feature/add-server-feature'
+import { AddServerForm } from '../../feature/add-server-feature'
 
 interface CreateServerModalProps {
   control: Control<AddServerForm>
@@ -51,7 +49,7 @@ export default function CreateServerModal({
             },
           }}
           control={control}
-          render={({ field, fieldState: {  } }) => (
+          render={({ field, fieldState: { error } }) => (
             <InputText
               label="Server name"
               type="text"
@@ -59,6 +57,7 @@ export default function CreateServerModal({
               className="w-full !rounded-lg min-h-[40px]"
               value={field.value}
               onChange={field.onChange}
+              error={error?.message}
             />
           )}
         ></Controller>

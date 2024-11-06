@@ -1,16 +1,16 @@
-import { SubmitHandler, useForm } from 'react-hook-form'
-import { useState } from 'react'
-import AddServerNavigation from '../ui/add-server/add-server-navigation'
-import CreateServerModal from '../ui/add-server/create-server-modal'
-import AddServerModal from '../ui/add-server/add-server-modal'
-import SelectVisibilityModal from '../ui/add-server/select-visibility-modal'
+import { CreateServerRequest, HttpError } from '@beep/contracts'
 import {
   useCreateServerMutation,
   useJoinPublicServerMutation,
 } from '@beep/server'
+import { useEffect, useState } from 'react'
+import { useForm } from 'react-hook-form'
 import toast from 'react-hot-toast'
-import { CreateServerRequest } from '@beep/contracts'
+import AddServerModal from '../ui/add-server/add-server-modal'
+import AddServerNavigation from '../ui/add-server/add-server-navigation'
+import CreateServerModal from '../ui/add-server/create-server-modal'
 import { JoinServerModal } from '../ui/add-server/join-server-modal'
+import SelectVisibilityModal from '../ui/add-server/select-visibility-modal'
 
 export interface CreateServerForm {
   serverName: string
@@ -47,16 +47,29 @@ export default function AddServerFeature({
   closeModal,
 }: AddServerFeatureProps) {
   const { handleSubmit, control } = useForm<AddServerForm>()
-  const [loading, setLoading] = useState<boolean>(false)
   const [serverStep, setServerStep] = useState<AddServerStep | undefined>(
     undefined
   )
-  const [joinPublicServer] = useJoinPublicServerMutation()
+  const [
+    joinPublicServer,
+    {
+      isLoading: isLoadingJoinServer,
+      isSuccess: isSuccessJoinServer,
+      isError: isErrorJoinServer,
+    },
+  ] = useJoinPublicServerMutation()
 
-  const [createServer] = useCreateServerMutation()
+  const [
+    createServer,
+    {
+      isLoading: isLoadingCreateServer,
+      isSuccess: isSuccessCreateServer,
+      isError: isErrorCreateServer,
+      error: errorCreateServer,
+    },
+  ] = useCreateServerMutation()
 
   const onCreateServer = (data: CreateServerRequest) => {
-    setLoading(true)
     const payload: CreateServerRequest = {
       name: data.name,
       description: data.description,
@@ -67,22 +80,14 @@ export default function AddServerFeature({
     request.append('name', payload.name)
     request.append('description', payload.description)
     request.append('visibility', payload.visibility)
-    request.append('icon', payload.icon)
+    if (payload.icon !== null && payload.icon !== undefined)
+      request.append('icon', payload.icon)
     createServer(request)
-      .unwrap()
-      .then(() => {
-        setLoading(false)
-        closeModal()
-      })
-      .catch(() => {
-        setLoading(false)
-        toast.error('An error occurred while creating the server')
-      })
   }
 
-  const onSubmit: SubmitHandler<AddServerForm> = (data) => {
+  const onSubmit = handleSubmit((data) => {
     if (data.serverId) {
-      onJoinServer(data.serverId)
+      joinPublicServer(data.serverId)
     } else {
       const createServerRequest: CreateServerRequest = {
         name: data.serverName,
@@ -92,29 +97,57 @@ export default function AddServerFeature({
       }
       onCreateServer(createServerRequest)
     }
-  }
+  })
 
-  const onJoinServer = (serverId: string) => {
-    joinPublicServer(serverId)
-    closeModal()
-  }
+  useEffect(() => {
+    if (!isLoadingCreateServer && isSuccessCreateServer) {
+      toast.success('Server created successfully')
+      closeModal()
+    }
+  }, [closeModal, isLoadingCreateServer, isSuccessCreateServer])
+
+  useEffect(() => {
+    if (isErrorCreateServer && errorCreateServer !== undefined) {
+      // @ts-expect-error errorCreateServer is not undefined
+      const error = errorCreateServer.data as HttpError
+      if (error.code === 'E_SERVER_ALREADY_EXISTS') {
+        control.setError('serverName', {
+          message: 'A server with this name already exists',
+          type: 'validate',
+        })
+      } else {
+        toast.error('An error occurred while creating the server')
+        closeModal()
+      }
+    }
+  }, [closeModal, control, errorCreateServer, isErrorCreateServer, serverStep])
+
+  useEffect(() => {
+    if (!isLoadingJoinServer && isSuccessJoinServer) {
+      toast.success('Server joined successfully')
+      closeModal()
+    } else if (!isLoadingJoinServer && isErrorJoinServer) {
+      toast.error('An error occurred while joining the server')
+      closeModal()
+    }
+  }, [isSuccessJoinServer, isLoadingJoinServer, isErrorJoinServer, closeModal])
 
   const render = {
     private: (
       <CreateServerModal
         closeModal={() => setServerStep('create')}
-        onSubmit={handleSubmit(onSubmit)}
+        onSubmit={onSubmit}
         control={control}
-        loading={loading}
+        loading={isLoadingCreateServer}
         visibility="private"
       />
     ),
     public: (
       <CreateServerModal
         closeModal={() => setServerStep('create')}
-        onSubmit={handleSubmit(onSubmit)}
+        onSubmit={onSubmit}
         control={control}
-        loading={loading}
+        loading={isLoadingJoinServer}
         visibility="public"
       />
     ),
@@ -126,9 +159,9 @@ export default function AddServerFeature({
     ),
     invite: (
       <JoinServerModal
-        onSubmit={handleSubmit(onSubmit)}
+        onSubmit={onSubmit}
         control={control}
-        loading={loading}
+        loading={isLoadingJoinServer}
         closeModal={() => setServerStep('undefined')}
       />
     ),
@@ -140,10 +173,5 @@ export default function AddServerFeature({
     ),
   }
 
-  return (
-    <AddServerNavigation
-      serverStep={serverStep}
-      render={render}
-    />
-  )
+  return <AddServerNavigation serverStep={serverStep} render={render} />
 }
