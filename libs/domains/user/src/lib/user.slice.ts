@@ -14,7 +14,7 @@ export const initialUserState: UserState = {
   tokens: {},
   isMuted: false,
   isVoiceMuted: false,
-  isCamera: false,
+  isCamera: true,
 }
 export const userSlice = createSlice({
   name: USER_KEY,

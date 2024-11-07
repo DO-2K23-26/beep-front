@@ -40,7 +40,7 @@ export function ChannelsNavigationFeature() {
   const { data: streamingUsers } = useGetCurrentStreamingUsersQuery(
     server?.id ?? ''
   )
-  const { remoteStreams, currentChannelId, videoDevice, audioInputDevice } =
+  const { remoteStreams, currentChannelId, videoDevice, audioInputDevice, userStreams, serverPresence } =
     useSelector(getVoiceState)
   const { isMuted, isVoiceMuted, isCamera } = useSelector(getUserState)
   const { data } = useGetMeQuery()
@@ -52,17 +52,23 @@ export function ChannelsNavigationFeature() {
     server ? server.id : skipToken
   )
 
-  const { currentData: banner } = useTransmitBannerQuery(
-    server?.id ?? skipToken,
-    {
-      skip: server?.banner === undefined || server?.banner === '',
-    }
-  )
-
-  const [joinServer] = useJoinVoiceChannelMutation()
+  //const [joinServer] = useJoinVoiceChannelMutation()
   const [leaveServer] = useLeaveVoiceChannelMutation()
 
   const navigate = useNavigate()
+
+  useEffect(() => {
+    if (server) {
+      dispatch({
+        type: 'INITIALIZE_PRESENCE',
+        payload: {
+          channels: channels?.voiceChannels.map((channel) => channel.id),
+          server: server?.id,
+          id: data?.id,
+        },
+      })
+    }
+  }, [server])
 
   useEffect(() => {
     //match the received streams with the users connected in the channel and filter them if the user want it
@@ -70,48 +76,44 @@ export function ChannelsNavigationFeature() {
       user: UserConnectedEntity
       stream: MediaStream
     }[] = []
-    remoteStreams.map((stream) => {
-      const usersChannel = streamingUsers?.find(
-        (value) => value.channelId === currentChannelId
-      )
-      return usersChannel?.users?.map((currentUser) => {
-        //the mid is composed like this userSerialNumber + '-' + id of track (incremental number)
-        if (
-          stream.mid?.substring(0, stream.mid?.length - 2) ===
-          currentUser.userSn
-        ) {
-          const toEdit = filteredUserStreamsAssociation.find(
-            (entity) => entity.user.id === currentUser.id
-          )
-          if (toEdit === undefined) {
-            filteredUserStreamsAssociation.push({
-              user: currentUser,
-              stream: new MediaStream([stream.receiver.track]),
-            })
-          } else {
-            toEdit.stream.addTrack(stream.receiver.track)
+    const usersChannel = serverPresence?.find(
+      (value) => value.channelId === currentChannelId
+    )
+    console.log(JSON.stringify(usersChannel), JSON.stringify(serverPresence))
+    userStreams.map((userStream) => {
+      const userchan = usersChannel?.users?.find((userchan) => userchan.id === userStream.id && data?.id !== userStream.id)
+      if (userchan) {
+        const userbis = {...userchan}
+        const stream = new MediaStream()
+        if (userStream.audio !== null){
+          userbis.muted = false
+          userbis.voiceMuted = false
+          const audioTranceiver = remoteStreams.find((stream) => stream.receiver.track.id === userStream.audio)
+          if(audioTranceiver){
+            stream.addTrack(audioTranceiver.receiver.track)
           }
         }
-        return stream
-      })
-    })
-    filteredUserStreamsAssociation.filter((entity) => {
-      if (!entity.user.camera && entity.user.id !== data?.id) {
-        entity.stream
-          .getVideoTracks()
-          .map((video) => entity.stream.removeTrack(video))
+        if (userStream.video !== null){
+          userbis.camera = true
+          const videoTrack = remoteStreams.find((stream) => stream.receiver.track.id === userStream.video)
+          if (videoTrack){
+            stream.addTrack(videoTrack.receiver.track)
+          }
+        }
+        filteredUserStreamsAssociation.push({
+          user: userbis,
+          stream: stream,
+        }
+      )
       }
-      if (entity.user.voiceMuted || isMuted) {
-        entity.stream
-          .getAudioTracks()
-          .map((audio) => entity.stream.removeTrack(audio))
-      }
-      return entity
+      console.log("streams assotiation", filteredUserStreamsAssociation, filteredUserStreamsAssociation[0]?.stream.getTracks())
+      console.log("tracks", remoteStreams)
     })
     dispatch(setSortedMembers(filteredUserStreamsAssociation))
   }, [
     streamingUsers,
     remoteStreams,
+    userStreams,
     isCamera,
     currentChannelId,
     data?.id,
@@ -181,24 +183,27 @@ export function ChannelsNavigationFeature() {
           serverName: server.name,
         })
       )
-      const token = await joinServer({
-        serverId: server.id,
-        channelId: channel.id,
-        userState: {
-          muted: isMuted,
-          voiceMuted: isVoiceMuted,
-          camera: isCamera,
-        },
-      })
+      // const token = await joinServer({
+      //   serverId: server.id,
+      //   channelId: channel.id,
+      //   userState: {
+      //     muted: isMuted,
+      //     voiceMuted: isVoiceMuted,
+      //     camera: isCamera,
+      //   },
+      // })
       dispatch(setCurrentChannelId(channel.id))
       dispatch({
         type: 'INITIALIZE_WEBRTC',
         payload: {
-          token: token,
+          server: server.id,
+          channel: channel.id,
+          token: data?.id,
           videoDevice: videoDevice,
           audioInputDevice: audioInputDevice,
           isVoiceMuted: isVoiceMuted,
           isCamera: isCamera,
+          username: data?.username
         },
       })
     }
@@ -229,7 +234,7 @@ export function ChannelsNavigationFeature() {
       onJoinTextChannel={onJoinTextChannel}
       textChannels={channels?.textChannels ?? []}
       voiceChannels={channels?.voiceChannels ?? []}
-      streamingUsers={streamingUsers ?? []}
+      streamingUsers={serverPresence ?? []}
       onJoinVoiceChannel={onJoinVoiceChannel}
       onLeaveVoiceChannel={onLeaveVoiceChannel}
       server={server}

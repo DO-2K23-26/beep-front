@@ -1,10 +1,24 @@
 import { Middleware } from '@reduxjs/toolkit';
-import { addRemoteStream, setConnectionState, setLocalStream, setRemoteStreams } from './voice.slice';
-import { webrtcUrl } from '@beep/contracts';
+import {
+  addRemoteStream,
+  setConnectionState,
+  setLocalStream,
+  setRemoteStreams,
+  setServerPresence,
+  setUserStreams
+} from './voice.slice'
+import { webrtcUrl } from '@beep/contracts'
+import {Socket, Presence, Channel} from 'phoenix'
+
 
 const WebRTCMiddleware: Middleware = (store) => {
+  const pcConfig : RTCConfiguration = {};
   let peerConnection: RTCPeerConnection | null = null;
-  let offerChannel: RTCDataChannel | null = null;
+  let socket: Socket | null = null;
+  let watchedChannels: {id: string, channel: Channel}[] = []
+  let currentChannel: Channel | undefined = undefined;
+  let currentPresence: Presence | undefined = undefined;
+  let localTracksAdded = false;
   let camTransceiver: RTCRtpTransceiver | undefined = undefined;
   let micTransceiver: RTCRtpTransceiver | undefined = undefined;
   let callback: ((value: string | PromiseLike<string>) => void) | null;
@@ -16,27 +30,104 @@ const WebRTCMiddleware: Middleware = (store) => {
   let audio: MediaStream | null;
   let video: MediaStream | null;
   const endpoint = webrtcUrl
-  async function negotiate() {
-    if (!peerConnection) return;
-    const negotiate_offer = await peerConnection.createOffer()
-    await peerConnection.setLocalDescription(negotiate_offer);
-    offerChannel?.send(JSON.stringify(negotiate_offer));
-    const json = (await new Promise((resolve) => {
-      callback = resolve;
-    })) as string;
-    const negotiate_answer = JSON.parse(json);
-    await peerConnection.setRemoteDescription(negotiate_answer);
-  }
+  // async function negotiate() {
+  //   if (!peerConnection) return;
+  //   const negotiate_offer = await peerConnection.createOffer()
+  //   await peerConnection.setLocalDescription(negotiate_offer);
+  //   offerChannel?.send(JSON.stringify(negotiate_offer));
+  //   const json = (await new Promise((resolve) => {
+  //     callback = resolve;
+  //   })) as string;
+  //   const negotiate_answer = JSON.parse(json);
+  //   await peerConnection.setRemoteDescription(negotiate_answer);
+  // }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   return (next) => async (action: any) => {
     switch (action.type) {
+      case 'INITIALIZE_PRESENCE':
+        socket = new Socket("ws://"+endpoint + "/socket/"+ action.payload.server)
+        socket.connect()
+        for (const channelId of action.payload.channels) {
+          const socketChannel = socket.channel(`peer:signalling-${channelId}`, {
+            id: action.payload.id,
+            in: false
+          })
+          const presence = new Presence(socketChannel);
+          presence.onSync(() => {
+            const users = presence.list().map((user) => {
+              if (!user.metas[0].user.watcher) {
+                return {
+                  id: user.metas[0].user.id,
+                  username: user.metas[0].user.username,
+                  expiresAt: 0,
+                  userSn: "not used",
+                  voiceMuted: ! user.metas[0].user.audio !== null,
+                  muted: false,
+                  camera: user.metas[0].user.video !== null                }
+              }
+            }).filter((user) => user !== undefined)
+            store.dispatch(setServerPresence({
+              channelId: channelId, users: users
+            }))
+          })
+          socketChannel
+            .join()
+            .receive('ok', (_) => console.log('Joined currentChannel peer:signalling'))
+            .receive('error', (resp) => {
+              console.error('Unable to join the room:', resp);
+              socket.disconnect();
+              //TODO handle deconnection
+
+              let innerText = 'Unable to join the room';
+              if (resp === 'peer_limit_reached') {
+                innerText +=
+                  ': Peer limit reached. Try again in a few minutes';
+              }
+
+              store.dispatch(setConnectionState(innerText))
+            });
+
+          watchedChannels.push({id: channelId, channel: socketChannel})
+        }
+        break
+
       case 'INITIALIZE_WEBRTC':
-        path = endpoint + "/offer/" + action.payload.token.data.token;
-        peerConnection = new RTCPeerConnection();
+        if (!action.payload.isVoiceMuted) {
+          audio = await navigator.mediaDevices.getUserMedia({
+            audio: {
+              // deviceId: action.payload.audioInputDevice.deviceId,
+            }
+          })
+        }
+        if (action.payload.isCamera) {
+          video = await navigator.mediaDevices.getUserMedia({
+            video: {
+              width: 320,
+              height: 240,
+              // deviceId: action.payload.videoDevice.deviceId,
+            }
+          })
+          store.dispatch(setLocalStream(video));
+        }
+        peerConnection = new RTCPeerConnection(pcConfig);
 
         peerConnection.onconnectionstatechange = () => {
           store.dispatch(setConnectionState(peerConnection?.connectionState || 'failed'))
+          if (peerConnection.connectionState === 'failed') {
+            peerConnection.restartIce();
+          }
+        }
+
+        peerConnection.onicecandidate = (event: RTCPeerConnectionIceEvent) => {
+          if (event.candidate == null) {
+            console.log('Gathering candidates complete');
+            return;
+          }
+
+          const candidate = JSON.stringify(event.candidate);
+          //console.log('Sending ICE candidate: ' + candidate);
+          currentChannel.push('ice_candidate', { body: candidate });
         }
 
         peerConnection.ontrack = (event: RTCTrackEvent) => {
@@ -44,60 +135,138 @@ const WebRTCMiddleware: Middleware = (store) => {
           store.dispatch(addRemoteStream(stream));
         };
 
-        offerChannel = peerConnection.createDataChannel('offer/answer');
-        offerChannel.onopen = async () => {
-          setTimeout(async () => {
-            if (!action.payload.isVoiceMuted) {
-              audio = await navigator.mediaDevices.getUserMedia({
-                audio: {
-                  deviceId: action.payload.audioInputDevice.deviceId,
+
+        watchedChannels = watchedChannels.filter((channel) => {
+          if (channel.id === action.payload.channel){
+            channel.channel.leave()
+            return false;
+          }
+          return true;
+        })
+        console.log("username", action.payload)
+        currentChannel = socket.channel(`peer:signalling-${action.payload.channel}`, {id: action.payload.token, isVoiceMuted: action.payload.isVoiceMuted, isCamera: action.payload.isCamera, video: null, audio: null, in: true, username: action.payload.username});
+
+        currentChannel.onError(() => {
+          socket.disconnect();
+          //window.location.reload();
+        });
+        currentChannel.onClose(() => {
+          socket.disconnect();
+          //window.location.reload();
+        });
+
+        currentChannel.on('sdp_offer', async (payload) => {
+          const sdpOffer = payload.body;
+
+          console.log('SDP offer received');
+
+          await peerConnection.setRemoteDescription({ type: 'offer', sdp: sdpOffer });
+
+          if (!localTracksAdded) {
+            console.log('Adding local tracks to peer connection');
+            audio.getTracks().forEach((track) => peerConnection.addTrack(track))
+            video.getTracks().forEach((track) => peerConnection.addTrack(track))
+            localTracksAdded = true;
+          }
+
+          const sdpAnswer = await peerConnection.createAnswer();
+          await peerConnection.setLocalDescription(sdpAnswer);
+
+          console.log('SDP offer applied, forwarding SDP answer');
+          const answer = peerConnection.localDescription;
+          currentChannel.push('sdp_answer', { body: answer?.sdp });
+        });
+
+        currentChannel.on('ice_candidate', (payload) => {
+          const candidate = JSON.parse(payload.body);
+          //console.log('Received ICE candidate: ' + payload.body);
+          peerConnection.addIceCandidate(candidate);
+        });
+
+        store.dispatch(setServerPresence({channelId: action.payload.channel, users: []}))
+        currentPresence = new Presence(currentChannel);
+
+        currentPresence.onSync(() => {
+          const presence = []
+          currentPresence.list().map((user) => {
+            if (!user.metas[0].user.watcher){
+              if (user.metas[0].user.id === action.payload.token) {
+                const outbounds = user.metas[0].user.outbounds
+                if (outbounds) {
+                  Object.keys(outbounds).map((inbound) => {
+                    const inbounds = outbounds[inbound]
+                    if (inbounds.stream !== action.payload.token) {
+                      presence.push({
+                        id: inbounds.stream,
+                        channel: action.payload.channel,
+                        video: inbounds.video,
+                        audio: inbounds.audio,
+                      })
+                    }
+                  })
                 }
-              })
-              micTransceiver = peerConnection?.addTransceiver(audio.getTracks()[0], {
-                direction: 'sendonly',
-              });
-            }
-            if (action.payload.isCamera) {
-              video = await navigator.mediaDevices.getUserMedia({
-                video: {
-                  width: 320,
-                  height: 240,
-                  deviceId: action.payload.videoDevice.deviceId,
-                }
-              })
-              camTransceiver = peerConnection?.addTransceiver(video.getTracks()[0], {
-                direction: 'sendonly',
-              });
-              if (camTransceiver) {
-                store.dispatch(setLocalStream(video));
               }
             }
-            await negotiate()
-          }, 1000)
-        };
+          })
+          console.log("presence update", presence)
 
-        offerChannel.onmessage = (event: MessageEvent) => {
-          if (event.data === 'leaving') {
-            store.dispatch(setRemoteStreams([]));
-          }
-          const json = JSON.parse(event.data);
-          if (json.type === 'offer') {
-            store.dispatch({ type: 'HANDLE_REMOTE_OFFER', payload: json });
-          } else if (json.type === 'answer') {
-            callback?.(event.data)
-          }
-        };
-        offer = await peerConnection.createOffer();
-        await peerConnection.setLocalDescription(offer);
-        response = await fetch(path, {
-          method: 'POST',
-          headers: {
-            'Content-type': 'application/json',
-          },
-          body: JSON.stringify(offer),
-        })
-        server_answer = await response.json();
-        await peerConnection.setRemoteDescription(server_answer);
+          store.dispatch(setUserStreams(presence))
+          const users = []
+          currentPresence.list().map((user) => {
+            if(!user.metas[0].user.watcher){
+              const outbounds = user.metas[0].user
+              console.log("outbounds outbounds",outbounds.outbounds)
+              if (Object.keys(outbounds.outbounds)){
+                users.push({
+                  id: outbounds.id,
+                  username: outbounds.username,
+                  expiresAt: 0,
+                  userSn: "not used",
+                  voiceMuted: false,
+                  muted: false,
+                  camera: true
+                })
+              }else {
+                Object.keys(outbounds.outbounds).map((inbound) => {
+                  console.log(outbounds.outbounds)
+                  const inbounds = outbounds.outbounds[inbound]
+                  users.push({
+                    id: inbounds.stream,
+                    username: currentPresence.list().find(user => user.metas[0].user.id === inbounds.stream).username,
+                    expiresAt: 0,
+                    userSn: "not used",
+                    voiceMuted: inbounds.audio !== null,
+                    muted: false,
+                    camera: ! inbounds.video !== null
+                  })
+                })
+              }
+            }
+          })
+          console.log("updated server Presence ", {
+            channelId: action.payload.channel, users: users
+          });
+          store.dispatch(setServerPresence({
+            channelId: action.payload.channel, users: users
+          }))
+        });
+
+        currentChannel
+          .join()
+          .receive('ok', (_) => console.log('Joined currentChannel peer:signalling'))
+          .receive('error', (resp) => {
+            console.error('Unable to join the room:', resp);
+            socket.disconnect();
+            //TODO handle deconnection
+
+            let innerText = 'Unable to join the room';
+            if (resp === 'peer_limit_reached') {
+              innerText +=
+                ': Peer limit reached. Try again in a few minutes';
+            }
+
+            store.dispatch(setConnectionState(innerText))
+          });
 
         break;
 
@@ -106,7 +275,7 @@ const WebRTCMiddleware: Middleware = (store) => {
         await peerConnection.setRemoteDescription(action.payload);
         remoteAnswer = await peerConnection.createAnswer();
         await peerConnection.setLocalDescription(remoteAnswer);
-        offerChannel?.send(JSON.stringify(remoteAnswer));
+        // offerChannel?.send(JSON.stringify(remoteAnswer));
         break;
 
       case 'START_CAM':
@@ -140,7 +309,7 @@ const WebRTCMiddleware: Middleware = (store) => {
               store.dispatch(setLocalStream(video));
             }
           }
-          await negotiate()
+          // await negotiate()
         } catch (error) { /* empty */ }
         break;
 
@@ -177,7 +346,7 @@ const WebRTCMiddleware: Middleware = (store) => {
               direction: 'sendonly',
             });
           }
-          await negotiate()
+          // await negotiate()
         } catch (error) { /* empty */ }
         break;
 
@@ -194,6 +363,7 @@ const WebRTCMiddleware: Middleware = (store) => {
         audio = null
         peerConnection?.close()
         peerConnection = null;
+        currentChannel.leave();
         store.dispatch(setRemoteStreams([]));
         store.dispatch(setLocalStream(null))
         break;
