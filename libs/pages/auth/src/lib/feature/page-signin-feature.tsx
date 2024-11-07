@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useRef } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
 import { PageSignin } from '../ui/page-signin'
 import { useNavigate } from 'react-router-dom'
@@ -6,6 +6,8 @@ import { LoginRequest } from '@beep/contracts'
 import { AppDispatch } from '@beep/store'
 import { useDispatch, useSelector } from 'react-redux'
 import { getUserState, useLoginMutation, userActions } from '@beep/user'
+import { authenticationActions, useGetGeneratedTokenMutation } from '@beep/authentication'
+import { TransmitSingleton } from '@beep/transmit'
 
 export function PageSigninFeature() {
   const dispatch = useDispatch<AppDispatch>()
@@ -13,8 +15,26 @@ export function PageSigninFeature() {
   const navigate = useNavigate()
   const [error, setError] = useState('')
   const { isAuthenticated } = useSelector(getUserState)
-  const qrCodeFeatureFlag = false
-  const qrCodeLink = `https://${window.location.hostname}${window.location.port?":":""}${window.location.port}/authentication/qrcode`
+  const [getGeneratedToken] = useGetGeneratedTokenMutation()
+  const qrCodeFeatureFlag = true
+  const qrCodeLink = useRef("")
+
+  useEffect(() => {
+    getGeneratedToken(null)
+      .unwrap()
+      .then((data) => {
+        qrCodeLink.current = `https://${window.location.hostname}${
+          window.location.port ? ':' : ''
+          }${window.location.port}/authentication/qrcode/${data.token}`
+        dispatch(authenticationActions.setQRCodeToken(data.token))
+      })
+    return () => {
+      qrCodeLink.current = ''
+    }
+  }, [getGeneratedToken, dispatch])
+
+
+
   const methods = useForm({
     mode: 'onChange',
   })
@@ -57,7 +77,7 @@ export function PageSigninFeature() {
         toForgetPassword={toForgetPassword}
         error={error}
         qrCodeFeatureFlag={qrCodeFeatureFlag}
-        qrCodeLink={qrCodeLink}
+        qrCodeLink={qrCodeLink.current}
       />
     </FormProvider>
   )
