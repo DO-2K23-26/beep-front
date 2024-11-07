@@ -8,10 +8,6 @@ export function PageQRCodeVerifyFeature() {
   const [validateToken] = useValidateTokenMutation()
   useEffect(() => {
     validateToken({ token })
-      .unwrap()
-      .then((data) => {
-        console.log(data)
-      })
   }, [validateToken])
   return <PageQRCodeVerify />
 }

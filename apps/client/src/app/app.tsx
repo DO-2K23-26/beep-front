@@ -49,7 +49,7 @@ export default function App() {
     dispatch(userActions.updateIsLoading(false))
     setInterval(() => {
       refresh()
-    }, 60 * 1000)
+    }, 60 * 1000 * 12)
   }, [refresh, dispatch])
 
   if (!isLoading && !isAuthenticated && !pathname.includes('authentication')) {
