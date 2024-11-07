@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef } from 'react'
+import { useEffect, useState } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
 import { PageSignin } from '../ui/page-signin'
 import { useNavigate } from 'react-router-dom'
@@ -6,34 +6,59 @@ import { LoginRequest } from '@beep/contracts'
 import { AppDispatch } from '@beep/store'
 import { useDispatch, useSelector } from 'react-redux'
 import { getUserState, useLoginMutation, userActions } from '@beep/user'
-import { authenticationActions, useGetGeneratedTokenMutation } from '@beep/authentication'
+import {
+  authenticationActions,
+  useLazyGetGeneratedTokenQuery,
+} from '@beep/authentication'
 import { TransmitSingleton } from '@beep/transmit'
+import toast from 'react-hot-toast'
 
 export function PageSigninFeature() {
   const dispatch = useDispatch<AppDispatch>()
-  const [login, result] = useLoginMutation()
+  const [login, loginResult] = useLoginMutation()
   const navigate = useNavigate()
   const [error, setError] = useState('')
   const { isAuthenticated } = useSelector(getUserState)
-  const [getGeneratedToken] = useGetGeneratedTokenMutation()
+  const [generateToken, tokenResult] = useLazyGetGeneratedTokenQuery()
   const qrCodeFeatureFlag = true
-  const qrCodeLink = useRef("")
+  const [qrCodeLink, setQrCodeLink] = useState('')
 
   useEffect(() => {
-    getGeneratedToken(null)
-      .unwrap()
-      .then((data) => {
-        qrCodeLink.current = `https://${window.location.hostname}${
-          window.location.port ? ':' : ''
-          }${window.location.port}/authentication/qrcode/${data.token}`
-        dispatch(authenticationActions.setQRCodeToken(data.token))
-      })
-    return () => {
-      qrCodeLink.current = ''
+    generateToken(null, true)
+  }, [generateToken])
+
+  useEffect(() => {
+    if (!tokenResult.isLoading && tokenResult.data) {
+      const newQrCodeLink = `${window.location.protocol}//${
+        window.location.hostname
+      }${window.location.port ? ':' : ''}${
+        window.location.port
+        }/authentication/qrcode/${tokenResult.data.token}`
+
+      setQrCodeLink(newQrCodeLink)
+      TransmitSingleton.subscribe(
+        `qr-code/${tokenResult.data.token}`,
+        (message) => {
+          const data = JSON.parse(message)
+          if (data.status === 'success') {
+            dispatch(
+              userActions.setTokens({
+                accessToken: data.accessToken,
+                refreshToken: data.refreshToken,
+              })
+            )
+            toast.success(`Successfully logged in !`)
+          }
+        }
+      )
+      dispatch(authenticationActions.setQRCodeToken(tokenResult.data.token))
     }
-  }, [getGeneratedToken, dispatch])
-
-
+    return () => {
+      TransmitSingleton.unsubscribeChannel(
+        `qr-code/${tokenResult?.data?.token}`
+      )
+    }
+  }, [tokenResult, dispatch])
 
   const methods = useForm({
     mode: 'onChange',
@@ -52,15 +77,18 @@ export function PageSigninFeature() {
   })
 
   useEffect(() => {
-    if (result?.isSuccess && result?.status === 'fulfilled') {
-      sessionStorage.setItem('accessToken', result.data.tokens.accessToken)
-      sessionStorage.setItem('refreshToken', result.data.tokens.refreshToken)
+    if (loginResult?.isSuccess && loginResult?.status === 'fulfilled') {
+      sessionStorage.setItem('accessToken', loginResult.data.tokens.accessToken)
+      sessionStorage.setItem(
+        'refreshToken',
+        loginResult.data.tokens.refreshToken
+      )
       dispatch(userActions.updateIsLoading(false))
-      dispatch(userActions.setTokens(result.data.tokens))
-    } else if (result?.isError) {
+      dispatch(userActions.setTokens(loginResult.data.tokens))
+    } else if (loginResult?.isError) {
       setError('Email/password incorrect')
     }
-  }, [result, dispatch])
+  }, [loginResult, dispatch])
 
   useEffect(() => {
     if (isAuthenticated) {
@@ -72,12 +100,12 @@ export function PageSigninFeature() {
     <FormProvider {...methods}>
       <PageSignin
         onSubmit={onSubmit}
-        loading={result.isLoading}
+        loading={loginResult.isLoading}
         toSignup={toSignup}
         toForgetPassword={toForgetPassword}
         error={error}
         qrCodeFeatureFlag={qrCodeFeatureFlag}
-        qrCodeLink={qrCodeLink.current}
+        qrCodeLink={qrCodeLink}
       />
     </FormProvider>
   )

@@ -13,31 +13,28 @@ export const authApi = createApi({
   baseQuery,
   tagTypes: ['message', 'users'],
   endpoints: (builder) => ({
-    getGeneratedToken: builder.mutation<{ token: string }, null>({
+    getGeneratedToken: builder.query<{ token: string }, null>({
       query: (request) => ({
         url: `/authentication/qr-code`,
         method: 'GET',
+        keepUnusedDataFor: 5,
       }),
     }),
-    validateToken: builder.mutation<{ isValidated: boolean }, { token: string }>({
+    validateToken: builder.mutation<
+      { isValidated: boolean },
+      { token: string }
+    >({
       query: (request) => {
         return {
           url: `/authentication/qr-code/${request.token}`,
           method: 'POST',
-        };
+        }
       },
-    }),
-    retrieveJwts: builder.query<{ isValid: boolean; accessToken: string; refreshToken: string }, { token: string }>({
-      query: (request) => ({
-        url: `/authentication/qr-code/${request.token}`,
-        method: 'GET',
-      }),
     }),
   }),
 })
 
 export const {
-  useGetGeneratedTokenMutation,
+  useLazyGetGeneratedTokenQuery,
   useValidateTokenMutation,
-  useRetrieveJwtsQuery,
 } = authApi
