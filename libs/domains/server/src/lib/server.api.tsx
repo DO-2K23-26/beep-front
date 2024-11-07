@@ -25,8 +25,8 @@ const baseQuery = fetchBaseQuery({
   baseUrl: backendUrl,
   credentials: 'include',
   prepareHeaders: (headers, { getState }) => {
-    const { user } = getState() as RootState
-    headers.set('Authorization', `Bearer ${user.tokens.accessToken}`)
+    // const { user } = getState() as RootState
+    // headers.set('Authorization', `Bearer ${user.tokens.accessToken}`)
   },
 })
 

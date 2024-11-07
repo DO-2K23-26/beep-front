@@ -1,5 +1,5 @@
 import { getUserState, useRefreshMutation, userActions } from '@beep/user'
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Layout } from '@beep/pages/layout'
 import {
@@ -14,75 +14,43 @@ import { ROUTER } from './router.main'
 import { Toaster } from 'react-hot-toast'
 import { AppDispatch } from '@beep/store'
 import { LoadingScreen } from '@beep/ui'
+import { backendUrl } from '@beep/contracts'
 
 export default function App() {
-  const { tokens, isLoading, isAuthenticated, payload } =
-    useSelector(getUserState)
-  const navigate = useNavigate()
+  const { isLoading, isAuthenticated, payload } = useSelector(getUserState)
   const dispatch = useDispatch<AppDispatch>()
-  const [tokenRefreshInterval, setTokenRefreshInterval] =
-    useState<NodeJS.Timeout>()
-  const [refresh, result] = useRefreshMutation()
+  useState<NodeJS.Timeout>()
   const { pathname } = useLocation()
 
-  useEffect(() => {
-    const accessToken = sessionStorage.getItem('accessToken')
-    const refreshToken = sessionStorage.getItem('refreshToken')
-
-    if (accessToken && refreshToken) {
-      dispatch(userActions.setTokens({ accessToken, refreshToken }))
-    }
-
-    dispatch(userActions.updateIsLoading(false))
-  }, [])
-
-  useEffect(() => {
-    if (tokens && tokens.refreshToken && tokens.accessToken) {
-      const interval = setInterval(checkTokenValidityAndRefresh, 300000)
-      setTokenRefreshInterval(interval)
-    }
-
-    return () => {
-      if (tokenRefreshInterval) {
-        clearInterval(tokenRefreshInterval)
-      }
-    }
-  }, [tokens])
-
-  async function checkTokenValidityAndRefresh() {
-    if (tokens.accessToken && tokens.refreshToken) {
-      const tokenExpiration = new Date(
-        JSON.parse(atob(tokens.accessToken.split('.')[1])).exp * 1000
-      )
-      const currentTime = new Date()
-      if (tokenExpiration < currentTime) {
-        try {
-          refresh({ refreshToken: tokens.refreshToken })
-        } catch (e) {
-          sessionStorage.removeItem('accessToken')
-          sessionStorage.removeItem('refreshToken')
+  const refresh = useCallback(() => {
+    fetch(backendUrl + '/authentication/refresh', {
+      method: 'POST',
+      credentials: 'include',
+    })
+      .then((res) => {
+        if (res.status === 200) {
+          return res.json()
+        } else {
+          throw new Error('Failed to refresh token')
         }
-      }
-    }
-  }
+      })
+      .then((data) => {
+        dispatch(
+          userActions.setTokens({
+            accessToken: data.accessToken,
+            refreshToken: data.refreshToken,
+          })
+        )
+      })
+  }, [dispatch])
 
   useEffect(() => {
-    if (result) {
-      if (!result.isLoading && result.data) {
-        dispatch(userActions.setTokens(result.data))
-        sessionStorage.setItem('accessToken', result.data.accessToken)
-        sessionStorage.setItem('refreshToken', result.data.refreshToken)
-      }
-
-      if (!result.isLoading && result.isError) {
-        sessionStorage.removeItem('accessToken')
-        sessionStorage.removeItem('refreshToken')
-
-        dispatch(userActions.setTokens({}))
-        navigate('/authentication/signin')
-      }
-    }
-  }, [result])
+    refresh()
+    dispatch(userActions.updateIsLoading(false))
+    setInterval(() => {
+      refresh()
+    }, 60 * 1000 * 12)
+  }, [refresh, dispatch])
 
   if (!isLoading && !isAuthenticated && !pathname.includes('authentication')) {
     return <Navigate to={'/authentication/signin'} replace />

@@ -1,4 +1,9 @@
-import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
+import {
+  BaseQueryApi,
+  createApi,
+  FetchArgs,
+  fetchBaseQuery,
+} from '@reduxjs/toolkit/query/react'
 // eslint-disable-next-line @nx/enforce-module-boundaries
 import {
   backendUrl,
@@ -16,24 +21,55 @@ import {
   UpdateUserResponse,
   UserConnectedEntity,
   UserDisplayedEntity,
-  UserEntity
+  UserEntity,
 } from '@beep/contracts'
 // eslint-disable-next-line @nx/enforce-module-boundaries
 import { RootState } from '@beep/store'
+import {
+  BaseQueryArg,
+  BaseQueryExtraOptions,
+} from '@reduxjs/toolkit/dist/query/baseQueryTypes'
+
+const baseQuery = fetchBaseQuery({
+  baseUrl: backendUrl,
+  credentials: 'include',
+  prepareHeaders: (headers, { getState }) => {
+    // const { user } = getState() as RootState
+    // if (user?.tokens?.accessToken) {
+    //   headers.set('Authorization', `Bearer ${user.tokens.accessToken}`)
+    // }
+    return headers
+  },
+})
+export const baseQueryWithReauth = async (
+  args: BaseQueryArg<any>,
+  api: BaseQueryApi,
+  extraOptions: object
+) => {
+  const result = await baseQuery(args, api, extraOptions)
+
+  // Check if we got a 401 response
+  if (result.error && result.error.status === 401) {
+    // Handle the 401 status code - for example, dispatch a logout action
+    // Or you can navigate to the login page (if using react-router)
+    const refreshResult = await fetch(backendUrl + '/authentication/refresh', {
+      method: 'POST',
+      credentials: 'include',
+    })
+
+    if (refreshResult.ok) {
+      // Retry the original request
+      // result = await baseQuery(args, api, extraOptions)
+      window.location.reload()
+    }
+  }
+
+  return result
+}
 
 export const userApi = createApi({
   reducerPath: 'userApi',
-  baseQuery: fetchBaseQuery({
-    baseUrl: backendUrl,
-    credentials: 'include',
-    prepareHeaders: (headers, { getState }) => {
-      const { user } = getState() as RootState
-      if (user?.tokens?.accessToken) {
-        headers.set('Authorization', `Bearer ${user.tokens.accessToken}`)
-      }
-      return headers
-    },
-  }),
+  baseQuery: baseQueryWithReauth,
   tagTypes: ['users', 'profilePicture', 'me', 'servers'],
   endpoints: (builder) => ({
     login: builder.mutation<LoginResponse, LoginRequest>({
@@ -155,7 +191,6 @@ export const userApi = createApi({
         body: payload,
       }),
     }),
-
   }),
 })
 
