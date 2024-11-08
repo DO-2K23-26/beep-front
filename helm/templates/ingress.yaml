@@ -8,6 +8,14 @@ metadata:
     {{- toYaml .Values.ingress.annotations | nindent 4 }}
 spec:
   rules:
+    {{- if .Values.ingress.tls.enabled }}
+    - tls:
+        hosts:
+          {{- range .Values.ingress.hosts }}
+          - {{ .host }}
+          {{- end }}
+        secretName: {{ printf "%s-tls" (include "beep-frontend-files.fullname" $) }}
+    {{- end }}
     {{- range .Values.ingress.hosts }}
     - host: {{ .host | quote }}
       http:
