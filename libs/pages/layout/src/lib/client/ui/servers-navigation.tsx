@@ -21,7 +21,7 @@ export default function ServersNavigation({
 }: ServersNavigationProps) {
   return (
     <div className="bg-violet-500 flex flex-col w-min p-6 ">
-      <div className="pb-12">
+      <div className="pb-6 h-fit">
         <Button
           onClick={onPrivateMessage}
           style={ButtonStyle.SQUARE}
@@ -32,6 +32,8 @@ export default function ServersNavigation({
       </div>
       <div className="flex flex-col gap-6 flex-grow overflow-y-scroll no-scrollbar scroll-smooth">
         <ListServers servers={servers} />
+      </div>
+      <div className="pt-6 flex flex-col gap-6 h-fit">
         <Button
           style={ButtonStyle.SQUARE}
           className="!bg-violet-50"
@@ -48,8 +50,6 @@ export default function ServersNavigation({
             <Icon name="lucide:compass" className="w-5 h-5" />
           </Button>
         </Link>
-      </div>
-      <div className="pt-12">
         <Button
           onClick={onLogout}
           style={ButtonStyle.SQUARE}

@@ -26,7 +26,7 @@ export default function DisplayServer({
           className="aspect-square rounded-xl hover:rounded-2xl transition-all object-cover"
         />
       ) : (
-        <p>{server.name}</p>
+        <p>{server.name.charAt(0).toUpperCase()}</p>
       )}
     </Button>
   )

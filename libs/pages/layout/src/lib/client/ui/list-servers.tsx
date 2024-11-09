@@ -7,12 +7,11 @@ export interface ListServersProps {
 
 export function ListServers({ servers }: ListServersProps) {
   return servers ? (
-    // eslint-disable-next-line react/jsx-no-useless-fragment
-    <>
+    <div className='h-fit flex flex-col gap-6'>
       {Array.isArray(servers) &&
         servers.map((server) => (
           <DisplayServerFeature key={server.id} server={server} />
         ))}
-    </>
+    </div>
   ) : null
 }
