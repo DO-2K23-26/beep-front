@@ -21,7 +21,7 @@ export function DropdownMenuItemCustom({
   const focusedColor = warning ? colors.warning : colors.default
   return (
     <div
-      className={`flex items-center gap-2 pl-2 py-1 pr-9 ${className} ${focusedColor} rounded-md  transition-colors cursor-pointer`}
+      className={`flex items-center gap-2 px-2 py-1 w-full ${className} ${focusedColor} rounded-md  transition-colors cursor-pointer`}
       onClick={onClick}
     >
       {iconName && <Icon className={`${focusedColor}`} name={iconName} />}

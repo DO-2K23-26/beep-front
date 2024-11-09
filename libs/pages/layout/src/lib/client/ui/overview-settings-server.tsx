@@ -4,13 +4,7 @@ import {
   useTransmitPictureQuery,
   useUpdateServerMutation,
 } from '@beep/server'
-import {
-  Button,
-  ButtonStyle,
-  InputBannerSettings,
-  InputPictureSettings,
-  InputText,
-} from '@beep/ui'
+import { Button, ButtonStyle, InputText, InputImageSettings } from '@beep/ui'
 import { skipToken } from '@reduxjs/toolkit/query'
 import { useState } from 'react'
 import toast from 'react-hot-toast'
@@ -59,19 +53,21 @@ export function OverviewSettingsServer({
       </h3>
       <div className="flex gap-10 items-center py-10">
         <div className="w-1/3 h-60 flex justify-center items-center">
-          <InputPictureSettings
-            name="picture"
-            label="Add a picture."
+          <InputImageSettings
+            type="picture"
+            label="Upload profile picture"
+            name="profile"
             serverId={server.id}
-            initialPicture={icon}
+            initialImage={icon}
           />
         </div>
         <div className="w-2/3 h-60">
-          <InputBannerSettings
+          <InputImageSettings
+            type="banner"
+            label="Upload banner"
             name="banner"
-            label="Add a banner."
             serverId={server.id}
-            initialBanner={banner}
+            initialImage={banner}
           />
         </div>
       </div>
@@ -85,7 +81,7 @@ export function OverviewSettingsServer({
             label="Server name"
             type="text"
             name="server-name"
-            className="!rounded-lg min-h-[40px] w-1/3 "
+            className="!rounded-lg min-h-[40px] w-full "
             value={serverName}
             onChange={(e) => setServerName(e.target.value)}
             disabled={!isAdmin}
@@ -99,7 +95,7 @@ export function OverviewSettingsServer({
             label="Server description"
             type="text"
             name="server-description"
-            className="w-2/3 !rounded-lg min-h-[40px]"
+            className="!rounded-lg min-h-[40px] w-full"
             value={serverDescription}
             onChange={(e) => setServerDescription(e.target.value)}
             disabled={!isAdmin}
@@ -108,7 +104,7 @@ export function OverviewSettingsServer({
       </div>
       {isAdmin && (
         <Button style={ButtonStyle.BASIC} onClick={handleSave}>
-          SAVE
+          Save
         </Button>
       )}
     </div>

@@ -12,7 +12,7 @@ export function ModifyTextSetting({
   modalButton: modal,
 }: ModifyTextSettingProps) {
   return (
-    <div className="flex flex-row justify-between items-center">
+    <div className="flex max-[500px]:flex-col gap-4 sm:gap-0 flex-row justify-between items-center">
       <div className="flex flex-col">
         <p className="text-sm font-semibold">{title}</p>
         <p className="text-sm">{value}</p>

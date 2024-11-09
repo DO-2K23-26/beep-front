@@ -19,9 +19,9 @@ export function DialogCloseButton({
 }: DialogCloseButtonProps) {
   return (
     <FullScreenDialog>
-      
+
       <FullScreenDialogTrigger asChild>
-        <button className="cursor-pointer">{children}</button>
+        <button className="cursor-pointer w-full">{children}</button>
       </FullScreenDialogTrigger>
       <VisuallyHidden.Root>
         <FullScreenDialogHeader hidden>

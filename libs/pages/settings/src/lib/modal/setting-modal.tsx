@@ -1,9 +1,6 @@
 import { ReactNode, useState } from 'react'
 import { ButtonNavigationList } from '../components/button-navigation-list'
-import {
-  SettingBodyWidth,
-  SubSettings,
-} from '../models/setting-navigation-models'
+import { SubSettings } from '../models/setting-navigation-models'
 
 export interface SettingsUserModalProps {
   settings: SubSettings[]
@@ -20,9 +17,8 @@ export function SettingsModal({ settings }: SettingsUserModalProps) {
     for (const subSetting of subSettings) {
       for (const setting of subSetting.settings) {
         if (setting.title === title) {
-          const width = setting.settingBodySize ?? SettingBodyWidth.S
           return (
-            <div className={`flex flex-col pt-12 ${width}`}>
+            <div className={`flex flex-col pt-12 w-10/12 md:w-8/12 xl:w-6/12 `}>
               {setting.settingComponent}
             </div>
           )
@@ -33,7 +29,7 @@ export function SettingsModal({ settings }: SettingsUserModalProps) {
   }
   return (
     <div className="flex flex-row">
-      <div className="basis-1/6 bg-violet-300 flex flex-col h-[100dvh] pt-12 px-12  divide-y-1 items-end  overflow-y-auto">
+      <div className=" bg-violet-300 flex flex-col h-dvh p-4 md:p-12 min-w-fit items-end  overflow-y-auto">
         {settings.map((subSetting) => {
           return (
             <ButtonNavigationList
@@ -45,7 +41,7 @@ export function SettingsModal({ settings }: SettingsUserModalProps) {
           )
         })}
       </div>
-      <div className="basis-5/6 bg-violet-200 flex flex-col h-[100dvh] items-center overflow-y-auto">
+      <div className="w-full bg-violet-200 flex flex-col items-center">
         {findSettingComponentByTitle(settings, selectedSetting)}
       </div>
     </div>
