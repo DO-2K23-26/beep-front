@@ -3,8 +3,12 @@ import { skipToken } from '@reduxjs/toolkit/query'
 import { useEffect } from 'react'
 import { useNavigate, useParams } from 'react-router'
 import { EmptyServerPage } from '../ui/empty-server-page'
+import { useDispatch } from 'react-redux'
+import { AppDispatch } from '@beep/store'
+import { responsiveActions } from '@beep/responsive'
 
 export function EmptyServerPageFeature() {
+  const dispatch = useDispatch<AppDispatch>()
   const navigate = useNavigate()
   const params = useParams()
   const { data: channels } = useGetServerChannelsQuery(
@@ -23,5 +27,14 @@ export function EmptyServerPageFeature() {
     }
   }, [channels, params, navigate])
 
-  return <EmptyServerPage />
+  const hideRightDiv = () => {
+    dispatch(responsiveActions.manageRightPane())
+  }
+  const hideLeftDiv = () => {
+    dispatch(responsiveActions.manageLeftPane())
+  }
+
+  return (
+    <EmptyServerPage hideRightDiv={hideRightDiv} hideLeftDiv={hideLeftDiv} />
+  )
 }
