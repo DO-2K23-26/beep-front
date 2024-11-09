@@ -18,10 +18,10 @@ export interface BadgeProps {
 export function Badge({ type, title, className, onClick }: BadgeProps) {
   return (
     <div
-      className={`${type} ${className} text-xs leading-none font-semibold text-white rounded-full py-[6px] px-2 truncate w-min`}
+      className={`${type} ${className} lg:h-fit text-xs leading-none font-semibold text-white rounded-full lg:py-[6px] lg:px-2 truncate p-[0.40rem] w-2 h-2 lg:w-min`}
       onClick={onClick}
     >
-      <div className="hidden md:block truncate">{title}</div>
+      <div className="hidden lg:block truncate">{title}</div>
     </div>
   )
 }
