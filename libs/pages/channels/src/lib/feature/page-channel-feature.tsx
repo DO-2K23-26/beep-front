@@ -321,7 +321,12 @@ export function PageChannelFeature() {
       const signal: SignalMessage = JSON.parse(data)
       switch (signal.action) {
         case ActionSignalMessage.create:
-          dispatch(messageActions.create(signal.message))
+          dispatch(
+            messageActions.create({
+              message: signal.message,
+              transmitClientId: signal.transmitClientId,
+            })
+          )
           break
         case ActionSignalMessage.update:
           dispatch(messageActions.update(signal.message))

@@ -1,8 +1,10 @@
 /* eslint-disable @nx/enforce-module-boundaries */
-import { MessageEntity, MessageState, PaginatedMessage, ReplaceMessage, SendMessageForm, SyncMessages } from '@beep/contracts';
+import { CreateMessage, MessageEntity, MessageState, PaginatedMessage, ReplaceMessage, SendMessageForm, SyncMessages } from '@beep/contracts';
 import { RootState } from '@beep/store';
 import { createSlice } from '@reduxjs/toolkit';
 import { sortMessagesByCreation, toFormData, toMessage } from './utils';
+import { Transmit } from '@adonisjs/transmit-client';
+import { TransmitSingleton } from '@beep/transmit';
 
 export const MESSAGE_KEY = 'message'
 
@@ -51,12 +53,12 @@ export const messageSlice = createSlice({
       state.channels_messages[payload.message.channelId] = sortMessagesByCreation(currentMessages);
     },
     // This method is used to handle new messages from the SSE connection
-    create(state, { payload }: { payload: MessageEntity }) {
-      const currentMessages = state.channels_messages[payload.channelId] || [];
-      if (payload.createdAt || payload.isSentByCurrentClient) {
-        currentMessages.push(payload);
+    create(state, { payload }: { payload: CreateMessage }) {
+      const currentMessages = state.channels_messages[payload.message.channelId] || [];
+      if ((payload.message.createdAt || payload.message.isSentByCurrentClient) && payload.transmitClientId !== TransmitSingleton.getInstance().uid) {
+        currentMessages.push(payload.message);
       }
-      state.channels_messages[payload.channelId] = sortMessagesByCreation(currentMessages);
+      state.channels_messages[payload.message.channelId] = sortMessagesByCreation(currentMessages);
     },
     update(state, { payload }: { payload: MessageEntity }) {
       const currentMessages = state.channels_messages[payload.channelId] || [];

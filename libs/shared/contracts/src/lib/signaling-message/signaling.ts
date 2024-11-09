@@ -9,4 +9,5 @@ export enum ActionSignalMessage {
 export interface SignalMessage {
   action: ActionSignalMessage
   message: MessageEntity
+  transmitClientId: string
 }

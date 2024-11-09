@@ -11,7 +11,7 @@ import {
   backendUrl,
 } from '@beep/contracts'
 import { messageActions } from '@beep/message'
-import { RootState } from '@beep/store'
+import { TransmitSingleton } from '@beep/transmit'
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 
 const baseQuery = fetchBaseQuery({
@@ -60,12 +60,15 @@ export const channelApi = createApi({
       },
     }),
     createMessage: builder.mutation<MessageEntity, CreateMessageRequest>({
-      query: (request) => ({
-        url: `/channels/${request.channelId}/messages`,
-        method: 'POST',
-        body: request.body,
-        formData: true,
-      }),
+      query: (request) => {
+        const uid = TransmitSingleton.getInstance().uid
+        return ({
+          url: `/channels/${request.channelId}/messages?transmitClientId=${uid}`,
+          method: 'POST',
+          body: request.body,
+          formData: true,
+        })
+      },
     }),
     getOneMessage: builder.query<MessageEntity, ShowMessageRequest>({
       query: (request) => ({
@@ -128,9 +131,9 @@ export const channelApi = createApi({
       providesTags: (result, _error, req) =>
         result
           ? [
-              ...result.map(({ id }) => ({ type: 'message' as const, id: id })),
-              { type: 'message', id: `LIST-PINNED-${req.channelId}` },
-            ]
+            ...result.map(({ id }) => ({ type: 'message' as const, id: id })),
+            { type: 'message', id: `LIST-PINNED-${req.channelId}` },
+          ]
           : [{ type: 'message', id: `LIST-PINNED-${req}` }],
     }),
   }),
