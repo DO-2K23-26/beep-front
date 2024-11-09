@@ -9,7 +9,7 @@ export function EmptyServerPage() {
           className="size-20"
           color=""
         ></Icon>
-        <div className="text-2xl font-semibold text-violet-950">
+        <div className="text-2xl font-semibold text-violet-950 text-center">
           NO TEXT CHANNELS
         </div>
         <div className="text-2xl  text-violet-950 text-center">
