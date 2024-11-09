@@ -176,6 +176,10 @@ export default function MessageFeature({
     return false
   }
 
+  function containsUrl(): boolean {
+    return /https?:\/\/[^\s]+/.test(message.content)
+  }
+
   useEffect(() => {
     const pinning = message.pinned ? 'pin' : 'unpin'
     if (result.error) {
@@ -186,7 +190,7 @@ export default function MessageFeature({
     } else if (result.isSuccess) {
       toast.success(`Message ${pinning}!`)
     }
-  }, [result])
+  }, [message.pinned, result])
 
   const onUpdateMessageSubmit = methods.handleSubmit((data) => {
     if (
@@ -276,6 +280,7 @@ export default function MessageFeature({
         isHighlighted={message.content.includes('@$' + userId)}
         onPin={onPin}
         onReply={onReply !== undefined ? () => onReply(message) : null}
+        containsUrl={containsUrl}
       />
     </FormProvider>
   )
