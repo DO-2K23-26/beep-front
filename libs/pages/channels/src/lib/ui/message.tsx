@@ -9,6 +9,7 @@ import AttachmentFeature from '../feature/attachment-feature'
 import { config, markdownComponents } from '../utils/markdown-config'
 import { preprocessMarkdown } from '../utils/markdown-parser'
 import MediaEmbed from './media-embed'
+import { renderTextWithLinks } from '../utils/links-utils'
 
 interface MessageProps {
   message: MessageEntity
@@ -207,8 +208,10 @@ export default function Message({
               }
             )}
           >
-            <div className={'text-xs font-semibold break-all'}>
-              {renderedMessage}
+            <div className="message-content mt-2">
+              {containsUrl()
+                ? renderTextWithLinks(message.content)
+                : renderedMessage}
             </div>
             {containsUrl() && <MediaEmbed text={message.content} />}
             {message.attachments?.map((attachment, i) => (

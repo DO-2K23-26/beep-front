@@ -90,11 +90,11 @@ const MediaEmbed: React.FC<MediaEmbedProps> = ({ text }) => {
             </blockquote>
           )}
 
-          {media.type === 'else' && (
+          {/* {media.type === 'else' && (
             <blockquote className="url">
               <a href={`${media.id}`}>Click to access the URL</a>
             </blockquote>
-          )}
+          )} */}
         </div>
       ))}
     </div>
