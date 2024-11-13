@@ -1,4 +1,4 @@
-import { Button, InputText } from '@beep/ui'
+import { Button, InputText, LoaderSpinner, LoadingScreen } from '@beep/ui'
 import { KeyboardEventHandler } from 'react'
 import { Controller, useFormContext } from 'react-hook-form'
 import { Link } from 'react-router-dom'
@@ -121,12 +121,13 @@ export function PageSignin({
         </div>
         {qrCodeFeatureFlag && (
           <>
-            <hr className="border-r-2 border-[#9382C2] h-[300px]" />
-            <div className="flex flex-col gap-5 justify-center h-full p-4">
+            <hr className="lg:flex border-r-2 border-[#9382C2] h-[300px] hidden" />
+            <div className="lg:flex flex-col gap-5 justify-center h-full p-4 hidden">
               <p>QRCode Login</p>
-                <div className="flex flex-row gap-1 p-4 bg-white !rounded-lg">
-                  <QRCodeSVG value={qrCodeLink} />
-                </div>
+              <div className="flex flex-row gap-1 p-4 bg-white !rounded-lg h-[160px] w-[160px]">
+                {qrCodeLink && <QRCodeSVG value={qrCodeLink} />}
+                {!qrCodeLink && <div className='flex justify-center items-center w-[100%]'><LoaderSpinner /></div>}
+              </div>
             </div>
           </>
         )}

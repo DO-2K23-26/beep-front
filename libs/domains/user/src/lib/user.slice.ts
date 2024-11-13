@@ -23,14 +23,19 @@ export const userSlice = createSlice({
     setTokens(
       state,
       payload: PayloadAction<{
-        accessToken?: string | null
-        refreshToken?: string | null
+      accessToken?: string | null
+      refreshToken?: string | null
       }>
     ) {
       if (payload.payload.accessToken) {
-        state.payload = JSON.parse(
-          atob(payload.payload.accessToken?.split('.')[1])
-        )
+      state.payload = JSON.parse(
+        atob(payload.payload.accessToken?.split('.')[1])
+      )
+      document.cookie = `beep.access_token=${payload.payload.accessToken}; path=/;`
+      }
+
+      if (payload.payload.refreshToken) {
+      document.cookie = `beep.refresh_token=${payload.payload.refreshToken}; path=/;`
       }
 
       state.tokens = payload.payload

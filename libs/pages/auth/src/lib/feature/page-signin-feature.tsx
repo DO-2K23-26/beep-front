@@ -2,20 +2,22 @@ import { useEffect, useState } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
 import { PageSignin } from '../ui/page-signin'
 import { useNavigate } from 'react-router-dom'
-import { LoginRequest } from '@beep/contracts'
+import { LoginRequest, LoginWithQRCodeRequest, backendUrl } from '@beep/contracts'
 import { AppDispatch } from '@beep/store'
 import { useDispatch, useSelector } from 'react-redux'
-import { getUserState, useLoginMutation, userActions } from '@beep/user'
+import { getUserState, useLoginMutation, useLoginWithQRCodeMutation, userActions } from '@beep/user'
 import {
   authenticationActions,
   useLazyGetGeneratedTokenQuery,
 } from '@beep/authentication'
 import { TransmitSingleton } from '@beep/transmit'
 import toast from 'react-hot-toast'
+import { Transmit } from '@adonisjs/transmit-client'
 
 export function PageSigninFeature() {
   const dispatch = useDispatch<AppDispatch>()
   const [login, loginResult] = useLoginMutation()
+  const [loginWithQRCode, loginWithQRCodeResult] = useLoginWithQRCodeMutation()
   const navigate = useNavigate()
   const [error, setError] = useState('')
   const { isAuthenticated } = useSelector(getUserState)
@@ -27,36 +29,43 @@ export function PageSigninFeature() {
     generateToken(null, true)
   }, [generateToken])
 
-  useEffect(() => {
-    if (!tokenResult.isLoading && tokenResult.data) {
-      const newQrCodeLink = `${window.location.protocol}//${
-        window.location.hostname
-      }${window.location.port ? ':' : ''}${
-        window.location.port
-        }/authentication/qrcode/${tokenResult.data.token}`
+  // Use async/await to handle subscription
+  const handleSubscription = async (token: string) => {
+    const transmit = new Transmit({
+      baseUrl: backendUrl,
+      uidGenerator: () => Math.random().toString(36).substring(7)
+    })
+
+    const subscription = transmit.subscription(`qr-code/${token}`)
+    await subscription.create() // Wait for the subscription to be created
+
+    subscription.onMessage((passKey: string) => {
+      loginWithQRCode({token: token, passKey: passKey} as LoginWithQRCodeRequest)
+      toast.success('Successfully logged in!')
+    })
+
+    if (subscription.isCreated) {
+      const newQrCodeLink = `${window.location.protocol}//${window.location.hostname
+        }${window.location.port ? ':' : ''}${window.location.port
+        }/authentication/qrcode/${token}`
 
       setQrCodeLink(newQrCodeLink)
-      TransmitSingleton.subscribe(
-        `qr-code/${tokenResult.data.token}`,
-        (message) => {
-          const data = JSON.parse(message)
-          if (data.status === 'success') {
-            dispatch(
-              userActions.setTokens({
-                accessToken: data.accessToken,
-                refreshToken: data.refreshToken,
-              })
-            )
-            toast.success(`Successfully logged in !`)
-          }
-        }
-      )
-      dispatch(authenticationActions.setQRCodeToken(tokenResult.data.token))
+      dispatch(authenticationActions.setQRCodeToken(token))
     }
+  }
+
+  useEffect(() => {
+    if (tokenResult.data) {
+      handleSubscription(tokenResult.data.token)
+    }
+
+    // Clean up on unmount
     return () => {
-      TransmitSingleton.unsubscribeChannel(
-        `qr-code/${tokenResult?.data?.token}`
-      )
+      if (tokenResult?.data?.token) {
+        TransmitSingleton.unsubscribeChannel(
+          `qr-code/${tokenResult.data.token}`
+        )
+      }
     }
   }, [tokenResult, dispatch])
 
@@ -91,6 +100,26 @@ export function PageSigninFeature() {
   }, [loginResult, dispatch])
 
   useEffect(() => {
+    if (
+      loginWithQRCodeResult?.isSuccess &&
+      loginWithQRCodeResult?.status === 'fulfilled'
+    ) {
+      sessionStorage.setItem(
+        'accessToken',
+        loginWithQRCodeResult.data.tokens.accessToken
+      )
+      sessionStorage.setItem(
+        'refreshToken',
+        loginWithQRCodeResult.data.tokens.refreshToken
+      )
+      dispatch(userActions.updateIsLoading(false))
+      dispatch(userActions.setTokens(loginWithQRCodeResult.data.tokens))
+    } else if (loginWithQRCodeResult?.isError) {
+      setError('Email/password incorrect')
+    }
+  }, [loginWithQRCodeResult, dispatch])
+
+  useEffect(() => {
     if (isAuthenticated) {
       navigate('/discover')
     }
@@ -105,7 +134,7 @@ export function PageSigninFeature() {
         toForgetPassword={toForgetPassword}
         error={error}
         qrCodeFeatureFlag={qrCodeFeatureFlag}
-        qrCodeLink={qrCodeLink}
+        qrCodeLink={qrCodeLink} // Only pass qrCodeLink if subscribed
       />
     </FormProvider>
   )
