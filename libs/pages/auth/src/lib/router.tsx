@@ -7,7 +7,6 @@ import { PageSignupFeature } from './feature/page-signup-feature'
 import { PageVerifyFeature } from './feature/page-verify-feature'
 import { PageResetPasswordFeature } from './feature/page-reset-password-feature'
 import { PageForgotPasswordFeature } from './feature/page-forgot-password-feature'
-import PageQRCodeVerify from './ui/page-verify-qrcode'
 import { PageQRCodeVerifyFeature } from './feature/page-verify-qrcode-feature'
 
 export const ROUTER_AUTH: Route[] = [

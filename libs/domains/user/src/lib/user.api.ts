@@ -12,6 +12,7 @@ import {
   GetMultipleUsersRequest,
   GetUserRequest,
   LoginRequest,
+  LoginWithQRCodeRequest,
   LoginResponse,
   RefreshRequest,
   RefreshResponse,
@@ -77,6 +78,13 @@ export const userApi = createApi({
         url: '/authentication/signin',
         method: 'POST',
         body: credentials,
+      }),
+    }),
+    loginWithQRCode: builder.mutation<LoginResponse, LoginWithQRCodeRequest>({
+      query: (tokens) => ({
+        url: `/authentication/signin-qr-code`,
+        method: 'POST',
+        body: tokens,
       }),
     }),
     register: builder.mutation<RegisterResponse, FormData>({
@@ -198,6 +206,7 @@ export const {
   useConfirmEmailMutation,
   useGetUsersFromQuery,
   useLoginMutation,
+  useLoginWithQRCodeMutation,
   useSendResetPasswordMailMutation,
   useResetPasswordMutation,
   useRegisterMutation,
