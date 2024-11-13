@@ -65,8 +65,8 @@ export default function CurrentUserFeature() {
         id: userMe.id,
         email: userMe.email,
         username: userMe.username,
-        firstname: userMe.firstname,
-        lastname: userMe.lastname,
+        firstName: userMe.firstName,
+        lastName: userMe.lastName,
         profilePicture: userProfilePicture ?? '/picture.svg',
         verifiedAt: new Date(),
       }
@@ -74,8 +74,8 @@ export default function CurrentUserFeature() {
         id: '1',
         email: 'rapidement@gmail.com',
         username: 'rapidement',
-        firstname: 'Dorian',
-        lastname: 'Grasset',
+        firstName: 'Dorian',
+        lastName: 'Grasset',
         profilePicture: '/picture.svg',
         verifiedAt: new Date(),
       }

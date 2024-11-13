@@ -4,16 +4,24 @@ import { ModifyUsernameEmail } from './modify-username-email'
 interface ModifyProfileCardProps {
   username: string
   email: string
+  firstname: string
+  lastname: string
   usernameButtonModal: ReactNode
   emailButtonModal: ReactNode
   pictureButtonModal: ReactNode
+  firstnameButtonModal: ReactNode
+  lastnameButtonModal: ReactNode
 }
 
 export function ModifyProfileCard({
   username,
   email,
+  firstname,
+  lastname,
   usernameButtonModal,
   emailButtonModal,
+  firstnameButtonModal,
+  lastnameButtonModal,
   pictureButtonModal,
 }: ModifyProfileCardProps) {
   return (
@@ -22,8 +30,12 @@ export function ModifyProfileCard({
       <ModifyUsernameEmail
         username={username}
         email={email}
+        firstname={firstname}
+        lastname={lastname}
         usernameButtonModal={usernameButtonModal}
         emailButtonModal={emailButtonModal}
+        firstnameButtonModal={firstnameButtonModal}
+        lastnameButtonModal={lastnameButtonModal}
       />
     </div>
   )
