@@ -14,7 +14,7 @@ const root = createRoot(container)
 const store = setupStore()
 
 root.render(
-  //<StrictMode>
+  <StrictMode>
     <Provider store={store}>
       <BrowserRouter>
         <TooltipProvider>
@@ -24,5 +24,5 @@ root.render(
         </TooltipProvider>
       </BrowserRouter>
     </Provider>
-  //</StrictMode>
+  </StrictMode>
 )
