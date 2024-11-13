@@ -11,19 +11,11 @@ import { ModifyEmailDialog } from '../components/modify-email-dialog'
 import { ModifyProfileCard } from '../components/modify-profile-card'
 import { ModifyProfilePictureDialog } from '../components/modify-profile-picture-dialog'
 import { ModifyUsernameDialog } from '../components/modify-username-dialog'
-import { ModifyFirstnameDialog } from '../components/modify-firstname-dialog'
-import { ModifyLastnameDialog } from '../components/modify-lastname-dialog'
 
-import { useTranslation } from 'react-i18next'
-
-export function ModifyProfileCardFeature() {
-  const { t } = useTranslation()
-
+export function ModifyUserProfileCardFeature() {
   const [isUsernameModalOpen, setIsUsernameModalOpen] = useState(false)
   const [isEmailModalOpen, setIsEmailModalOpen] = useState(false)
   const [isPictureModalOpen, setIsPictureModalOpen] = useState(false)
-  const [isFirstnameModalOpen, setIsFirstnameModalOpen] = useState(false)
-  const [isLastnameModalOpen, setIsLastnameModalOpen] = useState(false)
   const [newProfilePicture, setNewProfilePicture] = useState<string | null>(
     null
   )
@@ -32,15 +24,14 @@ export function ModifyProfileCardFeature() {
   const { data: userMe } = useGetMeQuery()
   useEffect(() => {
     if (result.isSuccess) {
-      toast.success(t('settings.modify-profile-card.successfull_update'))
+      toast.success('Update successful')
     } else if (result.isError) {
-      toast.error(t('settings.modify-profile-card.error_update'))
+      toast.error('Something went wrong when updating your profile')
     }
   }, [result])
 
-  const errorPictureNotFilled = t(
-    'settings.modify-profile-card.picture_not_filled'
-  )
+  const errorPictureNotFilled =
+    'Choose a picture by clicking on the button first'
   const emailFormController = useForm({
     mode: 'onChange',
     defaultValues: {
@@ -51,20 +42,6 @@ export function ModifyProfileCardFeature() {
     mode: 'onChange',
     defaultValues: {
       username: '',
-    },
-  })
-
-  const firstnameFormController = useForm({
-    mode: 'onChange',
-    defaultValues: {
-      firstname: '',
-    },
-  })
-
-  const lastnameFormController = useForm({
-    mode: 'onChange',
-    defaultValues: {
-      lastname: '',
     },
   })
 
@@ -88,8 +65,6 @@ export function ModifyProfileCardFeature() {
   const { currentData: userProfilePicture } = useFetchProfilePictureQuery(
     userMe?.id ?? skipToken
   )
-
-  //submit
   const handleUsernameSubmit = usernameFormController.handleSubmit((data) => {
     setIsPictureModalOpen(false)
     const formData = new FormData()
@@ -97,22 +72,6 @@ export function ModifyProfileCardFeature() {
     updateMe(formData)
     setIsUsernameModalOpen(false)
     usernameFormController.reset()
-  })
-  const handleFirstnameSubmit = firstnameFormController.handleSubmit((data) => {
-    setIsPictureModalOpen(false)
-    const formData = new FormData()
-    formData.append('firstname', data.firstname)
-    updateMe(formData)
-    setIsFirstnameModalOpen(false)
-    firstnameFormController.reset()
-  })
-  const handleLastnameSubmit = lastnameFormController.handleSubmit((data) => {
-    setIsPictureModalOpen(false)
-    const formData = new FormData()
-    formData.append('lastname', data.lastname)
-    updateMe(formData)
-    setIsUsernameModalOpen(false)
-    lastnameFormController.reset()
   })
   const handleEmailSubmit = emailFormController.handleSubmit((data) => {
     setIsEmailModalOpen(false)
@@ -127,8 +86,6 @@ export function ModifyProfileCardFeature() {
     } else setErrorPictureText(errorPictureNotFilled)
     setNewProfilePicture('')
   })
-
-  //Dialog button
   const usernameChangeButton = (
     <ModifyUsernameDialog
       action={handleUsernameSubmit}
@@ -156,35 +113,13 @@ export function ModifyProfileCardFeature() {
       addProfilePicture={addProfilePicture}
     />
   )
-  const firstnameChangeButton = (
-    <ModifyFirstnameDialog
-      action={handleFirstnameSubmit}
-      isModalOpen={isFirstnameModalOpen}
-      setIsModalOpen={setIsFirstnameModalOpen}
-      firstnameFormController={firstnameFormController}
-    />
-  )
-  const lastnameChangeButton = (
-    <ModifyLastnameDialog
-      action={handleLastnameSubmit}
-      isModalOpen={isLastnameModalOpen}
-      setIsModalOpen={setIsLastnameModalOpen}
-      lastnameFormController={lastnameFormController}
-    />
-  )
-
-  //result that will be seen
   return (
     <ModifyProfileCard
       username={userMe?.username ?? ''}
       usernameButtonModal={usernameChangeButton}
-      pictureButtonModal={pictureChangeButton}
-      firstname={userMe?.firstName ?? ''}
-      firstnameButtonModal={firstnameChangeButton}
-      lastname={userMe?.lastName ?? ''}
-      lastnameButtonModal={lastnameChangeButton}
       email={userMe?.email ?? ''}
       emailButtonModal={emailChangeButton}
+      pictureButtonModal={pictureChangeButton}
     />
   )
 }
