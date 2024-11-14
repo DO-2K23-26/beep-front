@@ -2,7 +2,7 @@ import { Button, DialogComponent, InputText } from '@beep/ui'
 import { Controller, UseFormReturn } from 'react-hook-form'
 
 interface ModifyLastnameDialogProps {
-  lastnameFormController: UseFormReturn<{ lastname: string }, any, undefined>
+  lastnameFormController: UseFormReturn<{ lastName: string }, any, undefined>
   isModalOpen: boolean
   setIsModalOpen: (value: boolean) => void
   action: () => void
@@ -23,13 +23,13 @@ export function ModifyLastnameDialog({
       }
       content={
         <Controller
-          name="lastname"
+          name="lastName"
           rules={{
             required: 'Last name is required',
             pattern: {
-              value: /^[a-zA-ZÀ-ÿ]+$/,
+              value: /^[A-ZÀ-Ý][a-zà-ÿ]*(?:[ '-][A-ZÀ-Ý][a-zà-ÿ]*)?$/,
               message:
-                'Last name should only contain letters of the alphabet (uppercase or lowercase)',
+                'Last name should start with an uppercase letter, contain only letters, and allow one hyphen, space, or apostrophe between two parts of the name',
             },
           }}
           control={lastnameFormController.control}
