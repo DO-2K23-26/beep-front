@@ -4,7 +4,7 @@ import {
 } from '@beep/server'
 import { AppDispatch, resetStore } from '@beep/store'
 import { useModal } from '@beep/ui'
-import { userActions } from '@beep/user'
+import { useLogoutMutation, userActions } from '@beep/user'
 import { toast } from 'react-hot-toast'
 import { useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
@@ -19,6 +19,7 @@ export function ServersNavigationFeature() {
   const { openModal, closeModal } = useModal()
   const dispatch = useDispatch<AppDispatch>()
   const [leaveServer] = useLeaveVoiceChannelMutation()
+  const [logout] = useLogoutMutation()
 
   const navigate = useNavigate()
   const onLogout = () => {
@@ -28,6 +29,7 @@ export function ServersNavigationFeature() {
     dispatch(userActions.setTokens({}))
     dispatch({ type: 'CLOSE_WEBRTC' })
     dispatch(resetStore())
+    logout()
     toast.success('Successfully logged out !')
     navigate('/authentication/signin')
   }

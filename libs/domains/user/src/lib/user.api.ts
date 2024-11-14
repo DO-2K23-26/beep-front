@@ -13,6 +13,7 @@ import {
   GetUserRequest,
   LoginRequest,
   LoginResponse,
+  LogoutResponse,
   RefreshRequest,
   RefreshResponse,
   RegisterResponse,
@@ -118,7 +119,7 @@ export const userApi = createApi({
     fetchProfilePicture: builder.query<string, string>({
       query: (id) => ({
         url: `/storage/files/secure/profilePicture/${id}`,
-        responseHandler: async (response) => {
+        responseHandler: async (response: Response) => {
           const blob = await response.blob()
           return URL.createObjectURL(blob)
         },
@@ -191,6 +192,12 @@ export const userApi = createApi({
         body: payload,
       }),
     }),
+    logout: builder.mutation<void, void>({
+      query: () => ({
+        url: '/authentication/logout',
+        method: 'POST',
+      }),
+    }),
   }),
 })
 
@@ -211,4 +218,5 @@ export const {
   useVerifyEmailMutation,
   useGetUserByIdQuery,
   useUpdateStateMutation,
+  useLogoutMutation,
 } = userApi

@@ -1,6 +1,7 @@
 export * from './user/login.response'
 export * from './user/register.reponse'
 export * from './user/update.response'
+export * from './user/logout.response'
 
 export * from './refresh.response'
 
