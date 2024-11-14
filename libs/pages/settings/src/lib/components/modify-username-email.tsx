@@ -4,8 +4,8 @@ import { ModifyTextSetting } from './modify-text-setting'
 interface ModifyUsernameEmailProps {
   username: string
   email: string
-  firstname: string
-  lastname: string
+  firstName: string
+  lastName: string
   usernameButtonModal: ReactNode
   emailButtonModal: ReactNode
   firstnameButtonModal: ReactNode
@@ -15,8 +15,8 @@ interface ModifyUsernameEmailProps {
 export function ModifyUsernameEmail({
   username,
   email,
-  firstname,
-  lastname,
+  firstName,
+  lastName,
   usernameButtonModal,
   emailButtonModal,
   firstnameButtonModal,
@@ -25,19 +25,19 @@ export function ModifyUsernameEmail({
   return (
     <div className="flex flex-col gap-4 bg-violet-300 rounded-md p-4">
       <ModifyTextSetting
-        title={'Username'}
-        value={username}
-        modalButton={usernameButtonModal}
-      />
-      <ModifyTextSetting
         title={'First name'}
-        value={firstname}
+        value={firstName}
         modalButton={firstnameButtonModal}
       />
       <ModifyTextSetting
         title={'Last name'}
-        value={lastname}
+        value={lastName}
         modalButton={lastnameButtonModal}
+      />
+      <ModifyTextSetting
+        title={'Username'}
+        value={username}
+        modalButton={usernameButtonModal}
       />
       <ModifyTextSetting
         title={'Email'}

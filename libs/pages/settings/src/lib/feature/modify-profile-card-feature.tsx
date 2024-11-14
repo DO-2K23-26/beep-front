@@ -14,6 +14,7 @@ import { ModifyUsernameDialog } from '../components/modify-username-dialog'
 import { ModifyFirstnameDialog } from '../components/modify-firstname-dialog'
 import { ModifyLastnameDialog } from '../components/modify-lastname-dialog'
 
+// This is the profile page of the user account, you can find it in the settings
 export function ModifyProfileCardFeature() {
   const [isUsernameModalOpen, setIsUsernameModalOpen] = useState(false)
   const [isEmailModalOpen, setIsEmailModalOpen] = useState(false)
@@ -52,14 +53,14 @@ export function ModifyProfileCardFeature() {
   const firstnameFormController = useForm({
     mode: 'onChange',
     defaultValues: {
-      firstname: '',
+      firstName: '',
     },
   })
 
   const lastnameFormController = useForm({
     mode: 'onChange',
     defaultValues: {
-      lastname: '',
+      lastName: '',
     },
   })
 
@@ -84,7 +85,7 @@ export function ModifyProfileCardFeature() {
     userMe?.id ?? skipToken
   )
 
-  //submit
+  // submit
   const handleUsernameSubmit = usernameFormController.handleSubmit((data) => {
     setIsPictureModalOpen(false)
     const formData = new FormData()
@@ -94,19 +95,19 @@ export function ModifyProfileCardFeature() {
     usernameFormController.reset()
   })
   const handleFirstnameSubmit = firstnameFormController.handleSubmit((data) => {
-    setIsPictureModalOpen(false)
+    setIsFirstnameModalOpen(false)
     const formData = new FormData()
-    formData.append('firstname', data.firstname)
+    formData.append('firstName', data.firstName)
     updateMe(formData)
     setIsFirstnameModalOpen(false)
     firstnameFormController.reset()
   })
   const handleLastnameSubmit = lastnameFormController.handleSubmit((data) => {
-    setIsPictureModalOpen(false)
+    setIsLastnameModalOpen(false)
     const formData = new FormData()
-    formData.append('lastname', data.lastname)
+    formData.append('lastName', data.lastName)
     updateMe(formData)
-    setIsUsernameModalOpen(false)
+    setIsLastnameModalOpen(false)
     lastnameFormController.reset()
   })
   const handleEmailSubmit = emailFormController.handleSubmit((data) => {
@@ -174,9 +175,9 @@ export function ModifyProfileCardFeature() {
       username={userMe?.username ?? ''}
       usernameButtonModal={usernameChangeButton}
       pictureButtonModal={pictureChangeButton}
-      firstname={userMe?.firstName ?? ''}
+      firstName={userMe?.firstName ?? ''}
       firstnameButtonModal={firstnameChangeButton}
-      lastname={userMe?.lastName ?? ''}
+      lastName={userMe?.lastName ?? ''}
       lastnameButtonModal={lastnameChangeButton}
       email={userMe?.email ?? ''}
       emailButtonModal={emailChangeButton}
