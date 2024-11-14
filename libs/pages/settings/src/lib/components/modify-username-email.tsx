@@ -5,8 +5,8 @@ import { useTranslation } from 'react-i18next'
 interface ModifyUsernameEmailProps {
   username: string
   email: string
-  firstname: string
-  lastname: string
+  firstName: string
+  lastName: string
   usernameButtonModal: ReactNode
   emailButtonModal: ReactNode
   firstnameButtonModal: ReactNode
@@ -16,8 +16,8 @@ interface ModifyUsernameEmailProps {
 export function ModifyUsernameEmail({
   username,
   email,
-  firstname,
-  lastname,
+  firstName,
+  lastName,
   usernameButtonModal,
   emailButtonModal,
   firstnameButtonModal,
@@ -34,13 +34,18 @@ export function ModifyUsernameEmail({
       />
       <ModifyTextSetting
         title={'First name'}
-        value={firstname}
+        value={firstName}
         modalButton={firstnameButtonModal}
       />
       <ModifyTextSetting
         title={'Last name'}
-        value={lastname}
+        value={lastName}
         modalButton={lastnameButtonModal}
+      />
+      <ModifyTextSetting
+        title={'Username'}
+        value={username}
+        modalButton={usernameButtonModal}
       />
       <ModifyTextSetting
         title={'Email'}
