@@ -29,15 +29,20 @@ export function ModifyProfileCardFeature() {
     null
   )
   const [errorPictureText, setErrorPictureText] = useState('')
-  const [updateMe, result] = useUpdateMeMutation()
+  const [updateMe, {
+    isLoading: isLoadingUpdateMe,
+    isSuccess: isSuccessUpdateMe,
+    isError: isErrorUpdateMe,
+    error: errorUpdateMe,
+  },] = useUpdateMeMutation()
   const { data: userMe } = useGetMeQuery()
-  useEffect(() => {
-    if (result.isSuccess) {
-      toast.success(t('settings.modify-profile-card.successfull_update'))
-    } else if (result.isError) {
-      toast.error(t('settings.modify-profile-card.error_update'))
-    }
-  }, [result])
+  // useEffect(() => {
+  //   if (isSuccessUpdateMe) {
+  //     toast.success('Update successful')
+  //   } else if (isErrorUpdateMe) {
+  //     toast.error('Something went wrong when updating your profile')
+  //   }
+  // }, [isErrorUpdateMe, isSuccessUpdateMe])
 
   const errorPictureNotFilled = t(
     'settings.modify-profile-card.picture_not_filled'
@@ -96,8 +101,6 @@ export function ModifyProfileCardFeature() {
     const formData = new FormData()
     formData.append('username', data.username)
     updateMe(formData)
-    setIsUsernameModalOpen(false)
-    usernameFormController.reset()
   })
   const handleFirstnameSubmit = firstnameFormController.handleSubmit((data) => {
     setIsFirstnameModalOpen(false)
@@ -128,6 +131,28 @@ export function ModifyProfileCardFeature() {
     } else setErrorPictureText(errorPictureNotFilled)
     setNewProfilePicture('')
   })
+
+  useEffect(() => {
+    if (isErrorUpdateMe && errorUpdateMe !== undefined) {
+      // @ts-expect-error errorCreateServer is not undefined
+      const error = errorUpdateMe.data as HttpError
+      if (error.code === 'E_USERNAMEALREADYEXISTS') {
+        usernameFormController.setError('username', {
+          message: 'This username already exists',
+          type: 'validate',
+        })
+      } else {
+        toast.error('An error occurred while updating the username')
+        setIsUsernameModalOpen(false)
+      }
+    }
+  }, [errorUpdateMe, isErrorUpdateMe, usernameFormController])
+
+  useEffect(() => {
+    if (isSuccessUpdateMe){
+      setIsUsernameModalOpen(false)
+    }
+  }, [isSuccessUpdateMe])
 
   //Dialog button
   const usernameChangeButton = (
