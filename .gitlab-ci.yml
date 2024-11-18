@@ -48,7 +48,6 @@ lint:
 
 build:
   stage: build
-  needs: ['lint']
   image:
     name: 'gcr.io/kaniko-project/executor:v1.14.0-debug'
     entrypoint:
