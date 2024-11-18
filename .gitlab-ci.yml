@@ -69,18 +69,17 @@ build:
 
 tag:
   stage: tag
-  image: docker:24.0.7
+  image: docker:24.0.5
   services:
-    - docker:24.0.5-dind
+    - name: docker:24.0.5-dind
+      alias: docker
   variables:
-    DOCKER_HOST: tcp://docker:2376
-    DOCKER_TLS_CERTDIR: '/certs'
-    DOCKER_TLS_VERIFY: 1
-    DOCKER_CERT_PATH: '$DOCKER_TLS_CERTDIR/client'
+    DOCKER_TLS_CERTDIR: ''
     STAGING_IMAGE: $IMAGE_NAME:${CI_COMMIT_SHORT_SHA}-staging
   script:
-    - docker login -u $USER_DOCKERHUB -p $PASSWORD_DOCKERHUB
-    - docker pull STAGING_IMAGE
+    - docker info
+    - echo $PASSWORD_DOCKERHUB | docker login -u $USER_DOCKERHUB --password-stdin
+    - docker pull $STAGING_IMAGE
     - docker tag $STAGING_IMAGE $IMAGE_NAME:$VERSION
     - docker push $IMAGE_NAME:$VERSION
   rules:
