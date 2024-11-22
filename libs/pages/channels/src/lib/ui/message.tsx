@@ -1,11 +1,13 @@
-import { MessageEntity, UserEntity } from '@beep/contracts'
+import { MessageEntity } from '@beep/contracts'
 import { Button, ButtonStyle, Icon, InputMessageArea } from '@beep/ui'
 import { cn } from '@beep/utils'
 import Markdoc from '@markdoc/markdoc'
 import { DateTime } from 'luxon'
 import React, { ReactNode, useEffect } from 'react'
 import { Controller, useFormContext } from 'react-hook-form'
+import { useTranslation } from 'react-i18next'
 import AttachmentFeature from '../feature/attachment-feature'
+import { renderTextWithLinks } from '../utils/links-utils'
 import { config, markdownComponents } from '../utils/markdown-config'
 import { preprocessMarkdown } from '../utils/markdown-parser'
 import MediaEmbed from './media-embed'
@@ -51,6 +53,8 @@ export default function Message({
   containsUrl,
 }: Readonly<MessageProps>) {
   const { control } = useFormContext()
+  const { t } = useTranslation()
+
   const formatDate = (dateString: string): string => {
     const date = DateTime.fromISO(dateString)
     const now = DateTime.now()
@@ -60,7 +64,7 @@ export default function Message({
       date.hasSame(now, 'year') &&
       date.hasSame(now, 'month')
     ) {
-      return `Today ${date.toFormat('HH:mm')}`
+      return `${t('channels.message.today')} ${date.toFormat('HH:mm')}`
     } else {
       return date.toFormat('dd/MM/yyyy HH:mm')
     }

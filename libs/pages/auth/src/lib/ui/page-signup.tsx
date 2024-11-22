@@ -1,6 +1,7 @@
 import { Button, InputText } from '@beep/ui'
 import { Controller, useFormContext } from 'react-hook-form'
 import { Link } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
 
 export interface PageSignupProps {
   onSubmit: () => void
@@ -19,7 +20,10 @@ export function PageSignup({
   addProfilePicture,
   previewUrl,
 }: PageSignupProps) {
+  const { t } = useTranslation()
+
   const { control, watch } = useFormContext()
+
   return (
     <div
       className="h-[100dvh] w-full bg-no-repeat bg-cover flex justify-center"
@@ -27,21 +31,20 @@ export function PageSignup({
     >
       <div className="flex flex-col gap-6 justify-center items-start w-[400px] p-4">
         <h1 className="font-extrabold text-5xl">Beep</h1>
-        <h5>We are happy to see you !</h5>
+        <h5>{t('auth.page-signup.welcome_back')}</h5>
         <Controller
           name="firstname"
           rules={{
-            required: 'First name is required',
+            required: t('auth.page-signup.required_firstname'),
             pattern: {
-              value: /^[a-zA-ZÀ-ÿ]+$/, 
-              message:
-                'First name should only contain letters of the alphabet (uppercase or lowercase)',
+              value: /^[a-zA-ZÀ-ÿ]+$/,
+              message: t('auth.page-signup.invalid_firstname'),
             },
           }}
           control={control}
           render={({ field, fieldState: { error } }) => (
             <InputText
-              label="First name"
+              label={t('auth.page-signup.firstname')}
               type="text"
               name="firstname"
               className="w-full !rounded-lg min-h-[40px]"
@@ -54,17 +57,16 @@ export function PageSignup({
         <Controller
           name="lastname"
           rules={{
-            required: 'Last name is required',
+            required: t('auth.page-signup.required_lastname'),
             pattern: {
               value: /^[a-zA-ZÀ-ÿ]+$/,
-              message:
-                'Last name should only contain letters of the alphabet (uppercase or lowercase)',
+              message: t('auth.page-signup.invalid_lastname'),
             },
           }}
           control={control}
           render={({ field, fieldState: { error } }) => (
             <InputText
-              label="Last name"
+              label={t('auth.page-signup.lastname')}
               type="text"
               name="lastname"
               className="w-full !rounded-lg min-h-[40px]"
@@ -77,17 +79,16 @@ export function PageSignup({
         <Controller
           name="username"
           rules={{
-            required: 'Username is required',
+            required: t('auth.page-signup.required_username'),
             pattern: {
               value: /^[a-z]+$/,
-              message:
-                'Username should only contain lowercase letters of the alphabet',
+              message: t('auth.page-signup.invalid_username'),
             },
           }}
           control={control}
           render={({ field, fieldState: { error } }) => (
             <InputText
-              label="Username"
+              label={t('auth.page-signup.username')}
               type="text"
               name="username"
               className="w-full !rounded-lg min-h-[40px]"
@@ -100,16 +101,16 @@ export function PageSignup({
         <Controller
           name="email"
           rules={{
-            required: 'Email is required',
+            required: t('auth.page-signup.required_email'),
             pattern: {
               value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-              message: 'Invalid email address',
+              message: t('auth.page-signup.invalid_email'),
             },
           }}
           control={control}
           render={({ field, fieldState: { error } }) => (
             <InputText
-              label="Email"
+              label={t('auth.page-signup.email')}
               type="email"
               name="email"
               className="w-full !rounded-lg min-h-[40px]"
@@ -122,18 +123,17 @@ export function PageSignup({
         <Controller
           name="password"
           rules={{
-            required: 'Password is required',
+            required: t('auth.page-signup.required_password'),
             pattern: {
               value:
                 /^(?=.*[A-Z])(?=.*[0-9])(?=.*[!?@#$%^&*[|/\]{}()])(?=.{8,})/,
-              message:
-                'Password must be at least 8 characters long and contain at least one uppercase letter, one digit, and one special character',
+              message: t('auth.page-signup.invalid_password'),
             },
           }}
           control={control}
           render={({ field, fieldState: { error } }) => (
             <InputText
-              label="Password"
+              label={t('auth.page-signup.password')}
               type="password"
               name="password"
               className="w-full !rounded-lg min-h-[40px]"
@@ -146,17 +146,17 @@ export function PageSignup({
         <Controller
           name="confirm-password"
           rules={{
-            required: 'You must confirm your password',
+            required: t('auth.page-signup.required_confirm_password'),
             validate: (val: string) => {
               if (val !== watch('password')) {
-                return 'Your passwords do not match'
+                return t('auth.page-signup.password_mismatch')
               }
             },
           }}
           control={control}
           render={({ field, fieldState: { error } }) => (
             <InputText
-              label="Confirm password"
+              label={t('auth.page-signup.confirm_password')}
               type="password"
               name="confirm-password"
               className="w-full !rounded-lg min-h-[40px]"
@@ -171,7 +171,7 @@ export function PageSignup({
           htmlFor="file_upload"
           className="w-full h-fit input !cursor-pointer !rounded-lg !bg-violet-50 flex flex-col justify-center items-center"
         >
-          <p>Profile picture</p>
+          <p>{t('auth.page-signup.profile_picture')}</p>
         </label>
         <input
           id="file_upload"
@@ -198,7 +198,7 @@ export function PageSignup({
             loading={loading}
             className="!bg-slate-800 hover:!bg-slate-900 w-full !rounded-lg min-h-[40px]"
           >
-            <p className="text-violet-50">Sign up</p>
+            <p className="text-violet-50">{t('auth.page-signup.signup')}</p>
           </Button>
           {error && (
             <p className="mt-1 px-4 font-medium text-xs text-red-500">
@@ -207,12 +207,14 @@ export function PageSignup({
           )}
         </div>
         <div className="flex flex-row gap-1">
-          <p className="font-normal">Already have an account ?</p>
+          <p className="font-normal">{t('auth.page-signup.already_account')}</p>
           <Link
             className="text-purple-600 font-medium hover:!bg-transparent !p-0 !min-w-0 !h-fit"
             to="/authentication/signin"
           >
-            <p className="text-purple-600 font-normal">Sign in</p>
+            <p className="text-purple-600 font-normal">
+              {t('auth.page-signup.signin')}
+            </p>
           </Link>
         </div>
       </div>

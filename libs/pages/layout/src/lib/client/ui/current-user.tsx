@@ -10,11 +10,12 @@ import {
   Button,
   ButtonStyle,
   DialogCloseButton,
-  Icon
+  Icon,
 } from '@beep/ui'
 
 import { UseFormReturn } from 'react-hook-form'
 import { UserMediaFeature } from '../feature/user-media-feature'
+import { useTranslation } from 'react-i18next'
 
 interface CurrentUserProps {
   user: UserEntity
@@ -43,6 +44,23 @@ export default function CurrentUser({
   onPhone,
   onCamera,
 }: CurrentUserProps) {
+  const { t } = useTranslation()
+
+  // List of setting in the user setting modal
+  const subSetting: SubSettings = {
+    subGroupSettingTitle: t('layout.current-user.account'),
+    settings: [
+      {
+        title: t('layout.current-user.profile'),
+        settingComponent: <ModifyProfileCardFeature />,
+      },
+      {
+        title: t('layout.current-user.voice_video'),
+        settingComponent: <UserMediaFeature />,
+      },
+    ],
+  }
+
   return (
     <div className="flex flex-row justify-between items-center gap-4">
       <div className="flex flex-row gap-3">
@@ -55,7 +73,7 @@ export default function CurrentUser({
           <h5 className="font-bold max-w-[100px] truncate">{user.username}</h5>
           <Badge
             type={BadgeType.ONLINE}
-            title="Online"
+            title={t('layout.current-user.online')}
             className="!text-slate-900"
           />
         </div>
@@ -98,16 +116,4 @@ export default function CurrentUser({
       </div>
     </div>
   )
-}
-
-// List of setting in the user setting modal
-const subSetting: SubSettings = {
-  subGroupSettingTitle: 'Account',
-  settings: [
-    { title: 'Profile', settingComponent: <ModifyProfileCardFeature /> },
-    {
-      title: 'Voice & Video',
-      settingComponent: <UserMediaFeature />,
-    },
-  ],
 }

@@ -1,11 +1,9 @@
 import { ChannelEntity, ChannelType } from '@beep/contracts'
 import { SettingBodyWidth, SettingsModal, SubSettings } from '@beep/settings'
-import {
-  DialogCloseButton,
-  Icon
-} from '@beep/ui'
+import { DialogCloseButton, Icon } from '@beep/ui'
 import DeleteChannelFeature from '../feature/delete-channel-feature'
 import OverviewSettingsChannelFeature from '../feature/overview-settings-channel-feature'
+import { useTranslation } from 'react-i18next'
 
 interface DisplayChannelProps {
   channel: ChannelEntity
@@ -18,28 +16,31 @@ export default function DisplayChannel({
   onJoinChannel,
   onDeleteChannel,
 }: DisplayChannelProps) {
+  const { t } = useTranslation()
+
   // List of setting in the user setting modal
   const subSetting: SubSettings = {
-    subGroupSettingTitle: 'Channel',
+    subGroupSettingTitle: t('layout.display-channel.channel'),
     settings: [
       {
-        title: 'Overview',
-        settingComponent: (
-          <OverviewSettingsChannelFeature channel={channel} />
-        ),
+        title: t('layout.display-channel.overview'),
+        settingComponent: <OverviewSettingsChannelFeature channel={channel} />,
         settingBodySize: SettingBodyWidth.S,
       },
       {
-        title: 'Delete',
-        settingComponent: (
-          <DeleteChannelFeature channel={channel} />
-        ),
+        title: t('layout.display-channel.delete'),
+        settingComponent: <DeleteChannelFeature channel={channel} />,
       },
     ],
   }
 
   return (
-    <div className="flex flex-col group w-full" onClick={() => onJoinChannel ? onJoinChannel(channel.serverId, channel.id) : {}}>
+    <div
+      className="flex flex-col group w-full"
+      onClick={() =>
+        onJoinChannel ? onJoinChannel(channel.serverId, channel.id) : {}
+      }
+    >
       <div className="flex flex-row justify-between items-center w-full px-3 py-2 hover:bg-violet-400 cursor-pointer rounded-xl">
         <div className="flex flex-row justify-center items-center gap-2">
           {channel.type === ChannelType.VOICE ? (
@@ -50,10 +51,12 @@ export default function DisplayChannel({
           <p className="font-semibold max-w-[150px] truncate">{channel.name}</p>
         </div>
         <div className="flex justify-center items-center invisible group-hover:visible">
-        <DialogCloseButton
-          triggerButton={<Icon name="lucide:settings" className="!w-4 !h-4" />}
-          content={<SettingsModal settings={[subSetting]} />}
-        />
+          <DialogCloseButton
+            triggerButton={
+              <Icon name="lucide:settings" className="!w-4 !h-4" />
+            }
+            content={<SettingsModal settings={[subSetting]} />}
+          />
         </div>
       </div>
     </div>

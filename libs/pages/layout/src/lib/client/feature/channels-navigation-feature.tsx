@@ -33,8 +33,11 @@ import { toast } from 'react-hot-toast'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router'
 import ChannelsNavigation from '../ui/channels-navigation'
+import { useTranslation } from 'react-i18next'
 
 export function ChannelsNavigationFeature() {
+  const { t } = useTranslation()
+
   const server = useSelector((state: RootState) => state.servers.server)
   const { data: streamingUsers } = useGetCurrentStreamingUsersQuery(
     server?.id ?? ''
@@ -147,9 +150,9 @@ export function ChannelsNavigationFeature() {
       resultCreatedChannel.isSuccess &&
       resultCreatedChannel.data !== undefined
     ) {
-      toast.success('Channel created !')
+      toast.success(t('layout.channels-navigation.success_create_channel'))
     } else if (resultCreatedChannel.isError) {
-      toast.error('An error occured while creating the channel !')
+      toast.error(t('layout.channels-navigation.error_create_channel'))
     }
   }, [resultCreatedChannel])
 
@@ -224,7 +227,7 @@ export function ChannelsNavigationFeature() {
   }
   const onClickId = async (text: string) => {
     await navigator.clipboard.writeText(text)
-    toast.success('Server ID copied to clipboard')
+    toast.success(t('layout.channels-navigation.copy_server_id'))
   }
 
   return (

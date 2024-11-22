@@ -15,6 +15,7 @@ import {
 import { ReactNode } from 'react'
 import DestroyServerFeature from '../feature/destroy-server-feature'
 import { DropdownMenuItemCustom } from './dropdown-menu-item-custom'
+import { useTranslation } from 'react-i18next'
 
 interface ServerDropdownProps {
   server?: ServerEntity
@@ -35,6 +36,8 @@ export function ServerDropdown({
   isAdmin,
   children,
 }: ServerDropdownProps) {
+  const { t } = useTranslation()
+
   return (
     <div className="relative z-0 flex flex-row gap-6 p-5 bg-white bg-opacity-10 rounded-xl">
       {/* <div className="flex flex-row gap-6"> */}
@@ -46,7 +49,7 @@ export function ServerDropdown({
           {server && (
             <DialogCloseButton content={<SettingsModal settings={settings} />}>
               <DropdownMenuItemCustom
-                label="Settings"
+                label={t('layout.server-dropdown.settings')}
                 iconName="lucide:settings"
               />
             </DialogCloseButton>
@@ -55,7 +58,7 @@ export function ServerDropdown({
             <div>
               <hr className="bg-slate-400 h-[1px] my-2 text-slate-400" />
               <DropdownMenuItemCustom
-                label="Destroy server"
+                label={t('layout.server-dropdown.destroy')}
                 iconName="lucide:trash-2"
                 warning
                 onClick={() => {

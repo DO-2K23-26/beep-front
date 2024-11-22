@@ -11,8 +11,11 @@ import { ModifyEmailDialog } from '../components/modify-email-dialog'
 import { ModifyProfileCard } from '../components/modify-profile-card'
 import { ModifyProfilePictureDialog } from '../components/modify-profile-picture-dialog'
 import { ModifyUsernameDialog } from '../components/modify-username-dialog'
+import { useTranslation } from 'react-i18next'
 
 export function ModifyProfileCardFeature() {
+  const { t } = useTranslation()
+
   const [isUsernameModalOpen, setIsUsernameModalOpen] = useState(false)
   const [isEmailModalOpen, setIsEmailModalOpen] = useState(false)
   const [isPictureModalOpen, setIsPictureModalOpen] = useState(false)
@@ -24,14 +27,15 @@ export function ModifyProfileCardFeature() {
   const { data: userMe } = useGetMeQuery()
   useEffect(() => {
     if (result.isSuccess) {
-      toast.success('Update successful')
+      toast.success(t('settings.modify-profile-card.successfull_update'))
     } else if (result.isError) {
-      toast.error('Something went wrong when updating your profile')
+      toast.error(t('settings.modify-profile-card.error_update'))
     }
   }, [result])
 
-  const errorPictureNotFilled =
-    'Choose a picture by clicking on the button first'
+  const errorPictureNotFilled = t(
+    'settings.modify-profile-card.picture_not_filled'
+  )
   const emailFormController = useForm({
     mode: 'onChange',
     defaultValues: {

@@ -1,6 +1,7 @@
 import { ChannelType } from '@beep/contracts'
 import { Button, ButtonStyle, InputText } from '@beep/ui'
 import { Controller, UseFormReturn, useFormContext } from 'react-hook-form'
+import { useTranslation } from 'react-i18next'
 
 interface CreateChannelModalProps {
   closeModal: () => void
@@ -13,30 +14,32 @@ export function CreateChannelModal({
   onCreateChannel,
   methodsAddChannel,
 }: CreateChannelModalProps) {
+  const { t } = useTranslation()
+
   const { control } = useFormContext()
 
   return (
     <div className="p-6">
       <h3 className=" text-slate-700 font-bold mb-2 max-w-sm">
-        Create channel
+        {t('layout.create-channel-modal.create_channel')}
       </h3>
       <div className="text-slate-500 text-sm mb-4">
-        Choose a name for your channel
+        {t('layout.create-channel-modal.choose_name')}
       </div>
       <Controller
         name="name"
         rules={{
-          required: 'Please enter a name.',
+          required: t('layout.create-channel-modal.required_name'),
           minLength: {
             value: 1,
-            message: 'Please enter a name.',
+            message: t('layout.create-channel-modal.required_name'),
           },
         }}
         control={control}
         render={({ field, fieldState: { error } }) => (
           <InputText
             className="w-full !rounded-lg min-h-[40px] mb-4"
-            label={'Channel name'}
+            label={t('layout.create-channel-modal.channel_input_placeholder')}
             name="name"
             type="text"
             onChange={field.onChange}
@@ -53,7 +56,7 @@ export function CreateChannelModal({
           value={ChannelType.TEXT}
           {...methodsAddChannel.register('type')}
         />
-        <label htmlFor="text">Text</label>
+        <label htmlFor="text">{t('layout.create-channel-modal.text')}</label>
       </div>
       <div className="ml-4 pb-6">
         <input
@@ -63,7 +66,7 @@ export function CreateChannelModal({
           value={ChannelType.VOICE}
           {...methodsAddChannel.register('type')}
         />
-        <label htmlFor="voice">Voice</label>
+        <label htmlFor="voice">{t('layout.create-channel-modal.voice')}</label>
       </div>
       <div className="flex gap-3 justify-between">
         <Button
@@ -71,7 +74,7 @@ export function CreateChannelModal({
           style={ButtonStyle.STROKED}
           onClick={() => closeModal()}
         >
-          Cancel
+          {t('layout.create-channel-modal.cancel')}
         </Button>
         <Button
           className="btn--no-min-w"
@@ -80,7 +83,7 @@ export function CreateChannelModal({
             onCreateChannel()
           }}
         >
-          Create
+          {t('layout.create-channel-modal.create')}
         </Button>
       </div>
     </div>

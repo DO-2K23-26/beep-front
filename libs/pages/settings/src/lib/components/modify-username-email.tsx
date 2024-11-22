@@ -1,5 +1,6 @@
 import { ReactNode } from 'react'
 import { ModifyTextSetting } from './modify-text-setting'
+import { useTranslation } from 'react-i18next'
 
 interface ModifyUsernameEmailProps {
   username: string
@@ -14,10 +15,12 @@ export function ModifyUsernameEmail({
   usernameButtonModal,
   emailButtonModal,
 }: ModifyUsernameEmailProps) {
+  const { t } = useTranslation()
+
   return (
     <div className="flex flex-col gap-4 bg-violet-300 rounded-md p-4">
       <ModifyTextSetting
-        title={'Username'}
+        title={t('settings.components.modify-username-email.username')}
         value={username}
         modalButton={usernameButtonModal}
       />

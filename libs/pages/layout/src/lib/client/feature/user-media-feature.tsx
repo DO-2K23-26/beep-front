@@ -9,11 +9,14 @@ import {
 import { useCallback, useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { UserMedia } from '../ui/user-media'
+import { useTranslation } from 'react-i18next'
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface UserMediaFeatureProps {}
 
 export function UserMediaFeature({}: UserMediaFeatureProps) {
+  const { t } = useTranslation()
+
   const [audioOutputs, setAudioOutputs] = useState<Device[]>([])
   const [audioInputs, setAudioInputs] = useState<Device[]>([])
   const [videoInputs, setVideoInputs] = useState<Device[]>([])
@@ -103,36 +106,36 @@ export function UserMediaFeature({}: UserMediaFeatureProps) {
 
     if (audioOutputs.length > 0) {
       if (audioOutputs[0].deviceId === '') {
-        audioOutputs[0].deviceId = 'No audio output device found'
+        audioOutputs[0].deviceId = t('layout.user-media.no_audio_outputs')
       }
       if (audioOutputs[0].label === '') {
-        audioOutputs[0].label = 'No audio output device found'
+        audioOutputs[0].label = t('layout.user-media.no_audio_outputs')
       }
     }
 
     if (audioInputs.length > 0) {
       if (audioInputs[0].deviceId === '') {
-        audioInputs[0].deviceId = 'No audio input device found'
+        audioInputs[0].deviceId = t('layout.user-media.no_audio_inputs')
         dispatch({
           type: 'voice/setAudioDeviceId',
           payload: audioInputs[0].deviceId,
         })
       }
       if (audioInputs[0].label === '') {
-        audioInputs[0].label = 'No audio input device found'
+        audioInputs[0].label = t('layout.user-media.no_audio_inputs')
       }
     }
 
     if (videoInputs.length > 0) {
       if (videoInputs[0].deviceId === '') {
-        videoInputs[0].deviceId = 'No video input device found'
+        videoInputs[0].deviceId = t('layout.user-media.no_video_inputs')
         dispatch({
           type: 'voice/setVideoDeviceId',
           payload: videoInputs[0].deviceId,
         })
       }
       if (videoInputs[0].label === '') {
-        videoInputs[0].label = 'No video input device found'
+        videoInputs[0].label = t('layout.user-media.no_video_inputs')
       }
     }
 

@@ -4,6 +4,7 @@ import ServerCardFeature from '../feature/server-card-feature'
 import { NextPaginate, PreviousPaginate } from './next-paginate'
 import { useSearchParams } from 'react-router-dom'
 import { AnimatePresence } from 'framer-motion'
+import { useTranslation } from 'react-i18next'
 
 export interface DiscoverServerProps {
   setSearch: (value: string) => void
@@ -19,9 +20,12 @@ export default function DiscoverServer({
   search,
   servers,
 }: DiscoverServerProps) {
+  const { t } = useTranslation()
+
   const [searchParams, setSearchParams] = useSearchParams()
   const page = parseInt(searchParams.get('page') || '1') || 1
   const limit = parseInt(searchParams.get('limit') || '8') || 8
+
   return (
     <div className="bg-violet-200 rounded-r-3xl w-full p-3 md:p-6 overflow-y-scroll custom-scrollbar">
       <section
@@ -45,16 +49,18 @@ export default function DiscoverServer({
         </svg>
         <div className="flex flex-col justify-between items-center gap-10 py-[12dvh] z-20 relative px-2">
           <h2 className="font-bold text-center md:text-5xl">
-            Find your community on Beep
+            {t('discover.discover-server-page.title')}
           </h2>
           <h3 className="text-sm text-center">
-            From studying to music, there's a place for you.
+            {t('discover.discover-server-page.description')}
           </h3>
           <span className="flex flex-row align-center justify-center w-full gap-4 ">
             <input
               type="text"
               value={search}
-              placeholder="Find a server..."
+              placeholder={t(
+                'discover.discover-server-page.search_placeholder'
+              )}
               className="w-2/3 md:w-1/2 rounded-lg bg-violet-50 px-4 shadow-md focus:outline-none focus:ring-2 focus:ring-violet-500 focus:ring-opacity-50 transition-all duration-200 ease-in-out"
               onChange={(e) => setSearch(e.target.value)}
             />

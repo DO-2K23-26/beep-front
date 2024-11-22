@@ -2,6 +2,7 @@ import { Button, InputText } from '@beep/ui'
 import { BaseSyntheticEvent } from 'react'
 import { Control, Controller } from 'react-hook-form'
 import { AddServerForm } from '../../feature/add-server-feature'
+import { useTranslation } from 'react-i18next'
 
 interface JoinServerModalProps {
   onSubmit: (e: BaseSyntheticEvent) => Promise<void>
@@ -16,15 +17,19 @@ export function JoinServerModal({
   loading,
   closeModal,
 }: JoinServerModalProps) {
+  const { t } = useTranslation()
+
   return (
     <div className="p-7 flex flex-col gap-3">
-      <h3 className="font-bold">Join your public server</h3>
-      <p>Let's join a public server. You juste need to enter the server ID.</p>
+      <h3 className="font-bold">
+        {t('layout.add-server.join-server-modal.join_server')}
+      </h3>
+      <p>{t('layout.add-server.join-server-modal.enter_server_id')}</p>
       <form onSubmit={onSubmit}>
         <Controller
           name="serverId"
           rules={{
-            required: 'Please enter a server ID.',
+            required: t('layout.add-server.join-server-modal.enter_server'),
           }}
           control={control}
           render={({ field, fieldState: { error } }) => (
@@ -47,7 +52,7 @@ export function JoinServerModal({
               className="!bg-violet-50 group hover:!bg-slate-900 w-full !rounded-lg min-h-[40px] !border-slate-300 hover:!border-slate-900 border-2"
             >
               <p className="text-slate-900 group-hover:text-violet-50">
-                Cancel
+                {t('layout.add-server.join-server-modal.cancel')}
               </p>
             </Button>
           </div>
@@ -58,7 +63,9 @@ export function JoinServerModal({
               loading={loading}
               className="!bg-slate-800 hover:!bg-slate-900 w-full !rounded-lg min-h-[40px]"
             >
-              <p className="text-violet-50">Join</p>
+              <p className="text-violet-50">
+                {t('layout.add-server.join-server-modal.join')}
+              </p>
             </Button>
           </div>
         </div>

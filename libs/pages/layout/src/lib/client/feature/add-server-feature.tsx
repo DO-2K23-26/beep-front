@@ -11,6 +11,7 @@ import AddServerNavigation from '../ui/add-server/add-server-navigation'
 import CreateServerModal from '../ui/add-server/create-server-modal'
 import { JoinServerModal } from '../ui/add-server/join-server-modal'
 import SelectVisibilityModal from '../ui/add-server/select-visibility-modal'
+import { useTranslation } from 'react-i18next'
 
 export interface CreateServerForm {
   serverName: string
@@ -46,6 +47,8 @@ export interface ServerStepsRender {
 export default function AddServerFeature({
   closeModal,
 }: AddServerFeatureProps) {
+  const { t } = useTranslation()
+
   const { handleSubmit, control } = useForm<AddServerForm>()
   const [serverStep, setServerStep] = useState<AddServerStep | undefined>(
     undefined
@@ -101,7 +104,7 @@ export default function AddServerFeature({
 
   useEffect(() => {
     if (!isLoadingCreateServer && isSuccessCreateServer) {
-      toast.success('Server created successfully')
+      toast.success(t('layout.add-server.success_create_server'))
       closeModal()
     }
   }, [closeModal, isLoadingCreateServer, isSuccessCreateServer])
@@ -112,11 +115,11 @@ export default function AddServerFeature({
       const error = errorCreateServer.data as HttpError
       if (error.code === 'E_SERVER_ALREADY_EXISTS') {
         control.setError('serverName', {
-          message: 'A server with this name already exists',
+          message: t('layout.add-server.error_name_already_exists'),
           type: 'validate',
         })
       } else {
-        toast.error('An error occurred while creating the server')
+        toast.error(t('layout.add-server.error_create_server'))
         closeModal()
       }
     }
@@ -124,10 +127,10 @@ export default function AddServerFeature({
 
   useEffect(() => {
     if (!isLoadingJoinServer && isSuccessJoinServer) {
-      toast.success('Server joined successfully')
+      toast.success(t('layout.add-server.success_join_server'))
       closeModal()
     } else if (!isLoadingJoinServer && isErrorJoinServer) {
-      toast.error('An error occurred while joining the server')
+      toast.error(t('layout.add-server.error_join_server'))
       closeModal()
     }
   }, [isSuccessJoinServer, isLoadingJoinServer, isErrorJoinServer, closeModal])

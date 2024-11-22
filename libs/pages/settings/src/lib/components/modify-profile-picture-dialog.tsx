@@ -1,5 +1,6 @@
 import { DialogComponent } from '@beep/ui'
 import { HoverModifyPicture } from './hover-modify-picture'
+import { useTranslation } from 'react-i18next'
 
 interface ModifyProfilePictureDialogProps {
   currentPicture?: string
@@ -20,9 +21,13 @@ export function ModifyProfilePictureDialog({
   addProfilePicture,
   errorMessage,
 }: ModifyProfilePictureDialogProps) {
+  const { t } = useTranslation()
+
   return (
     <DialogComponent
-      title={'Choose a new picture'}
+      title={t(
+        'settings.components.modify-profile-picture-dialog.choose_picture'
+      )}
       triggerModalButton={
         <HoverModifyPicture
           profilePicture={currentPicture}
@@ -37,7 +42,11 @@ export function ModifyProfilePictureDialog({
             htmlFor="file_upload"
             className="w-full h-fit input !cursor-pointer !rounded-lg !bg-violet-50 flex flex-col justify-center items-center"
           >
-            <p>Select a new profile picture</p>
+            <p>
+              {t(
+                'settings.components.modify-profile-picture-dialog.select_picture'
+              )}
+            </p>
           </label>
           <p className="text-red-500">{errorMessage}</p>
           <input
@@ -61,7 +70,9 @@ export function ModifyProfilePictureDialog({
         </>
       }
       action={action}
-      actionButtonTitle="Confirm"
+      actionButtonTitle={t(
+        'settings.components.modify-profile-picture-dialog.confirm'
+      )}
       isModalOpen={isModalOpen}
       setIsModalOpen={setIsModalOpen}
     />

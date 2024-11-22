@@ -1,6 +1,7 @@
 import { Button, InputText } from '@beep/ui'
 import { Controller, useFormContext } from 'react-hook-form'
 import { Link } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
 
 export interface PageResetPasswordProps {
   loading?: boolean
@@ -13,6 +14,8 @@ export function PageResetPassword({
   error,
   onSubmit,
 }: PageResetPasswordProps) {
+  const { t } = useTranslation()
+
   const { control, watch } = useFormContext()
 
   return (
@@ -21,23 +24,24 @@ export function PageResetPassword({
       style={{ backgroundImage: `url('/background.svg')` }}
     >
       <div className="flex flex-col gap-6 justify-center items-start w-[600px] p-4">
-        <h1 className="font-extrabold text-5xl">Reset your password</h1>
-        <h5>Please enter your new password below.</h5>
+        <h1 className="font-extrabold text-5xl">
+          {t('auth.page-reset-password.reset')}
+        </h1>
+        <h5>{t('auth.page-reset-password.new_password')}</h5>
         <Controller
           name="password"
           rules={{
-            required: 'Password is required',
+            required: t('auth.page-reset-password.required_password'),
             pattern: {
               value:
                 /^(?=.*[A-Z])(?=.*[0-9])(?=.*[!?@#$%^&*[|/\]{}()])(?=.{8,})/,
-              message:
-                'Password must be at least 8 characters long and contain at least one uppercase letter, one digit, and one special character',
+              message: t('auth.page-reset-password.invalid_password'),
             },
           }}
           control={control}
           render={({ field, fieldState: { error } }) => (
             <InputText
-              label="Password"
+              label={t('auth.page-reset-password.password')}
               type="password"
               name="password"
               className="w-full !rounded-lg min-h-[40px]"
@@ -50,17 +54,17 @@ export function PageResetPassword({
         <Controller
           name="confirmPassword"
           rules={{
-            required: 'You must confirm your password',
+            required: t('auth.page-reset-password.required_confirm_password'),
             validate: (val: string) => {
               if (val !== watch('password')) {
-                return 'Your passwords do not match'
+                return t('auth.page-reset-password.password_mismatch')
               }
             },
           }}
           control={control}
           render={({ field, fieldState: { error } }) => (
             <InputText
-              label="Confirm password"
+              label={t('auth.page-reset-password.password_mismatch')}
               type="password"
               name="confirmPassword"
               className="w-full !rounded-lg min-h-[40px]"
@@ -76,7 +80,9 @@ export function PageResetPassword({
             loading={loading}
             className="!bg-slate-800 hover:!bg-slate-900 w-full !rounded-lg min-h-[40px]"
           >
-            <p className="text-violet-50">Submit</p>
+            <p className="text-violet-50">
+              {t('auth.page-reset-password.submit')}
+            </p>
           </Button>
           {error && (
             <p className="mt-1 px-4 font-medium text-xs text-red-500">
@@ -85,12 +91,16 @@ export function PageResetPassword({
           )}
         </div>
         <div className="flex flex-row gap-1">
-          <p className="font-normal">Go back to signin page?</p>
+          <p className="font-normal">
+            {t('auth.page-reset-password.go_back_signin')}
+          </p>
           <Link
             className="text-purple-600 font-medium hover:!bg-transparent !p-0 !min-w-0 !h-fit"
             to="/authentication/signin"
           >
-            <p className="text-purple-600 font-normal">Sign in</p>
+            <p className="text-purple-600 font-normal">
+              {t('auth.page-reset-password.signin')}
+            </p>
           </Link>
         </div>
       </div>

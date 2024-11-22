@@ -1,5 +1,6 @@
 import { Button, InputText } from '@beep/ui'
 import { ChangeEvent } from 'react'
+import { useTranslation } from 'react-i18next'
 
 interface DestroyServerModalProps {
   value: string
@@ -20,21 +21,30 @@ export default function DestroyServerModal({
   error,
   loading,
 }: DestroyServerModalProps) {
+  const { t } = useTranslation()
+
   return (
     <div className="p-7 flex flex-col gap-4">
-      <h3 className="font-bold text-red-600">Destroy your server</h3>
+      <h3 className="font-bold text-red-600">
+        {t('layout.server-settings-modal.delete-server-modal.destroy_server')}
+      </h3>
       <p className="text-slate-600 font-semibold">
-        Be careful you’re about to delete your server !{' '}
+        {t('layout.server-settings-modal.delete-server-modal.delete_careful')}{' '}
         <u className="text-slate-600">
-          You won’t be able to recover your messages/files after this action.
+          {t(
+            'layout.server-settings-modal.delete-server-modal.irreversible_action_warning'
+          )}
         </u>
       </p>
       <p className="text-slate-600 font-semibold">
-        Type <strong className="text-red-600">{confirmationWord}</strong> to
-        confirm the deletion.
+        {t('layout.server-settings-modal.delete-server-modal.type')}
+        <strong className="text-red-600">{confirmationWord}</strong>
+        {t('layout.server-settings-modal.delete-server-modal.confirm_delete')}
       </p>
       <InputText
-        label="Your server's name"
+        label={t(
+          'layout.server-settings-modal.delete-server-modal.server_name'
+        )}
         name="confirmation"
         value={value}
         onChange={onChange}
@@ -45,14 +55,18 @@ export default function DestroyServerModal({
           className="!bg-violet-50 group hover:!bg-violet-100  !rounded-lg min-h-[40px] !border-slate-300 hover:!border-slate-400 border-2"
           onClick={closeModal}
         >
-          <p className="text-slate-900 group-hover:text-slate-800">Cancel</p>
+          <p className="text-slate-900 group-hover:text-slate-800">
+            {t('layout.server-settings-modal.delete-server-modal.cancel')}
+          </p>
         </Button>
         <Button
           className="!bg-red-600 hover:!bg-red-700 !rounded-lg min-h-[40px]"
           onClick={onSubmit}
           loading={loading}
         >
-          <p className="text-violet-50">Destroy</p>
+          <p className="text-violet-50">
+            {t('layout.server-settings-modal.delete-server-modal.destroy')}
+          </p>
         </Button>
       </span>
     </div>

@@ -1,0 +1,345 @@
+{
+  "auth": {
+    "page-after-signup": {
+      "check_email": "Vérifiez vos emails",
+      "validate_email": "Votre compte a été créé avec succès, validez votre email pour pouvoir vous connecter"
+    },
+    "page-confirm-email": {
+      "check_email": "Vérifiez vos emails",
+      "confirm_account": "Confirmez votre compte pour vous connecter"
+    },
+    "page-forgot-password": {
+      "forgot_password": "Mot de passe oublié ?",
+      "insert_email": "C'est ok, ça arrive ! Veuillez insérer votre email ci-dessous pour réinitialiser votre mot de passe.",
+      "send": "Envoyer",
+      "go_back_signin": "Revenir à la page de connexion ?",
+      "signin": "Se connecter",
+      "email": "Email",
+      "required_email": "L'e-mail est requis",
+      "invalid_email": "Adresse e-mail invalide"
+    },
+    "page-reset-password": {
+      "reset": "Réinitialisez votre mot de passe",
+      "new_password": "Veuillez entrer votre nouveau mot de passe ci-dessous.",
+      "required_password": "Le mot de passe est requis",
+      "invalid_password": "Le mot de passe doit comporter au moins 8 caractères et contenir au moins une lettre majuscule, un chiffre et un caractère spécial.",
+      "password": "Mot de passe",
+      "confirm_password": "Vous devez confirmer votre mot de passe",
+      "password_missmatch": "Vos mots de passe ne correspondent pas",
+      "confirm": "Confirmez le mot de passe",
+      "submit": "Envoyer",
+      "go_back_signin": "Revenir à la page de connexion ?",
+      "signin": "Se connecter"
+    },
+    "page-signin": {
+      "signin": "Se connecter",
+      "required_email": "L'e-mail est requis",
+      "invalid_email": "Adresse e-mail invalide",
+      "email": "Email",
+      "required_password": "Le mot de passe est requis",
+      "invalid_password_min": "Le mot de passe doit comporter au moins 8 caractères",
+      "invalid_password_max": "Le mot de passe doit comporter au maximum 1 000 caractères",
+      "password": "Mot de passe",
+      "forgot_password": "Vous avez oublié votre mot de passe ?",
+      "no_account": "Vous n'avez pas de compte ?",
+      "signup": "S'inscrire"
+    },
+    "page-signup": {
+      "welcome_back": "Nous sommes heureux de vous voir !!",
+      "required_firstname": "Le prénom est obligatoire",
+      "invalid_firstname": "Le prénom ne doit contenir que des lettres de l'alphabet (majuscules ou minuscules)",
+      "firstname": "Prénom",
+      "required_lastname": "Le nom de famille est obligatoire",
+      "invalid_lastname": "Le nom de famille ne doit contenir que des lettres de l'alphabet (majuscules ou minuscules).",
+      "lastname": "Nom de famille",
+      "required_username": "Le nom d'utilisateur est obligatoire",
+      "invalid_username": "Le nom d'utilisateur ne doit contenir que des lettres minuscules de l'alphabet",
+      "username": "Nom d'utilisateur",
+      "required_email": "L'e-mail est requis",
+      "invalid_email": "Adresse e-mail invalide",
+      "email": "Email",
+      "required_password": "Le mot de passe est requis",
+      "invalid_password": "Le mot de passe doit comporter au moins 8 caractères et contenir au moins une lettre majuscule, un chiffre et un caractère spécial.",
+      "password": "Mot de passe",
+      "required_confirm_password": "Vous devez confirmer votre mot de passe",
+      "password_missmatch": "Votre mot de passe ne corresponde pas",
+      "confirm_password": "Confirmez le mot de passe",
+      "profile_picture": "Photo de profil",
+      "signup": "S'inscrire",
+      "already_account": "Vous avez déjà un compte ?",
+      "signin": "Se connecter"
+    },
+    "page-verify": {
+      "account_verification": "Vérification du compte",
+      "loading": "Chargement...",
+      "verified_account": "Votre compte a été vérifié",
+      "invalid-token": "Jeton invalide",
+      "signin": "Il est temps de vous connecter !"
+    }
+  },
+  "discover": {
+    "discover-server-page": {
+      "title": "Retrouvez votre communauté sur Beep",
+      "description": "Des études jusqu'à la musique, il y a une place pour vous.",
+      "search_placeholder": "Cherchez un serveur..."
+    }
+  },
+  "channels": {
+    "delete-message-modal": {
+      "title": "Supprimer un message",
+      "description": "Êtes-vous sûr de vouloir supprimer ce message ?",
+      "cancel": "Annuler",
+      "delete": "Supprimer"
+    },
+    "display-pinned": {
+      "pinned_messages": "Messages épinglés"
+    },
+    "empty-pinned-messages": {
+      "no_pinned_messages": "Aucun message épinglé"
+    },
+    "empty-server-page": {
+      "title": "AUCUN SALON DE DISCUSSION TEXTUEL",
+      "description": "Vous pouvez créer au tant de salon de discussion textuel que vous le souhaitez. Cliquez sur le bouton de création dans la section de gauche !"
+    },
+    "media-embed": {
+      "youtube": "Lecteur vidéo YouTube",
+      "spotify": "Lecteur audio Spotify",
+      "apple_music": "Lecteur audio AppleMusic",
+      "instagram": "Composant Instagram",
+      "tiktok": "Composant TikTok"
+    },
+    "message": {
+      "today": "Aujourd'hui"
+    },
+    "page-channel": {
+      "reply_to": "Répondre à",
+      "message_placeholder": "Saisissez un message",
+      "user_selector": {
+        "title": "Utilisateur",
+        "empty_result": "Aucun utilisateur."
+      },
+      "channel_selector": {
+        "title": "Salon de discussion textuel",
+        "empty_result": "Aucun salon de discussion textuel."
+      },
+      "error": {
+        "delete_message": "Une erreur est survenue lors de la suppression du message",
+        "empty_message": "Un message est requis"
+      }
+    },
+    "page-invitation": {
+      "error": "Une erreur est survenue lors de l'intégration au serveur. Veuillez réessayer.",
+      "success": "Vous avez bien été intégré au serveur !",
+      "loading": "Chargement..."
+    },
+    "tag": {
+      "undefined": "tag indéfinit"
+    },
+    "user-information": {
+      "title": "Informations de l'utilisateur",
+      "user_picture_alt": "Photo de profil de {{username}}"
+    }
+  },
+  "layout": {
+    "add-server": {
+      "add-server-modal": {
+        "add_server": "Ajouter un serveur",
+        "server_description": "Un serveur est l'endroit où vous pouvez passer du temps avec vos amis",
+        "create_server": "Créer un serveur",
+        "or": "ou",
+        "join_server": "Rejoindre un serveur"
+      },
+      "create-server-modal": {
+        "build_server": "Créez votre serveur {{visibility}}",
+        "server_title": "Donnez du style à votre serveur ! Gardez en tête que vous pourrez le modifier plus tard.",
+        "add_picture": "Ajouter une image",
+        "required_name": "Veuillez entrer un nom.",
+        "server_name": "Nom du serveur",
+        "required_description": "Veuillez décrire votre serveur en quelques mots",
+        "server_description": "Parlez-nous de votre serveur...",
+        "cancel": "Annuler",
+        "create": "Créer"
+      },
+      "join-server-modal": {
+        "join_server": "Rejoindre votre serveur public",
+        "enter_server_id": "Rejoignons un serveur public. Il vous suffit d'entrer l'ID du serveur.",
+        "enter_server": "Veuillez entrer un ID de serveur.",
+        "cancel": "Annuler",
+        "join": "Rejoindre"
+      },
+      "select-visibility-modal": {
+        "additional_details": "Dites-nous un peu plus sur ce que vous voulez",
+        "create_server": "Créer un serveur {{visibility}}",
+        "private": "privé",
+        "public": "public",
+        "for_you_and_friends": "Pour vous et vos amis",
+        "or": "ou",
+        "build_your_community": "Pour construire votre communauté"
+      },
+      "success_create_server": "Le serveur a été créé avec succès",
+      "error_name_already_exists": "Un serveur avec ce nom existe déjà",
+      "error_create_server": "Une erreur est survenue lors de la création du serveur",
+      "success_join_server": "Le serveur a été rejoint avec succès",
+      "error_join_server": "Une erreur est survenue lors de la connexion au serveur"
+    },
+    "server-settings-modal": {
+      "delete-server-modal": {
+        "destroy_server": "Détruisez votre serveur",
+        "delete_careful": "Attention, vous êtes sur le point de supprimer votre serveur !",
+        "irreversible_action_warning": "Vous ne pourrez pas récupérer vos messages/fichiers après cette action.",
+        "type": "Saisissez ",
+        "confirm_delete": " pour confirmer la suppression.",
+        "server_name": "Nom du serveur",
+        "cancel": "Annuler",
+        "destroy": "Détruire"
+      }
+    },
+    "channels-navigation": {
+      "create_channel": "Créer un salon de discussion",
+      "success_create_channel": "Salon de discussion créé !",
+      "error_create_channel": "Une erreur est survenue lors de la création du salon de discussion !",
+      "copy_server_id": "Identifiant du serveur copié dans le press papier"
+    },
+    "create-channel-modal": {
+      "create_channel": "Créer un salon de discussion",
+      "choose_name": "Choisissez un nom pour votre salon de discussion",
+      "channel_input_placeholder": "Nom du salon de discussion",
+      "required_name": "Veuillez entrer un nom.",
+      "text": "Texte",
+      "voice": "Voix",
+      "cancel": "Annuler",
+      "create": "Créer"
+    },
+    "current-user": {
+      "account": "Compte",
+      "profile": "Profil",
+      "voice_video": "Voix & Vidéo",
+      "online": "Connecté",
+      "offline": "Déconnecté"
+    },
+    "delete-channel": {
+      "delete_channel": "Supprimer le salon de discussion",
+      "delete_careful": "Attention, vous êtes sur le point de supprimer votre salon de discussion !",
+      "irreversible_action_warning": "Vous ne pourrez pas récupérer vos messages après cette action.",
+      "type": "Saisissez ",
+      "confirm_delete": " pour confirmer la suppression.",
+      "channel_name": "Nom du salon de discussion",
+      "delete": "Supprimer",
+      "success_delete_channel": "Le salon de discussion a été supprimé avec succès",
+      "error_channel_name_mismatch": "Le texte de confirmation ne correspond pas au nom du salon de discussion",
+      "error_delete_channel": "Une erreur est survenue lors de la suppression du salon de discussion"
+    },
+    "destroy-server": {
+      "default_server_name": "Votre nom de serveur",
+      "no_server_selected": "Aucun serveur sélectionné",
+      "success_delete_server": "Serveur supprimé avec succès",
+      "error_server_name_mismatch": "Le texte de confirmation ne correspond pas au nom du serveur",
+      "error_delete_server": "Une erreur est survenue lors de la suppression du serveur"
+    },
+    "display-channel": {
+      "channel": "Salon de discussion",
+      "overview": "Aperçu",
+      "delete": "Supprimer"
+    },
+    "generate-code-private-invitation": {
+      "generate_code": "Générer un lien d'invitation",
+      "passed_date": "La date est déjà passée.",
+      "unique_code": "Code d'invitation unique",
+      "select_option": "Sélectionnez une option",
+      "1hour": "1 heure",
+      "1day": "1 jour",
+      "1week": "1 semaine",
+      "custom": "Personnalisé",
+      "pick_date": "Choisir une date"
+    },
+    "generated-code-private-invitation": {
+      "generate_new_code": "Générer un nouveau code !"
+    },
+    "invite-member-modal": {
+      "invite_friend": "Invitez vos amis",
+      "share_code": "Partagez ce code pour inviter vos amis sur ce serveur privé",
+      "share_server": "Partagez cet ID de serveur pour inviter vos amis sur ce serveur public",
+      "invite_code_generated": "Lien généré avec succès",
+      "code_copied": "{{text}} copié dans le press papier"
+    },
+    "members-navigation": {
+      "members": "Membres"
+    },
+    "overview-settings-channel": {
+      "overview": "Aperçu",
+      "required_name_channel": "Le nom du salon de discussion est requis",
+      "invalid_name_channel": "Le nom du salon de discussion ne doit pas commencer par des espaces vides",
+      "channel_name": "Nom du salon de discussion",
+      "description": "Description",
+      "channel_description": "Description du salon de discussion",
+      "save": "SAUVEGARDER",
+      "reset": "RÉINITIALISER",
+      "success_update_channel": "Salon de discussion mis à jour !",
+      "error_update_channel": "Une erreur est survenue lors de la mise à jour du salon de discussion"
+    },
+    "overview-settings-server": {
+      "server_overview": "APERÇU DU SERVEUR",
+      "upload_picture": "Télécharger la photo de profil",
+      "upload_banner": "Télécharger la bannière",
+      "server_name": "Nom du serveur",
+      "server_description": "Description du serveur",
+      "save": "SAUVEGARDER"
+    },
+    "server-dropdown-menu": {
+      "server": "Serveur",
+      "overview": "Aperçu",
+      "settings": "Paramètres"
+    },
+    "server-dropdown": {
+      "settings": "Paramètres",
+      "destroy": "Supprimer le serveur"
+    },
+    "servers-navigation": {
+      "logout": "Déconnexion réussie"
+    },
+    "user-media": {
+      "change_method": "Modifiez votre méthode de communication",
+      "audio_outputs": "Sorties audio",
+      "audio_inputs": "Entrées audio",
+      "video_inputs": "Entrées vidéo",
+      "no_audio_outputs": "Aucune sortie audio trouvée",
+      "no_audio_inputs": "Aucune entrée audio trouvée",
+      "no_video_inputs": "Aucune entrée vidéo trouvée"
+    }
+  },
+  "settings": {
+    "components": {
+      "hover-modify-picture": {
+        "modify": "Modifier"
+      },
+      "modify-email-dialog": {
+        "modify": "Modifier",
+        "required_email": "Entrez une nouvelle adresse e-mail",
+        "invalid_email": "Adresse e-mail invalide",
+        "email": "E-mail",
+        "email_sented": "Un e-mail sera envoyé à votre adresse e-mail actuelle pour confirmation"
+      },
+      "modify-profile-picture-dialog": {
+        "choose_picture": "Choisissez une nouvelle image",
+        "select_picture": "Sélectionnez une nouvelle photo de profil",
+        "confirm": "Confirmer"
+      },
+      "modify-username-dialog": {
+        "title": "Choisissez un nouveau surnom",
+        "modify": "Modifier",
+        "required_username": "Entrez un nouveau nom d'utilisateur",
+        "invalid_username": "Le nom d'utilisateur ne doit contenir que des lettres minuscules de l'alphabet",
+        "username": "Nom d'utilisateur",
+        "confirm": "Confirmer"
+      },
+      "modify-username-email": {
+        "username": "Nom d'utilisateur"
+      }
+    },
+    "modify-profile-card": {
+      "successfull_update": "Mise à jour réussie",
+      "error_update": "Une erreur est survenue lors de la mise à jour de votre profil",
+      "picture_not_filled": "La photo de profil n'est pas remplie"
+    }
+  }
+}

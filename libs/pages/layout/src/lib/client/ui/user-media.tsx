@@ -1,5 +1,6 @@
 import { Device } from '@beep/contracts'
 import { InputSelect } from '@beep/ui'
+import { useTranslation } from 'react-i18next'
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface UserMediaProps {
@@ -27,16 +28,20 @@ export function UserMedia({
   onChangeAudioOutputDevice,
   onChangeAudioInputDevice,
 }: UserMediaProps) {
+  const { t } = useTranslation()
+
   return (
     <div className="p-6">
-      <h3 className=" text-slate-700 font-bold mb-2 max-w-sm">Voice & video</h3>
+      <h3 className=" text-slate-700 font-bold mb-2 max-w-sm">
+        {t('layout.current-user.voice_video')}
+      </h3>
       <div className="text-slate-500 text-sm">
-        Make changes to your method of communication
+        {t('layout.user-media.change_method')}
       </div>
       <div className="flex flex-col gap-4 py-4">
         {audioOutputFeatureFlag && (
           <InputSelect
-            label="Audio outputs"
+            label={t('layout.user-media.audio_outputs')}
             options={audioOutputs.map((device) => ({
               label: device.label,
               value: device.label,
@@ -46,7 +51,7 @@ export function UserMedia({
           />
         )}
         <InputSelect
-          label="Audio inputs"
+          label={t('layout.user-media.audio_inputs')}
           options={audioInputs.map((device) => ({
             label: device.label,
             value: device.label,
@@ -55,7 +60,7 @@ export function UserMedia({
           onChange={onChangeAudioInputDevice}
         />
         <InputSelect
-          label="Video inputs"
+          label={t('layout.user-media.video_inputs')}
           options={videoInputs.map((device) => ({
             label: device.label,
             value: device.label,

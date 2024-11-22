@@ -15,6 +15,7 @@ import {
 import { CalendarIcon } from '@radix-ui/react-icons'
 import { format } from 'date-fns'
 import { useState } from 'react'
+import { useTranslation } from 'react-i18next'
 
 interface GenerateCodePrivateInvitationProps {
   isDateInPast: boolean
@@ -35,10 +36,13 @@ export function GenerateCodePrivateInvitation({
   setDate,
   handleSelectChange,
 }: GenerateCodePrivateInvitationProps) {
+  const { t } = useTranslation()
+
   const [isUniqueCode, setIsUniqueCode] = useState(false)
   const checkHandler = () => {
     setIsUniqueCode(!isUniqueCode)
   }
+
   return (
     <>
       <ButtonShadCn
@@ -53,10 +57,14 @@ export function GenerateCodePrivateInvitation({
           }
         }}
       >
-        <div className="text-violet-50">Generate invitation link</div>
+        <div className="text-violet-50">
+          {t('layout.generate-code-private-invitation.generate_code')}
+        </div>
       </ButtonShadCn>
       {isDateInPast && selectedOption === 'custom' && (
-        <div className="text-red-500 text-sm">The date has already passed.</div>
+        <div className="text-red-500 text-sm">
+          {t('layout.generate-code-private-invitation.passed_date')}
+        </div>
       )}
       <div className="flex flex-row gap-4 items-center">
         <Checkbox
@@ -69,19 +77,31 @@ export function GenerateCodePrivateInvitation({
           htmlFor="code"
           className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
         >
-          Unique invite code
+          {t('layout.generate-code-private-invitation.unique_code')}
         </label>
       </div>
       <Select onValueChange={handleSelectChange}>
         <SelectTrigger>
-          <SelectValue placeholder="Select an option" />
+          <SelectValue
+            placeholder={t(
+              'layout.generate-code-private-invitation.select_option'
+            )}
+          />
         </SelectTrigger>
         <SelectContent>
           <SelectGroup>
-            <SelectItem value="hour">1 hour</SelectItem>
-            <SelectItem value="day">1 day</SelectItem>
-            <SelectItem value="week">1 week</SelectItem>
-            <SelectItem value="custom">Custom</SelectItem>
+            <SelectItem value="hour">
+              {t('layout.generate-code-private-invitation.1hour')}
+            </SelectItem>
+            <SelectItem value="day">
+              {t('layout.generate-code-private-invitation.1day')}
+            </SelectItem>
+            <SelectItem value="week">
+              {t('layout.generate-code-private-invitation.1week')}
+            </SelectItem>
+            <SelectItem value="custom">
+              {t('layout.generate-code-private-invitation.custom')}
+            </SelectItem>
           </SelectGroup>
         </SelectContent>
       </Select>
@@ -95,7 +115,13 @@ export function GenerateCodePrivateInvitation({
               }`}
             >
               <CalendarIcon className="mr-2 h-4 w-4" />
-              {date ? format(date, 'PPP') : <span>Pick a date</span>}
+              {date ? (
+                format(date, 'PPP')
+              ) : (
+                <span>
+                  {t('layout.generate-code-private-invitation.pick_date')}
+                </span>
+              )}
             </ButtonShadCn>
           </PopoverTrigger>
           <PopoverContent className="w-auto p-0 bg-white">

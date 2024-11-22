@@ -22,6 +22,7 @@ import { getVoiceState } from '@beep/voice'
 import { CreateChannelModal } from './create-channel-modal'
 import { ServerDropdown } from './server-dropdown'
 import { ServerPictureButton } from './server-picture-button'
+import { useTranslation } from 'react-i18next'
 
 export interface ChannelsNavigationProps {
   textChannels?: ChannelEntity[]
@@ -58,6 +59,8 @@ export default function ChannelsNavigation({
   methodsAddChannel,
   hideLeftDiv,
 }: ChannelsNavigationProps) {
+  const { t } = useTranslation()
+
   const { showLeftPane } = useSelector(getResponsiveState)
   const { connected, focusedChannel, serverName } =
     useSelector(getChannelsState)
@@ -140,7 +143,7 @@ export default function ChannelsNavigation({
               })
             }}
           >
-            <p>Create channel</p>
+            <p>{t('layout.channels-navigation.create_channel')}</p>
           </Button>
         )}
         {/* Channels list */}

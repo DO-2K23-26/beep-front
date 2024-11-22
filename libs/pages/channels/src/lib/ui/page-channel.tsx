@@ -10,7 +10,7 @@ import {
   DynamicSelectorProps,
   Icon,
   InputMessageArea,
-  Skeleton
+  Skeleton,
 } from '@beep/ui'
 import { useCallback } from 'react'
 import { Controller, UseFormReturn } from 'react-hook-form'
@@ -18,6 +18,7 @@ import { TaggedChannelFeature } from '../feature/tagged-channel-feature'
 import { UserInformationsFeature } from '../feature/user-informations-feature'
 import DisplayPinned from './display-pinned'
 import ListMessages from './list-messages'
+import { useTranslation } from 'react-i18next'
 
 export interface PageChannelProps {
   messageForm: UseFormReturn<{
@@ -85,6 +86,8 @@ export const PageChannel = ({
   isLoadingChannel,
   serverId,
 }: PageChannelProps) => {
+  const { t } = useTranslation()
+
   const replyTo = messageForm.watch('replyTo')
   const setReplyTo = (message: MessageEntity | null) => {
     messageForm.setValue('replyTo', message)
@@ -196,7 +199,8 @@ export const PageChannel = ({
             }}
           >
             <span>
-              Reply to <strong>{replyTo.owner?.username}</strong> :{' '}
+              {t('channels.page-channel.reply_to')}{' '}
+              <strong>{replyTo.owner?.username}</strong> :{' '}
               <em>
                 {replyTo.content.length > 15
                   ? `${replyTo.content.substring(0, 15)} ...`
@@ -269,7 +273,7 @@ export const PageChannel = ({
                   name={'message'}
                   value={field.value}
                   className="rounded-xl bg-violet-50 px-4 w-full"
-                  placeholder="Type a message"
+                  placeholder={t('channels.page-channel.message_placeholder')}
                   ref={inputRef}
                   onChange={
                     onChange

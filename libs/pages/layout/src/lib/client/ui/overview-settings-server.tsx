@@ -8,6 +8,7 @@ import { Button, ButtonStyle, InputText, InputImageSettings } from '@beep/ui'
 import { skipToken } from '@reduxjs/toolkit/query'
 import { useState } from 'react'
 import toast from 'react-hot-toast'
+import { useTranslation } from 'react-i18next'
 
 export interface OverviewSettingsServerProps {
   server: ServerEntity
@@ -18,6 +19,8 @@ export function OverviewSettingsServer({
   server,
   isAdmin,
 }: OverviewSettingsServerProps) {
+  const { t } = useTranslation()
+
   const [serverName, setServerName] = useState(server.name)
   const [serverDescription, setServerDescription] = useState(server.description)
   const [updateServer] = useUpdateServerMutation()
@@ -49,13 +52,13 @@ export function OverviewSettingsServer({
   return (
     <div className="w-full bg-violet-200 p-10 overflow-y-auto">
       <h3 className=" text-slate-700 font-bold mb-2 max-w-sm">
-        SERVER OVERVIEW
+        {t('layout.overview-settings-server.server_overview')}
       </h3>
       <div className="flex gap-10 items-center py-10">
         <div className="w-1/3 h-60 flex justify-center items-center">
           <InputImageSettings
             type="picture"
-            label="Upload profile picture"
+            label={t('layout.overview-settings-server.upload_picture')}
             name="profile"
             serverId={server.id}
             initialImage={icon}
@@ -64,7 +67,7 @@ export function OverviewSettingsServer({
         <div className="w-2/3 h-60">
           <InputImageSettings
             type="banner"
-            label="Upload banner"
+            label={t('layout.overview-settings-server.upload_banner')}
             name="banner"
             serverId={server.id}
             initialImage={banner}
@@ -75,10 +78,10 @@ export function OverviewSettingsServer({
       <div className="py-5 ">
         <div className="py-2">
           <h5 className="py-5 text-slate-700 font-bold mb-2 max-w-sm">
-            Server name
+            {t('layout.overview-settings-server.server_name')}
           </h5>
           <InputText
-            label="Server name"
+            label={t('layout.overview-settings-server.server_name')}
             type="text"
             name="server-name"
             className="!rounded-lg min-h-[40px] w-full "
@@ -89,10 +92,10 @@ export function OverviewSettingsServer({
         </div>
         <div className="py-2">
           <h5 className="py-5 text-slate-700 font-bold mb-2 max-w-sm">
-            Server description
+            {t('layout.overview-settings-server.server_description')}
           </h5>
           <InputText
-            label="Server description"
+            label={t('layout.overview-settings-server.server_description')}
             type="text"
             name="server-description"
             className="!rounded-lg min-h-[40px] w-full"
@@ -104,7 +107,7 @@ export function OverviewSettingsServer({
       </div>
       {isAdmin && (
         <Button style={ButtonStyle.BASIC} onClick={handleSave}>
-          Save
+          {t('layout.overview-settings-server.save')}
         </Button>
       )}
     </div>

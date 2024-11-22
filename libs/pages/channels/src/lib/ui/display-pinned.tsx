@@ -3,6 +3,7 @@ import { UserDisplayedEntity } from '@beep/contracts'
 import { Button, ButtonSize } from '@beep/ui'
 import React, { useState } from 'react'
 import PinnedMessagesList from './pinned-messages-list'
+import { useTranslation } from 'react-i18next'
 
 interface DisplayPinnedProps {
   channelId: string
@@ -23,6 +24,8 @@ const DisplayPinned: React.FC<DisplayPinnedProps> = ({
   selectedTaggedUser,
   setSelectedTaggedUser,
 }) => {
+  const { t } = useTranslation()
+
   const { data: pinnedMessage, isLoading: isLoadingPinned } =
     useFetchPinnedMessagesQuery({
       channelId,
@@ -36,7 +39,7 @@ const DisplayPinned: React.FC<DisplayPinnedProps> = ({
         className="flex flex-row gap-2 items-center justify-center p-3 bg-violet-300 rounded-xl !h-14"
         onClick={() => setShowPinnedMessages(!showPinnedMessages)}
       >
-        <p>Pinned messages</p>
+        <p>{t('channels.display-pinned.pinned_messages')}</p>
       </Button>
       {showPinnedMessages &&
         !isLoadingPinned &&

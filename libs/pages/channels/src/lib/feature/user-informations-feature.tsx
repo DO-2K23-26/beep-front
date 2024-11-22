@@ -2,6 +2,7 @@ import { UserDisplayedEntity } from '@beep/contracts'
 import { Button, ButtonStyle, Icon } from '@beep/ui'
 import { useFetchProfilePictureQuery } from '@beep/user'
 import { skipToken } from '@reduxjs/toolkit/query'
+import { useTranslation } from 'react-i18next'
 
 export interface UserInformationsFeatureProps {
   user: UserDisplayedEntity
@@ -12,6 +13,8 @@ export const UserInformationsFeature = ({
   user,
   onClose,
 }: UserInformationsFeatureProps) => {
+  const { t } = useTranslation()
+
   const { currentData: userProfilePicture } = useFetchProfilePictureQuery(
     user.id ?? skipToken
   )
@@ -26,7 +29,9 @@ export const UserInformationsFeature = ({
         onClick={(e) => e.stopPropagation()}
       >
         <div className="flex justify-between items-center w-full">
-          <p className="text-lg font-bold">User informations</p>
+          <p className="text-lg font-bold">
+            {t('channels.user-information.title')}
+          </p>
 
           <Button style={ButtonStyle.NONE} onClick={() => onClose()}>
             <Icon name="lucide:x" className="w-5 h-5 cursor-pointer" />
@@ -36,7 +41,9 @@ export const UserInformationsFeature = ({
           <img
             className="w-9 min-w-[50px] h-9 min-h-[50px] object-cover bg-violet-50 rounded-xl"
             src={userProfilePicture || '/picture.svg'}
-            alt={user.username + "'s profile picture"}
+            alt={t('channels.user-information.user_picture_alt', {
+              username: user.username,
+            })}
           />
           <p className="text-base font-semibold">{user.username}</p>
         </div>

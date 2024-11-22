@@ -2,12 +2,15 @@
 
 import React from 'react'
 import { detectMedia } from '../feature/media-embed-feature'
+import { useTranslation } from 'react-i18next'
 
 interface MediaEmbedProps {
   text: string
 }
 
 const MediaEmbed: React.FC<MediaEmbedProps> = ({ text }) => {
+  const { t } = useTranslation()
+
   const mediaList = detectMedia(text)
 
   if (mediaList.length === 0) {
@@ -23,7 +26,7 @@ const MediaEmbed: React.FC<MediaEmbedProps> = ({ text }) => {
               width="560"
               height="315"
               src={`https://www.youtube.com/embed/${media.id}`}
-              title="YouTube video player"
+              title={t('channels.media-embed.youtube')}
               frameBorder="0"
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
               allowFullScreen
@@ -34,7 +37,7 @@ const MediaEmbed: React.FC<MediaEmbedProps> = ({ text }) => {
             <iframe
               style={{ borderRadius: '12px' }}
               src={`https://open.spotify.com/embed/track/${media.id}?utm_source=generator`}
-              title="Spotify Embed"
+              title={t('channels.media-embed.spotify')}
               width="100%"
               height="152"
               frameBorder="0"
@@ -48,7 +51,7 @@ const MediaEmbed: React.FC<MediaEmbedProps> = ({ text }) => {
             <iframe
               style={{ borderRadius: '12px' }}
               src={`https://embed.music.apple.com/us/album/${media.id}`}
-              title="AppleMusic Embed"
+              title={t('channels.media-embed.apple_music')}
               width="100%"
               height="352"
               frameBorder="0"
@@ -66,7 +69,7 @@ const MediaEmbed: React.FC<MediaEmbedProps> = ({ text }) => {
               frameBorder="0"
               allow="encrypted-media"
               allowFullScreen
-              title="Instagram Embed"
+              title={t('channels.media-embed.instagram')}
             ></iframe>
           )}
 
@@ -78,7 +81,7 @@ const MediaEmbed: React.FC<MediaEmbedProps> = ({ text }) => {
               frameBorder="0"
               allow="encrypted-media"
               allowFullScreen
-              title="TikTok Embed"
+              title={t('channels.media-embed.tiktok')}
             ></iframe>
           )}
 

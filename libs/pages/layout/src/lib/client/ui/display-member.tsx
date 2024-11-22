@@ -1,5 +1,6 @@
 import { MemberEntity } from '@beep/contracts'
 import { Badge, BadgeType, Button, ButtonStyle, Icon } from '@beep/ui'
+import { useTranslation } from 'react-i18next'
 
 interface DisplayMemberProps {
   member: MemberEntity
@@ -14,6 +15,8 @@ export default function DisplayMember({
   onPrivateMessage,
   profilePicture,
 }: DisplayMemberProps) {
+  const { t } = useTranslation()
+
   return (
     <div className="flex flex-row justify-between items-center p-2 hover:bg-violet-400 rounded-xl transition-all cursor-pointer w-full group gap-2">
       <div className="flex flex-row gap-3 items-center">
@@ -37,13 +40,13 @@ export default function DisplayMember({
         {isConnected ? (
           <Badge
             type={BadgeType.ONLINE}
-            title="Online"
+            title={t('layout.current-user.online')}
             className="!text-slate-900"
           />
         ) : (
           <Badge
             type={BadgeType.OFFLINE}
-            title="Offline"
+            title={t('layout.current-user.offline')}
             className="!text-slate-900"
           />
         )}

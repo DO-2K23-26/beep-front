@@ -9,12 +9,15 @@ import { toast } from 'react-hot-toast'
 import { useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import ServersNavigation from '../ui/servers-navigation'
+import { useTranslation } from 'react-i18next'
 
 const onPrivateMessage = () => {
   // navigation('/discover')
 }
 
 export function ServersNavigationFeature() {
+  const { t } = useTranslation()
+
   const { data: servers } = useGetMyServersQuery()
   const { openModal, closeModal } = useModal()
   const dispatch = useDispatch<AppDispatch>()
@@ -30,7 +33,7 @@ export function ServersNavigationFeature() {
     dispatch({ type: 'CLOSE_WEBRTC' })
     dispatch(resetStore())
     logout()
-    toast.success('Successfully logged out !')
+    toast.success(t('layout.servers-navigation.logout'))
     navigate('/authentication/signin')
   }
 

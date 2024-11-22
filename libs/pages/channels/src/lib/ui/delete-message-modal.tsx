@@ -1,4 +1,5 @@
 import { Button, ButtonStyle } from '@beep/ui'
+import { useTranslation } from 'react-i18next'
 
 interface DeleteMessageModalProps {
   closeModal: () => void
@@ -9,13 +10,15 @@ export function DeleteMessageModal({
   closeModal,
   onDeleteMessage,
 }: DeleteMessageModalProps) {
+  const { t } = useTranslation()
+
   return (
     <div className="p-6">
       <h3 className=" text-slate-700 font-bold mb-2 max-w-sm">
-        Delete Message
+        {t('channels.delete-message-modal.title')}
       </h3>
       <div className="text-slate-500 text-sm mb-4">
-        Are you sure you want to delete this message?
+        {t('channels.delete-message-modal.description')}
       </div>
       <div className="flex gap-3 justify-between">
         <Button
@@ -23,7 +26,7 @@ export function DeleteMessageModal({
           style={ButtonStyle.STROKED}
           onClick={() => closeModal()}
         >
-          Cancel
+          {t('channels.delete-message-modal.cancel')}
         </Button>
         <Button
           className="btn--no-min-w"
@@ -33,7 +36,7 @@ export function DeleteMessageModal({
             closeModal()
           }}
         >
-          Delete
+          {t('channels.delete-message-modal.delete')}
         </Button>
       </div>
     </div>

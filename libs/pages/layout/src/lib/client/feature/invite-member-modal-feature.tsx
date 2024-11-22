@@ -9,8 +9,11 @@ import {
 import toast from 'react-hot-toast'
 import { DateTime } from 'luxon'
 import { useLocation } from 'react-router'
+import { useTranslation } from 'react-i18next'
 
 export default function InviteMemberModalFeature() {
+  const { t } = useTranslation()
+
   const dispatch = useDispatch<AppDispatch>()
   const url = window.location.origin.replace(useLocation().pathname, '')
   const [createInvitation] = useCreateInvitationMutation()
@@ -25,7 +28,7 @@ export default function InviteMemberModalFeature() {
     dispatch(
       serverActions.setInviteCode(url + '/servers/invite/' + response.data?.id)
     )
-    toast.success('Code generated successfully')
+    toast.success(t('layout.invite-member-modal.invite_code_generated'))
   }
 
   const onGenerateNewCode = () => {
@@ -34,7 +37,9 @@ export default function InviteMemberModalFeature() {
 
   const copyToClipboard = (copiedText: string, toastText: string) => {
     navigator.clipboard.writeText(copiedText)
-    toast.success(toastText + ' copied to clipboard')
+    toast.success(
+      t('layout.invite-member-modal.code_copied', { text: toastText })
+    )
   }
 
   return (

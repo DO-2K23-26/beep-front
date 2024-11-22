@@ -4,6 +4,7 @@ import { GenerateCodePrivateInvitation } from './generate-code-private-invitatio
 import { GeneratedCodePrivateInvitation } from './generated-code-private-invitation'
 import { IdCodePublicInvitation } from './id-code-public-invitation'
 import { addDays, addHours, addWeeks } from 'date-fns'
+import { useTranslation } from 'react-i18next'
 
 interface InviteMemberModalProps {
   serverInviteCode: string | undefined
@@ -22,6 +23,8 @@ export function InviteMemberModal({
   onGenerateNewCode,
   copyToClipboard,
 }: InviteMemberModalProps) {
+  const { t } = useTranslation()
+
   const [date, setDate] = useState<Date>(new Date())
   const [selectedOption, setSelectedOption] = useState('')
   const [isDatePassed, setIsDatePassed] = useState(false)
@@ -29,7 +32,7 @@ export function InviteMemberModal({
 
   const handleSelectChange = (value: string) => {
     setSelectedOption(value)
-    let newDate: Date  = new Date()
+    let newDate: Date = new Date()
     const now = new Date()
 
     switch (value) {
@@ -72,7 +75,7 @@ export function InviteMemberModal({
     return (
       <>
         <h3 className="text-slate-700 font-bold mb-2 max-w-sm">
-          Invite your friends
+          {t('layout.invite-member-modal.invite_friend')}
         </h3>
         <div className="text-slate-500 text-sm">{text}</div>
       </>
@@ -83,11 +86,7 @@ export function InviteMemberModal({
     <div className="p-6 flex flex-col gap-4">
       {serverVisibility === 'private' ? (
         <>
-          <ModalHeader
-            text={
-              'Share this code id to invite your friends to this private server'
-            }
-          />
+          <ModalHeader text={t('layout.invite-member-modal.share_code')} />
           {serverInviteCode === null ||
           serverInviteCode === '' ||
           serverInviteCode === undefined ? (
@@ -110,11 +109,7 @@ export function InviteMemberModal({
         </>
       ) : (
         <>
-          <ModalHeader
-            text={
-              'Share this server id to invite your friends to this public server'
-            }
-          />
+          <ModalHeader text={t('layout.invite-member-modal.share_server')} />
           <IdCodePublicInvitation
             serverId={serverId}
             copyToClipboard={copyToClipboard}

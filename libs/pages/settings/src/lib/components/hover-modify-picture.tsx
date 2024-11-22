@@ -1,4 +1,5 @@
 import React from 'react'
+import { useTranslation } from 'react-i18next'
 
 interface HoverModifyPictureProps {
   profilePicture: string | undefined
@@ -9,6 +10,8 @@ export const HoverModifyPicture = React.forwardRef<
   HTMLButtonElement,
   HoverModifyPictureProps
 >(({ profilePicture, onClick }, ref) => {
+  const { t } = useTranslation()
+
   return (
     <button ref={ref} className="relative" onClick={onClick}>
       <div className="flew-row">
@@ -18,7 +21,7 @@ export const HoverModifyPicture = React.forwardRef<
           alt={'-img'}
         />
         <div className="w-9 min-w-[175px] h-9 min-h-[175px] absolute inset-0 flex items-center justify-center bg-gray-600 bg-opacity-50 text-white opacity-0 hover:opacity-100 transition-opacity duration-300 rounded-[36px]">
-          Modify
+          {t('settings.components.hover-modify-picture.modify')}
         </div>
       </div>
     </button>

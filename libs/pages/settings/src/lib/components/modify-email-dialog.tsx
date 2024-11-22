@@ -1,5 +1,6 @@
 import { Button, DialogComponent, InputText } from '@beep/ui'
 import { Controller, UseFormReturn } from 'react-hook-form'
+import { useTranslation } from 'react-i18next'
 
 interface ModifyEmailDialogProps {
   emailFormController: UseFormReturn<{ email: string }, any, undefined>
@@ -13,26 +14,34 @@ export function ModifyEmailDialog({
   setIsModalOpen,
   emailFormController,
 }: ModifyEmailDialogProps) {
+  const { t } = useTranslation()
+
   return (
     <DialogComponent
       title={'Choose a new email'}
-      triggerModalButton={<Button>Modify</Button>}
+      triggerModalButton={
+        <Button>{t('settings.components.modify-email-dialog.modify')}</Button>
+      }
       content={
         <>
           {' '}
           <Controller
             name="email"
             rules={{
-              required: 'Enter a new email adress',
+              required: t(
+                'settings.components.modify-email-dialog.required_email'
+              ),
               pattern: {
                 value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-                message: 'Invalid email address',
+                message: t(
+                  'settings.components.modify-email-dialog.invalid_email'
+                ),
               },
             }}
             control={emailFormController.control}
             render={({ field, fieldState: { error } }) => (
               <InputText
-                label="Email"
+                label={t('settings.components.modify-email-dialog.email')}
                 type="email"
                 name="email"
                 className="w-full !rounded-lg min-h-[40px]"
@@ -42,7 +51,7 @@ export function ModifyEmailDialog({
               />
             )}
           />
-          <p>An email will be sent to your current email adress for confirmation</p>
+          <p>{t('settings.components.modify-email-dialog.email_sented')}</p>
         </>
       }
       actionButtonTitle="Confirm"

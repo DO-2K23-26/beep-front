@@ -1,5 +1,6 @@
 import { ChannelEntity, UserDisplayedEntity } from '@beep/contracts'
 import { DisplayedEntity } from '../utils/tagging-utils'
+import { useTranslation } from 'react-i18next'
 
 interface TagProps<T> {
   entity: T | null
@@ -12,6 +13,8 @@ export function Tag<T extends DisplayedEntity>({
   prefix,
   onClick,
 }: TagProps<T>) {
+  const { t } = useTranslation()
+
   let displayedName = ''
 
   if (isUserDisplayedEntity(entity)) {
@@ -34,7 +37,7 @@ export function Tag<T extends DisplayedEntity>({
       }
       onClick={() => entity && onClick(entity)}
     >
-      {entity ? prefix + displayedName : 'undefined tag'}
+      {entity ? prefix + displayedName : t('channels.tag.undefined')}
     </span>
   )
 }

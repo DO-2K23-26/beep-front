@@ -1,7 +1,4 @@
-import {
-  MessageEntity,
-  UserDisplayedEntity
-} from '@beep/contracts'
+import { MessageEntity, UserDisplayedEntity } from '@beep/contracts'
 import React from 'react'
 import MessageFeature from '../feature/message-feature'
 import { EmptyPinnedMessageList } from './empty-pinned-message-list'

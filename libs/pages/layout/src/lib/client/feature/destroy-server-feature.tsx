@@ -10,6 +10,7 @@ import DestroyServerModal from '../ui/server-settings-modal/delete-server-modal'
 import { useNavigate } from 'react-router'
 import { ServerEntity } from '@beep/contracts'
 import toast from 'react-hot-toast'
+import { useTranslation } from 'react-i18next'
 
 interface DestroyServerFeatureProps {
   closeModal: () => void
@@ -18,6 +19,8 @@ interface DestroyServerFeatureProps {
 export default function DestroyServerFeature({
   closeModal,
 }: DestroyServerFeatureProps) {
+  const { t } = useTranslation()
+
   const [confirmation, setConfirmation] = useState('')
   const focusedServer = useSelector(getServersState).server
   const [deleteServer] = useDeleteServerMutation()
@@ -28,17 +31,18 @@ export default function DestroyServerFeature({
   const dispatch = useDispatch()
 
   const CONFIRMATION_TEXT =
-    useSelector(getServersState).server?.name ?? 'Your server name'
+    useSelector(getServersState).server?.name ??
+    t('layout.destroy-server.default_server_name')
 
   const onSubmit = () => {
     setLoading(true)
     if (!focusedServer) {
-      setError('No server selected')
+      setError(t('layout.destroy-server.no_server_selected'))
       setLoading(false)
       return
     }
     if (confirmation !== CONFIRMATION_TEXT) {
-      setError('Confirmation text does not match')
+      setError(t('layout.destroy-server.error_server_name_mismatch'))
       setLoading(false)
       return
     }
@@ -58,7 +62,7 @@ export default function DestroyServerFeature({
         setLoading(false)
         if (!availableServers) {
           dispatch(serverActions.setServer(emptyServer))
-          toast.success('Server deleted successfully')
+          toast.success(t('layout.destroy-server.success_delete_server'))
           closeModal()
           return
         }
@@ -67,19 +71,19 @@ export default function DestroyServerFeature({
         )
         if (!serverToNavigate) {
           dispatch(serverActions.setServer(emptyServer))
-          toast.success('Server deleted successfully')
+          toast.success(t('layout.destroy-server.success_delete_server'))
           closeModal()
           return
         }
         navigate('/discover')
         dispatch(serverActions.setServer(serverToNavigate))
-        toast.success('Server deleted successfully')
+        toast.success(t('layout.destroy-server.success_delete_server'))
         closeModal()
       })
       .catch((err) => {
-        setError('An error occured while deleting the server')
+        setError(t('layout.destroy-server.error_delete_server'))
         setLoading(false)
-        toast.error('An error occured while deleting the server')
+        toast.error(t('layout.destroy-server.error_delete_server'))
       })
   }
 

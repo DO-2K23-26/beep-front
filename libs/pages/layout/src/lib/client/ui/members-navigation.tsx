@@ -5,6 +5,7 @@ import { useSelector } from 'react-redux'
 import InviteMemberModalFeature from '../feature/invite-member-modal-feature'
 import { ListMemberSkeleton } from './list-member-skeleton'
 import { ListMembers } from './list-members'
+import { useTranslation } from 'react-i18next'
 
 interface MembersNavigationProps {
   usersConnected?: UserConnectedEntity[]
@@ -21,6 +22,8 @@ export default function MembersNavigation({
   isLoadingConnected,
   isLoadingUsers,
 }: MembersNavigationProps) {
+  const { t } = useTranslation()
+
   const { showRightPane } = useSelector(getResponsiveState)
 
   return (
@@ -30,7 +33,9 @@ export default function MembersNavigation({
       }`}
     >
       <div className="flex items-center justify-betwee space-x-6">
-        <h5 className="text-slate-900 font-semibold pl-3">Members</h5>
+        <h5 className="text-slate-900 font-semibold pl-3">
+          {t('layout.members-navigation.members')}
+        </h5>
         <button
           className="p-2 bg-violet-400 rounded-lg hover:rounded-xl transition-all"
           onClick={() => {

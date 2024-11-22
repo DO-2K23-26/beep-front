@@ -17,18 +17,21 @@ import {
 } from '@beep/ui'
 import { useState } from 'react'
 import { OverviewSettingsServer } from './overview-settings-server'
+import { useTranslation } from 'react-i18next'
 
 interface ServerDropDownMenuProps {
   server?: ServerEntity
 }
 export function ServerDropdownMenu({ server }: ServerDropDownMenuProps) {
+  const { t } = useTranslation()
+
   const [isSettingsModalOpen, setIsSettingsModalOpen] = useState(false)
 
   const subSetting: SubSettings = {
-    subGroupSettingTitle: 'Server',
+    subGroupSettingTitle: t('layout.server-dropdown-menu.server'),
     settings: [
       {
-        title: 'Overview',
+        title: t('layout.server-dropdown-menu.overview'),
         settingComponent: (
           <OverviewSettingsServer server={server!} isAdmin={true} />
         ),
@@ -48,10 +51,7 @@ export function ServerDropdownMenu({ server }: ServerDropDownMenuProps) {
     <>
       <DropdownMenu>
         <DropdownMenuTrigger>
-          <Button
-            style={ButtonStyle.SQUARE}
-
-          >
+          <Button style={ButtonStyle.SQUARE}>
             {server ? (
               icon ? (
                 <img
@@ -72,17 +72,16 @@ export function ServerDropdownMenu({ server }: ServerDropDownMenuProps) {
           <DropdownMenuGroup>
             <DropdownMenuItem onClick={handleSettingsClick}>
               <Settings className="mr-2 h-4 w-4" />
-              <span>Settings</span>
+              <span>{t('layout.server-dropdown-menu.server-settings')}</span>
               {/* quand on cliques, ca ouvre overview-settings-server.tsx */}
             </DropdownMenuItem>
           </DropdownMenuGroup>
         </DropdownMenuContent>
       </DropdownMenu>
       {isSettingsModalOpen && (
-        <DialogCloseButton
-          content={<SettingsModal settings={[subSetting]} />}
-          triggerButton={<Icon name="lucide:settings" className="w-10 h-10" />}
-        />
+        <DialogCloseButton content={<SettingsModal settings={[subSetting]} />}>
+          <Icon name="lucide:settings" className="w-10 h-10" />
+        </DialogCloseButton>
       )}
     </>
   )

@@ -34,8 +34,11 @@ import { DeleteMessageModal } from '../ui/delete-message-modal'
 import { PageChannel } from '../ui/page-channel'
 import { DynamicSelectorChannelFeature } from './dynamic-selector-channel-feature'
 import { DynamicSelectorFeature } from './dynamic-selector-item-feature'
+import { useTranslation } from 'react-i18next'
 
 export function PageChannelFeature() {
+  const { t } = useTranslation()
+
   const dispatch = useDispatch<AppDispatch>()
   const limit = 50
   const { data: user } = useGetMeQuery()
@@ -141,10 +144,10 @@ export function PageChannelFeature() {
         setDynamicSelector(undefined)
       } else {
         setDynamicSelector({
-          title: 'Users',
+          title: t('channels.page-channel.user_selector.title'),
           elements: elements,
           maxElements: 5,
-          emptyMessage: 'Any user.',
+          emptyMessage: t('channels.page-channel.user_selector.empty_result'),
           onSelect: (id) => {
             messageForm.setValue(
               'message',
@@ -158,7 +161,7 @@ export function PageChannelFeature() {
       }
     } else if (nonChannelTagRegex.test(text)) {
       setDynamicSelector({
-        title: 'Text channels',
+        title: t('channels.page-channel.channel_selector.title'),
         elements:
           channels?.textChannels
             .filter(
@@ -171,7 +174,7 @@ export function PageChannelFeature() {
               content: <DynamicSelectorChannelFeature channel={channel} />,
             })) ?? [],
         maxElements: 5,
-        emptyMessage: 'Any text channel.',
+        emptyMessage: t('channels.page-channel.channel_selector.empty_result'),
         onSelect: (id) => {
           messageForm.setValue(
             'message',
@@ -287,7 +290,7 @@ export function PageChannelFeature() {
 
   useEffect(() => {
     if (resultDeleteMessage.isError) {
-      toast.error('Failure while trying to delete the message')
+      toast.error(t('channels.page-channel.error.delete_message'))
     }
   }, [resultDeleteMessage])
 
@@ -312,7 +315,7 @@ export function PageChannelFeature() {
       messageForm.reset()
       setFiles([])
     } else {
-      toast.error('A message is required')
+      toast.error(t('channels.page-channel.error.empty_message'))
     }
   })
 

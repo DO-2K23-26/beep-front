@@ -18,6 +18,7 @@ export default function ConnectedUserRow({
 }: ConnectedUserRowProps) {
   const { currentData: userProfilePicture } =
     useFetchProfilePictureQuery(userId)
+
   return (
     <div className="flex flex-row justify-between items-center p-2 hover:bg-violet-400 rounded-xl transition-all cursor-pointer w-full group gap-2">
       <div className="flex flex-row gap-3 items-center">

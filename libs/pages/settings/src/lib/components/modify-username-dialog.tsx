@@ -1,6 +1,6 @@
 import { Button, DialogComponent, InputText } from '@beep/ui'
 import { Controller, UseFormReturn } from 'react-hook-form'
-
+import { useTranslation } from 'react-i18next'
 interface ModifyUsernameDialogProps {
   usernameFormController: UseFormReturn<{ username: string }, any, undefined>
   isModalOpen: boolean
@@ -13,29 +13,36 @@ export function ModifyUsernameDialog({
   setIsModalOpen,
   usernameFormController,
 }: ModifyUsernameDialogProps) {
+  const { t } = useTranslation()
+
   return (
     <DialogComponent
-      title={'Choose a new username'}
+      title={t('settings.components.modify-username-dialog.title')}
       triggerModalButton={
         <div>
-          <Button>Modify</Button>
+          <Button>
+            {t('settings.components.modify-username-dialog.modify')}
+          </Button>
         </div>
       }
       content={
         <Controller
           name="username"
           rules={{
-            required: 'Username is required',
+            required: t(
+              'settings.components.modify-username-dialog.required_username'
+            ),
             pattern: {
               value: /^[a-z]+$/,
-              message:
-                'Username should only contain lowercase letters of the alphabet',
+              message: t(
+                'settings.components.modify-username-dialog.invalid_username'
+              ),
             },
           }}
           control={usernameFormController.control}
           render={({ field, fieldState: { error } }) => (
             <InputText
-              label="Username"
+              label={t('settings.components.modify-username-dialog.username')}
               type="text"
               name="username"
               className="w-full !rounded-lg min-h-[40px]"
@@ -46,7 +53,9 @@ export function ModifyUsernameDialog({
           )}
         />
       }
-      actionButtonTitle="Confirm"
+      actionButtonTitle={t(
+        'settings.components.modify-username-dialog.confirm'
+      )}
       action={action}
       isModalOpen={isModalOpen}
       setIsModalOpen={setIsModalOpen}

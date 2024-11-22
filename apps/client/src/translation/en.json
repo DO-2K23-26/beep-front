@@ -1,0 +1,345 @@
+{
+  "auth": {
+    "page-after-signup": {
+      "check_email": "Check your email",
+      "validate_email": "Your account has been successfully created, validate your email to be able to signin"
+    },
+    "page-confirm-email": {
+      "check_email": "Check your email",
+      "confirm_account": "Confirm your account to signin"
+    },
+    "page-forgot-password": {
+      "forgot_password": "Forgot your password ?",
+      "insert_email": "It's okay, it happens ! Please insert your email below to reset your password.",
+      "send": "Send",
+      "go_back_signin": "Go back to signin page ?",
+      "signin": "Sign in",
+      "email": "Email",
+      "required_email": "Email is required",
+      "invalid_email": "Invalid email address"
+    },
+    "page-reset-password": {
+      "reset": "Reset your password",
+      "new_password": "Please enter your new password below.",
+      "required_password": "Password is required",
+      "invalid_password": "Password must be at least 8 characters long and contain at least one uppercase letter, one digit, and one special character",
+      "password": "Password",
+      "confirm_password": "You must confirm your password",
+      "password_missmatch": "Your passwords do not match",
+      "confirm": "Confirm password",
+      "submit": "Submit",
+      "go_back_signin": "Go back to signin page?",
+      "signin": "Sign in"
+    },
+    "page-signin": {
+      "signin": "Sign in",
+      "required_email": "Email is required",
+      "invalid_email": "Invalid email address",
+      "email": "Email",
+      "required_password": "Password is required",
+      "invalid_password_min": "Password must be at least 8 characters long",
+      "invalid_password_max": "Password must be at most 1000 characters long",
+      "password": "Password",
+      "forgot_password": "You forgot your password ?",
+      "no_account": "Don't have an account ?",
+      "signup": "Sign up"
+    },
+    "page-signup": {
+      "welcome_back": "We are happy to see you !",
+      "required_firstname": "First name is required",
+      "invalid_firstname": "First name should only contain letters of the alphabet (uppercase or lowercase)",
+      "firstname": "First name",
+      "required_lastname": "Last name is required",
+      "invalid_lastname": "Last name should only contain letters of the alphabet (uppercase or lowercase)",
+      "lastname": "Last name",
+      "required_username": "Username is required",
+      "invalid_username": "Username should only contain lowercase letters of the alphabet",
+      "username": "Username",
+      "required_email": "Email is required",
+      "invalid_email": "Invalid email address",
+      "email": "Email",
+      "required_password": "Password is required",
+      "invalid_password": "Password must be at least 8 characters long and contain at least one uppercase letter, one digit, and one special character",
+      "password": "Password",
+      "required_confirm_password": "You must confirm your password",
+      "password_missmatch": "Your passwords do not match",
+      "confirm_password": "Confirm password",
+      "profile_picture": "Profile picture",
+      "signup": "Sign up",
+      "already_account": "Already have an account ?",
+      "signin": "Sign in"
+    },
+    "page-verify": {
+      "account_verification": "Account verification",
+      "loading": "Loading...",
+      "verified_account": "Your account has been verified",
+      "invalid-token": "Invalid token",
+      "signin": "Time to signin !"
+    }
+  },
+  "discover": {
+    "discover-server-page": {
+      "title": "Find your community on Beep",
+      "description": "From studying to music, there's a place for you.",
+      "search_placeholder": "Find a server..."
+    }
+  },
+  "channels": {
+    "delete-message-modal": {
+      "title": "Delete Message",
+      "description": "Are you sure you want to delete this message?",
+      "cancel": "Cancel",
+      "delete": "Delete"
+    },
+    "display-pinned": {
+      "pinned_messages": "Pinned messages"
+    },
+    "empty-pinned-messages": {
+      "no_pinned_messages": "No pinned messages"
+    },
+    "empty-server-page": {
+      "title": "NO TEXT CHANNELS",
+      "description": "You can create as many channel as want. Click on create channel on the left pane !"
+    },
+    "media-embed": {
+      "youtube": "YouTube video player",
+      "spotify": "Spotify player",
+      "apple_music": "AppleMusic player",
+      "instagram": "Instagram Embed",
+      "tiktok": "TikTok Embed"
+    },
+    "message": {
+      "today": "Today"
+    },
+    "page-channel": {
+      "reply_to": "Reply to",
+      "message_placeholder": "Type a message",
+      "user_selector": {
+        "title": "User",
+        "empty_result": "Any user."
+      },
+      "channel_selector": {
+        "title": "Text channels",
+        "empty_result": "Any text channel."
+      },
+      "error": {
+        "delete_message": "Failure while trying to delete the message",
+        "empty_message": "A message is required"
+      }
+    },
+    "page-invitation": {
+      "error": "Error joining the server. Please try again.",
+      "success": "Successfully joined the server!",
+      "loading": "Loading..."
+    },
+    "tag": {
+      "undefined": "undefined tag"
+    },
+    "user-information": {
+      "title": "User informations",
+      "user_picture_alt": "{{username}}'s profile picture"
+    }
+  },
+  "layout": {
+    "add-server": {
+      "add-server-modal": {
+        "add_server": "Add a server",
+        "server_description": "A server is where you can hang out with your friends",
+        "create_server": "Create a server",
+        "or": "or",
+        "join_server": "Join a server"
+      },
+      "create-server-modal": {
+        "build_server": "Build your {{visibility}} server",
+        "server_title": "Let's give your server some juice ! Keep in mind that you can edit your server later.",
+        "add_picture": "Add a picture",
+        "required_name": "Please enter a name.",
+        "server_name": "Server name",
+        "required_description": "Please describe in a few words your server",
+        "server_description": "Tell us more about your server...",
+        "cancel": "Cancel",
+        "create": "Create"
+      },
+      "join-server-modal": {
+        "join_server": "Join your public server",
+        "enter_server_id": "Let's join a public server. You juste need to enter the server ID.",
+        "enter_server": "Please enter a server ID.",
+        "cancel": "Cancel",
+        "join": "Join"
+      },
+      "select-visibility-modal": {
+        "additional_details": "Tell us a little more about what you want",
+        "create_server": "Create a {{visibility}} server",
+        "private": "private",
+        "public": "public",
+        "for_you_and_friends": "For you and your friends",
+        "or": "or",
+        "build_your_community": "To build your community"
+      },
+      "success_create_server": "Server created successfully",
+      "error_name_already_exists": "A server with this name already exists",
+      "error_create_server": "An error occurred while creating the server",
+      "success_join_server": "Server joined successfully",
+      "error_join_server": "An error occurred while joining the server"
+    },
+    "server-settings-modal": {
+      "delete-server-modal": {
+        "destroy_server": "Destroy your server",
+        "delete_careful": "Be careful you’re about to delete your server !",
+        "irreversible_action_warning": "You won’t be able to recover your messages/files after this action.",
+        "type": "Type ",
+        "confirm_delete": " to confirm the deletion.",
+        "server_name": "Your server's name",
+        "cancel": "Cancel",
+        "destroy": "Destroy"
+      }
+    },
+    "channels-navigation": {
+      "create_channel": "Create channel",
+      "success_create_channel": "Channel created !",
+      "error_create_channel": "An error occured while creating the channel !",
+      "copy_server_id": "Server ID copied to clipboard"
+    },
+    "create-channel-modal": {
+      "create_channel": "Create channel",
+      "choose_name": "Choose a name for your channel",
+      "channel_input_placeholder": "Channel name",
+      "required_name": "Please enter a name.",
+      "text": "Text",
+      "voice": "Voice",
+      "cancel": "Cancel",
+      "create": "Create"
+    },
+    "current-user": {
+      "account": "Account",
+      "profile": "Profile",
+      "voice_video": "Voice & Video",
+      "online": "Online",
+      "offline": "Offline"
+    },
+    "delete-channel": {
+      "delete_channel": "Delete channel",
+      "delete_careful": "Be careful you’re about to delete your channel !",
+      "irreversible_action_warning": "You won’t be able to recover your messages after this action.",
+      "type": "Type ",
+      "confirm_delete": " to confirm the deletion.",
+      "channel_name": "Name of the channel",
+      "delete": "Delete",
+      "success_delete_channel": "Channel deleted successfully",
+      "error_channel_name_mismatch": "Confirmation text does not match",
+      "error_delete_channel": "An error occured while deleting the channel"
+    },
+    "destroy-server": {
+      "default_server_name": "Your server name",
+      "no_server_selected": "No server selected",
+      "success_delete_server": "Server deleted successfully",
+      "error_server_name_mismatch": "Confirmation text does not match",
+      "error_delete_server": "An error occured while deleting the server"
+    },
+    "display-channel": {
+      "channel": "Channel",
+      "overview": "Overview",
+      "delete": "Delete"
+    },
+    "generate-code-private-invitation": {
+      "generate_code": "Generate invitation link",
+      "passed_date": "The date has already passed.",
+      "unique_code": "Unique invite code",
+      "select_option": "Select an option",
+      "1hour": "1 hour",
+      "1day": "1 day",
+      "1week": "1 week",
+      "custom": "Custom",
+      "pick_date": "Pick a date"
+    },
+    "generated-code-private-invitation": {
+      "generate_new_code": "Create a new code!"
+    },
+    "invite-member-modal": {
+      "invite_friend": "Invite your friends",
+      "share_code": "Share this code id to invite your friends to this private server",
+      "share_server": "Share this server id to invite your friends to this public server",
+      "invite_code_generated": "Code generated successfully",
+      "code_copied": "{{text}} copied to clipboard"
+    },
+    "members-navigation": {
+      "members": "Members"
+    },
+    "overview-settings-channel": {
+      "overview": "Overview",
+      "required_name_channel": "Channel name is required",
+      "invalid_name_channel": "Channel name must not start with empty spaces",
+      "channel_name": "Channel name",
+      "description": "Description",
+      "channel_description": "Channel description",
+      "save": "SAVE",
+      "reset": "RESET",
+      "success_update_channel": "Channel updated !",
+      "error_update_channel": "An error occured while updating the channel !"
+    },
+    "overview-settings-server": {
+      "server_overview": "SERVER OVERVIEW",
+      "upload_picture": "Upload profile picture",
+      "upload_banner": "Upload banner",
+      "server_name": "Server name",
+      "server_description": "Server description",
+      "save": "SAVE"
+    },
+    "server-dropdown-menu": {
+      "server": "Server",
+      "overview": "Overview",
+      "settings": "Settings"
+    },
+    "server-dropdown": {
+      "settings": "Settings",
+      "destroy": "Destroy server"
+    },
+    "servers-navigation": {
+      "logout": "Successfully logged out !"
+    },
+    "user-media": {
+      "change_method": "Make changes to your method of communication",
+      "audio_outputs": "Audio outputs",
+      "audio_inputs": "Audio inputs",
+      "video_inputs": "Video inputs",
+      "no_audio_outputs": "No audio output device found",
+      "no_audio_inputs": "No audio input device found",
+      "no_video_inputs": "No video input device found"
+    }
+  },
+  "settings": {
+    "components": {
+      "hover-modify-picture": {
+        "modify": "Modify"
+      },
+      "modify-email-dialog": {
+        "modify": "Modify",
+        "required_email": "Enter a new email adress",
+        "invalid_email": "Invalid email address",
+        "email": "Email",
+        "email_sented": "An email will be sent to your current email adress for confirmation"
+      },
+      "modify-profile-picture-dialog": {
+        "choose_picture": "Choose a new picture",
+        "select_picture": "Select a new profile picture",
+        "confirm": "Confirm"
+      },
+      "modify-username-dialog": {
+        "title": "Choose a new username",
+        "modify": "Modify",
+        "required_username": "Enter a new username",
+        "invalid_username": " Username should only contain lowercase letters of the alphabet",
+        "username": "Username",
+        "confirm": "Confirm"
+      },
+      "modify-username-email": {
+        "username": "Username"
+      }
+    },
+    "modify-profile-card": {
+      "successfull_update": "Update successful",
+      "error_update": "Something went wrong when updating your profile",
+      "picture_not_filled": "Choose a picture by clicking on the button first"
+    }
+  }
+}
