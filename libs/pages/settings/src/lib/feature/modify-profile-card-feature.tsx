@@ -166,6 +166,7 @@ export function ModifyProfileCardFeature() {
   const emailChangeButton = (
     <ModifyEmailDialog
       action={handleEmailSubmit}
+      currentUserEmail={userMe?.email ?? ''}
       isModalOpen={isEmailModalOpen}
       setIsModalOpen={setIsEmailModalOpen}
       emailFormController={emailFormController}

@@ -7,12 +7,14 @@ interface ModifyEmailDialogProps {
   isModalOpen: boolean
   setIsModalOpen: (value: boolean) => void
   action: () => void
+  currentUserEmail: string
 }
 export function ModifyEmailDialog({
   action,
   isModalOpen,
   setIsModalOpen,
   emailFormController,
+  currentUserEmail,
 }: ModifyEmailDialogProps) {
   const { t } = useTranslation()
 
@@ -24,8 +26,7 @@ export function ModifyEmailDialog({
       }
       content={
         <>
-          {' '}
-          <Controller
+          {/* <Controller
             name="email"
             rules={{
               required: t(
@@ -54,7 +55,7 @@ export function ModifyEmailDialog({
           <p>{t('settings.components.modify-email-dialog.email_sented')}</p>
         </>
       }
-      actionButtonTitle="Confirm"
+      actionButtonTitle="Send verification code"
       action={action}
       isModalOpen={isModalOpen}
       setIsModalOpen={setIsModalOpen}
