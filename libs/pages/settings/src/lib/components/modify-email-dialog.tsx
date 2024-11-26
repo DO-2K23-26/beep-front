@@ -6,21 +6,22 @@ interface ModifyEmailDialogProps {
   isModalOpen: boolean
   setIsModalOpen: (value: boolean) => void
   action: () => void
+  currentUserEmail: string
 }
 export function ModifyEmailDialog({
   action,
   isModalOpen,
   setIsModalOpen,
   emailFormController,
+  currentUserEmail,
 }: ModifyEmailDialogProps) {
   return (
     <DialogComponent
-      title={'Choose a new email'}
+      title={'Verify the email address'}
       triggerModalButton={<Button>Modify</Button>}
       content={
         <>
-          {' '}
-          <Controller
+          {/* <Controller
             name="email"
             rules={{
               required: 'Enter a new email adress',
@@ -41,11 +42,12 @@ export function ModifyEmailDialog({
                 error={error?.message}
               />
             )}
-          />
-          <p>An email will be sent to your current email adress for confirmation</p>
+          /> */}
+          <p>We need to verify your old email address, <strong>{currentUserEmail}</strong>, in order to change it.</p>
+          <p>Have you lost access to your email? Contact your email provider to regain access.</p>
         </>
       }
-      actionButtonTitle="Confirm"
+      actionButtonTitle="Send verification code"
       action={action}
       isModalOpen={isModalOpen}
       setIsModalOpen={setIsModalOpen}
