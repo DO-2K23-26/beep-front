@@ -7,9 +7,16 @@ export interface SettingsUserModalProps {
 }
 
 export function SettingsModal({ settings }: SettingsUserModalProps) {
+
+  // Initialisation de selectedSetting pour gérer à la fois settings et webhooks
   const [selectedSetting, setSelectedSetting] = useState(
-    settings[0].settings[0].title
+    settings[0].settings[0]?.title
   )
+  const [selectedWebhook, setSelectedWebhook] = useState(
+    settings[0].webhooks[0]?.title
+  )
+
+  // Trouver le composant correspondant au titre (settings ou webhooks)
   const findSettingComponentByTitle = (
     subSettings: SubSettings[],
     title: string
@@ -24,12 +31,22 @@ export function SettingsModal({ settings }: SettingsUserModalProps) {
           )
         }
       }
+      for (const webhook of subSetting.webhooks) {
+        if (webhook.title === title) {
+          return (
+            <div className={`flex flex-col pt-12 w-10/12 md:w-8/12 xl:w-6/12 `}>
+              {webhook.webhookComponent}
+            </div>
+          )
+        }
+      }
     }
     return null
   }
+
   return (
     <div className="flex flex-row">
-      <div className=" bg-violet-300 flex flex-col h-dvh p-4 md:p-12 min-w-fit items-end  overflow-y-auto">
+      <div className="bg-violet-300 flex flex-col h-dvh p-4 md:p-12 min-w-fit items-end overflow-y-auto">
         {settings.map((subSetting) => {
           return (
             <ButtonNavigationList
@@ -41,6 +58,7 @@ export function SettingsModal({ settings }: SettingsUserModalProps) {
           )
         })}
       </div>
+
       <div className="w-full bg-violet-200 flex flex-col items-center">
         {findSettingComponentByTitle(settings, selectedSetting)}
       </div>

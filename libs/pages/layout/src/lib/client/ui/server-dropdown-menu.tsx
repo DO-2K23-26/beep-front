@@ -17,7 +17,9 @@ import {
 } from '@beep/ui'
 import { useState } from 'react'
 import { OverviewSettingsServer } from './overview-settings-server'
+
 import { useTranslation } from 'react-i18next'
+import { OverviewWebhooksServer } from './overview-webhooks-server'
 
 interface ServerDropDownMenuProps {
   server?: ServerEntity
@@ -36,8 +38,15 @@ export function ServerDropdownMenu({ server }: ServerDropDownMenuProps) {
           <OverviewSettingsServer server={server!} isAdmin={true} />
         ),
       },
-      // { title: 'voice', settingComponent: <Input /> },
       // { title: 'text', settingComponent: <Input /> },
+    ],
+    webhooks: [
+      {
+        title: t('layout.server-dropdown-menu.webhooks'),
+        webhookComponent: (
+          <OverviewWebhooksServer server={server!} isAdmin={true} />
+        ),
+      },
     ],
   }
 

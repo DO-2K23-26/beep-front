@@ -4,6 +4,8 @@ import { DialogCloseButton, Icon } from '@beep/ui'
 import DeleteChannelFeature from '../feature/delete-channel-feature'
 import OverviewSettingsChannelFeature from '../feature/overview-settings-channel-feature'
 import { useTranslation } from 'react-i18next'
+import { OverviewWebhooksServer } from './overview-webhooks-server'
+import OverviewWebhooksChannelFeature from '../feature/overview-webhooks-channel-feature'
 
 interface DisplayChannelProps {
   channel: ChannelEntity
@@ -30,6 +32,15 @@ export default function DisplayChannel({
       {
         title: t('layout.display-channel.delete'),
         settingComponent: <DeleteChannelFeature channel={channel} />,
+      },
+    ],
+    webhooks: [
+      {
+        title: t('layout.display-channel.overview'),
+        webhookComponent: (
+          <OverviewWebhooksChannelFeature channel={channel}/>
+        ),
+        webhookBodySize: SettingBodyWidth.S,
       },
     ],
   }

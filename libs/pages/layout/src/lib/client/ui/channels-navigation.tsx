@@ -23,6 +23,7 @@ import { CreateChannelModal } from './create-channel-modal'
 import { ServerDropdown } from './server-dropdown'
 import { ServerPictureButton } from './server-picture-button'
 import { useTranslation } from 'react-i18next'
+import { OverviewWebhooksServer } from './overview-webhooks-server'
 
 export interface ChannelsNavigationProps {
   textChannels?: ChannelEntity[]
@@ -77,6 +78,14 @@ export default function ChannelsNavigation({
           <OverviewSettingsServer server={server} isAdmin={isAdmin} />
         ),
         settingBodySize: SettingBodyWidth.L,
+      },
+    ],
+    webhooks: [
+      {
+        title: t('layout.server-dropdown-menu.webhooks'),
+        webhookComponent: (
+          <OverviewWebhooksServer server={server!} isAdmin={true} />
+        ),
       },
     ],
   }

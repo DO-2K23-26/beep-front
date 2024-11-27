@@ -1,10 +1,12 @@
 import { SettingPickerButton } from '../buttons/setting-navigation-button'
+import { WebhookPickerButton } from '../buttons/webhook-navigation-button'
 import { SubSettings } from '../models/setting-navigation-models'
 
 interface ButtonNavigationListProps {
   subSettings: SubSettings
   selectedSetting: string
   setSelectedSetting: (settingTitle: string) => void
+  
 }
 
 export function ButtonNavigationList({
@@ -27,6 +29,19 @@ export function ButtonNavigationList({
                 setSelectedSetting(setting.title)
               }}
               isPicked={selectedSetting === setting.title}
+            />
+          )
+        })}
+        {subSettings.webhooks.map((webhook) => {
+          console.log(webhook.title)
+          return (
+            <WebhookPickerButton
+              key={webhook.title}
+              title={webhook.title}
+              navigateTo={function (): void {
+                setSelectedSetting(webhook.title)
+              }}
+              isPicked={selectedSetting === webhook.title}
             />
           )
         })}

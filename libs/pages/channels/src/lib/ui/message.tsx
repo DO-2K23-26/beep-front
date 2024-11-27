@@ -11,7 +11,6 @@ import { renderTextWithLinks } from '../utils/links-utils'
 import { config, markdownComponents } from '../utils/markdown-config'
 import { preprocessMarkdown } from '../utils/markdown-parser'
 import MediaEmbed from './media-embed'
-import { renderTextWithLinks } from '../utils/links-utils'
 
 interface MessageProps {
   message: MessageEntity

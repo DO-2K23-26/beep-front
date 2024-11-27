@@ -11,7 +11,14 @@ export interface SettingComponent {
   settingComponent: ReactNode
 }
 
+export interface WebhookComponent {
+  webhookBodySize?: SettingBodyWidth
+  title: string
+  webhookComponent: ReactNode
+}
+
 export interface SubSettings {
   subGroupSettingTitle: string
   settings: SettingComponent[]
+  webhooks: WebhookComponent[]
 }

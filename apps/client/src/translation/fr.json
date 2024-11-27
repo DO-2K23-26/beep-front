@@ -267,6 +267,8 @@
     },
     "overview-settings-channel": {
       "overview": "Aperçu",
+      "webhooks": "Webhooks",
+
       "required_name_channel": "Le nom du salon de discussion est requis",
       "invalid_name_channel": "Le nom du salon de discussion ne doit pas commencer par des espaces vides",
       "channel_name": "Nom du salon de discussion",
@@ -287,6 +289,8 @@
     },
     "server-dropdown-menu": {
       "server": "Serveur",
+      "webhooks": "Webhooks",
+
       "overview": "Aperçu",
       "settings": "Paramètres"
     },
