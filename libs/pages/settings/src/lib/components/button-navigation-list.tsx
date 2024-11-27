@@ -6,7 +6,7 @@ interface ButtonNavigationListProps {
   subSettings: SubSettings
   selectedSetting: string
   setSelectedSetting: (settingTitle: string) => void
-  
+
 }
 
 export function ButtonNavigationList({
@@ -33,7 +33,6 @@ export function ButtonNavigationList({
           )
         })}
         {subSettings.webhooks.map((webhook) => {
-          console.log(webhook.title)
           return (
             <WebhookPickerButton
               key={webhook.title}
