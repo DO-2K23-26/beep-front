@@ -15,6 +15,7 @@ export function MembersNavigationFeature() {
     data: usersConnected,
     refetch: refetchUsersConnected,
     isLoading: isLoadingConnected,
+    isUninitialized: isUninitializedMembers,
   } = useFetchAllUsersConnectedQuery()
 
   const server = useSelector((state: RootState) => state.servers.server)
@@ -23,11 +24,11 @@ export function MembersNavigationFeature() {
   )
 
   useEffect(() => {
-    TransmitSingleton.subscribe('users/state', (message) => {
-      refetchUsersConnected()
+    TransmitSingleton.subscribe('users/state', () => {
+      if (!isUninitializedMembers) refetchUsersConnected()
     })
-  }, [refetchUsersConnected])
-  
+  }, [isUninitializedMembers, refetchUsersConnected])
+
   return (
     <MembersNavigation
       key={server?.id}

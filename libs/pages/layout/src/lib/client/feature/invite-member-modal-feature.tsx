@@ -1,21 +1,21 @@
-import { useDispatch, useSelector } from 'react-redux'
-import { InviteMemberModal } from '../ui/invite-member-modal'
-import { AppDispatch } from '@beep/store'
 import {
   getServersState,
   serverActions,
   useCreateInvitationMutation,
 } from '@beep/server'
-import toast from 'react-hot-toast'
+import { AppDispatch } from '@beep/store'
 import { DateTime } from 'luxon'
-import { useLocation } from 'react-router'
+import toast from 'react-hot-toast'
 import { useTranslation } from 'react-i18next'
+import { useDispatch, useSelector } from 'react-redux'
+import { InviteMemberModal } from '../ui/invite-member-modal'
 
 export default function InviteMemberModalFeature() {
   const { t } = useTranslation()
 
   const dispatch = useDispatch<AppDispatch>()
-  const url = window.location.origin.replace(useLocation().pathname, '')
+  const url = window.location.host
+  const prefix = window.location.protocol
   const [createInvitation] = useCreateInvitationMutation()
   const { server, inviteCode } = useSelector(getServersState)
 
@@ -26,7 +26,7 @@ export default function InviteMemberModalFeature() {
       serverId: server?.id || '',
     })
     dispatch(
-      serverActions.setInviteCode(url + '/servers/invite/' + response.data?.id)
+      serverActions.setInviteCode(prefix + "//" + url + '/servers/invite/' + response.data?.id)
     )
     toast.success(t('layout.invite-member-modal.invite_code_generated'))
   }

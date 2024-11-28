@@ -15,10 +15,9 @@ import { messageActions } from '@beep/message'
 import { responsiveActions } from '@beep/responsive'
 import {
   serverActions,
-  useGetChannelQuery,
   useGetMembersQuery,
   useGetMyServersQuery,
-  useGetServerChannelsQuery,
+  useGetServerChannelsQuery
 } from '@beep/server'
 import { AppDispatch, RootState } from '@beep/store'
 import { DynamicSelectorProps, useModal } from '@beep/ui'
@@ -28,13 +27,13 @@ import { skipToken } from '@reduxjs/toolkit/query'
 import { useEffect, useRef, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import toast from 'react-hot-toast'
+import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
 import { useParams } from 'react-router'
 import { DeleteMessageModal } from '../ui/delete-message-modal'
 import { PageChannel } from '../ui/page-channel'
 import { DynamicSelectorChannelFeature } from './dynamic-selector-channel-feature'
 import { DynamicSelectorFeature } from './dynamic-selector-item-feature'
-import { useTranslation } from 'react-i18next'
 
 export function PageChannelFeature() {
   const { t } = useTranslation()
@@ -49,10 +48,6 @@ export function PageChannelFeature() {
   const messageListRef = useRef<HTMLDivElement>(null)
 
   const { data: channels } = useGetServerChannelsQuery(serverId)
-  const { data: channel, isLoading: isLoadingChannel } = useGetChannelQuery({
-    serverId: serverId,
-    channelId: channelId,
-  })
   const { data: availableServers } = useGetMyServersQuery()
   const [fetchBeforeId, setFetchBeforeId] = useState<string | null>(null)
 
@@ -100,6 +95,9 @@ export function PageChannelFeature() {
     },
   })
 
+  const onFocusChannel = () => {
+    dispatch(responsiveActions.hidePane())
+  }
   const [dynamicSelector, setDynamicSelector] = useState<
     DynamicSelectorProps | undefined
   >(undefined)
@@ -228,13 +226,6 @@ export function PageChannelFeature() {
 
       updateDynamicSelector(value, cursorPos)
     }
-  }
-
-  const hideRightDiv = () => {
-    dispatch(responsiveActions.manageRightPane())
-  }
-  const hideLeftDiv = () => {
-    dispatch(responsiveActions.manageLeftPane())
   }
 
   const onAddFile = (file: File) => {
@@ -366,7 +357,6 @@ export function PageChannelFeature() {
       messageForm={messageForm}
       serverId={serverId}
       messages={messageState ?? []}
-      channel={channel}
       messageListRef={messageListRef}
       onScrollMessage={onScrollMessage}
       sendMessage={onSendMessage}
@@ -376,8 +366,6 @@ export function PageChannelFeature() {
       filesPreview={previewUrls}
       onAddFiles={onAddFile}
       onDeleteFile={onDeleteFile}
-      hideRightDiv={hideRightDiv}
-      hideLeftDiv={hideLeftDiv}
       inputRef={inputRef}
       editingMessageId={editingMessageId}
       setEditingMessageId={setEditingMessageId}
@@ -389,7 +377,7 @@ export function PageChannelFeature() {
       selectedTaggedUser={selectedTaggedUser}
       setSelectedTaggedUser={setSelectedTaggedUser}
       isLoadingMessages={isLoadingMessages || isFetchingMessage}
-      isLoadingChannel={isLoadingChannel}
+      onFocusChannel={onFocusChannel}
     />
   )
 }

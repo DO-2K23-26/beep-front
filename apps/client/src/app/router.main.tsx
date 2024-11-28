@@ -1,49 +1,31 @@
-import { ReactElement } from 'react'
-import { PageAuth } from '@beep/pages/auth'
-import { PageChannels } from '@beep/pages/channels'
-import {
-  ChannelsNavigationFeature,
-  MembersNavigationFeature,
-  ServersNavigationFeature,
-} from '@beep/layout'
-import { PageDiscover } from '@beep/discover'
+import { ServersNavigationFeature } from '@beep/layout'
+import { createBrowserRouter, Navigate } from 'react-router-dom'
+import App from './app'
+import { serverRoutes } from '@beep/pages/channels'
+import { autenticationRouter } from '@beep/auth'
 
-interface LayoutProps {
-  leftPanel: ReactElement
-  rightPanel: ReactElement
-}
-
-interface RouteProps {
-  path: string
-  component: ReactElement
-  layout: LayoutProps | null
-}
-
-export const ROUTER: RouteProps[] = [
+export const router = createBrowserRouter([
   {
-    path: '/authentication/*',
-    component: <PageAuth />,
-    layout: null,
+    path: '/',
+    Component: App,
+    children: [
+      {
+        index: true,
+        element: <Navigate to="/authentication" replace />,
+      },
+      {
+        path: 'authentication',
+        children: autenticationRouter,
+      },
+      {
+        path: 'servers',
+        Component: ServersNavigationFeature,
+        children: serverRoutes,
+      },
+      {
+        path: '*',
+        element: <Navigate to="/authentication" replace />,
+      },
+    ],
   },
-  {
-    path: '/servers/*',
-    component: <PageChannels />,
-    layout: {
-      leftPanel: <ChannelsNavigationFeature />,
-      rightPanel: (
-        <>
-          <MembersNavigationFeature />
-          <ServersNavigationFeature />
-        </>
-      ),
-    },
-  },
-  {
-    path: '/discover',
-    component: <PageDiscover />,
-    layout: {
-      leftPanel: <div/>,
-      rightPanel: <ServersNavigationFeature />,
-    },
-  },
-]
+])

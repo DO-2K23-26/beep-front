@@ -223,7 +223,7 @@ export function ChannelsNavigationFeature() {
     closeModal()
   })
   const hideLeftDiv = () => {
-    dispatch(responsiveActions.manageLeftPane())
+    dispatch(responsiveActions.toggleLeftPane())
   }
   const onClickId = async (text: string) => {
     await navigator.clipboard.writeText(text)

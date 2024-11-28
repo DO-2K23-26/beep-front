@@ -15,18 +15,22 @@ export const channelsSlice = createSlice({
   name: RESPONSIVE_KEY,
   initialState: initialResponsiveState,
   reducers: {
-    manageLeftPane(state) {
+    toggleLeftPane(state) {
       state.showLeftPane = !state.showLeftPane
-      if (!state.showRightPane) {
+      if (state.showRightPane) {
         state.showRightPane = false
       }
     },
-    manageRightPane(state) {
+    toggleRightPane(state) {
       state.showRightPane = !state.showRightPane
-      if (!state.showLeftPane) {
+      if (state.showLeftPane) {
         state.showLeftPane = false
       }
     },
+    hidePane(state) {
+      state.showLeftPane = false
+      state.showRightPane = false
+    }
   },
 })
 

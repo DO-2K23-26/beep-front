@@ -6,10 +6,10 @@ import { AppDispatch } from '@beep/store'
 export function PageMeGeneralFeature() {
   const dispatch = useDispatch<AppDispatch>()
   const hideRightDiv = () => {
-    dispatch(responsiveActions.manageRightPane())
+    dispatch(responsiveActions.toggleRightPane())
   }
   const hideLeftDiv = () => {
-    dispatch(responsiveActions.manageLeftPane())
+    dispatch(responsiveActions.toggleLeftPane())
   }
   return <PageMeGeneral hideLeftDiv={hideLeftDiv} hideRightDiv={hideRightDiv} />
 }

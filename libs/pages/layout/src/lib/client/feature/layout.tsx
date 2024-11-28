@@ -16,7 +16,7 @@ export function Layout({
 }: PropsWithChildren<LayoutProps>) {
   const dispatch = useDispatch<AppDispatch>()
   const hideRightDiv = () => {
-    dispatch(responsiveActions.manageRightPane())
+    dispatch(responsiveActions.toggleRightPane())
   }
   return (
     <LayoutPage

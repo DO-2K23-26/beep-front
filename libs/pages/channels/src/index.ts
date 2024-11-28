@@ -1,1 +1,1 @@
-export * from './lib/page-channels'
+export * from './lib/router'

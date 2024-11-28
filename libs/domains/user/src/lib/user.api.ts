@@ -1,8 +1,7 @@
 import {
   BaseQueryApi,
   createApi,
-  FetchArgs,
-  fetchBaseQuery,
+  fetchBaseQuery
 } from '@reduxjs/toolkit/query/react'
 // eslint-disable-next-line @nx/enforce-module-boundaries
 import {
@@ -13,8 +12,6 @@ import {
   GetUserRequest,
   LoginRequest,
   LoginResponse,
-  LogoutResponse,
-  RefreshRequest,
   RefreshResponse,
   RegisterResponse,
   ResetPasswordRequest,
@@ -22,13 +19,11 @@ import {
   UpdateUserResponse,
   UserConnectedEntity,
   UserDisplayedEntity,
-  UserEntity,
+  UserEntity
 } from '@beep/contracts'
 // eslint-disable-next-line @nx/enforce-module-boundaries
-import { RootState } from '@beep/store'
 import {
-  BaseQueryArg,
-  BaseQueryExtraOptions,
+  BaseQueryArg
 } from '@reduxjs/toolkit/dist/query/baseQueryTypes'
 
 const baseQuery = fetchBaseQuery({
@@ -88,6 +83,14 @@ export const userApi = createApi({
         formData: true,
       }),
     }),
+    refresh: builder.mutation<RefreshResponse, void>({
+      query: () => ({
+        url: '/authentication/refresh',
+        method: 'POST',
+        credentials: 'include',
+      }),
+    }),
+
     updateMe: builder.mutation<UpdateUserResponse, FormData>({
       query: (data) => ({
         url: '/users/@me',
@@ -125,13 +128,6 @@ export const userApi = createApi({
         },
       }),
       providesTags: (_, __, id) => [{ type: 'profilePicture', id: id }],
-    }),
-    refresh: builder.mutation<RefreshResponse, RefreshRequest>({
-      query: (refreshToken) => ({
-        url: '/authentication/refresh',
-        method: 'POST',
-        body: refreshToken,
-      }),
     }),
     confirmEmail: builder.mutation<void, ConfirmEmailRequest>({
       query: (data) => ({

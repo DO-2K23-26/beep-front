@@ -27,7 +27,7 @@ export default function DiscoverServer({
   const limit = parseInt(searchParams.get('limit') || '8') || 8
 
   return (
-    <div className="bg-violet-200 rounded-r-3xl w-full p-3 md:p-6 overflow-y-scroll custom-scrollbar">
+    <div className="bg-violet-200 rounded-r-3xl w-full p-3 md:p-6 overflow-y-scroll custom-scrollbar h-lvh">
       <section
         id="search"
         className="rounded-3xl relative overflow-hidden z-10 bg-gradient-to-b from-violet-700 from-5% to-90%"

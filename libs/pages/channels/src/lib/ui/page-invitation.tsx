@@ -6,7 +6,6 @@ import { useTranslation } from 'react-i18next'
 
 export function PageInvitation() {
   const { t } = useTranslation()
-
   const { inviteId } = useParams<{ inviteId: string }>()
   const navigate = useNavigate()
   const [joinPrivateServer, { isLoading, isError, isSuccess, data, error }] =
@@ -21,12 +20,13 @@ export function PageInvitation() {
   useEffect(() => {
     if (isError) {
       toast.error(t('channels.page-invitation.error'))
+      navigate(`/servers/discover`)
     }
     if (isSuccess && data) {
       toast.success(t('channels.page-invitation.success'))
       navigate(`/servers/${data.serverId}`)
     }
-  }, [isError, isSuccess, data, error, navigate])
+  }, [isError, isSuccess, data, error, navigate, t])
 
   return (
     <div className="bg-violet-200 w-full p-4">

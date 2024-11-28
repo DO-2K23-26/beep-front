@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
 import { PageSignin } from '../ui/page-signin'
-import { useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 import { LoginRequest } from '@beep/contracts'
 import { AppDispatch } from '@beep/store'
 import { useDispatch, useSelector } from 'react-redux'
@@ -9,6 +9,7 @@ import { getUserState, useLoginMutation, userActions } from '@beep/user'
 
 export function PageSigninFeature() {
   const dispatch = useDispatch<AppDispatch>()
+  const location = useLocation()
   const [login, result] = useLoginMutation()
   const navigate = useNavigate()
   const [error, setError] = useState('')
@@ -31,8 +32,6 @@ export function PageSigninFeature() {
 
   useEffect(() => {
     if (result?.isSuccess && result?.status === 'fulfilled') {
-      sessionStorage.setItem('accessToken', result.data.tokens.accessToken)
-      sessionStorage.setItem('refreshToken', result.data.tokens.refreshToken)
       dispatch(userActions.updateIsLoading(false))
       dispatch(userActions.setTokens(result.data.tokens))
     } else if (result?.isError) {
@@ -42,9 +41,10 @@ export function PageSigninFeature() {
 
   useEffect(() => {
     if (isAuthenticated) {
-      navigate('/discover')
+      const redirectTo = location.state?.from?.pathname || '/servers/discover'
+      navigate(redirectTo, { replace: true })
     }
-  }, [isAuthenticated, navigate])
+  }, [isAuthenticated, location.state?.from?.pathname, navigate])
 
   return (
     <FormProvider {...methods}>

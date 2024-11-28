@@ -1,1 +1,1 @@
-export * from './lib/page-auth'
+export * from './lib/router'

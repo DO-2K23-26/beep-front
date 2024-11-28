@@ -1,8 +1,11 @@
 import { ServerEntity } from '@beep/contracts'
 import { Button, ButtonStyle, Icon, UseModalProps } from '@beep/ui'
-import { Link } from 'react-router-dom'
+import { Link, Outlet } from 'react-router-dom'
 import AddServerFeature from '../feature/add-server-feature'
 import { ListServers } from './list-servers'
+import { cn } from '@beep/utils'
+import { useSelector } from 'react-redux'
+import { getResponsiveState } from '@beep/responsive'
 
 interface ServersNavigationProps {
   servers: ServerEntity[] | undefined
@@ -19,44 +22,58 @@ export default function ServersNavigation({
   openModal,
   closeModal,
 }: ServersNavigationProps) {
+  const { showRightPane } = useSelector(getResponsiveState)
+
   return (
-    <div className="bg-violet-500 flex flex-col w-min p-6 ">
-      <div className="pb-6 h-fit">
-        <Button
-          onClick={onPrivateMessage}
-          style={ButtonStyle.SQUARE}
-          className="!bg-violet-50 !cursor-not-allowed"
-        >
-          <Icon name="lucide:mail" className="w-5 h-5" />
-        </Button>
+    <div className="flex flex-row w-full justify-end bg-violet-500">
+      <div className="w-full h-full">
+        <Outlet />
       </div>
-      <div className="flex flex-col gap-6 flex-grow overflow-y-scroll no-scrollbar scroll-smooth">
-        <ListServers servers={servers} />
-      </div>
-      <div className="pt-6 flex flex-col gap-6 h-fit">
-        <Button
-          style={ButtonStyle.SQUARE}
-          className="!bg-violet-50"
-          onClick={() => {
-            openModal({
-              content: <AddServerFeature closeModal={closeModal} />,
-            })
-          }}
-        >
-          <Icon name="lucide:plus" className="w-5 h-5" />
-        </Button>
-        <Link to="/discover">
-          <Button style={ButtonStyle.SQUARE} className="!bg-violet-50">
-            <Icon name="lucide:compass" className="w-5 h-5" />
-          </Button>
-        </Link>
-        <Button
-          onClick={onLogout}
-          style={ButtonStyle.SQUARE}
-          className="!bg-violet-50"
-        >
-          <Icon name="lucide:log-out" className="w-5 h-5" />
-        </Button>
+      <div
+        className={cn('flex', {
+          'w-fit': showRightPane,
+          'hidden xl:block': !showRightPane,
+        })}
+      >
+        <div className={cn('flex flex-col p-4 h-full')}>
+          <div className="pb-6 h-fit">
+            <Button
+              onClick={onPrivateMessage}
+              style={ButtonStyle.SQUARE}
+              className="!bg-violet-50 !cursor-not-allowed"
+            >
+              <Icon name="lucide:mail" className="w-5 h-5" />
+            </Button>
+          </div>
+          <div className="flex flex-col gap-6 flex-grow overflow-y-scroll no-scrollbar scroll-smooth">
+            <ListServers servers={servers} />
+          </div>
+          <div className="pt-6 flex flex-col gap-6 h-fit">
+            <Button
+              style={ButtonStyle.SQUARE}
+              className="!bg-violet-50"
+              onClick={() => {
+                openModal({
+                  content: <AddServerFeature closeModal={closeModal} />,
+                })
+              }}
+            >
+              <Icon name="lucide:plus" className="w-5 h-5" />
+            </Button>
+            <Link to="/servers/discover">
+              <Button style={ButtonStyle.SQUARE} className="!bg-violet-50">
+                <Icon name="lucide:compass" className="w-5 h-5" />
+              </Button>
+            </Link>
+            <Button
+              onClick={onLogout}
+              style={ButtonStyle.SQUARE}
+              className="!bg-violet-50"
+            >
+              <Icon name="lucide:log-out" className="w-5 h-5" />
+            </Button>
+          </div>
+        </div>
       </div>
     </div>
   )

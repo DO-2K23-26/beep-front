@@ -1,24 +1,14 @@
-import { MessageEntity, UserDisplayedEntity } from '@beep/contracts'
+import { MessageEntity } from '@beep/contracts'
 import React from 'react'
 import MessageFeature from '../feature/message-feature'
 import { EmptyPinnedMessageList } from './empty-pinned-message-list'
 
 interface PinnedMessagesListProps {
   messages: MessageEntity[]
-  editingMessageId: string | null
-  setEditingMessageId: (id: string | null) => void
-  selectedTaggedUser: UserDisplayedEntity | undefined
-  setSelectedTaggedUser: React.Dispatch<
-    React.SetStateAction<UserDisplayedEntity | undefined>
-  >
 }
 
 const PinnedMessagesList: React.FC<PinnedMessagesListProps> = ({
   messages,
-  editingMessageId,
-  setEditingMessageId,
-  selectedTaggedUser,
-  setSelectedTaggedUser,
 }) => {
   return (
     <div
@@ -36,10 +26,6 @@ const PinnedMessagesList: React.FC<PinnedMessagesListProps> = ({
               key={'pinned' + message.id}
               message={message}
               isDisplayedAsPinned={true}
-              editingMessageId={editingMessageId}
-              setEditingMessageId={setEditingMessageId}
-              selectedTaggedUser={selectedTaggedUser}
-              setSelectedTaggedUser={setSelectedTaggedUser}
             />
           ))
       )}

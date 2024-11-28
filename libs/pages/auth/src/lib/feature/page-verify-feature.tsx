@@ -25,8 +25,6 @@ export const PageVerifyFeature: React.FC = () => {
   }, [result])
 
   const onClickButton = () => {
-    sessionStorage.removeItem('accessToken')
-    sessionStorage.removeItem('refreshToken')
     navigate('/authentication/signin')
   }
 

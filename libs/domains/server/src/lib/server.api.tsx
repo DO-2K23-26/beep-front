@@ -1,4 +1,5 @@
 import {
+  backendUrl,
   ChannelEntity,
   CreateChannelRequest,
   CreateChannelResponse,
@@ -6,20 +7,18 @@ import {
   CreateInvitationResponse,
   DeleteChannelRequest,
   GetChannelRequest,
+  GetChannelsResponse,
+  GetMemberRequest,
+  GetMembersResponse,
   JoinInvitationResponse,
+  MemberEntity,
   OccupiedChannelEntity,
   SearchServerRequest,
   ServerEntity,
   UpdateChannelRequest,
-  MemberEntity,
-  GetChannelsResponse,
-  backendUrl,
-  GetMembersResponse,
-  GetMemberRequest,
 } from '@beep/contracts'
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 // eslint-disable-next-line @nx/enforce-module-boundaries
-import { RootState } from '@beep/store'
 
 const baseQuery = fetchBaseQuery({
   baseUrl: backendUrl,
@@ -77,7 +76,7 @@ export const serverApi = createApi({
       CreateInvitationRequest
     >({
       query: (request) => ({
-        url: `/servers/${request.serverId}/invitation`,
+        url: `/v1/servers/${request.serverId}/invitation`,
         method: 'POST',
         body: {
           isUnique: request.isUnique,

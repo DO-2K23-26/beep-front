@@ -31,7 +31,7 @@ export function PageSignin({
   // }
   return (
     <div
-      className="h-[100dvh] w-full bg-no-repeat bg-cover flex justify-center"
+      className="h-dvh w-full bg-no-repeat bg-cover flex justify-center"
       style={{ backgroundImage: `url('/background.svg')` }}
     >
       {/* {Object.keys(lngs).map((lng: string) => {

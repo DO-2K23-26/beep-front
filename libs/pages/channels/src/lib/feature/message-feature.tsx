@@ -40,11 +40,11 @@ interface MessageFeatureProps {
   isDisplayedAsPinned?: boolean
   onUpdateMessage?: (messageId: string, newContent: string) => void
   onDeleteMessage?: (channelId: string, messageId: string) => void
-  editingMessageId: string | null
-  setEditingMessageId: (id: string | null) => void
+  editingMessageId?: string | null
+  setEditingMessageId?: (id: string | null) => void
   onReply?: (message: MessageEntity) => void
-  selectedTaggedUser: UserDisplayedEntity | undefined
-  setSelectedTaggedUser: React.Dispatch<
+  selectedTaggedUser?: UserDisplayedEntity | undefined
+  setSelectedTaggedUser?: React.Dispatch<
     React.SetStateAction<UserDisplayedEntity | undefined>
   >
   setSelectedTaggedChannel?: React.Dispatch<
@@ -145,17 +145,20 @@ export default function MessageFeature({
     mode: 'onChange',
   })
   const switchEditing = () => {
-    if (editingMessageId && editingMessageId !== message.id) {
+    if (
+      editingMessageId &&
+      editingMessageId !== message.id &&
+      setEditingMessageId
+    ) {
       setEditingMessageId(null)
     }
     methods.reset({ message: message.content })
-
-    setEditingMessageId(message.id)
+    if (setEditingMessageId) setEditingMessageId(message.id)
   }
 
   const cancelEditing = () => {
     methods.reset({ message: message.content })
-    setEditingMessageId(null)
+    if (setEditingMessageId) setEditingMessageId(null)
   }
 
   const onPin = async () => {
@@ -201,7 +204,7 @@ export default function MessageFeature({
     ) {
       onUpdateMessage(message.id, data.message)
       methods.setValue('message', '')
-      setEditingMessageId(null)
+      if (setEditingMessageId) setEditingMessageId(null)
     }
   })
 
@@ -215,10 +218,11 @@ export default function MessageFeature({
   })
 
   const onClickTagUser = (user: DisplayedEntity) => {
-    !selectedTaggedUser ||
-    (selectedTaggedUser && selectedTaggedUser.id !== user.id)
-      ? setSelectedTaggedUser(user as UserDisplayedEntity)
-      : setSelectedTaggedUser(undefined)
+    if (setSelectedTaggedUser)
+      !selectedTaggedUser ||
+      (selectedTaggedUser && selectedTaggedUser.id !== user.id)
+        ? setSelectedTaggedUser(user as UserDisplayedEntity)
+        : setSelectedTaggedUser(undefined)
   }
 
   const replaceTagEntity = (message: ReactNode): ReactNode => {
@@ -264,7 +268,7 @@ export default function MessageFeature({
         profilePicture={userProfilePicture}
         isEditing={isEditing}
         isDisplayedAsPinned={isDisplayedAsPinned}
-        displayedUsername={owner?.[0]?.username ?? member?.nickname ?? 'Casper'}
+        displayedUsername={member?.nickname ?? 'Casper'}
         onDelete={
           (isUserMessageOwner() || isUserServerOwner()) &&
           onDeleteMessage !== undefined

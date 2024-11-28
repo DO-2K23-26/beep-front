@@ -6,6 +6,7 @@ import InviteMemberModalFeature from '../feature/invite-member-modal-feature'
 import { ListMemberSkeleton } from './list-member-skeleton'
 import { ListMembers } from './list-members'
 import { useTranslation } from 'react-i18next'
+import { cn } from '@beep/utils'
 
 interface MembersNavigationProps {
   usersConnected?: UserConnectedEntity[]
@@ -28,9 +29,13 @@ export default function MembersNavigation({
 
   return (
     <div
-      className={`bg-violet-300 p-6 rounded-r-3xl flex flex-col gap-6 ${
-        showRightPane ? 'w-full' : 'sm:w-fit'
-      }`}
+      className={cn(
+        'bg-violet-300 p-6 rounded-r-3xl flex flex-col gap-6 sm:hidden',
+        {
+          'w-fit hidden sm:block': showRightPane,
+          'sm:w-fit hidden xl:block': !showRightPane,
+        }
+      )}
     >
       <div className="flex items-center justify-betwee space-x-6">
         <h5 className="text-slate-900 font-semibold pl-3">
