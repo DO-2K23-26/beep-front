@@ -1,6 +1,7 @@
 import {
   useFetchProfilePictureQuery,
   useGetMeQuery,
+  useSendOtpEmailMutation,
   useUpdateMeMutation,
 } from '@beep/user'
 import { skipToken } from '@reduxjs/toolkit/query'
@@ -29,13 +30,18 @@ export function ModifyProfileCardFeature() {
     null
   )
   const [errorPictureText, setErrorPictureText] = useState('')
-  const [updateMe, {
-    isLoading: isLoadingUpdateMe,
-    isSuccess: isSuccessUpdateMe,
-    isError: isErrorUpdateMe,
-    error: errorUpdateMe,
-  },] = useUpdateMeMutation()
+  const [sendOtpEmail] = useSendOtpEmailMutation() // Mutation to send OTP to the new email
+  const [
+    updateMe,
+    {
+      isLoading: isLoadingUpdateMe,
+      isSuccess: isSuccessUpdateMe,
+      isError: isErrorUpdateMe,
+      error: errorUpdateMe,
+    },
+  ] = useUpdateMeMutation()
   const { data: userMe } = useGetMeQuery()
+  const currentUserEmail = userMe?.email || ''
   // useEffect(() => {
   //   if (isSuccessUpdateMe) {
   //     toast.success('Update successful')
@@ -120,8 +126,23 @@ export function ModifyProfileCardFeature() {
   })
   const handleEmailSubmit = emailFormController.handleSubmit((data) => {
     setIsEmailModalOpen(false)
-    usernameFormController.reset()
-  })
+    const requestData = {email : currentUserEmail}
+    sendOtpEmail(requestData) // Send OTP request to the current user's email
+    setIsEmailModalOpen(false)
+    lastnameFormController.reset()
+    })
+
+  // Verify the OTP entered by the user
+  // const handleOtpSubmit = () => {
+  //   verifyOtpEmail({ email: newEmail, otp })
+  //     .then(() => {
+  //       toast.success('Email updated successfully!')
+  //       setOtpModalOpen(false) // Close OTP modal
+  //     })
+  //     .catch(() => {
+  //       toast.error('Invalid OTP. Please try again.')
+  //     })
+  // }
   const handlePictureSubmit = pictureFormController.handleSubmit((data) => {
     if (newProfilePicture && data) {
       setIsPictureModalOpen(false)
@@ -149,7 +170,7 @@ export function ModifyProfileCardFeature() {
   }, [errorUpdateMe, isErrorUpdateMe, usernameFormController])
 
   useEffect(() => {
-    if (isSuccessUpdateMe){
+    if (isSuccessUpdateMe) {
       setIsUsernameModalOpen(false)
     }
   }, [isSuccessUpdateMe])
@@ -165,11 +186,11 @@ export function ModifyProfileCardFeature() {
   )
   const emailChangeButton = (
     <ModifyEmailDialog
-      action={handleEmailSubmit}
-      currentUserEmail={userMe?.email ?? ''}
+      emailFormController={emailFormController}
       isModalOpen={isEmailModalOpen}
       setIsModalOpen={setIsEmailModalOpen}
-      emailFormController={emailFormController}
+      action={handleEmailSubmit} // Pass the current user's email here
+      currentUserEmail={currentUserEmail}
     />
   )
   const pictureChangeButton = (

@@ -6,14 +6,14 @@ interface ModifyEmailDialogProps {
   emailFormController: UseFormReturn<{ email: string }, any, undefined>
   isModalOpen: boolean
   setIsModalOpen: (value: boolean) => void
-  action: () => void
+  action: () => void // action now will call the handleEmailSubmit with currentUserEmail
   currentUserEmail: string
 }
+
 export function ModifyEmailDialog({
   action,
   isModalOpen,
   setIsModalOpen,
-  emailFormController,
   currentUserEmail,
 }: ModifyEmailDialogProps) {
   const { t } = useTranslation()
@@ -26,33 +26,14 @@ export function ModifyEmailDialog({
       }
       content={
         <>
-          {/* <Controller
-            name="email"
-            rules={{
-              required: t(
-                'settings.components.modify-email-dialog.required_email'
-              ),
-              pattern: {
-                value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-                message: t(
-                  'settings.components.modify-email-dialog.invalid_email'
-                ),
-              },
-            }}
-            control={emailFormController.control}
-            render={({ field, fieldState: { error } }) => (
-              <InputText
-                label={t('settings.components.modify-email-dialog.email')}
-                type="email"
-                name="email"
-                className="w-full !rounded-lg min-h-[40px]"
-                value={field.value}
-                onChange={field.onChange}
-                error={error?.message}
-              />
-            )}
-          />
-          <p>{t('settings.components.modify-email-dialog.email_sented')}</p>
+          <p>
+            We need to verify your old email address,{' '}
+            <strong>{currentUserEmail}</strong>, in order to change it.
+          </p>
+          <p>
+            Have you lost access to your email? Contact your email provider to
+            regain access.
+          </p>
         </>
       }
       actionButtonTitle="Send verification code"

@@ -14,6 +14,8 @@ import {
   GetUserRequest,
   LoginRequest,
   LoginResponse,
+  OtpMailSendRequest,
+  RefreshRequest,
   RefreshResponse,
   RegisterResponse,
   ResetPasswordRequest,
@@ -129,6 +131,29 @@ export const userApi = createApi({
       }),
       providesTags: (_, __, id) => [{ type: 'profilePicture', id: id }],
     }),
+    refresh: builder.mutation<RefreshResponse, RefreshRequest>({
+      query: (refreshToken) => ({
+        url: '/authentication/refresh',
+        method: 'POST',
+        body: refreshToken,
+      }),
+    }),
+    // Send OTP for email change
+    sendOtpEmail: builder.mutation<void, OtpMailSendRequest>({
+      query: (data) => ({
+        url: '/users/otp/generate', // Make sure this URL matches your backend route
+        method: 'POST',
+        body: data, // This will send the email to the backend
+      }),
+    }),
+    // Verify OTP for email change
+    // verifyOtpEmail: builder.mutation<void, { email: string; otp: string }>({
+    //   query: (data) => ({
+    //     url: '/users/otp/verify', // Make sure this URL matches your backend route
+    //     method: 'POST',
+    //     body: data, // This will send the email and OTP to verify
+    //   }),
+    // }),
     confirmEmail: builder.mutation<void, ConfirmEmailRequest>({
       query: (data) => ({
         url: `/users/@me/email`,
@@ -234,6 +259,8 @@ export const {
   useVerifyEmailMutation,
   useGetUserByIdQuery,
   useUpdateStateMutation,
+  useSendOtpEmailMutation, // to send OTP
+  // useVerifyOtpEmailMutation, // to verify OTP
   useLogoutMutation,
   useAskTOTPURIMutation,
   useComplete2FARegistrationMutation,
