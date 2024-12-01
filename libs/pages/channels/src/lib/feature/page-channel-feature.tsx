@@ -308,6 +308,7 @@ export function PageChannelFeature() {
     } else {
       toast.error(t('channels.page-channel.error.empty_message'))
     }
+
   })
 
   useEffect(() => {

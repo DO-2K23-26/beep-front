@@ -15,7 +15,7 @@ export function ButtonNavigationList({
   return (
     <div className="flex flex-row shrink">
       <div className="flex flex-col items-start container pb-4 gap-1">
-        <p className="font-semibold text-2xl">
+        <p className="font-semibold text-base sm:text-lg md:text-2xl">
           {subSettings.subGroupSettingTitle}
         </p>
         {subSettings.settings.map((setting) => {

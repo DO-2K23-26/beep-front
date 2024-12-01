@@ -1,5 +1,6 @@
 /* eslint-disable @nx/enforce-module-boundaries */
 import { channelApi, voiceChannelReducer } from '@beep/channel'
+import { friendsApi } from '@beep/friend'
 import { messageReducer } from '@beep/message'
 import { responsiveReducer } from '@beep/responsive'
 import { serverApi, serverReducer } from '@beep/server'
@@ -17,6 +18,7 @@ export const appReducer = combineReducers({
   [userApi.reducerPath]: userApi.reducer,
   [channelApi.reducerPath]: channelApi.reducer,
   [serverApi.reducerPath]: serverApi.reducer,
+  [friendsApi.reducerPath]: friendsApi.reducer,
 })
 
 const rootReducer = (state: RootState | undefined, action: Action) => {
@@ -38,6 +40,7 @@ export function setupStore(preloadedState?: never) {
         userApi.middleware,
         channelApi.middleware,
         serverApi.middleware,
+        friendsApi.middleware,
         toggleListenerMiddleware.middleware,
         webRTCMiddleware
       ),

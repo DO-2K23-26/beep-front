@@ -4,17 +4,18 @@ import { DialogCloseButton, Icon } from '@beep/ui'
 import DeleteChannelFeature from '../feature/delete-channel-feature'
 import OverviewSettingsChannelFeature from '../feature/overview-settings-channel-feature'
 import { useTranslation } from 'react-i18next'
+import { cn } from '@beep/utils'
 
 interface DisplayChannelProps {
   channel: ChannelEntity
   onJoinChannel?: (serverId: string, channelId: string) => void
-  onDeleteChannel?: () => void
+  isSelected?: boolean
 }
 
 export default function DisplayChannel({
   channel,
   onJoinChannel,
-  onDeleteChannel,
+  isSelected,
 }: DisplayChannelProps) {
   const { t } = useTranslation()
 
@@ -41,22 +42,28 @@ export default function DisplayChannel({
         onJoinChannel ? onJoinChannel(channel.serverId, channel.id) : {}
       }
     >
-      <div className="flex flex-row justify-between items-center w-full px-3 py-2 hover:bg-violet-400 cursor-pointer rounded-xl">
+      <div
+        className={cn(
+          'flex flex-row justify-between items-center w-full px-3 py-2 hover:bg-violet-400/60 cursor-pointer rounded-xl',
+          { 'bg-violet-400/60': isSelected }
+        )}
+      >
         <div className="flex flex-row justify-center items-center gap-2">
           {channel.type === ChannelType.VOICE ? (
             <Icon name="lucide:volume-2" className="w-4 h-4" />
           ) : (
             <Icon name="lucide:hash" className="w-4 h-4" />
           )}
-          <p className="font-semibold max-w-[150px] truncate">{channel.name}</p>
+          <p className="font-semibold max-w-10 md:max-w-36 truncate">
+            {channel.name}
+          </p>
         </div>
         <div className="flex justify-center items-center invisible group-hover:visible">
           <DialogCloseButton
-            triggerButton={
-              <Icon name="lucide:settings" className="!w-4 !h-4" />
-            }
             content={<SettingsModal settings={[subSetting]} />}
-          />
+          >
+            <Icon name="lucide:settings" className="!w-4 !h-4" />
+          </DialogCloseButton>
         </div>
       </div>
     </div>

@@ -14,10 +14,12 @@ import { useTranslation } from 'react-i18next'
 
 interface DestroyServerFeatureProps {
   closeModal: () => void
+  afterDestroy?: () => void
 }
 
 export default function DestroyServerFeature({
   closeModal,
+  afterDestroy,
 }: DestroyServerFeatureProps) {
   const { t } = useTranslation()
 
@@ -26,7 +28,6 @@ export default function DestroyServerFeature({
   const [deleteServer] = useDeleteServerMutation()
   const [error, setError] = useState<string | undefined>(undefined)
   const [loading, setLoading] = useState(false)
-  const navigate = useNavigate()
   const { data: availableServers } = useGetMyServersQuery()
   const dispatch = useDispatch()
 
@@ -75,7 +76,7 @@ export default function DestroyServerFeature({
           closeModal()
           return
         }
-        navigate('/discover')
+        if (afterDestroy) afterDestroy()
         dispatch(serverActions.setServer(serverToNavigate))
         toast.success(t('layout.destroy-server.success_delete_server'))
         closeModal()

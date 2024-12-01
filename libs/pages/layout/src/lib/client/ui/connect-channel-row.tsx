@@ -15,9 +15,9 @@ export function ConnectedChannelRow({
   connectionState,
 }: ConnectedChannelRowProps) {
   return (
-    <div className="w-full pb-3 border-b-2 border-violet-400 flex flex-row items-center justify-between">
+    <div className="w-full pb-3 flex flex-row items-center justify-between">
       <div className="flex flex-col gap-2">
-        <h3 className="text-lg font-bold text-slate-700 truncate max-w-[200px]">
+        <h3 className="text-lg font-bold text-slate-700 truncate max-w-24 sm:max-w-48">
           {channelName} / {serverName}
         </h3>
         {['closed', 'disconnected', 'failed'].includes(connectionState) && (

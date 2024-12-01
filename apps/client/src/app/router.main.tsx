@@ -3,6 +3,7 @@ import { createBrowserRouter, Navigate } from 'react-router-dom'
 import App from './app'
 import { serverRoutes } from '@beep/pages/channels'
 import { autenticationRouter } from '@beep/auth'
+import { friendRoutes } from '@beep/pages/friends'
 
 export const router = createBrowserRouter([
   {
@@ -18,9 +19,18 @@ export const router = createBrowserRouter([
         children: autenticationRouter,
       },
       {
-        path: 'servers',
+        path: '',
         Component: ServersNavigationFeature,
-        children: serverRoutes,
+        children: [
+          {
+            path: 'servers',
+            children: serverRoutes,
+          },
+          {
+            path: 'friends',
+            children: friendRoutes,
+          },
+        ],
       },
       {
         path: '*',

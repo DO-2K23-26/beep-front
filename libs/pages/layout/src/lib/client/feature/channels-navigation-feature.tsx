@@ -5,7 +5,6 @@ import {
   CreateChannelRequest,
   UserConnectedEntity,
 } from '@beep/contracts'
-import { responsiveActions } from '@beep/responsive'
 import {
   serverActions,
   useCreateChannelInServerMutation,
@@ -14,8 +13,7 @@ import {
   useGetServerChannelsQuery,
   useJoinVoiceChannelMutation,
   useLeaveVoiceChannelMutation,
-  useTransmitBannerQuery,
-  useTransmitPictureQuery,
+  useTransmitBannerQuery
 } from '@beep/server'
 import { AppDispatch, RootState } from '@beep/store'
 import { TransmitSingleton } from '@beep/transmit'
@@ -30,10 +28,10 @@ import { skipToken } from '@reduxjs/toolkit/query'
 import { useCallback, useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import { toast } from 'react-hot-toast'
+import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router'
 import ChannelsNavigation from '../ui/channels-navigation'
-import { useTranslation } from 'react-i18next'
 
 export function ChannelsNavigationFeature() {
   const { t } = useTranslation()
@@ -60,9 +58,7 @@ export function ChannelsNavigationFeature() {
       skip: server?.banner === undefined || server?.banner === '',
     }
   )
-  const { data: icon } = useTransmitPictureQuery(server?.id ?? skipToken, {
-    skip: server?.icon === undefined || server?.icon === '',
-  })
+
   const [joinServer] = useJoinVoiceChannelMutation()
   const [leaveServer] = useLeaveVoiceChannelMutation()
 
@@ -222,9 +218,6 @@ export function ChannelsNavigationFeature() {
     createChannel(createChannelRequest)
     closeModal()
   })
-  const hideLeftDiv = () => {
-    dispatch(responsiveActions.toggleLeftPane())
-  }
   const onClickId = async (text: string) => {
     await navigator.clipboard.writeText(text)
     toast.success(t('layout.channels-navigation.copy_server_id'))
@@ -245,9 +238,7 @@ export function ChannelsNavigationFeature() {
       openModal={openModal}
       closeModal={closeModal}
       methodsAddChannel={methodsAddChannel}
-      hideLeftDiv={hideLeftDiv}
       banner={server?.banner !== '' ? banner : undefined}
-      icon={server?.icon !== '' ? icon : undefined}
     />
   )
 }

@@ -272,8 +272,8 @@
       "channel_name": "Channel name",
       "description": "Description",
       "channel_description": "Channel description",
-      "save": "SAVE",
-      "reset": "RESET",
+      "save": "Save",
+      "reset": "Reset",
       "success_update_channel": "Channel updated !",
       "error_update_channel": "An error occured while updating the channel !"
     },
@@ -340,6 +340,29 @@
       "successfull_update": "Update successful",
       "error_update": "Something went wrong when updating your profile",
       "picture_not_filled": "Choose a picture by clicking on the button first"
+    }
+  },
+  "friends": {
+    "header-page-friend": {
+      "friend": "Friends",
+      "invitation": "Invitations"
+    },
+    "delete-friend-menu": {
+      "delete": "Remove"
+    },
+    "delete-friend-dialog": {
+      "title": "Remove",
+      "description": "Are you sure you want to delete this friend?",
+      "cancel": "Cancel",
+      "delete": "Remove"
+    },
+    "empty-friends-list": {
+      "title": "No friends yet",
+      "description": "You don't have any friends yet. Add some friends to start chatting!"
+    },
+    "delete-friend-dialog-feature": {
+      "success": "Friend removed successfully",
+      "error": "An error occurred while removing the friend"
     }
   }
 }

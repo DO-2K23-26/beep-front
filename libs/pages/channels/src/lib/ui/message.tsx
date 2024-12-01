@@ -204,14 +204,14 @@ export default function Message({
         ) : (
           <div
             className={cn(
-              'rounded-xl rounded-tl-none p-6 flex flex-col gap-3',
+              'rounded-xl rounded-tl-none py-2 sm:py-4 md:py-6 px-6 flex flex-col gap-3',
               {
                 'bg-violet-50': !isLoadingCreate,
                 'bg-slate-500/30': isLoadingCreate,
               }
             )}
           >
-            <div className="message-content mt-2">
+            <div>
               {containsUrl()
                 ? renderTextWithLinks(message.content)
                 : renderedMessage}

@@ -31,3 +31,5 @@ export * from './user/confirm-email.request'
 export * from './invitation/create-invitation.request'
 
 export * from './member/get-member.request'
+
+export * from './friends/delete-friend.request'

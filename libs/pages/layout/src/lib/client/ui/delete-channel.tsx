@@ -1,4 +1,4 @@
-import { Button, InputText } from '@beep/ui'
+import { Button, ButtonShadCn, InputText } from '@beep/ui'
 import { ChangeEvent } from 'react'
 import { useTranslation } from 'react-i18next'
 
@@ -22,21 +22,20 @@ export function DeleteChannel({
   const { t } = useTranslation()
 
   return (
-    <div className="flex flex-col gap-y-12">
-      <p className="text-red-600 text-3xl font-bold max-w-sm">
-        {t('layout.delete-channel.delete-channel')}
+    <div className="flex flex-col gap-y-4 sm:gap-y-8 md:gap-y-12">
+      <p className="text-red-600 text-base sm:text-xl md:text-3xl font-bold max-w-sm">
+        {t('layout.delete-channel.delete_channel')}
       </p>
       <div className="flex flex-col gap-4">
-        <p className="text-slate-600 font-semibold">
-          {' '}
-          {t('layout.delete-channel.delete_careful')}{' '}
-          <u className="text-slate-600">
+        <p className="text-slate-600 font-semibold text-xs sm:text-sm md:text-base">
+          {t('layout.delete-channel.delete_careful')}
+          <u className="text-slate-600 text-xs sm:text-sm md:text-base">
             {t('layout.delete-channel.irreversible_action_warning')}
           </u>
         </p>
-        <p className="text-slate-600 font-semibold">
-          {t('layout.delete-channel.type')}{' '}
-          <strong className="text-red-600">{channelName}</strong>{' '}
+        <p className="text-slate-600 font-semibold text-xs sm:text-sm md:text-base">
+          {t('layout.delete-channel.type')}
+          <strong className="text-red-600">{channelName}</strong>
           {t('layout.delete-channel.confirm_delete')}
         </p>
         <InputText
@@ -48,13 +47,12 @@ export function DeleteChannel({
         />
       </div>
       <div className="flex flex-row justify-end">
-        <Button
-          className="!bg-red-600 hover:!bg-red-700 !rounded-lg min-h-[40px]"
-          onClick={onSubmit}
-          loading={loading}
+        <ButtonShadCn
+          variant={'hoverRounded'}
+          className="bg-red-600 text-white text-xs sm:text-sm md:text-base"
         >
           <p className="text-violet-50">{t('layout.delete-channel.delete')}</p>
-        </Button>
+        </ButtonShadCn>
       </div>
     </div>
   )

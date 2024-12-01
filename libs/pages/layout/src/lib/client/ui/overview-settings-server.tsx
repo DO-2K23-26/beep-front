@@ -50,12 +50,12 @@ export function OverviewSettingsServer({
   }
 
   return (
-    <div className="w-full bg-violet-200 p-10 overflow-y-auto">
-      <h3 className=" text-slate-700 font-bold mb-2 max-w-sm">
+    <div className="flex flex-col w-full bg-violet-200 p-4 overflow-y-auto gap-4">
+      <div className=" text-slate-700 font-bold max-w-sm text-base sm:text-xl md:text-3xl">
         {t('layout.overview-settings-server.server_overview')}
-      </h3>
-      <div className="flex gap-10 items-center py-10">
-        <div className="w-1/3 h-60 flex justify-center items-center">
+      </div>
+      <div className="flex flex-row gap-2 sm:gap-8 md:gap-10 items-start w-full ">
+        <div className="w-1/3">
           <InputImageSettings
             type="picture"
             label={t('layout.overview-settings-server.upload_picture')}
@@ -64,7 +64,7 @@ export function OverviewSettingsServer({
             initialImage={icon}
           />
         </div>
-        <div className="w-2/3 h-60">
+        <div className="w-2/3">
           <InputImageSettings
             type="banner"
             label={t('layout.overview-settings-server.upload_banner')}
@@ -75,41 +75,33 @@ export function OverviewSettingsServer({
         </div>
       </div>
       <hr className="bg-violet-300 h-1"></hr>
-      <div className="py-5 ">
-        <div className="py-2">
-          <h5 className="py-5 text-slate-700 font-bold mb-2 max-w-sm">
-            {t('layout.overview-settings-server.server_name')}
-          </h5>
-          <InputText
-            label={t('layout.overview-settings-server.server_name')}
-            type="text"
-            name="server-name"
-            className="!rounded-lg min-h-[40px] w-full "
-            value={serverName}
-            onChange={(e) => setServerName(e.target.value)}
-            disabled={!isAdmin}
-          />
-        </div>
-        <div className="py-2">
-          <h5 className="py-5 text-slate-700 font-bold mb-2 max-w-sm">
-            {t('layout.overview-settings-server.server_description')}
-          </h5>
-          <InputText
-            label={t('layout.overview-settings-server.server_description')}
-            type="text"
-            name="server-description"
-            className="!rounded-lg min-h-[40px] w-full"
-            value={serverDescription}
-            onChange={(e) => setServerDescription(e.target.value)}
-            disabled={!isAdmin}
-          />
-        </div>
+      <div className="flex flex-col gap-2 sm:gap-4 md:gap-6">
+        <InputText
+          label={t('layout.overview-settings-server.server_name')}
+          type="text"
+          name="server-name"
+          className="!rounded-lg w-full "
+          value={serverName}
+          onChange={(e) => setServerName(e.target.value)}
+          disabled={!isAdmin}
+        />
+        <InputText
+          label={t('layout.overview-settings-server.server_description')}
+          type="text"
+          name="server-description"
+          className="!rounded-lg w-full"
+          value={serverDescription}
+          onChange={(e) => setServerDescription(e.target.value)}
+          disabled={!isAdmin}
+        />
+        {isAdmin && (
+          <div className="flex flex-row justify-end">
+            <Button style={ButtonStyle.BASIC} onClick={handleSave}>
+              {t('layout.overview-settings-server.save')}
+            </Button>
+          </div>
+        )}
       </div>
-      {isAdmin && (
-        <Button style={ButtonStyle.BASIC} onClick={handleSave}>
-          {t('layout.overview-settings-server.save')}
-        </Button>
-      )}
     </div>
   )
 }

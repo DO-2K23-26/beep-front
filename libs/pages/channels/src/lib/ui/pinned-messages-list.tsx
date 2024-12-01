@@ -2,19 +2,21 @@ import { MessageEntity } from '@beep/contracts'
 import React from 'react'
 import MessageFeature from '../feature/message-feature'
 import { EmptyPinnedMessageList } from './empty-pinned-message-list'
+import { cn } from '@beep/utils'
 
 interface PinnedMessagesListProps {
   messages: MessageEntity[]
 }
 
-const PinnedMessagesList: React.FC<PinnedMessagesListProps> = ({
-  messages,
-}) => {
+function PinnedMessagesList({ messages }: PinnedMessagesListProps) {
   return (
     <div
-      className={`flex absolute flex-col-reverse overflow-y-scroll no-scrollbar scroll-smooth bg-violet-400 rounded-xl h-80 ${
-        messages.length > 0 ? 'p-2' : ''
-      }`}
+      className={cn(
+        'flex flex-col-reverse overflow-y-scroll no-scrollbar scroll-smooth bg-violet-400 rounded-xl h-80',
+        {
+          'p-2': messages.length > 0,
+        }
+      )}
     >
       {messages.length === 0 ? (
         <EmptyPinnedMessageList />

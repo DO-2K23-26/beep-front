@@ -1,6 +1,12 @@
 import { useFetchPinnedMessagesQuery } from '@beep/channel'
-import { Button, ButtonSize, Skeleton } from '@beep/ui'
-import React, { useState } from 'react'
+import {
+  ButtonIcon,
+  ButtonShadCnProps,
+  Popover,
+  PopoverTrigger,
+  PopoverContent,
+  Skeleton,
+} from '@beep/ui'
 import { useTranslation } from 'react-i18next'
 import PinnedMessagesList from './pinned-messages-list'
 
@@ -10,30 +16,39 @@ interface DisplayPinnedProps {
 }
 
 function DisplayPinned({ channelId, isLoading }: DisplayPinnedProps) {
+  const buttonProps: ButtonShadCnProps = {
+    size: 'responsiveThick',
+    variant: 'hoverRounded',
+  }
   const { t } = useTranslation()
   const { data: pinnedMessage, isLoading: isLoadingPinned } =
-    useFetchPinnedMessagesQuery({
-      channelId,
-    }, { skip: channelId === '' })
-  const [showPinnedMessages, setShowPinnedMessages] = useState<boolean>(false)
+    useFetchPinnedMessagesQuery(
+      {
+        channelId,
+      },
+      { skip: channelId === '' }
+    )
   if (isLoading)
-    return <Skeleton className="h-14 w-24 rounded-xl bg-violet-300" />
+    return (
+      <Skeleton className="h-10 sm:h-12 md:h-14 w-12 sm:w-16 md:w-24 rounded-xl bg-violet-300" />
+    )
   return (
-    <div>
-      <Button
-        iconLeft={'lucide:pin'}
-        size={ButtonSize.REGULAR}
-        className="rounded-xl !h-14 "
-        onClick={() => setShowPinnedMessages(!showPinnedMessages)}
-      >
-        <p>{t('channels.display-pinned.pinned_messages')}</p>
-      </Button>
-      {showPinnedMessages &&
-        !isLoadingPinned &&
-        pinnedMessage !== undefined && (
+    <Popover>
+      <PopoverTrigger>
+        <ButtonIcon
+          icon="lucide:pin"
+          title={t('channels.display-pinned.pinned_messages')}
+          buttonProps={buttonProps}
+          textHiddenResponsive
+        />
+      </PopoverTrigger>
+
+      {!isLoadingPinned && pinnedMessage !== undefined && (
+        <PopoverContent align="start" className="w-fit border-none p-0">
           <PinnedMessagesList messages={pinnedMessage} />
-        )}
-    </div>
+        </PopoverContent>
+      )}
+    </Popover>
   )
 }
 

@@ -1,12 +1,12 @@
 import { useUpdateBannerMutation, useUpdatePictureMutation } from '@beep/server'
-import { classNames } from '@beep/utils'
+import { cn } from '@beep/utils'
 import { useEffect, useRef, useState } from 'react'
 import { Icon } from '../icons/icon'
 
 interface InputImageSettingsProps {
   label: string
   name: string
-  serverId?: string
+  serverId: string
   initialImage?: string
   type: 'banner' | 'picture'
 }
@@ -14,7 +14,7 @@ interface InputImageSettingsProps {
 export function InputImageSettings({
   label,
   name,
-  serverId = '',
+  serverId,
   initialImage,
   type,
 }: InputImageSettingsProps): JSX.Element {
@@ -44,12 +44,7 @@ export function InputImageSettings({
           reader.readAsDataURL(file)
           const formData = new FormData()
           formData.append('attachment', file)
-
-          try {
-            await updateImage({ serverId, formData }).unwrap()
-          } catch (error) {
-            //TODO: handle error
-          }
+          updateImage({ serverId, formData })
         }
       })
     }
@@ -61,33 +56,32 @@ export function InputImageSettings({
     }
   }, [initialImage])
 
-  const containerClasses = classNames(
-    'flex align-center items-center flex-col gap-2 group cursor-pointer w-full h-60'
+  const size = 'w-full'
+  const height = 'h-20 sm:h-28 md:h-40'
+  const containerClasses = cn(
+    'flex align-center items-center flex-col gap-2 group cursor-pointer w-full'
   )
 
-  const imageContainerClasses = classNames(
-    'w-full h-60 rounded-xl flex items-center justify-center truncate',
-    type === 'banner' ? 'w-full' : 'w-60'
+  const imageContainerClasses = cn(
+    'rounded-3xl flex items-center justify-center truncate',
+    height,
+    size
   )
 
-  const imageClasses = classNames(
-    'object-cover',
-    type === 'banner' ? 'w-full h-60 rounded-xl' : 'rounded-full w-60 h-60'
+  const imageClasses = cn('object-cover rounded-3xl', size, height)
+
+  const placeholderClasses = cn(
+    'flex items-center justify-center bg-slate-300 rounded-3xl',
+    height,
+    size
   )
 
-  const placeholderClasses = classNames(
-    'flex items-center justify-center',
-    type === 'banner'
-      ? 'w-full h-60 bg-slate-300 rounded-xl'
-      : 'rounded-full w-60 h-60 bg-slate-300'
-  )
-
-  const labelClasses = classNames(
-    'text-sm text-black cursor-pointer opacity-40 group-hover:opacity-100 ease-in-out duration-75'
+  const labelClasses = cn(
+    'text-xs sm:text-sm md:text-base text-black cursor-pointer opacity-40 group-hover:opacity-100 ease-in-out duration-75'
   )
 
   return (
-    <label htmlFor={uuid.toString()} className={containerClasses}>
+    <label htmlFor={uuid} className={containerClasses}>
       <div className={imageContainerClasses}>
         {previewImage ? (
           <img
@@ -97,7 +91,10 @@ export function InputImageSettings({
           />
         ) : (
           <div className={placeholderClasses}>
-            <Icon name="lucide:image-plus" className="h-40 w-40" />
+            <Icon
+              name="lucide:image-plus"
+              className="size-10 sm:size-20"
+            />
           </div>
         )}
         <input
@@ -105,7 +102,7 @@ export function InputImageSettings({
           className="hidden"
           type="file"
           name={name}
-          id={uuid.toString()}
+          id={uuid}
         />
       </div>
       <label className={labelClasses}>{label}</label>

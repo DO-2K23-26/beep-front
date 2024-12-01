@@ -32,10 +32,10 @@ export function UserMedia({
 
   return (
     <div className="p-6">
-      <h3 className=" text-slate-700 font-bold mb-2 max-w-sm">
+      <div className="text-base sm:text-xl md:text-3xl text-slate-700 font-bold mb-2 max-w-sm">
         {t('layout.current-user.voice_video')}
-      </h3>
-      <div className="text-slate-500 text-sm">
+      </div>
+      <div className="text-slate-800 text-xs sm:text-sm md:text-base">
         {t('layout.user-media.change_method')}
       </div>
       <div className="flex flex-col gap-4 py-4">

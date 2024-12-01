@@ -7,7 +7,7 @@ export interface ListServersProps {
 
 export function ListServers({ servers }: ListServersProps) {
   return servers ? (
-    <div className='h-fit flex flex-col gap-6'>
+    <div className="h-fit flex flex-col gap-4 md:gap-6">
       {Array.isArray(servers) &&
         servers.map((server) => (
           <DisplayServerFeature key={server.id} server={server} />

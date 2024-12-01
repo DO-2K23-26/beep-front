@@ -1,7 +1,6 @@
 import { ChannelEntity } from '@beep/contracts'
-import { toast } from 'react-hot-toast'
 import DisplayChannel from '../ui/display-channel'
-import { useTranslation } from 'react-i18next'
+import { useParams } from 'react-router'
 
 interface DisplayChannelFeature {
   channel: ChannelEntity
@@ -12,16 +11,13 @@ export default function DisplayChannelFeature({
   channel,
   onJoinTextChannel,
 }: DisplayChannelFeature) {
-  const { t } = useTranslation()
+  const { channelId } = useParams<{ channelId: string }>()
 
-  const onDeleteChannel = () => {
-    toast.success(t('layout.delete-channel.success_delete_channel'))
-  }
   return (
     <DisplayChannel
       channel={channel}
       onJoinChannel={onJoinTextChannel}
-      onDeleteChannel={onDeleteChannel}
+      isSelected={channelId === channel.id}
     />
   )
 }

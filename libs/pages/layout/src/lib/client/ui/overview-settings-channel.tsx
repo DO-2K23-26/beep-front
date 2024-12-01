@@ -1,4 +1,11 @@
-import { Button, ButtonStyle, InputText, InputTextArea } from '@beep/ui'
+import {
+  Button,
+  ButtonShadCn,
+  ButtonStyle,
+  buttonVariants,
+  InputText,
+  InputTextArea,
+} from '@beep/ui'
 import { Controller, UseFormReturn } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 
@@ -16,13 +23,12 @@ export function OverviewSettingsChannel({
   const { t } = useTranslation()
 
   return (
-    <div className="flex flex-col gap-y-12">
-      <p className="text-slate-700 text-3xl font-bold mb-2 max-w-sm">
+    <div className="flex flex-col gap-y-4 sm:gap-y-6 md:gap-y-8">
+      <p className="text-slate-700 font-bold mb-2 max-w-sm text-base sm:text-xl md:text-3xl">
         {t('layout.overview-settings-channel.overview')}
       </p>
 
       <div className="flex flex-col">
-        <p className="text-slate-700 font-bold text-2xl mb-2 max-w-sm">Name</p>
         <Controller
           control={form.control}
           name="channelName"
@@ -42,7 +48,7 @@ export function OverviewSettingsChannel({
               label={t('layout.overview-settings-channel.channel_name')}
               type="text"
               name="channel-name"
-              className="!w-7/10 !rounded-lg min-h-[40px]"
+              className="!w-7/10 !rounded-lg"
               value={field.value}
               onChange={field.onChange}
               error={error?.message}
@@ -52,9 +58,6 @@ export function OverviewSettingsChannel({
       </div>
 
       <div className="flex flex-col">
-        <p className="text-slate-700 font-bold text-2xl mb-2 max-w-sm">
-          {t('layout.overview-settings-channel.description')}
-        </p>
         <Controller
           control={form.control}
           name="channelDescription"
@@ -62,7 +65,7 @@ export function OverviewSettingsChannel({
             <InputTextArea
               label={t('layout.overview-settings-channel.channel_description')}
               name="channel-description"
-              className="!w-7/10 !rounded-lg min-h-[40px]"
+              className="!w-7/10 !rounded-lg min-h-10"
               value={field.value}
               onChange={field.onChange}
               error={error?.message}
@@ -71,13 +74,21 @@ export function OverviewSettingsChannel({
         />
       </div>
 
-      <div className="flex flex-row justify-between">
-        <Button style={ButtonStyle.BASIC} onClick={handleSave}>
-          {t('layout.overview-settings-channel.save')}
-        </Button>
-        <Button style={ButtonStyle.BASIC} onClick={handleReset}>
+      <div className="flex flex-row justify-start sm:justify-end gap-2">
+        <ButtonShadCn
+          variant={'hoverRounded'}
+          className="bg-red-600 text-white text-xs sm:text-sm md:text-base"
+          onClick={handleReset}
+        >
           {t('layout.overview-settings-channel.reset')}
-        </Button>
+        </ButtonShadCn>
+        <ButtonShadCn
+          variant={'hoverRounded'}
+          className="bg-violet-400 text-xs sm:text-sm md:text-base"
+          onClick={handleSave}
+        >
+          {t('layout.overview-settings-channel.save')}
+        </ButtonShadCn>
       </div>
     </div>
   )

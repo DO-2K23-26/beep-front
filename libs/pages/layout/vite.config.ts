@@ -23,8 +23,6 @@ export default defineConfig({
   //  plugins: [ nxViteTsPaths() ],
   // },
 
-  // Configuration for building your library.
-  // See: https://vitejs.dev/guide/build.html#library-mode
   test: {
     globals: true,
     cache: {

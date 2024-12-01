@@ -18,7 +18,7 @@ export function SettingsModal({ settings }: SettingsUserModalProps) {
       for (const setting of subSetting.settings) {
         if (setting.title === title) {
           return (
-            <div className={`flex flex-col pt-12 w-10/12 md:w-8/12 xl:w-6/12 `}>
+            <div className={`flex flex-col pt-12 px-2 w-full md:w-8/12 xl:w-6/12 `}>
               {setting.settingComponent}
             </div>
           )
@@ -28,8 +28,8 @@ export function SettingsModal({ settings }: SettingsUserModalProps) {
     return null
   }
   return (
-    <div className="flex flex-row">
-      <div className=" bg-violet-300 flex flex-col h-dvh p-4 md:p-12 min-w-fit items-end  overflow-y-auto">
+    <div className="flex flex-row w-full">
+      <div className=" bg-violet-300 flex flex-col h-dvh px-2 sm:px-4 md:px-12 py-6 min-w-fit items-end overflow-y-auto">
         {settings.map((subSetting) => {
           return (
             <ButtonNavigationList
@@ -41,7 +41,7 @@ export function SettingsModal({ settings }: SettingsUserModalProps) {
           )
         })}
       </div>
-      <div className="w-full bg-violet-200 flex flex-col items-center">
+      <div className="w-full px-2 bg-violet-200 flex flex-col items-center overflow-y-scroll scroll-smooth">
         {findSettingComponentByTitle(settings, selectedSetting)}
       </div>
     </div>

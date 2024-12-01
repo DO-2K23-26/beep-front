@@ -30,14 +30,14 @@ export default function MembersNavigation({
   return (
     <div
       className={cn(
-        'bg-violet-300 p-6 rounded-r-3xl flex flex-col gap-6 sm:hidden',
+        'bg-violet-300 p-6 rounded-r-3xl flex flex-col gap-6 sm:hidden transition-all',
         {
           'w-fit hidden sm:block': showRightPane,
           'sm:w-fit hidden xl:block': !showRightPane,
         }
       )}
     >
-      <div className="flex items-center justify-betwee space-x-6">
+      <div className="flex items-center justify-between space-x-6">
         <h5 className="text-slate-900 font-semibold pl-3">
           {t('layout.members-navigation.members')}
         </h5>

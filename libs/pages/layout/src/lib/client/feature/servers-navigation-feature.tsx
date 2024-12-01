@@ -9,18 +9,15 @@ import { useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import ServersNavigation from '../ui/servers-navigation'
 
-const onPrivateMessage = () => {
-  // navigation('/discover')
-}
-
 export function ServersNavigationFeature() {
-
   const { data: servers } = useGetMyServersQuery()
   const { openModal, closeModal } = useModal()
   const dispatch = useDispatch<AppDispatch>()
   const [leaveServer] = useLeaveVoiceChannelMutation()
   const [logout] = useLogoutMutation()
-
+  const onPrivateMessage = () => {
+    navigate('/friends')
+  }
   const navigate = useNavigate()
   const onLogout = () => {
     leaveServer()
@@ -37,6 +34,10 @@ export function ServersNavigationFeature() {
       onPrivateMessage={onPrivateMessage}
       openModal={openModal}
       closeModal={closeModal}
+      responsive={
+        window.location.pathname.includes('servers') &&
+        !window.location.pathname.includes('/servers/discover')
+      }
     />
   )
 }

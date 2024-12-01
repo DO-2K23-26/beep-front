@@ -1,92 +1,101 @@
 import { ServerEntity } from '@beep/contracts'
-import { SettingsModal, SubSettings } from '@beep/settings'
+import { SettingBodyWidth, SettingsModal, SubSettings } from '@beep/settings'
 import {
-  Badge,
-  BadgeType,
-  DialogCloseButton,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
   DropdownMenu,
   DropdownMenuContent,
+  DropdownMenuItem,
   DropdownMenuTrigger,
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger,
-  UseModalProps,
+  FullScreenDialog,
+  FullScreenDialogContent,
+  FullScreenDialogTrigger,
+  Icon,
+  UseModalProps
 } from '@beep/ui'
 import { ReactNode } from 'react'
-import DestroyServerFeature from '../feature/destroy-server-feature'
-import { DropdownMenuItemCustom } from './dropdown-menu-item-custom'
 import { useTranslation } from 'react-i18next'
+import { useNavigate } from 'react-router'
+import DestroyServerFeature from '../feature/destroy-server-feature'
+import { OverviewSettingsServer } from './overview-settings-server'
 
 interface ServerDropdownProps {
-  server?: ServerEntity
+  server: ServerEntity
   onClickId: (id: string) => void
   openModal: React.Dispatch<React.SetStateAction<UseModalProps | undefined>>
   closeModal: () => void
-  settings: SubSettings[]
   isAdmin: boolean
   children: ReactNode
 }
 
 export function ServerDropdown({
   server,
-  onClickId,
   openModal,
   closeModal,
-  settings,
   isAdmin,
   children,
 }: ServerDropdownProps) {
   const { t } = useTranslation()
-
+  const navigate = useNavigate()
+  const afterDestroy = () => {
+    navigate('/servers/discover')
+  }
+  // List of setting in the user setting modal
+  const subSetting: SubSettings = {
+    subGroupSettingTitle: 'Server',
+    settings: [
+      {
+        title: 'Overview',
+        settingComponent: server && (
+          <OverviewSettingsServer server={server} isAdmin={isAdmin} />
+        ),
+        settingBodySize: SettingBodyWidth.L,
+      },
+    ],
+  }
   return (
-    <div className="relative z-0 flex flex-row gap-6 p-5 bg-white bg-opacity-10 rounded-xl">
-      {/* <div className="flex flex-row gap-6"> */}
+    <FullScreenDialog>
       <DropdownMenu>
-        <div>
-          <DropdownMenuTrigger asChild>{children}</DropdownMenuTrigger>
-        </div>
+        <DropdownMenuTrigger>{children}</DropdownMenuTrigger>
         <DropdownMenuContent className="rounded-lg bg-violet-50 mt-4 mx-5 py-4 px-3">
-          {server && (
-            <DialogCloseButton content={<SettingsModal settings={settings} />}>
-              <DropdownMenuItemCustom
-                label={t('layout.server-dropdown.settings')}
-                iconName="lucide:settings"
-              />
-            </DialogCloseButton>
-          )}
-          {isAdmin && (
-            <div>
-              <hr className="bg-slate-400 h-[1px] my-2 text-slate-400" />
-              <DropdownMenuItemCustom
-                label={t('layout.server-dropdown.destroy')}
-                iconName="lucide:trash-2"
-                warning
-                onClick={() => {
-                  openModal({
-                    content: <DestroyServerFeature closeModal={closeModal} />,
-                  })
-                }}
-              />
+          <FullScreenDialogTrigger>
+            <DropdownMenuItem className="flex flex-row h-full w-full hover:bg-black/10 gap-2 rounded-md cursor-pointer">
+              <Icon name="lucide:settings" />
+              <div className="flex h-full w-full font-semibold">
+                {t('layout.server-dropdown.settings')}
+              </div>
+            </DropdownMenuItem>
+          </FullScreenDialogTrigger>
+          <DropdownMenuItem
+            className="flex flex-row h-full w-full hover:bg-red-500/10 gap-2 rounded-md cursor-pointer"
+            onClick={() => {
+              openModal({
+                content: (
+                  <DestroyServerFeature
+                    closeModal={closeModal}
+                    afterDestroy={afterDestroy}
+                  />
+                ),
+              })
+            }}
+          >
+            <Icon name="lucide:trash-2" className="fill-red-600" />
+            <div className="flex h-full w-full font-semibold text-red-500">
+              {t('layout.server-dropdown.destroy')}
             </div>
-          )}
+          </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
-      <div className="flex flex-col items-start justify-between">
-        <h5 className="font-semibold max-w-[175px] truncate">{server?.name}</h5>
-        <Tooltip>
-          <TooltipTrigger>
-            <Badge
-              type={BadgeType.DEFAULT}
-              title={server?.id ?? ''}
-              className="bg-violet-50 hover:bg-violet-100 !text-violet-900 max-w-[175px] truncate cursor-pointer"
-              onClick={() => onClickId(server?.id ?? '')}
-            />
-          </TooltipTrigger>
-          <TooltipContent>
-            <p>{server?.id ?? ''}</p>
-          </TooltipContent>
-        </Tooltip>
-      </div>
-    </div>
+      <DialogHeader hidden>
+        <DialogTitle hidden>Settings</DialogTitle>
+        <DialogDescription hidden>SettingsPage</DialogDescription>
+      </DialogHeader>
+
+      <FullScreenDialogContent className="flex flex-row w-full h-full">
+        <SettingsModal settings={[subSetting]} />
+      </FullScreenDialogContent>
+    </FullScreenDialog>
   )
 }
+

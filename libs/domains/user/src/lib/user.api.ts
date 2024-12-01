@@ -29,13 +29,6 @@ import {
 const baseQuery = fetchBaseQuery({
   baseUrl: backendUrl,
   credentials: 'include',
-  prepareHeaders: (headers, { getState }) => {
-    // const { user } = getState() as RootState
-    // if (user?.tokens?.accessToken) {
-    //   headers.set('Authorization', `Bearer ${user.tokens.accessToken}`)
-    // }
-    return headers
-  },
 })
 export const baseQueryWithReauth = async (
   args: BaseQueryArg<any>,
@@ -66,7 +59,7 @@ export const baseQueryWithReauth = async (
 export const userApi = createApi({
   reducerPath: 'userApi',
   baseQuery: baseQueryWithReauth,
-  tagTypes: ['users', 'profilePicture', 'me', 'servers'],
+  tagTypes: ['users', 'profilePicture', 'me', 'servers', 'friends'],
   endpoints: (builder) => ({
     login: builder.mutation<LoginResponse, LoginRequest>({
       query: (credentials) => ({

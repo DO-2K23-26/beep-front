@@ -6,7 +6,6 @@ import { useTranslation } from 'react-i18next'
 export interface PageSignupProps {
   onSubmit: () => void
   loading: boolean
-  toSignin?: () => void
   error?: string
   addProfilePicture: (file: File) => void
   previewUrl: string | null
@@ -16,7 +15,6 @@ export function PageSignup({
   loading,
   error,
   onSubmit,
-  toSignin,
   addProfilePicture,
   previewUrl,
 }: PageSignupProps) {

@@ -1,5 +1,5 @@
 import { ServerEntity } from '@beep/contracts'
-import { Button, ButtonStyle } from '@beep/ui'
+import { ButtonShadCn } from '@beep/ui'
 
 interface DisplayServerProps {
   server: ServerEntity
@@ -13,21 +13,22 @@ export default function DisplayServer({
   onServerChange,
 }: DisplayServerProps) {
   return (
-    <Button
+    <ButtonShadCn
       key={server.id}
       onClick={onServerChange}
-      style={ButtonStyle.SQUARE}
-      className="!bg-violet-50"
+      className="bg-violet-50"
+      size={'responsiveSquare'}
+      variant={'hoverRounded'}
     >
       {icon ? (
         <img
           src={icon}
           alt={server.name}
-          className="aspect-square rounded-xl hover:rounded-2xl transition-all object-cover"
+          className="aspect-square rounded-lg hover:rounded-xl  transition-all object-cover"
         />
       ) : (
         <p>{server.name.charAt(0).toUpperCase()}</p>
       )}
-    </Button>
+    </ButtonShadCn>
   )
 }

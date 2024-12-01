@@ -15,8 +15,7 @@ export default function PageAfterSignup({ onSignin }: PageAfterSignupProps) {
     >
       <div className="flex flex-col gap-6 justify-center items-start">
         <h1 className="font-extrabold">
-          {' '}
-          {t('auth.page-after-signup.check_mail')}
+          {t('auth.page-after-signup.check_email')}
         </h1>
         <div className="flex flex-row gap-2 items-center">
           <h5>{t('auth.page-after-signup.validate_email')} </h5>

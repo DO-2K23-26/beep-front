@@ -3,19 +3,13 @@ import {
   MessageEntity,
   UserDisplayedEntity,
 } from '@beep/contracts'
-import {
-  Button,
-  ButtonStyle,
-  DynamicSelector,
-  DynamicSelectorProps,
-  Icon,
-  InputMessageArea,
-} from '@beep/ui'
+import { DynamicSelector, DynamicSelectorProps, Icon } from '@beep/ui'
 import { useCallback } from 'react'
-import { Controller, UseFormReturn } from 'react-hook-form'
+import { UseFormReturn } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { TaggedChannelFeature } from '../feature/tagged-channel-feature'
 import { UserInformationsFeature } from '../feature/user-informations-feature'
+import { InputChannelArea } from './input-channel-area'
 import ListMessages from './list-messages'
 
 export interface PageChannelProps {
@@ -206,64 +200,15 @@ export const PageChannel = ({
             />
           )}
           {/* bottom input + text */}
-          <div className="flex flex-row gap-6 justify-between w-full items-end font-medium">
-            {/* text input */}
-            <div className="w-full h-full">
-              <Controller
-                control={messageForm.control}
-                name="message"
-                render={({ field }) => (
-                  <InputMessageArea
-                    type="text"
-                    name={'message'}
-                    value={field.value}
-                    className="rounded-xl bg-violet-50 px-4 w-full"
-                    placeholder={t('channels.page-channel.message_placeholder')}
-                    ref={inputRef}
-                    onChange={
-                      onChange
-                        ? (e) => onChange(e.target.value, field.onChange)
-                        : field.onChange
-                    }
-                    onMouseUp={
-                      onCursorChange ? () => onCursorChange() : undefined
-                    }
-                    onKeyUp={
-                      onCursorChange ? () => onCursorChange() : undefined
-                    }
-                    onKeyDown={handleKeyDownOnMessage}
-                  />
-                )}
-              />
-            </div>
-
-            {/* buttons */}
-            <div className="flex flex-row gap-6">
-              <Button
-                style={ButtonStyle.SQUARE}
-                onClick={() => sendMessage()}
-                className="!bg-violet-50"
-              >
-                <Icon name="lucide:send" className="w-5 h-5" />
-              </Button>
-              <label
-                htmlFor="file"
-                className="cursor-pointer btn btn--regular btn--square !bg-violet-50"
-              >
-                <Icon name="lucide:plus" className="w-5 h-5" />
-              </label>
-              <input
-                id="file"
-                type="file"
-                className="hidden"
-                onChange={(e) => {
-                  if (e.target?.files?.[0]) {
-                    onAddFiles(e.target?.files?.[0])
-                  }
-                }}
-              />
-            </div>
-          </div>
+          <InputChannelArea
+            onAddFiles={onAddFiles}
+            sendMessage={sendMessage}
+            inputRef={inputRef}
+            onChange={onChange}
+            messageForm={messageForm}
+            handleKeyDownOnMessage={handleKeyDownOnMessage}
+            onCursorChange={onCursorChange}
+          />
         </div>
       </div>
     </>

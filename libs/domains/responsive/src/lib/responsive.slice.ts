@@ -14,6 +14,11 @@ export const initialResponsiveState: ResponsiveState = {
 export const channelsSlice = createSlice({
   name: RESPONSIVE_KEY,
   initialState: initialResponsiveState,
+  selectors: {
+    leftPaneState: (state) => state.showLeftPane,
+    rightPaneState: (state) => state.showRightPane
+
+  },
   reducers: {
     toggleLeftPane(state) {
       state.showLeftPane = !state.showLeftPane
@@ -34,6 +39,7 @@ export const channelsSlice = createSlice({
   },
 })
 
+export const { leftPaneState, rightPaneState } = channelsSlice.selectors
 export const responsiveReducer = channelsSlice.reducer
 export const responsiveActions = channelsSlice.actions
 export const getResponsiveState = (root: RootState) => root[RESPONSIVE_KEY]

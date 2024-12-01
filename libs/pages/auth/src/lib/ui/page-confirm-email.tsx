@@ -6,7 +6,7 @@ interface PageConfirmEmailProps {
 }
 
 export default function PageConfirmEmail({ onSignin }: PageConfirmEmailProps) {
-  const { t, i18n } = useTranslation()
+  const { t } = useTranslation()
 
   return (
     <div
@@ -18,7 +18,7 @@ export default function PageConfirmEmail({ onSignin }: PageConfirmEmailProps) {
           {t('auth.page-confirm-email.check_email')}
         </h1>
         <div className="flex flex-row gap-2 items-center">
-          <h5>{t('auth.page-confirm-email.confirm_email')}</h5>
+          <h5>{t('auth.page-confirm-email.confirm_account')}</h5>
           <Button style={ButtonStyle.NONE} onClick={onSignin}>
             <Icon name="lucide:arrow-right" />
           </Button>

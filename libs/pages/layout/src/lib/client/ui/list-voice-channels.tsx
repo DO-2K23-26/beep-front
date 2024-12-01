@@ -5,13 +5,11 @@ export interface ListVoiceChannelsProps {
 	channels: ChannelEntity[]
 	occupiedChannels: OccupiedChannelEntity[]
 	onJoinChannel: (channel: ChannelEntity) => void
-	onDeleteChannel: (id: string) => void
 }
 export function ListVoiceChannels({
     channels,
     occupiedChannels,
     onJoinChannel,
-    onDeleteChannel,
 }: ListVoiceChannelsProps) {
     return (
         <>
@@ -26,7 +24,6 @@ export function ListVoiceChannels({
                   channel={channel}
                   users={occupiedChannel ? occupiedChannel.users : []}
                   onJoinChannel={onJoinChannel}
-                  onDeleteChannel={onDeleteChannel}
                 />
             )
         })}

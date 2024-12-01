@@ -45,7 +45,7 @@ export default function ListMessages({
     <div
       onScroll={onScroll}
       ref={messageListRef}
-      className="flex flex-col-reverse gap-6 overflow-y-scroll no-scrollbar scroll-smooth h-full"
+      className="flex flex-col-reverse gap-2 md:gap-4 overflow-y-scroll no-scrollbar scroll-smooth h-full"
     >
       {messages.slice().map((message) => (
         <MessageFeature
