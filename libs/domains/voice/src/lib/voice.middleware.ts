@@ -12,7 +12,10 @@ import {Socket, Presence, Channel} from 'phoenix'
 
 
 const WebRTCMiddleware: Middleware = (store) => {
-  const pcConfig : RTCConfiguration = {};
+  const pcConfig : RTCConfiguration = {
+    iceServers: [{ urls: 'turn:162.38.112.211:33436?transport=udp', username: 'user-1', credential: 'pass-1'}],
+    iceTransportPolicy: "relay",
+  };
   let peerConnection: RTCPeerConnection | null = null;
   let socket: Socket | null = null;
   let watchedChannels: {id: string, channel: Channel}[] = []
@@ -46,7 +49,7 @@ const WebRTCMiddleware: Middleware = (store) => {
   return (next) => async (action: any) => {
     switch (action.type) {
       case 'INITIALIZE_PRESENCE':
-        socket = new Socket("ws://"+endpoint + "/socket/"+ action.payload.server)
+        socket = new Socket("wss://"+endpoint + "/socket/"+ action.payload.server)
         socket.connect()
         for (const channelId of action.payload.channels) {
           const socketChannel = socket.channel(`peer:signalling-${channelId}`, {
@@ -113,20 +116,34 @@ const WebRTCMiddleware: Middleware = (store) => {
         peerConnection = new RTCPeerConnection(pcConfig);
 
         peerConnection.onconnectionstatechange = () => {
+          console.log("CONNECTION STATE CHANGE", peerConnection.connectionState);
           store.dispatch(setConnectionState(peerConnection?.connectionState || 'failed'))
           if (peerConnection.connectionState === 'failed') {
             peerConnection.restartIce();
           }
         }
 
+        peerConnection.onicecandidateerror= (ev)=>{
+          console.log(ev)
+        }
+
+        peerConnection.onicegatheringstatechange = (e) => {
+          console.log(e)
+        }
+
+        peerConnection.onsignalingstatechange = (e) => {
+          console.log(e)
+        }
+
         peerConnection.onicecandidate = (event: RTCPeerConnectionIceEvent) => {
+          console.log('icecandidate', event);
           if (event.candidate == null) {
             console.log('Gathering candidates complete');
             return;
           }
 
           const candidate = JSON.stringify(event.candidate);
-          //console.log('Sending ICE candidate: ' + candidate);
+          console.log('Sending ICE candidate: ' + candidate);
           currentChannel.push('ice_candidate', { body: candidate });
         }
 
@@ -158,7 +175,7 @@ const WebRTCMiddleware: Middleware = (store) => {
         currentChannel.on('sdp_offer', async (payload) => {
           const sdpOffer = payload.body;
 
-          console.log('SDP offer received');
+          console.log('SDP offer received', payload);
 
           await peerConnection.setRemoteDescription({ type: 'offer', sdp: sdpOffer });
 
@@ -172,14 +189,14 @@ const WebRTCMiddleware: Middleware = (store) => {
           const sdpAnswer = await peerConnection.createAnswer();
           await peerConnection.setLocalDescription(sdpAnswer);
 
-          console.log('SDP offer applied, forwarding SDP answer');
+          console.log('SDP offer applied, forwarding SDP answer', sdpAnswer);
           const answer = peerConnection.localDescription;
           currentChannel.push('sdp_answer', { body: answer?.sdp });
         });
 
         currentChannel.on('ice_candidate', (payload) => {
           const candidate = JSON.parse(payload.body);
-          //console.log('Received ICE candidate: ' + payload.body);
+          console.log('Received ICE candidate: ' + payload.body);
           peerConnection.addIceCandidate(candidate);
         });
 
@@ -214,9 +231,9 @@ const WebRTCMiddleware: Middleware = (store) => {
           const users = []
           currentPresence.list().map((user) => {
             if(!user.metas[0].user.watcher){
-              const outbounds = user.metas[0].user
-              console.log("outbounds outbounds",outbounds.outbounds)
-              if (Object.keys(outbounds.outbounds)){
+              const outbounds = user.metas[0].user.outbounds
+              console.log("outbounds outbounds",outbounds)
+              if (!(outbounds && Object.keys(outbounds))){
                 users.push({
                   id: outbounds.id,
                   username: outbounds.username,
@@ -226,10 +243,10 @@ const WebRTCMiddleware: Middleware = (store) => {
                   muted: false,
                   camera: true
                 })
-              }else {
-                Object.keys(outbounds.outbounds).map((inbound) => {
-                  console.log(outbounds.outbounds)
-                  const inbounds = outbounds.outbounds[inbound]
+              }else if(outbounds){
+                Object.keys(outbounds).map((inbound) => {
+                  console.log(outbounds)
+                  const inbounds = outbounds[inbound]
                   users.push({
                     id: inbounds.stream,
                     username: currentPresence.list().find(user => user.metas[0].user.id === inbounds.stream).username,
@@ -247,7 +264,7 @@ const WebRTCMiddleware: Middleware = (store) => {
             channelId: action.payload.channel, users: users
           });
           store.dispatch(setServerPresence({
-            channelId: action.payload.channel, users: users
+            channelId: action.payload.channel, users: users.filter((user)=> user.id !== undefined),
           }))
         });
 
