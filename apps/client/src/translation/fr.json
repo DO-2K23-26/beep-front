@@ -42,7 +42,8 @@
       "password": "Mot de passe",
       "forgot_password": "Vous avez oublié votre mot de passe ?",
       "no_account": "Vous n'avez pas de compte ?",
-      "signup": "S'inscrire"
+      "signup": "S'inscrire",
+      "qrcode": "Se connecter avec votre téléphone"
     },
     "page-signup": {
       "welcome_back": "Nous sommes heureux de vous voir !!",
@@ -75,6 +76,13 @@
       "verified_account": "Votre compte a été vérifié",
       "invalid-token": "Jeton invalide",
       "signin": "Il est temps de vous connecter !"
+    },
+    "page-verify-qrcode": {
+      "error": "Erreur en validant le QRCode",
+      "expiration": "Le QRCode a expiré",
+      "homepage": "Retour à la page d'accueil",
+      "success": "Connexion réussie",
+      "description": "Vous pouvez retourner sur votre navigateur pour continuer à utiliser Beep"
     }
   },
   "discover": {

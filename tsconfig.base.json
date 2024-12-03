@@ -36,7 +36,8 @@
       "@beep/user": ["libs/domains/user/src/index.ts"],
       "@beep/utils": ["libs/shared/utils/src/index.ts"],
       "@beep/voice": ["libs/domains/voice/src/index.ts"],
-      "@beep/friend": ["libs/domains/friend/src/index.ts"]
+      "@beep/friend": ["libs/domains/friend/src/index.ts"],
+      "@beep/authentication": ["libs/domains/authentication/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]

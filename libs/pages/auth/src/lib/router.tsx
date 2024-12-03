@@ -7,6 +7,7 @@ import { PageResetPasswordFeature } from './feature/page-reset-password-feature'
 import { PageSigninFeature } from './feature/page-signin-feature'
 import { PageSignupFeature } from './feature/page-signup-feature'
 import { PageVerifyFeature } from './feature/page-verify-feature'
+import { PageQRCodeVerifyFeature } from './feature/page-verify-qrcode-feature'
 
 export const autenticationRouter: RouteObject[] = [
   {
@@ -47,6 +48,10 @@ export const autenticationRouter: RouteObject[] = [
       {
         path: 'forgot-password',
         Component: PageForgotPasswordFeature,
+      },
+      {
+        path: 'qrcode/:token',
+        Component: PageQRCodeVerifyFeature,
       },
       {
         path: '*',

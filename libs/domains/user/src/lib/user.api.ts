@@ -11,6 +11,7 @@ import {
   GetMultipleUsersRequest,
   GetUserRequest,
   LoginRequest,
+  LoginWithQRCodeRequest,
   LoginResponse,
   RefreshResponse,
   RegisterResponse,

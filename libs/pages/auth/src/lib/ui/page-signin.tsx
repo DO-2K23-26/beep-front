@@ -1,8 +1,9 @@
-import { Button, InputText } from '@beep/ui'
+import { Button, InputText, LoaderSpinner, LoadingScreen } from '@beep/ui'
 import { KeyboardEventHandler } from 'react'
 import { Controller, useFormContext } from 'react-hook-form'
 import { Link } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
+import { QRCodeSVG } from 'qrcode.react'
 
 export interface PageSigninProps {
   onSubmit: () => void
@@ -10,6 +11,8 @@ export interface PageSigninProps {
   toSignup?: () => void
   toForgetPassword?: () => void
   error?: string
+  qrCodeFeatureFlag?: boolean
+  qrCodeLink: string
 }
 
 export function PageSignin({
@@ -18,6 +21,8 @@ export function PageSignin({
   toSignup,
   toForgetPassword,
   error,
+  qrCodeFeatureFlag,
+  qrCodeLink,
 }: PageSigninProps) {
   const { t } = useTranslation()
 
@@ -31,7 +36,7 @@ export function PageSignin({
   // }
   return (
     <div
-      className="h-dvh w-full bg-no-repeat bg-cover flex justify-center"
+      className="h-dvh w-full bg-no-repeat bg-cover flex justify-center items-center gap-10"
       style={{ backgroundImage: `url('/background.svg')` }}
     >
       {/* {Object.keys(lngs).map((lng: string) => {
@@ -138,6 +143,22 @@ export function PageSignin({
           </Link>
         </div>
       </div>
+      {qrCodeFeatureFlag && (
+            <>
+              <hr className="lg:flex border-r-2 border-[#9382C2] h-[300px] hidden" />
+              <div className="lg:flex flex-col gap-5 justify-center items-center h-full p-4 hidden">
+                <p>{t('auth.page-signin.qrcode')}</p>
+                <div className="flex flex-row gap-1 p-4 bg-white !rounded-lg h-[160px] w-[160px]">
+                  {qrCodeLink && <QRCodeSVG value={qrCodeLink} />}
+                  {!qrCodeLink && (
+                    <div className="flex justify-center items-center w-[100%]">
+                      <LoaderSpinner />
+                    </div>
+                  )}
+                </div>
+              </div>
+            </>
+          )}
     </div>
   )
 }

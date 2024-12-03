@@ -16,12 +16,12 @@ export const PageVerify: React.FC<PageVerifyProps> = ({
 
   return (
     <div
-      className="h-[100dvh] w-full bg-no-repeat bg-cover flex justify-center"
+      className="h-dvh w-full bg-no-repeat bg-cover flex justify-center"
       style={{ backgroundImage: `url('/background.svg')` }}
     >
       <div className="flex flex-col gap-6 justify-center items-start">
         <h1 className="font-extrabold">
-          {t('auth.page-verify.account_verrification')}
+          {t('auth.page-verify.account_verification')}
         </h1>
         <div className="underline">
           {loading ? (
