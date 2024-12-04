@@ -1,6 +1,7 @@
 import {
   backendUrl,
   ChannelEntity,
+  ChannelType,
   CreateChannelRequest,
   CreateChannelResponse,
   CreateInvitationRequest,
@@ -115,7 +116,7 @@ export const serverApi = createApi({
         method: 'POST',
         body: {
           name: request.name,
-          type: request.type,
+          type: +request.type,
         },
       }),
 
@@ -137,7 +138,7 @@ export const serverApi = createApi({
       }),
       invalidatesTags: (result, __, req) =>
         result
-          ? [{ type: `${result.type}Channel`, id: result.id }]
+          ? [{ type: `channel`, id: result.id }]
           : [{ type: 'channel', id: `LIST-${req.serverId}` }],
     }),
     deleteChannelInServer: builder.mutation<
@@ -158,15 +159,15 @@ export const serverApi = createApi({
         url: `/servers/${request.serverId}/channels/${request.channelId}`,
       }),
       providesTags: (result, _error, _request) => {
-        if (result) return [{ type: `${result.type}Channel`, id: result.id }]
+        if (result) return [{ type: `channel`, id: result.id }]
         return []
       },
     }),
     getServerChannels: builder.query<GetChannelsResponse, string>({
       query: (serverId) => `/servers/${serverId}/channels`,
       transformResponse: (response: ChannelEntity[]) => {
-        const voice = response.filter((channel) => channel.type === 'voice')
-        const text = response.filter((channel) => channel.type === 'text')
+        const voice = response.filter((channel) => ChannelType.voice_server === channel.type)
+        const text = response.filter((channel) => ChannelType.text_server === channel.type)
         return { voiceChannels: voice, textChannels: text }
       },
       providesTags: (result, _error, serverId) =>

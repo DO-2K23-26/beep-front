@@ -53,7 +53,7 @@ export function CreateChannelModal({
           id="text"
           className="mr-2"
           type="radio"
-          value={ChannelType.TEXT}
+          value={ChannelType.text_server}
           {...methodsAddChannel.register('type')}
         />
         <label htmlFor="text">{t('layout.create-channel-modal.text')}</label>
@@ -63,7 +63,7 @@ export function CreateChannelModal({
           id="voice"
           className="mr-2"
           type="radio"
-          value={ChannelType.VOICE}
+          value={ChannelType.voice_server}
           {...methodsAddChannel.register('type')}
         />
         <label htmlFor="voice">{t('layout.create-channel-modal.voice')}</label>

@@ -1,4 +1,5 @@
 export enum ChannelType {
-    TEXT = 'text',
-    VOICE = 'voice',
+  text_server = 0,
+  voice_server = 1,
+  private_chat = 2,
 }

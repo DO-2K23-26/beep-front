@@ -164,7 +164,7 @@ export function ChannelsNavigationFeature() {
     mode: 'onChange',
     defaultValues: {
       name: '',
-      type: ChannelType.TEXT,
+      type: ChannelType.text_server,
     },
   })
 

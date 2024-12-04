@@ -49,7 +49,7 @@ export default function DisplayChannel({
         )}
       >
         <div className="flex flex-row justify-center items-center gap-2">
-          {channel.type === ChannelType.VOICE ? (
+          {channel.type === ChannelType.voice_server ? (
             <Icon name="lucide:volume-2" className="w-4 h-4" />
           ) : (
             <Icon name="lucide:hash" className="w-4 h-4" />
