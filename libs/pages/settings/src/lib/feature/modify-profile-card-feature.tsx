@@ -14,6 +14,7 @@ import { ModifyProfilePictureDialog } from '../components/modify-profile-picture
 import { ModifyUsernameDialog } from '../components/modify-username-dialog'
 import { ModifyFirstnameDialog } from '../components/modify-firstname-dialog'
 import { ModifyLastnameDialog } from '../components/modify-lastname-dialog'
+import { ValidateOtpDialog } from '../components/validate-otp-dialog'
 
 // This is the profile page of the user account, you can find it in the settings
 export function ModifyProfileCardFeature() {
@@ -22,11 +23,20 @@ export function ModifyProfileCardFeature() {
   const [isPictureModalOpen, setIsPictureModalOpen] = useState(false)
   const [isFirstnameModalOpen, setIsFirstnameModalOpen] = useState(false)
   const [isLastnameModalOpen, setIsLastnameModalOpen] = useState(false)
+  const [isOtpModalOpen, setIsOtpModalOpen] = useState(false)
   const [newProfilePicture, setNewProfilePicture] = useState<string | null>(
     null
   )
   const [errorPictureText, setErrorPictureText] = useState('')
-  const [sendOtpEmail] = useSendOtpEmailMutation() // Mutation to send OTP to the new email
+  const [
+    sendOtpEmail,
+    {
+      isLoading: isLoadingOtpEmail,
+      isSuccess: isSuccessOtpEmail,
+      isError: isErrorOtpEmail,
+      error: errorOtpEmail,
+    },
+  ] = useSendOtpEmailMutation() // Mutation to send OTP to the new email
   const [
     updateMe,
     {
@@ -52,6 +62,12 @@ export function ModifyProfileCardFeature() {
     mode: 'onChange',
     defaultValues: {
       email: '',
+    },
+  })
+  const otpFormController = useForm({
+    mode: 'onChange',
+    defaultValues: {
+      otp: '',
     },
   })
   const usernameFormController = useForm({
@@ -121,23 +137,22 @@ export function ModifyProfileCardFeature() {
   })
   const handleEmailSubmit = emailFormController.handleSubmit((data) => {
     setIsEmailModalOpen(false)
-    const requestData = {email : currentUserEmail}
-    sendOtpEmail(requestData) // Send OTP request to the current user's email
-    setIsEmailModalOpen(false)
-    lastnameFormController.reset()
-    })
+    const requestData = { email: currentUserEmail }
+    try {
+      sendOtpEmail(requestData).unwrap() // Ensure the request is successful
+      toast.success('Email sent successfully! Please check your inbox.') // Show success toast
+      setIsOtpModalOpen(true) // Open the OTP modal
+    } catch (error) {
+      toast.error('Failed to send email. Please try again.') // Show error toast
+    }
+  })
 
   // Verify the OTP entered by the user
-  // const handleOtpSubmit = () => {
-  //   verifyOtpEmail({ email: newEmail, otp })
-  //     .then(() => {
-  //       toast.success('Email updated successfully!')
-  //       setOtpModalOpen(false) // Close OTP modal
-  //     })
-  //     .catch(() => {
-  //       toast.error('Invalid OTP. Please try again.')
-  //     })
-  // }
+  const handleOtpSubmit = otpFormController.handleSubmit((data) => {
+    //verifyOtpEmail({ otp : string })
+    // setIsOtpModalOpen(false)
+  })
+
   const handlePictureSubmit = pictureFormController.handleSubmit((data) => {
     if (newProfilePicture && data) {
       setIsPictureModalOpen(false)
@@ -165,6 +180,16 @@ export function ModifyProfileCardFeature() {
   }, [errorUpdateMe, isErrorUpdateMe, usernameFormController])
 
   useEffect(() => {
+    if (isSuccessOtpEmail) {
+      toast.success('Email sent successfully! Please check your inbox.')
+    }
+    if (isErrorOtpEmail || errorOtpEmail) {
+      toast.error('Failed to send email. Please try again.')
+    }
+  }, [isSuccessOtpEmail, isErrorOtpEmail, errorOtpEmail])
+
+
+  useEffect(() => {
     if (isSuccessUpdateMe) {
       setIsUsernameModalOpen(false)
     }
@@ -179,14 +204,25 @@ export function ModifyProfileCardFeature() {
       usernameFormController={usernameFormController}
     />
   )
-  const emailChangeButton = (
-    <ModifyEmailDialog
-      emailFormController={emailFormController}
-      isModalOpen={isEmailModalOpen}
-      setIsModalOpen={setIsEmailModalOpen}
-      action={handleEmailSubmit} // Pass the current user's email here
-      currentUserEmail={currentUserEmail}
+  const otpChangeButton = (
+    <ValidateOtpDialog
+      otpFormController={otpFormController}
+      isModalOpen={isOtpModalOpen}
+      setIsModalOpen={setIsOtpModalOpen}
+      action={handleOtpSubmit}
     />
+  )
+  const emailChangeButton = (
+    <>
+      <ModifyEmailDialog
+        emailFormController={emailFormController}
+        isModalOpen={isEmailModalOpen}
+        setIsModalOpen={setIsEmailModalOpen}
+        action={handleEmailSubmit} // Pass the current user's email here
+        currentUserEmail={currentUserEmail}
+      />
+      {isOtpModalOpen && otpChangeButton}
+    </>
   )
   const pictureChangeButton = (
     <ModifyProfilePictureDialog
