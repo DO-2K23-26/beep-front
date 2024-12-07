@@ -12,7 +12,7 @@ function PinnedMessagesList({ messages }: PinnedMessagesListProps) {
   return (
     <div
       className={cn(
-        'flex flex-col-reverse overflow-y-scroll no-scrollbar scroll-smooth bg-violet-400 rounded-xl h-80',
+        'flex flex-col-reverse overflow-y-scroll no-scrollbar scroll-smooth bg-violet-400 rounded-md max-h-80',
         {
           'p-2': messages.length > 0,
         }

@@ -23,7 +23,7 @@ const MediaEmbed: React.FC<MediaEmbedProps> = ({ text }) => {
         <div key={index}>
           {media.type === 'youtube' && (
             <iframe
-              className="w-full"
+              className="w-full pt-3"
               width="560"
               height="315"
               src={`https://www.youtube.com/embed/${media.id}`}
@@ -36,7 +36,7 @@ const MediaEmbed: React.FC<MediaEmbedProps> = ({ text }) => {
 
           {media.type === 'spotify' && (
             <iframe
-              className="w-full"
+              className="w-full pt-3"
               style={{ borderRadius: '12px' }}
               src={`https://open.spotify.com/embed/track/${media.id}?utm_source=generator`}
               title={t('channels.media-embed.spotify')}
@@ -51,7 +51,7 @@ const MediaEmbed: React.FC<MediaEmbedProps> = ({ text }) => {
 
           {media.type === 'appleMusic' && (
             <iframe
-              className="w-full"
+              className="w-full pt-3"
               style={{ borderRadius: '12px' }}
               src={`https://embed.music.apple.com/us/album/${media.id}`}
               title={t('channels.media-embed.apple_music')}
@@ -66,7 +66,7 @@ const MediaEmbed: React.FC<MediaEmbedProps> = ({ text }) => {
 
           {media.type === 'instagram' && (
             <iframe
-              className="w-full"
+              className="w-full pt-3"
               src={`https://www.instagram.com/p/${media.id}/embed`}
               width="400"
               height="480"

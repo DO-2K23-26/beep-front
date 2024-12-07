@@ -127,7 +127,7 @@ export const PageChannel = ({
         ) : null}
         {/* Message input + bouttons + files */}
         <div className="flex flex-col w-full gap-3 ">
-          {replyTo ? (
+          {replyTo && (
             <div
               className="replying-to"
               style={{
@@ -152,43 +152,45 @@ export const PageChannel = ({
                 <Icon name="lucide:x" className="w-4 h-4" />
               </button>
             </div>
-          ) : null}
+          )}
 
           {/* files */}
-          <div className="flex flex-row gap-3 items-end w-full">
-            {files.map((file: File, index: number) => {
-              return (
-                <div
-                  key={'files' + index}
-                  className="flex flex-col gap-2 items-center w-[180px] relative"
-                >
-                  <div className="grid grid-cols-[1fr_16px] items-end gap-2 w-[180px]">
-                    <p className="truncate overflow-hidden w-[140px]">
-                      {file.name}
-                    </p>
-                    <div onClick={() => onDeleteFile(index)}>
-                      <Icon
-                        name="lucide:trash-2"
-                        className="w-5 h-5 cursor-pointer"
+          {files.length !== 0 && (
+            <div className="flex flex-row gap-3 items-end w-full">
+              {files.map((file: File, index: number) => {
+                return (
+                  <div
+                    key={'files' + index}
+                    className="flex flex-col gap-2 items-center w-[180px] relative"
+                  >
+                    <div className="grid grid-cols-[1fr_16px] items-end gap-2 w-[180px]">
+                      <p className="truncate overflow-hidden w-[140px]">
+                        {file.name}
+                      </p>
+                      <div onClick={() => onDeleteFile(index)}>
+                        <Icon
+                          name="lucide:trash-2"
+                          className="w-5 h-5 cursor-pointer"
+                        />
+                      </div>
+                    </div>
+                    {filesPreview.length > index &&
+                    filesPreview[index].content ? (
+                      <img
+                        className="h-[180px] w-[180px] object-cover rounded"
+                        src={filesPreview[index].content ?? undefined}
+                        alt="file"
                       />
-                    </div>
+                    ) : (
+                      <div className="h-[180px] w-[180px] bg-violet-600 rounded flex justify-center items-center">
+                        <Icon name="lucide:file-text" className="w-10 h-10" />
+                      </div>
+                    )}
                   </div>
-                  {filesPreview.length > index &&
-                  filesPreview[index].content ? (
-                    <img
-                      className="h-[180px] w-[180px] object-cover rounded"
-                      src={filesPreview[index].content ?? undefined}
-                      alt="file"
-                    />
-                  ) : (
-                    <div className="h-[180px] w-[180px] bg-violet-600 rounded flex justify-center items-center">
-                      <Icon name="lucide:file-text" className="w-10 h-10" />
-                    </div>
-                  )}
-                </div>
-              )
-            })}
-          </div>
+                )
+              })}
+            </div>
+          )}
           {/* dynamic selector to tag users and channels */}
           {dynamicSelector && (
             <DynamicSelector

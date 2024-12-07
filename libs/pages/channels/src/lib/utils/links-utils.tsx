@@ -1,7 +1,3 @@
-// utils/link-utils.ts
-
-import React from 'react'
-
 export const renderTextWithLinks = (text: string) => {
   const urlPattern = /(https?:\/\/[^\s]+)/g
   return text.split(urlPattern).map((part, index) => {
@@ -12,7 +8,7 @@ export const renderTextWithLinks = (text: string) => {
           href={part}
           target="_blank"
           rel="noopener noreferrer"
-          className="text-blue-500 hover:underline"
+          className="text-blue-500 hover:underline break-all"
         >
           {part}
         </a>

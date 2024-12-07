@@ -1,9 +1,9 @@
-import { Button, InputText, LoaderSpinner, LoadingScreen } from '@beep/ui'
+import { Button, InputText, LoaderSpinner } from '@beep/ui'
+import { QRCodeSVG } from 'qrcode.react'
 import { KeyboardEventHandler } from 'react'
 import { Controller, useFormContext } from 'react-hook-form'
-import { Link } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
-import { QRCodeSVG } from 'qrcode.react'
+import { Link } from 'react-router-dom'
 
 export interface PageSigninProps {
   onSubmit: () => void
@@ -35,18 +35,14 @@ export function PageSignin({
   //   fr: 'Français',
   // }
   return (
-    <div className="flex flex-row gap-6 justify-center items-center  p-4 ">
-      <div className="flex flex-col gap-6 justify-center items-start w-[400px]">
+    <div className="flex flex-row gap-6 justify-center items-center w-full p-4 ">
+      <div className="flex flex-col gap-6 justify-center items-start w-5/6 sm:w-80 md:w-96">
         <h1 className="font-extrabold text-5xl">Beep</h1>
         <h5>{t('auth.page-signin.signin')}</h5>
         <Controller
           name="email"
           rules={{
             required: t('auth.page-signin.required_email'),
-            pattern: {
-              value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-              message: t('auth.page-signin.invalid_email'),
-            },
           }}
           control={control}
           render={({ field, fieldState: { error } }) => (
@@ -66,14 +62,6 @@ export function PageSignin({
           name="password"
           rules={{
             required: t('auth.page-signin.required_password'),
-            minLength: {
-              value: 8,
-              message: t('auth.page-signin.invalid_password_min'),
-            },
-            maxLength: {
-              value: 1000,
-              message: t('auth.page-signin.invalid_password_max'),
-            },
           }}
           control={control}
           render={({ field, fieldState: { error } }) => (

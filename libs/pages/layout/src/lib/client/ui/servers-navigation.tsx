@@ -52,7 +52,7 @@ export default function ServersNavigation({
               <Icon name="lucide:mail" className="w-5 h-5" />
             </ButtonShadCn>
           </div>
-          <div className="flex overflow-y-scroll scroll-smooth">
+          <div className="flex overflow-y-scroll scroll-smooth h-full">
             <ListServers servers={servers} />
           </div>
           <div className="flex flex-col gap-4 md:gap-6">

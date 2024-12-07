@@ -40,7 +40,7 @@ export function InputChannelArea({
   }
   const { t } = useTranslation()
   return (
-    <div className="flex flex-row gap-2 md:gap-6 justify-between w-full items-end font-medium">
+    <div className="flex flex-row gap-2 md:gap-4 justify-between w-full items-end font-medium">
       {/* text input */}
       <div className="w-full h-full">
         <Controller
@@ -51,7 +51,7 @@ export function InputChannelArea({
               type="text"
               name={'message'}
               value={field.value}
-              className="rounded-xl bg-violet-50 px-4 w-full flex-grow h-10 sm:h-12 md:h-14 "
+              className="rounded-xl bg-violet-50 w-full flex-grow h-10 sm:h-12 md:h-14"
               placeholder={t('channels.page-channel.message_placeholder')}
               ref={inputRef}
               onChange={
@@ -68,7 +68,7 @@ export function InputChannelArea({
       </div>
 
       {/* buttons */}
-      <div className="flex flex-row gap-2 md:gap-6">
+      <div className="flex flex-row gap-2 md:gap-4">
         <ButtonIcon
           buttonProps={inputButtonProps}
           onClick={sendMessage}

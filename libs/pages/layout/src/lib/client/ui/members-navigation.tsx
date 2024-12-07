@@ -30,10 +30,10 @@ export default function MembersNavigation({
   return (
     <div
       className={cn(
-        'bg-violet-300 p-6 rounded-r-3xl flex flex-col gap-6 sm:hidden transition-all',
+        'bg-violet-300 p-6 rounded-r-3xl flex flex-col sm:hidden transition-all gap-4',
         {
-          'w-fit hidden sm:block': showRightPane,
-          'sm:w-fit hidden xl:block': !showRightPane,
+          'w-fit hidden sm:flex': showRightPane,
+          'sm:w-fit hidden xl:flex': !showRightPane,
         }
       )}
     >

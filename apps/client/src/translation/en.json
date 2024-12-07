@@ -34,11 +34,8 @@
     "page-signin": {
       "signin": "Sign in",
       "required_email": "Email is required",
-      "invalid_email": "Invalid email address",
       "email": "Email",
       "required_password": "Password is required",
-      "invalid_password_min": "Password must be at least 8 characters long",
-      "invalid_password_max": "Password must be at most 1000 characters long",
       "password": "Password",
       "forgot_password": "You forgot your password ?",
       "no_account": "Don't have an account ?",

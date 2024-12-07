@@ -125,24 +125,25 @@ export default function Message({
           </div>
         </div>
       )}
-      <div className="flex flex-row justify-between">
-        <div className="flex flex-row gap-4 items-center">
+      <div className="flex flex-row gap-2 justify-between">
+        <div className="flex flex-col sm:flex-row gap-0 sm:gap-4 sm:items-center items-start">
           <div className="flex flex-row gap-3 items-center overflow-hidden">
             <img
-              className="w-9 min-w-[36px] h-9 min-h-[36px] object-cover bg-violet-50 rounded-xl"
+              className="block w-9 min-w-[36px] h-9 min-h-[36px] object-cover bg-violet-50 rounded-xl"
               src={profilePicture ?? '/picture.svg'}
               alt={displayedUsername}
             />
-            <h5 className="font-semibold text-xs truncate">
-              {displayedUsername}
-            </h5>
+            <div className='sm:flex gap-3 sm:flex-row'>
+              <h5 className="font-semibold text-xs truncate">
+                {displayedUsername}
+              </h5>
+              <p className="font-normal text-[10px] sm:text-xs truncate">
+                {!isLoadingCreate && formatDate(message.createdAt ?? '')}
+              </p>
+            </div>
           </div>
-
-          <p className="font-normal text-xs truncate">
-            {!isLoadingCreate && formatDate(message.createdAt ?? '')}
-          </p>
         </div>
-        <div className="flex flex-row gap-4 items-center invisible group-hover:visible pr-2">
+        <div className="flex flex-row gap-4 items-center sm:invisible group-hover:visible pr-2">
           {!isDisplayedAsPinned && (
             <>
               {switchEditing && !isEditing && (
@@ -204,18 +205,16 @@ export default function Message({
         ) : (
           <div
             className={cn(
-              'rounded-xl rounded-tl-none py-2 sm:py-4 md:py-6 px-6 flex flex-col gap-3',
+              'rounded-xl rounded-tl-none py-2 sm:py-4 md:py-6 px-2 w-full sm:px-4 md:px-6 flex flex-col',
               {
                 'bg-violet-50': !isLoadingCreate,
                 'bg-slate-500/30': isLoadingCreate,
               }
             )}
           >
-            <div>
-              {containsUrl()
-                ? renderTextWithLinks(message.content)
-                : renderedMessage}
-            </div>
+            {containsUrl()
+              ? renderTextWithLinks(message.content)
+              : renderedMessage}
             {containsUrl() && <MediaEmbed text={message.content} />}
             {message.attachments?.map((attachment, i) => (
               <AttachmentFeature
