@@ -25,7 +25,7 @@
       "invalid_password": "Le mot de passe doit comporter au moins 8 caractères et contenir au moins une lettre majuscule, un chiffre et un caractère spécial.",
       "password": "Mot de passe",
       "confirm_password": "Vous devez confirmer votre mot de passe",
-      "password_missmatch": "Vos mots de passe ne correspondent pas",
+      "password_mismatch": "Vos mots de passe ne correspondent pas",
       "confirm": "Confirmez le mot de passe",
       "submit": "Envoyer",
       "go_back_signin": "Revenir à la page de connexion ?",

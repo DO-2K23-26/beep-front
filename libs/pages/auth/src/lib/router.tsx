@@ -6,12 +6,14 @@ import { PageForgotPasswordFeature } from './feature/page-forgot-password-featur
 import { PageResetPasswordFeature } from './feature/page-reset-password-feature'
 import { PageSigninFeature } from './feature/page-signin-feature'
 import { PageSignupFeature } from './feature/page-signup-feature'
-import { PageVerifyFeature } from './feature/page-verify-feature'
+import PageVerifyFeature from './feature/page-verify-feature'
 import { PageQRCodeVerifyFeature } from './feature/page-verify-qrcode-feature'
+import PageAuthBackground from './ui/page-auth-background'
 
 export const autenticationRouter: RouteObject[] = [
   {
     path: '',
+    Component: PageAuthBackground,
     children: [
       {
         index: true,

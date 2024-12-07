@@ -25,7 +25,7 @@
       "invalid_password": "Password must be at least 8 characters long and contain at least one uppercase letter, one digit, and one special character",
       "password": "Password",
       "confirm_password": "You must confirm your password",
-      "password_missmatch": "Your passwords do not match",
+      "password_mismatch": "Your passwords do not match",
       "confirm": "Confirm password",
       "submit": "Submit",
       "go_back_signin": "Go back to signin page?",

@@ -3,7 +3,7 @@ import { PageVerify } from '../ui/page-verify'
 import { useVerifyEmailMutation } from '@beep/user'
 import { useEffect, useState } from 'react'
 
-export const PageVerifyFeature: React.FC = () => {
+export default function PageVerifyFeature () {
   const navigate = useNavigate()
 
   const { token = '' } = useParams<{ token: string }>()

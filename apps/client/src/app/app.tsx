@@ -18,54 +18,54 @@ export default function App() {
   ] = useRefreshMutation()
 
 
-  useEffect(() => {
-    refresh()
-    dispatch(userActions.updateIsLoading(false))
-    setInterval(() => {
-      refresh()
-    }, 60 * 1000 * 12)
-  }, [refresh, dispatch])
+  // useEffect(() => {
+  //   refresh()
+  //   dispatch(userActions.updateIsLoading(false))
+  //   setInterval(() => {
+  //     refresh()
+  //   }, 60 * 1000 * 12)
+  // }, [refresh, dispatch])
 
-  useEffect(() => {
-    if (isErrorRefresh) {
-      navigate('/authentication/signin')
-      return
-    }
-    if (isSuccessRefresh && refreshData) {
-      dispatch(
-        userActions.setTokens({
-          accessToken: refreshData.accessToken,
-          refreshToken: refreshData.refreshToken,
-        })
-      )
-    }
-  }, [dispatch, isErrorRefresh, isSuccessRefresh, navigate, refreshData])
+  // useEffect(() => {
+  //   if (isErrorRefresh) {
+  //     navigate('/authentication/signin')
+  //     return
+  //   }
+  //   if (isSuccessRefresh && refreshData) {
+  //     dispatch(
+  //       userActions.setTokens({
+  //         accessToken: refreshData.accessToken,
+  //         refreshToken: refreshData.refreshToken,
+  //       })
+  //     )
+  //   }
+  // }, [dispatch, isErrorRefresh, isSuccessRefresh, navigate, refreshData])
 
-  if (
-    !isLoading &&
-    !isAuthenticated &&
-    !location.pathname.includes('authentication')
-  ) {
-    return (
-      <Navigate
-        to="/authentication/signin"
-        replace
-        state={{ from: location }}
-      />
-    )
-  }
+  // if (
+  //   !isLoading &&
+  //   !isAuthenticated &&
+  //   !location.pathname.includes('authentication')
+  // ) {
+  //   return (
+  //     <Navigate
+  //       to="/authentication/signin"
+  //       replace
+  //       state={{ from: location }}
+  //     />
+  //   )
+  // }
 
-  if (isLoading && !location.pathname.includes('authentication')) {
-    return <LoadingScreen />
-  }
+  // if (isLoading && !location.pathname.includes('authentication')) {
+  //   return <LoadingScreen />
+  // }
 
-  if (
-    payload &&
-    !payload.audited_account &&
-    !location.pathname.includes('authentication')
-  ) {
-    return <Navigate to={'/authentication/confirmation'} replace />
-  }
+  // if (
+  //   payload &&
+  //   !payload.audited_account &&
+  //   !location.pathname.includes('authentication')
+  // ) {
+  //   return <Navigate to={'/authentication/confirmation'} replace />
+  // }
 
   return (
     <>
