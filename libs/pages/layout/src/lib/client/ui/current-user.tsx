@@ -16,6 +16,7 @@ import {
 import { UseFormReturn } from 'react-hook-form'
 import { UserMediaFeature } from '../feature/user-media-feature'
 import { useTranslation } from 'react-i18next'
+import { SecuritySettingFeature } from '../feature/security-setting-feature'
 
 interface CurrentUserProps {
   user: UserEntity
@@ -57,6 +58,10 @@ export default function CurrentUser({
       {
         title: t('layout.current-user.voice_video'),
         settingComponent: <UserMediaFeature />,
+      },
+      {
+        title: t('layout.current-user.security'),
+        settingComponent: <SecuritySettingFeature />,
       },
     ],
   }

@@ -1,10 +1,12 @@
 import {
   BaseQueryApi,
   createApi,
-  fetchBaseQuery
+  fetchBaseQuery,
 } from '@reduxjs/toolkit/query/react'
 // eslint-disable-next-line @nx/enforce-module-boundaries
 import {
+  AskTOPTURIRequest,
+  AskTOTPURIResponse,
   backendUrl,
   ConfirmEmailRequest,
   ForgotPasswordRequest,
@@ -20,12 +22,11 @@ import {
   UpdateUserResponse,
   UserConnectedEntity,
   UserDisplayedEntity,
-  UserEntity
+  UserEntity,
+  Complete2FARegistrationRequest,
 } from '@beep/contracts'
 // eslint-disable-next-line @nx/enforce-module-boundaries
-import {
-  BaseQueryArg
-} from '@reduxjs/toolkit/dist/query/baseQueryTypes'
+import { BaseQueryArg } from '@reduxjs/toolkit/dist/query/baseQueryTypes'
 
 const baseQuery = fetchBaseQuery({
   baseUrl: backendUrl,
@@ -84,7 +85,14 @@ export const userApi = createApi({
         credentials: 'include',
       }),
     }),
-
+    askTOTPURI: builder.mutation<AskTOTPURIResponse, AskTOPTURIRequest>({
+      query: (body) => ({
+        url: '/authentication/totp',
+        method: 'POST',
+        body,
+        credentials: 'include',
+      }),
+    }),
     updateMe: builder.mutation<UpdateUserResponse, FormData>({
       query: (data) => ({
         url: '/users/@me',
@@ -188,6 +196,26 @@ export const userApi = createApi({
         method: 'POST',
       }),
     }),
+    complete2FARegistration: builder.mutation<
+      { message: string },
+      Complete2FARegistrationRequest
+    >({
+      query: (totp) => ({
+        url: `/authentication/totp/complete`,
+        method: 'POST',
+        body: totp,
+        credentials: 'include',
+      }),
+      invalidatesTags: ['me'], //because updates the totpAuthentication field
+    }),
+    disable2FA: builder.mutation<{ message: string }, void>({
+      query: () => ({
+        url: `/authentication/totp/disable`,
+        method: 'POST',
+        credentials: 'include',
+      }),
+      invalidatesTags: ['me'],
+    }),
   }),
 })
 
@@ -209,4 +237,7 @@ export const {
   useGetUserByIdQuery,
   useUpdateStateMutation,
   useLogoutMutation,
+  useAskTOTPURIMutation,
+  useComplete2FARegistrationMutation,
+  useDisable2FAMutation,
 } = userApi

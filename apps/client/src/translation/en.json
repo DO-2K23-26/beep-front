@@ -40,6 +40,7 @@
       "invalid_password_min": "Password must be at least 8 characters long",
       "invalid_password_max": "Password must be at most 1000 characters long",
       "password": "Password",
+      "password_error": "The password you entered is wrong",
       "forgot_password": "You forgot your password ?",
       "no_account": "Don't have an account ?",
       "signup": "Sign up",
@@ -82,7 +83,7 @@
       "expiration": "This QRCode has expired",
       "homepage": "Go to the homepage",
       "success": "You have successfully connected to your account",
-      "description" : "Go back on your main page, you should be authenticated."
+      "description": "Go back on your main page, you should be authenticated."
     }
   },
   "discover": {
@@ -222,6 +223,7 @@
       "account": "Account",
       "profile": "Profile",
       "voice_video": "Voice & Video",
+      "security": "Security",
       "online": "Online",
       "offline": "Offline"
     },
@@ -272,6 +274,32 @@
     },
     "members-navigation": {
       "members": "Members"
+    },
+    "security-settings": {
+      "tfa-n-activated": {
+        "subtitle": "2FA AUTHENTICATION",
+        "description": "Activate the two factor authentication to add an extra layer of security to your Beep account.",
+        "learn-more": "Learn more here.",
+        "cta": "Enable Authenticator App",
+        "error": "Wrong TOTP code"
+      },
+      "tfa-activated": {
+        "description": "Activate the two factor authentication to add an extra layer of security to your Beep account. Since you did it you're quite safe ! GG ;)",
+        "cta": "Remove Authenticator App"
+      },
+      "ask-password": {
+        "title": "Enter your password",
+        "subtitle": "Please enter your password to enable 2FA",
+        "error": "Password required."
+      },
+      "link-authenticator": {
+        "title": "Link your Authenticator App",
+        "subtitle": "Make your account safer in two steps :",
+        "scan": "SCAN THE QR CODE",
+        "scan-description": "Open the authentication app and scan the QRCode.",
+        "2fa": "2FA KEY (MANUAL ENTRY)",
+        "2fa-description": "Enter the 6-digit verification code generated."
+      }
     },
     "overview-settings-channel": {
       "overview": "Overview",
@@ -372,5 +400,9 @@
       "success": "Friend removed successfully",
       "error": "An error occurred while removing the friend"
     }
+  },
+  "globals": {
+    "activated": "activated",
+    "not-activated": "not activated"
   }
 }

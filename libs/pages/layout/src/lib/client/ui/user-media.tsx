@@ -32,9 +32,9 @@ export function UserMedia({
 
   return (
     <div className="p-6">
-      <div className="text-base sm:text-xl md:text-3xl text-slate-700 font-bold mb-2 max-w-sm">
+      <h2 className="text-base sm:text-xl md:text-3xl text-slate-700 font-bold mb-2 max-w-sm">
         {t('layout.current-user.voice_video')}
-      </div>
+      </h2>
       <div className="text-slate-800 text-xs sm:text-sm md:text-base">
         {t('layout.user-media.change_method')}
       </div>
