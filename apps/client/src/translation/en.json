@@ -82,7 +82,7 @@
       "expiration": "This QRCode has expired",
       "homepage": "Go to the homepage",
       "success": "You have successfully connected to your account",
-      "description" : "Go back on your main page, you should be authenticated."
+      "description": "Go back on your main page, you should be authenticated."
     }
   },
   "discover": {
@@ -371,6 +371,17 @@
     "delete-friend-dialog-feature": {
       "success": "Friend removed successfully",
       "error": "An error occurred while removing the friend"
+    },
+    "empty-invitation-list": {
+      "title": "No invitations yet",
+      "description": "You don't have any invitations yet. Send some invitations to start connecting!"
+    },
+    "add-friend-input": {
+      "success": "Invitation sent !",
+      "placeholder": "Enter a username to add a friend",
+      "user-not-found": "User not found",
+      "error": "An error occurred while sending the invitation",
+      "username-required": "Username is required"
     }
   }
 }

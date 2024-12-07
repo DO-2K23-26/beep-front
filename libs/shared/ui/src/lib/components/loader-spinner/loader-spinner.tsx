@@ -1,4 +1,4 @@
-import { classNames } from '@beep/utils'
+import { cn } from '@beep/utils'
 
 export interface LoaderSpinnerProps {
   className?: string
@@ -21,7 +21,7 @@ export function LoaderSpinner({
   return (
     <div
       data-testid="spinner"
-      className={classNames(
+      className={cn(
         'aspect-square rounded-full animate-spin border-solid',
         classBorder || 'border-2',
         themeClasses,

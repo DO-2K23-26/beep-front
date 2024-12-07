@@ -19,6 +19,9 @@ export const initialUserState: UserState = {
 export const userSlice = createSlice({
   name: USER_KEY,
   initialState: initialUserState,
+  selectors: {
+    currentUser: (state) => state.payload,
+  },
   reducers: {
     setTokens(
       state,
@@ -55,6 +58,8 @@ export const userSlice = createSlice({
     },
   },
 })
+
+export const { currentUser } = userSlice.selectors
 export const getUserState = (root: RootState) => root[USER_KEY]
 export const userReducer = userSlice.reducer
 export const userActions = userSlice.actions

@@ -44,8 +44,8 @@ export default function ServersNavigation({
         >
           <div className="h-fit">
             <ButtonShadCn
-              // onClick={onPrivateMessage}
-              className="bg-violet-50 cursor-not-allowed"
+              onClick={onPrivateMessage}
+              className="bg-violet-50"
               size={'responsiveSquare'}
               variant={'hoverRounded'}
             >

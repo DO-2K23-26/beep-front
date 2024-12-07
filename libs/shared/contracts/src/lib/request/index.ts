@@ -30,6 +30,8 @@ export * from './user/update.request'
 export * from './user/confirm-email.request'
 
 export * from './invitation/create-invitation.request'
+export * from './invitation/answer-invitation.request'
+export * from './invitation/create-friend-invitation.request'
 
 export * from './member/get-member.request'
 

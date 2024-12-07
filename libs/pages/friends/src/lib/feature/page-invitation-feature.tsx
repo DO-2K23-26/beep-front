@@ -1,5 +1,8 @@
-import { PageInvitation } from "../ui/page-invitation";
+import { useGetMyFriendInvitationsQuery } from '@beep/friend'
+import { PageInvitation } from '../ui/page-invitation'
 
 export function PageInvitationFeature() {
-  return <PageInvitation/>
+  const { data: invitations } = useGetMyFriendInvitationsQuery()
+
+  return <PageInvitation invitations={invitations} />
 }

@@ -111,9 +111,8 @@ export default function AddServerFeature({
 
   useEffect(() => {
     if (isErrorCreateServer && errorCreateServer !== undefined) {
-      // @ts-expect-error errorCreateServer is not undefined
-      const error = errorCreateServer.data as HttpError
-      if (error.code === 'E_SERVER_ALREADY_EXISTS') {
+      const error = errorCreateServer as HttpError
+      if (error.data.code === 'E_SERVER_ALREADY_EXISTS') {
         control.setError('serverName', {
           message: t('layout.add-server.error_name_already_exists'),
           type: 'validate',

@@ -1,4 +1,7 @@
 export interface HttpError {
-  message?: string
-  code?: string
+  status: number
+  data: {
+    message?: string
+    code?: string
+  }
 }

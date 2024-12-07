@@ -19,7 +19,7 @@ export function ButtonNavigationHeader({
     <ButtonShadCn
       variant={'ghost'}
       size={'responsiveDefault'}
-      className={cn('hover:bg-violet-100 text-base md:text-xl', {
+      className={cn('hover:bg-violet-100 text-sm sm:text-md md:text-xl', {
         'bg-violet-500': pathname === path,
       })}
     >

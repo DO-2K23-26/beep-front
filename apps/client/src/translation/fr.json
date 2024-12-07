@@ -371,6 +371,17 @@
     "delete-friend-dialog-feature": {
       "success": "Ami supprimé",
       "error": "Une erreur est survenue lors de la suppression de l'ami"
+    },
+    "empty-invitation-list": {
+      "title": "Aucune invitation",
+      "description": "Vous n'avez pas encore d'invitations. Envoyez des invitations pour commencer à vous connecter !"
+    },
+    "add-friend-input": {
+      "success": "Invitation envoyée !",
+      "placeholder": "Entrez un nom d'utilisateur pour ajouter un ami",
+      "user-not-found": "Utilisateur non trouvé",
+      "error": "Une erreur est survenue lors de l'envoi de l'invitation",
+      "username-required": "Le nom d'utilisateur est requis"
     }
   }
 }

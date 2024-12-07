@@ -2,6 +2,7 @@ import { cn } from '@beep/utils'
 import { Icon } from '../icons/icon'
 import { ButtonShadCn, ButtonShadCnProps } from './button-shadcn'
 import { PropsWithChildren } from 'react'
+import { LoaderSpinner } from '../loader-spinner/loader-spinner'
 
 export interface ButtonIconProps {
   icon?: string
@@ -10,8 +11,10 @@ export interface ButtonIconProps {
   title?: string
   buttonProps?: ButtonShadCnProps
   textHiddenResponsive?: boolean
-  onClick?: () => void
   asChild?: boolean
+  loading?: boolean
+  type?: 'button' | 'submit' | 'reset'
+  onClick?: () => void
 }
 export function ButtonIcon({
   children,
@@ -22,17 +25,22 @@ export function ButtonIcon({
   buttonProps,
   textHiddenResponsive,
   asChild,
+  loading,
+  type = 'button',
   onClick,
 }: PropsWithChildren<ButtonIconProps>) {
   return (
     <ButtonShadCn
+      type={type}
       variant={buttonProps?.variant}
       size={buttonProps?.size}
       className={cn('bg-violet-300 gap-2', className)}
       onClick={onClick}
       asChild={asChild}
     >
-      {children ? (
+      {loading ? (
+        <LoaderSpinner className="size-4 sm:size-5 md:size-6" />
+      ) : children ? (
         children
       ) : (
         <>

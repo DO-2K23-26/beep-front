@@ -1,6 +1,6 @@
-import { backendUrl, DeleteFriendRequest, UserDisplayedEntity } from "@beep/contracts";
+import { CreateFriendInvitationRequest, AnswerInvitationRequest, backendUrl, DeleteFriendRequest, UserDisplayedEntity, InvitationEntity } from "@beep/contracts";
+import { fetchBaseQuery } from '@reduxjs/toolkit/query';
 import { createApi } from "@reduxjs/toolkit/query/react";
-import { fetchBaseQuery } from '@reduxjs/toolkit/query'
 const baseQuery = fetchBaseQuery({
   baseUrl: backendUrl,
   credentials: 'include',
@@ -9,7 +9,7 @@ const baseQuery = fetchBaseQuery({
 export const friendsApi = createApi({
   reducerPath: 'friendsApi',
   baseQuery,
-  tagTypes: ['friends'],
+  tagTypes: ['friends', 'invitations'],
   endpoints: (builder) => ({
     deleteFriend: builder.mutation<void, DeleteFriendRequest>({
       query: (request) => ({
@@ -22,8 +22,29 @@ export const friendsApi = createApi({
       query: () => '/v1/users/@me/friends',
       providesTags: ['friends'],
     }),
-  }),
+    getMyFriendInvitations: builder.query<InvitationEntity[], void>({
+      query: () => '/v1/users/@me/invitations',
+      providesTags: ['invitations'],
+    }),
+    createFriendsInvitation: builder.mutation<void, CreateFriendInvitationRequest>({
+      query: ({ targetUsername }) => ({
+        url: '/invitations',
+        method: 'POST',
+        body: { targetUsername },
+      }),
+      invalidatesTags: ['invitations'],
+    }),
+
+    answerFriendsInvitation: builder.mutation<void, AnswerInvitationRequest>({
+      query: ({ invitationId, answer }) => ({
+        url: `/invitations/${invitationId}`,
+        method: 'PATCH',
+        body: { answer },
+      }),
+      invalidatesTags: ['friends', 'invitations'],
+    }),
+  })
 })
 
 
-export const { useDeleteFriendMutation, useGetMyFriendsQuery } = friendsApi
+export const { useDeleteFriendMutation, useGetMyFriendsQuery, useAnswerFriendsInvitationMutation, useCreateFriendsInvitationMutation , useGetMyFriendInvitationsQuery} = friendsApi

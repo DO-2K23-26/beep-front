@@ -1,7 +1,7 @@
 import { Navigate, RouteObject } from 'react-router'
-import { PageFriendsFeature } from './feature/page-friends-feature'
 import { DisplayFriendsFeature } from './feature/display-friends-feature'
-import { PageInvitation } from './ui/page-invitation'
+import { PageFriendsFeature } from './feature/page-friends-feature'
+import { PageInvitationFeature } from './feature/page-invitation-feature'
 
 export const friendRoutes: RouteObject[] = [
   {
@@ -18,7 +18,7 @@ export const friendRoutes: RouteObject[] = [
       },
       {
         path: 'invitations',
-        Component: PageInvitation,
+        Component: PageInvitationFeature,
       },
     ],
   },

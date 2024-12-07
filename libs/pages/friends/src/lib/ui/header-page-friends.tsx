@@ -7,7 +7,7 @@ export function HeaderPageFriends() {
   const invitationsUrl = '/friends/invitations'
 
   return (
-    <div className="flex flex-wrap w-fit first-line p-6 gap-2 sm:gap-4 md:gap-6 ">
+    <div className="flex flex-wrap w-fit first-line p-4 gap-2 sm:gap-4 md:gap-6 ">
       <ButtonNavigationHeader path={friendsUrl}>
         {t('friends.header-page-friend.friend')}
       </ButtonNavigationHeader>
