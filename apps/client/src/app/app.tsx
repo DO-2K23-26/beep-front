@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react'
 import { Toaster } from 'react-hot-toast'
 import { useDispatch, useSelector } from 'react-redux'
 import { Navigate, Outlet, useLocation, useNavigate } from 'react-router-dom'
+import { TransmitSingleton } from '@beep/utils'
 
 export default function App() {
   const { isLoading, isAuthenticated, payload } = useSelector(getUserState)
@@ -39,6 +40,14 @@ export default function App() {
       )
     }
   }, [dispatch, isErrorRefresh, isSuccessRefresh, navigate, refreshData])
+
+  useEffect(() => {
+    if (payload) {
+      TransmitSingleton.subscribe(`notifications/users/${payload.sub}`, (data) => {
+        alert("You have a notification ! \n" + JSON.stringify(data))
+      })
+    }
+  }, [payload])
 
   if (
     !isLoading &&
