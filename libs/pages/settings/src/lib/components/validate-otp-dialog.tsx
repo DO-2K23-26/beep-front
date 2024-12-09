@@ -6,6 +6,7 @@ interface ValidateOtpDialog {
   isModalOpen: boolean
   setIsModalOpen: (value: boolean) => void
   action: () => void
+  resendOtp: () => void // Nouvelle fonction
 }
 
 export function ValidateOtpDialog({
@@ -13,6 +14,7 @@ export function ValidateOtpDialog({
   isModalOpen,
   setIsModalOpen,
   otpFormController,
+  resendOtp,
 }: ValidateOtpDialog) {
   return (
     <DialogComponent
@@ -35,9 +37,8 @@ export function ValidateOtpDialog({
             rules={{
               required: 'Otp code is required',
               pattern: {
-                value: /^[A-ZÀ-Ý][a-zà-ÿ]*(?:[ '-][A-ZÀ-Ý][a-zà-ÿ]*)?$/,
-                message:
-                  'Last name should start with an uppercase letter, contain only letters, and allow one hyphen, space, or apostrophe between two parts of the name',
+                value: /^\d{6}$/, // Expression régulière pour exactement 6 chiffres
+                message: 'OTP code must be exactly 6 digits',
               },
             }}
             control={otpFormController.control}
@@ -45,7 +46,7 @@ export function ValidateOtpDialog({
               <InputText
                 label="OTP Code"
                 type="text"
-                name="firstname"
+                name="otp"
                 className="w-full !rounded-lg min-h-[40px]"
                 value={field.value}
                 onChange={field.onChange}
@@ -53,7 +54,21 @@ export function ValidateOtpDialog({
               />
             )}
           />
-          <p>Verification Code: Didn't receive a code or it expired? Resend.</p>
+          <p> Didn't receive a code or it expired?{' '}
+            <button
+              onClick={resendOtp}
+              className="text-purple-600 font-medium hover:underline !bg-transparent !p-0 !m-0 !min-w-0 !h-fit inline"
+              style={{
+                display: 'inline',
+                padding: 0,
+                border: 'none',
+                background: 'none',
+                cursor: 'pointer',
+              }}
+            >
+              Resend
+            </button>
+          </p>
         </>
       }
       actionButtonTitle="Confirm"
