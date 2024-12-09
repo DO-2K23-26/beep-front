@@ -147,13 +147,13 @@ export const userApi = createApi({
       }),
     }),
     // Verify OTP for email change
-    // verifyOtpEmail: builder.mutation<void, { email: string; otp: string }>({
-    //   query: (data) => ({
-    //     url: '/users/otp/verify', // Make sure this URL matches your backend route
-    //     method: 'POST',
-    //     body: data, // This will send the email and OTP to verify
-    //   }),
-    // }),
+    verifyOtpCode: builder.mutation<void, { email: string; otp: string }>({
+      query: (data) => ({
+        url: '/users/otp/verify', // Make sure this URL matches your backend route
+        method: 'POST',
+        body: data, // This will send the email and OTP to verify
+      }),
+    }),
     confirmEmail: builder.mutation<void, ConfirmEmailRequest>({
       query: (data) => ({
         url: `/users/@me/email`,
@@ -260,7 +260,7 @@ export const {
   useGetUserByIdQuery,
   useUpdateStateMutation,
   useSendOtpEmailMutation, // to send OTP
-  // useVerifyOtpEmailMutation, // to verify OTP
+  useVerifyOtpCodeMutation, // to verify OTP
   useLogoutMutation,
   useAskTOTPURIMutation,
   useComplete2FARegistrationMutation,
