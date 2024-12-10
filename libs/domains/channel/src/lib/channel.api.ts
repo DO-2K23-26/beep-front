@@ -11,7 +11,7 @@ import {
   backendUrl,
 } from '@beep/contracts'
 import { messageActions } from '@beep/message'
-import { TransmitSingleton } from '@beep/transmit'
+import { TransmitSingleton } from '@beep/utils'
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 
 const baseQuery = fetchBaseQuery({

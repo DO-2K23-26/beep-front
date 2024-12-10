@@ -15,6 +15,7 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
+      "@/lib/utils": ["libs/shared/utils/src/index.ts"],
       "@beep/auth": ["libs/pages/auth/src/index.ts"],
       "@beep/authentication": ["libs/domains/authentication/src/index.ts"],
       "@beep/notifications": ["libs/domains/notifications/src/index.ts"],
@@ -39,7 +40,8 @@
       "@beep/user": ["libs/domains/user/src/index.ts"],
       "@beep/utils": ["libs/shared/utils/src/index.ts"],
       "@beep/voice": ["libs/domains/voice/src/index.ts"],
-      "@beep/messages": ["libs/shared/messages/src/index.ts"]
+      "@beep/messages": ["libs/shared/messages/src/index.ts"],
+      "@beep/shadcn": ["libs/shared/shadcn/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]
