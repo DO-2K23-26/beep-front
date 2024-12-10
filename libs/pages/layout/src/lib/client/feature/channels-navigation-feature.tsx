@@ -15,7 +15,7 @@ import {
   useTransmitBannerQuery
 } from '@beep/server'
 import { AppDispatch } from '@beep/store'
-import { TransmitSingleton } from '@beep/transmit'
+import { TransmitSingleton } from '@beep/utils'
 import { useModal } from '@beep/ui'
 import { getUserState, useGetMeQuery } from '@beep/user'
 import {

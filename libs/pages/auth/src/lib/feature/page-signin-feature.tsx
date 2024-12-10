@@ -16,7 +16,7 @@ import {
   useLazyGetGeneratedTokenQuery,
   useLoginWithQRCodeMutation,
 } from '@beep/authentication'
-import { TransmitSingleton } from '@beep/transmit'
+import { TransmitSingleton } from '@beep/utils'
 import toast from 'react-hot-toast'
 import { Transmit } from '@adonisjs/transmit-client'
 import { useTranslation } from 'react-i18next'

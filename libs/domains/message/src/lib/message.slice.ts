@@ -4,7 +4,7 @@ import { RootState } from '@beep/store';
 import { createSlice } from '@reduxjs/toolkit';
 import { sortMessagesByCreation, toFormData, toMessage } from './utils';
 import { Transmit } from '@adonisjs/transmit-client';
-import { TransmitSingleton } from '@beep/transmit';
+import { TransmitSingleton } from '@beep/utils'
 
 export const MESSAGE_KEY = 'message'
 
