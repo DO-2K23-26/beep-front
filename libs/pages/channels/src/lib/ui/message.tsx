@@ -101,6 +101,14 @@ export default function Message({
       })
     )
   )
+
+  const renderedReplyedMessage = replyTo
+    ? replaceTagEntity(
+        replyTo.content.substring(0, 50) +
+          (replyTo.content.length > 50 ? ' ...' : '')
+      )
+    : undefined
+
   return (
     <div
       className={
@@ -115,12 +123,8 @@ export default function Message({
           <Icon name="lucide:corner-up-right" className="w-4 h-4 mr-2" />
           <div className="reply-to bg-violet-100 p-2 rounded">
             <span className="text-sm text-gray-600">
-              <strong>{replyTo?.owner?.username}</strong> :{' '}
-              <i>
-                {replyTo?.content?.length > 30
-                  ? replyTo?.content?.substring(0, 30) + ' ...'
-                  : replyTo?.content}
-              </i>
+              <strong>{replyTo.owner?.username}</strong> :{' '}
+              <i>{renderedReplyedMessage}</i>
             </span>
           </div>
         </div>

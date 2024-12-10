@@ -5,6 +5,7 @@ import {
 } from '@beep/channel'
 import {
   ChannelEntity,
+  MemberEntity,
   MessageEntity,
   UserDisplayedEntity,
 } from '@beep/contracts'
@@ -51,6 +52,7 @@ interface MessageFeatureProps {
     React.SetStateAction<ChannelEntity | undefined>
   >
   serverId?: string
+  usersServer: MemberEntity[]
 }
 
 export default function MessageFeature({
@@ -64,6 +66,7 @@ export default function MessageFeature({
   onReply,
   selectedTaggedUser,
   setSelectedTaggedUser,
+  usersServer,
 }: MessageFeatureProps) {
   const [replyToMessage, setReplyToMessage] = useState<
     MessageEntity | undefined | null
@@ -126,8 +129,14 @@ export default function MessageFeature({
         owner.profilePicture === '',
     }
   )
-  const matches = RegExp(regexUserTagging).exec(message.content) || []
-  const ids = matches.map((match) => match.slice(2))
+
+  const matches = RegExp(regexUserTagging).exec(message.content)
+  const ids = matches
+    ? matches
+        .map((match) => match.slice(2))
+        .filter((userId) => !usersServer.map((us) => us.id).includes(userId))
+    : []
+
   const { data: taggedUsers } = useGetUsersFromQuery(
     { userIds: ids },
     { skip: ids.length === 0 }
@@ -226,9 +235,19 @@ export default function MessageFeature({
   }
 
   const replaceTagEntity = (message: ReactNode): ReactNode => {
-    if (!taggedUsers) return message
-    const findUserForTag = (userId: string) =>
-      taggedUsers.find((u) => u.id === userId.slice(2)) as DisplayedEntity
+    const findUserForTag = (userId: string) => {
+      const serverMember = usersServer.find((u) => u.userId === userId.slice(2))
+      if (serverMember)
+        return {
+          id: serverMember.userId,
+          username: serverMember.nickname,
+          profilePicture: undefined,
+        } as DisplayedEntity
+
+      return taggedUsers?.find(
+        (u) => u.id === userId.slice(2)
+      ) as DisplayedEntity
+    }
     return recurseChildren(
       message,
       regexUserTagging,
@@ -281,7 +300,10 @@ export default function MessageFeature({
         onUpdateMessage={onUpdateMessage ? onUpdateMessageSubmit : null}
         replaceMentionChannel={replaceMentionChannel}
         replaceTagEntity={replaceTagEntity}
-        isHighlighted={message.content.includes('@$' + userId)}
+        isHighlighted={
+          message.content.includes('@$' + userId) ||
+          message.parentMessage?.ownerId === userId
+        }
         onPin={onPin}
         onReply={onReply !== undefined ? () => onReply(message) : null}
         containsUrl={containsUrl}

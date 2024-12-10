@@ -1,4 +1,4 @@
-import { ChannelEntity } from '@beep/contracts'
+import { ChannelEntity, MemberEntity } from '@beep/contracts'
 import { ButtonShadCn, Icon } from '@beep/ui'
 import { ChannelNameDisplay } from './channel-name-display'
 import DisplayPinned from './display-pinned'
@@ -11,6 +11,7 @@ interface HeaderPageChannelProps {
   displayChannelInfo: boolean
   toggleRightPane: () => void
   toggleLeftPane: () => void
+  usersServer: MemberEntity[]
 }
 
 export function HeaderPageChannel({
@@ -19,6 +20,7 @@ export function HeaderPageChannel({
   displayChannelInfo,
   toggleLeftPane,
   toggleRightPane,
+  usersServer,
 }: HeaderPageChannelProps) {
   const leftDivState = useSelector(leftPaneState)
   return (
@@ -48,7 +50,9 @@ export function HeaderPageChannel({
           <DisplayPinned
             key={'display_pinned_' + channel?.id}
             channelId={channel?.id ?? ''}
+            serverId={channel?.serverId ?? ''}
             isLoading={channel === undefined || isLoadingChannel}
+            usersServer={usersServer}
           />
         )}
 

@@ -1,5 +1,6 @@
 import {
   ChannelEntity,
+  MemberEntity,
   MessageEntity,
   UserDisplayedEntity,
 } from '@beep/contracts'
@@ -28,6 +29,7 @@ export interface PageChannelProps {
   onDeleteFile: (index: number) => void
   filesPreview: { content: string | null }[]
   inputRef?: React.RefObject<HTMLTextAreaElement>
+  usersServer: MemberEntity[]
   editingMessageId: string | null
   setEditingMessageId: React.Dispatch<React.SetStateAction<string | null>>
   onChange?: (value: string, onChange: (value: string) => void) => void
@@ -58,6 +60,7 @@ export const PageChannel = ({
   onDeleteFile,
   filesPreview,
   inputRef,
+  usersServer,
   editingMessageId,
   setEditingMessageId,
   onChange,
@@ -108,6 +111,7 @@ export const PageChannel = ({
         setSelectedTaggedChannel={setSelectedTaggedChannel}
         onReply={setReplyTo}
         serverId={serverId}
+        usersServer={usersServer}
       />
       <div onClick={onFocusChannel}>
         {selectedTaggedChannel ? (

@@ -1,8 +1,9 @@
 import { responsiveActions } from '@beep/responsive'
-import { useGetChannelQuery } from '@beep/server'
+import { useGetChannelQuery, useGetMembersQuery } from '@beep/server'
 import { useDispatch } from 'react-redux'
 import { useParams } from 'react-router'
 import { HeaderPageChannel } from '../ui/header-page-channel'
+import { skipToken } from '@reduxjs/toolkit/query'
 
 export function HeaderPageFeature() {
   const { channelId, serverId } = useParams<{
@@ -16,6 +17,7 @@ export function HeaderPageFeature() {
     { channelId: channelId ?? '', serverId: serverId ?? '' },
     { skip: channelId === undefined || serverId === undefined }
   )
+  const { data: usersServer } = useGetMembersQuery(serverId ?? skipToken)
   const toggleLeftPane = () => {
     dispatch(responsiveActions.toggleLeftPane())
   }
@@ -30,6 +32,7 @@ export function HeaderPageFeature() {
       toggleLeftPane={toggleLeftPane}
       toggleRightPane={toggleRightPane}
       displayChannelInfo={channelId !== undefined}
+      usersServer={usersServer ?? []}
     />
   )
 }

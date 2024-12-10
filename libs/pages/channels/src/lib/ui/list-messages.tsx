@@ -1,5 +1,6 @@
 import {
   ChannelEntity,
+  MemberEntity,
   MessageEntity,
   UserDisplayedEntity,
 } from '@beep/contracts'
@@ -24,6 +25,7 @@ interface ListMessagesProps {
   messageListRef: React.RefObject<HTMLDivElement>
   onScroll: () => void
   serverId?: string
+  usersServer: MemberEntity[]
 }
 
 export default function ListMessages({
@@ -40,6 +42,7 @@ export default function ListMessages({
   selectedTaggedUser,
   setSelectedTaggedUser,
   setSelectedTaggedChannel,
+  usersServer,
 }: ListMessagesProps) {
   return (
     <div className="relative h-full w-full">
@@ -60,6 +63,7 @@ export default function ListMessages({
             selectedTaggedUser={selectedTaggedUser}
             setSelectedTaggedUser={setSelectedTaggedUser}
             setSelectedTaggedChannel={setSelectedTaggedChannel}
+            usersServer={usersServer}
             onReply={() => {
               onReply(message)
             }}

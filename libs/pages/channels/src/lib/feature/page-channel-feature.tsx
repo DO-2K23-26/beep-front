@@ -133,7 +133,7 @@ export function PageChannelFeature() {
                   .includes(text.slice(1).toLowerCase()) || text.slice(1) === ''
             )
             .map((user) => ({
-              id: user.id,
+              id: user.userId,
               content: <DynamicSelectorFeature user={user} />,
             }))
         : []
@@ -368,6 +368,7 @@ export function PageChannelFeature() {
       onAddFiles={onAddFile}
       onDeleteFile={onDeleteFile}
       inputRef={inputRef}
+      usersServer={usersServer ?? []}
       editingMessageId={editingMessageId}
       setEditingMessageId={setEditingMessageId}
       onChange={handleInputChange}
