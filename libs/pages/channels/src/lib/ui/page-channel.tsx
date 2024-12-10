@@ -80,6 +80,10 @@ export const PageChannel = ({
   const replyTo = messageForm.watch('replyTo')
   const setReplyTo = (message: MessageEntity | null) => {
     messageForm.setValue('replyTo', message)
+    //focus on input
+    if (inputRef?.current) {
+      inputRef.current.focus()
+    }
   }
 
   const handleKeyDownOnMessage = useCallback(
