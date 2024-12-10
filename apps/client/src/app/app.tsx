@@ -6,8 +6,11 @@ import { Toaster } from 'react-hot-toast'
 import { useDispatch, useSelector } from 'react-redux'
 import { Navigate, Outlet, useLocation, useNavigate } from 'react-router-dom'
 import { TransmitSingleton } from '@beep/utils'
+import toast from 'react-hot-toast'
+import { useTranslation } from 'react-i18next'
 
 export default function App() {
+  const { t } = useTranslation()
   const { isLoading, isAuthenticated, payload } = useSelector(getUserState)
   const dispatch = useDispatch<AppDispatch>()
   useState<NodeJS.Timeout>()
@@ -41,13 +44,38 @@ export default function App() {
     }
   }, [dispatch, isErrorRefresh, isSuccessRefresh, navigate, refreshData])
 
-  useEffect(() => {
-    if (payload) {
-      TransmitSingleton.subscribe(`notifications/users/${payload.sub}`, (data) => {
-        alert("You have a notification ! \n" + JSON.stringify(data))
-      })
-    }
-  }, [payload])
+useEffect(() => {
+  if (payload) {
+    TransmitSingleton.subscribe(`notifications/users/${payload.sub}`, (data) => {
+      try {
+        if (typeof data === 'object' && data !== null && 'message' in data) {
+          const outerData = data as { message: string };
+          if (outerData.message.trim().startsWith('{') && outerData.message.trim().endsWith('}')) {
+            const parsedMessage = JSON.parse(outerData.message);
+            const { senderId, senderName, receiverId, channelId, messageId, content, type } = parsedMessage;
+            toast(
+              <div style={{ display: 'flex', alignItems: 'center' }}>
+                <div>
+                  <strong>{parsedMessage.serverName} : {parsedMessage.channelName}</strong>
+                  <div>{parsedMessage.senderName} has mentioned you !</div>
+                </div>
+              </div>,
+              {
+                icon: '🔔',
+              }
+            );
+          } else {
+            throw new Error("Invalid JSON data in message field");
+          }
+        } else {
+          throw new Error("Data does not contain a valid message field");
+        }
+      } catch (error) {
+        console.error("Failed to parse JSON data:", error);
+      }
+    });
+  }
+}, [payload]);
 
   if (
     !isLoading &&
