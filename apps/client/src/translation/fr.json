@@ -433,7 +433,7 @@
   },
   "notifications": {
     "friend-request": {
-      "request": "vous a demandé en ami !"
+      "request": " vous a demandé en ami !"
     },
     "mentions": {
       "mentioned": "vous a mentionné !"

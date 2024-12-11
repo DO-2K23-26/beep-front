@@ -428,7 +428,7 @@
   },
   "notifications": {
     "friend-request": {
-      "request": "sent you a friend request !"
+      "request": " sent you a friend request !"
     },
     "mentions": {
       "mentioned": "mentioned you !"
