@@ -220,7 +220,8 @@
       "profile": "Profile",
       "voice_video": "Voice & Video",
       "online": "Online",
-      "offline": "Offline"
+      "offline": "Offline",
+      "language": "Language"
     },
     "delete-channel": {
       "delete_channel": "Delete channel",
@@ -345,6 +346,9 @@
       "successfull_update": "Update successful",
       "error_update": "Something went wrong when updating your profile",
       "picture_not_filled": "Choose a picture by clicking on the button first"
+    },
+    "change-language": {
+      "language": "Language"
     }
   },
   "friends": {

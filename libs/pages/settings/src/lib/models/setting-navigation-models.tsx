@@ -8,6 +8,7 @@ export enum SettingBodyWidth {
 export interface SettingComponent {
   settingBodySize?: SettingBodyWidth
   title: string
+  id: string
   settingComponent: ReactNode
 }
 

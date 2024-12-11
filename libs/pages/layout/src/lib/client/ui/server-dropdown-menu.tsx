@@ -32,6 +32,7 @@ export function ServerDropdownMenu({ server }: ServerDropDownMenuProps) {
     settings: [
       {
         title: t('layout.server-dropdown-menu.overview'),
+        id: 'overview',
         settingComponent: (
           <OverviewSettingsServer server={server!} isAdmin={true} />
         ),

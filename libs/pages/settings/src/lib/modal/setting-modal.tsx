@@ -8,17 +8,21 @@ export interface SettingsUserModalProps {
 
 export function SettingsModal({ settings }: SettingsUserModalProps) {
   const [selectedSetting, setSelectedSetting] = useState(
-    settings[0].settings[0].title
+    settings[0].settings[0].id
   )
-  const findSettingComponentByTitle = (
+  const findSettingComponentById = (
     subSettings: SubSettings[],
-    title: string
+    id: string
   ): ReactNode | null => {
     for (const subSetting of subSettings) {
       for (const setting of subSetting.settings) {
-        if (setting.title === title) {
+
+        // pb: title change en fonction de la langue donc perdu et affiche une page blanche au lieu de rester sur la meme page
+        if (setting.id === id) {
           return (
-            <div className={`flex flex-col pt-12 px-2 w-full md:w-8/12 xl:w-6/12 `}>
+            <div
+              className={`flex flex-col pt-12 px-2 w-full md:w-8/12 xl:w-6/12`}
+            >
               {setting.settingComponent}
             </div>
           )
@@ -42,7 +46,7 @@ export function SettingsModal({ settings }: SettingsUserModalProps) {
         })}
       </div>
       <div className="w-full px-2 bg-violet-200 flex flex-col items-center overflow-y-scroll scroll-smooth">
-        {findSettingComponentByTitle(settings, selectedSetting)}
+        {findSettingComponentById(settings, selectedSetting)}
       </div>
     </div>
   )

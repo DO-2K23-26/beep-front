@@ -220,7 +220,8 @@
       "profile": "Profil",
       "voice_video": "Voix & Vidéo",
       "online": "Connecté",
-      "offline": "Déconnecté"
+      "offline": "Déconnecté",
+      "language": "Langue"
     },
     "delete-channel": {
       "delete_channel": "Supprimer le salon de discussion",
@@ -345,6 +346,9 @@
       "successfull_update": "Mise à jour réussie",
       "error_update": "Une erreur est survenue lors de la mise à jour de votre profil",
       "picture_not_filled": "La photo de profil n'est pas remplie"
+    },
+    "change-language": {
+      "language": "Langue"
     }
   },
   "friends": {

@@ -21,12 +21,12 @@ export function ButtonNavigationList({
         {subSettings.settings.map((setting) => {
           return (
             <SettingPickerButton
-              key={setting.title}
+              key={setting.id}
               title={setting.title}
               navigateTo={function (): void {
-                setSelectedSetting(setting.title)
+                setSelectedSetting(setting.id)
               }}
-              isPicked={selectedSetting === setting.title}
+              isPicked={selectedSetting === setting.id}
             />
           )
         })}

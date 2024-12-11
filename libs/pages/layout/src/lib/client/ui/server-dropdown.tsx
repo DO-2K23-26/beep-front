@@ -50,6 +50,7 @@ export function ServerDropdown({
         settingComponent: server && (
           <OverviewSettingsServer server={server} isAdmin={isAdmin} />
         ),
+        id: 'overview',
         settingBodySize: SettingBodyWidth.L,
       },
     ],

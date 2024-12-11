@@ -1,6 +1,7 @@
 import { UserEntity } from '@beep/contracts'
 import {
   ModifyProfileCardFeature,
+  ChangeLanguageFeature,
   SettingsModal,
   SubSettings,
 } from '@beep/settings'
@@ -52,11 +53,18 @@ export default function CurrentUser({
     settings: [
       {
         title: t('layout.current-user.profile'),
+        id: 'profile',
         settingComponent: <ModifyProfileCardFeature />,
       },
       {
         title: t('layout.current-user.voice_video'),
+        id: 'voice_video',
         settingComponent: <UserMediaFeature />,
+      },
+      {
+        title: t('layout.current-user.language'),
+        id: 'language',
+        settingComponent: <ChangeLanguageFeature />,
       },
     ],
   }
