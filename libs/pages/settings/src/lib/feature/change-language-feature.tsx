@@ -4,23 +4,23 @@ import LanguageList from '../components/language-list'
 
 export function ChangeLanguageFeature() {
   const { i18n, t } = useTranslation()
-  
 
   const availableLanguages: { [key: string]: string } = {
-       en: 'English',
-      fr: 'Français',
-     }
+    en: 'English',
+    fr: 'Français',
+  }
   const [selectedLanguage, setSelectedLanguage] = useState(i18n.language)
 
   useEffect(() => {
-    setSelectedLanguage(i18n.language)
+    // The default web browser language can be a full language tag (e.g. en-US, fr-FR, etc...)
+    setSelectedLanguage(i18n.language.split('-')[0].toLowerCase())
   }, [i18n.language])
 
   const handleLanguageChange = (languageCode: string) => {
     if (availableLanguages[languageCode]) {
-      i18n.changeLanguage(languageCode) 
-      setSelectedLanguage(languageCode) 
-      localStorage.setItem('i18nextLng', languageCode) 
+      i18n.changeLanguage(languageCode)
+      setSelectedLanguage(languageCode)
+      localStorage.setItem('i18nextLng', languageCode)
     }
   }
 

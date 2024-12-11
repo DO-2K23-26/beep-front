@@ -16,7 +16,6 @@ export function SettingsModal({ settings }: SettingsUserModalProps) {
   ): ReactNode | null => {
     for (const subSetting of subSettings) {
       for (const setting of subSetting.settings) {
-
         // pb: title change en fonction de la langue donc perdu et affiche une page blanche au lieu de rester sur la meme page
         if (setting.id === id) {
           return (
