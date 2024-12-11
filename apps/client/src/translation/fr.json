@@ -430,5 +430,13 @@
     "private-channels-navigation": {
       "private_conversations": "Conversations privées"
     }
+  },
+  "notifications": {
+    "friend-request": {
+      "request": "vous a demandé en ami !"
+    },
+    "mentions": {
+      "mentioned": "vous a mentionné !"
+    }
   }
 }

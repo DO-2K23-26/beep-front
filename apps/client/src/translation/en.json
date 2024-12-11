@@ -426,6 +426,14 @@
       "private_conversations": "Private conversations"
     }
   },
+  "notifications": {
+    "friend-request": {
+      "request": "sent you a friend request !"
+    },
+    "mentions": {
+      "mentioned": "mentioned you !"
+    }
+  },
   "globals": {
     "activated": "activated",
     "not-activated": "not activated"
