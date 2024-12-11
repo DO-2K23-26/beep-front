@@ -5,9 +5,10 @@ import { useEffect, useState } from 'react'
 import { Toaster } from 'react-hot-toast'
 import { useDispatch, useSelector } from 'react-redux'
 import { Navigate, Outlet, useLocation, useNavigate } from 'react-router-dom'
-import { TransmitSingleton } from '@beep/utils'
+import { TransmitSingleton, upperCaseFirstLetter } from '@beep/utils'
 import toast from 'react-hot-toast'
 import { useTranslation } from 'react-i18next'
+import { logger } from 'nx/src/utils/logger'
 
 export default function App() {
   const { t } = useTranslation()
@@ -49,21 +50,21 @@ useEffect(() => {
     TransmitSingleton.subscribe(`notifications/users/${payload.sub}`, (data) => {
       try {
         if (typeof data === 'object' && data !== null && 'message' in data) {
-          const outerData = data as { message: string };
+          const outerData = data as { message: string }
           if (outerData.message.trim().startsWith('{') && outerData.message.trim().endsWith('}')) {
-            const parsedMessage = JSON.parse(outerData.message);
-            const { senderId, senderName, receiverId, channelId, messageId, content, type } = parsedMessage;
+            const parsedMessage = JSON.parse(outerData.message)
+            const { senderId, senderName, receiverId, channelId, channelName, serverName, messageId, content, type } = parsedMessage
             toast(
               <div style={{ display: 'flex', alignItems: 'center' }}>
                 <div>
-                  <strong>{parsedMessage.serverName} : {parsedMessage.channelName}</strong>
-                  <div>{parsedMessage.senderName} has mentioned you !</div>
+                  <strong>{upperCaseFirstLetter(serverName)} : {upperCaseFirstLetter(channelName)}</strong>
+                  <div>{upperCaseFirstLetter(senderName)} {t('notifications.mentions.mentioned')}</div>
                 </div>
               </div>,
               {
                 icon: '🔔',
               }
-            );
+            )
           } else {
             throw new Error("Invalid JSON data in message field");
           }
@@ -71,7 +72,7 @@ useEffect(() => {
           throw new Error("Data does not contain a valid message field");
         }
       } catch (error) {
-        console.error("Failed to parse JSON data:", error);
+        logger.debug("Failed to parse JSON data:", error);
       }
     });
   }

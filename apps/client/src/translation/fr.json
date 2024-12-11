@@ -384,5 +384,13 @@
       "error": "Une erreur est survenue lors de l'envoi de l'invitation",
       "username-required": "Le nom d'utilisateur est requis"
     }
+  },
+  "notifications": {
+    "friend-request": {
+      "request": "vous a demandé en ami !"
+    },
+    "mentions": {
+      "mentioned": "vous a mentionné !"
+    }
   }
 }

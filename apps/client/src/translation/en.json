@@ -384,5 +384,13 @@
       "error": "An error occurred while sending the invitation",
       "username-required": "Username is required"
     }
+  },
+  "notifications": {
+    "friend-request": {
+      "request": "sent you a friend request !"
+    },
+    "mentions": {
+      "mentioned": "mentioned you !"
+    }
   }
 }
