@@ -45,38 +45,9 @@ export default function App() {
     }
   }, [dispatch, isErrorRefresh, isSuccessRefresh, navigate, refreshData])
 
-useEffect(() => {
-  if (payload) {
-    TransmitSingleton.subscribe(`notifications/users/${payload.sub}`, (data) => {
-      try {
-        if (typeof data === 'object' && data !== null && 'message' in data) {
-          const outerData = data as { message: string }
-          if (outerData.message.trim().startsWith('{') && outerData.message.trim().endsWith('}')) {
-            const parsedMessage = JSON.parse(outerData.message)
-            const { senderId, senderName, receiverId, channelId, channelName, serverName, messageId, content, type } = parsedMessage
-            toast(
-              <div style={{ display: 'flex', alignItems: 'center' }}>
-                <div>
-                  <strong>{upperCaseFirstLetter(serverName)} : {upperCaseFirstLetter(channelName)}</strong>
-                  <div>{upperCaseFirstLetter(senderName)} {t('notifications.mentions.mentioned')}</div>
-                </div>
-              </div>,
-              {
-                icon: '🔔',
-              }
-            )
-          } else {
-            throw new Error("Invalid JSON data in message field");
-          }
-        } else {
-          throw new Error("Data does not contain a valid message field");
-        }
-      } catch (error) {
-        logger.debug("Failed to parse JSON data:", error);
-      }
-    });
-  }
-}, [payload]);
+  useEffect(() => {
+    subscribeToNotifs(payload)
+  }, [payload])
 
   if (
     !isLoading &&
@@ -110,4 +81,69 @@ useEffect(() => {
       <Outlet />
     </>
   )
+
+  function subscribeToNotifs(payload: any) {
+    if (payload) {
+      TransmitSingleton.subscribe(
+        `notifications/users/${payload.sub}`,
+        (data) => {
+          try {
+            console.log(data)
+            if (typeof data === 'object' &&
+              data !== null &&
+              'event' in data) {
+              const outerData = data as { event: string}
+              if (outerData.event.trim().startsWith('{') &&
+                outerData.event.trim().endsWith('}')) {
+                const parsedMessage = JSON.parse(outerData.event)
+                switch (parsedMessage.type) {
+                  case 'USER_MENTIONED_IN_MESSAGE':
+                    toast(
+                      <div style={{ display: 'flex', alignItems: 'center' }}>
+                        <div>
+                          <strong>
+                            {upperCaseFirstLetter(parsedMessage.serverName)} :{' '}
+                            {upperCaseFirstLetter(parsedMessage.channelName)}
+                          </strong>
+                          <div>
+                            {upperCaseFirstLetter(parsedMessage.senderName)}{' '}
+                            {t('notifications.mentions.mentioned')}
+                          </div>
+                        </div>
+                      </div>,
+                      {
+                        icon: '🔔',
+                      }
+                    )
+                    break
+                  case 'FRIEND_REQUEST':
+                    toast(
+                      <div style={{ display: 'flex', alignItems: 'center' }}>
+                        <div>
+                          <strong>
+                            {upperCaseFirstLetter(parsedMessage.senderName)}
+                          </strong>{t('notifications.friend-request.request')}
+                        </div>
+                      </div>,
+                      {
+                        icon: '🔔',
+                      }
+                    )
+                    break
+                  default:
+                    break
+                }
+              } else {
+                throw new Error('Invalid JSON data in message field')
+              }
+            } else {
+              throw new Error('Data does not contain a valid message field')
+            }
+          } catch (error) {
+            logger.debug('Failed to parse JSON data:', error)
+          }
+        }
+      )
+    }
+  }
 }
