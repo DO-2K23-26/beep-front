@@ -156,8 +156,6 @@ export function ModifyProfileCardFeature() {
   const handleEmailUpdate = emailFormController.handleSubmit((data) => {
     const formData = new FormData()
     formData.append('email', data.email)
-    // eslint-disable-next-line no-console
-    console.log( "Test")
     updateMe(formData)
     setIsEmailValidateModalOpen(false)
     emailFormController.reset()
@@ -167,6 +165,8 @@ export function ModifyProfileCardFeature() {
   const handleEmailSubmit = emailFormController.handleSubmit((data) => {
     const requestData = { email: currentUserEmail }
     sendOtpEmail(requestData)
+    setIsEmailModalOpen(false)
+    setIsOtpModalOpen(true)
   })
 
   // Verify the OTP entered by the user
@@ -206,8 +206,6 @@ export function ModifyProfileCardFeature() {
   useEffect(() => {
     if (isSuccessOtpEmail) {
       toast.success('Email sent successfully! Please check your inbox.')
-      setIsEmailModalOpen(false)
-      setIsOtpModalOpen(true)
     } if (isErrorOtpEmail || errorOtpEmail) {
       toast.error('Failed to send email. Please try again.')
     }
