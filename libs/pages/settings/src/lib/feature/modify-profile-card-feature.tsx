@@ -152,8 +152,6 @@ export function ModifyProfileCardFeature() {
     const formData = new FormData()
     formData.append('email', data.email)
     updateMe(formData)
-    setIsEmailValidateModalOpen(false)
-    emailFormController.reset()
   })
 
   // Send email to generate otp code
@@ -190,12 +188,18 @@ export function ModifyProfileCardFeature() {
           message: 'This username already exists',
           type: 'validate',
         })
+      } else if (error.code === 'E_EMAILALREADYEXISTS') {
+        emailFormController.setError('email', {
+          message: 'This email already exists',
+          type: 'validate',
+        })
       } else {
-        toast.error('An error occurred while updating the username')
+        toast.error('An error occurred while updating')
         setIsUsernameModalOpen(false)
+        setIsEmailValidateModalOpen(false)
       }
     }
-  }, [errorUpdateMe, isErrorUpdateMe, usernameFormController])
+  }, [errorUpdateMe, isErrorUpdateMe, usernameFormController, emailFormController])
 
   // use effect of the otp email send
   useEffect(() => {
@@ -222,7 +226,7 @@ export function ModifyProfileCardFeature() {
     if (isSuccessUpdateMe) {
       setIsUsernameModalOpen(false)
     }
-  }, [isSuccessUpdateMe])
+  }, [isSuccessUpdateMe, usernameFormController])
 
   //Dialog button
   const usernameChangeButton = (
