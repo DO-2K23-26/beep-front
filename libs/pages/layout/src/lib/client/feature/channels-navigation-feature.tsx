@@ -8,12 +8,9 @@ import {
 import {
   serverActions,
   useCreateChannelInServerMutation,
-  useGetCurrentStreamingUsersQuery,
-  useGetMyServersQuery,
+  useGetCurrentStreamingUsersQuery, useGetMyServersQuery,
   useGetServerChannelsQuery,
-  useJoinVoiceChannelMutation,
-  useLeaveVoiceChannelMutation,
-  useTransmitBannerQuery
+  useLeaveVoiceChannelMutation, useTransmitBannerQuery
 } from '@beep/server'
 import { AppDispatch, RootState } from '@beep/store'
 import { TransmitSingleton } from '@beep/transmit'
@@ -28,10 +25,10 @@ import { skipToken } from '@reduxjs/toolkit/query'
 import { useCallback, useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import { toast } from 'react-hot-toast'
-import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router'
 import ChannelsNavigation from '../ui/channels-navigation'
+import { useTranslation } from 'react-i18next'
 
 export function ChannelsNavigationFeature() {
   const { t } = useTranslation()
@@ -51,6 +48,14 @@ export function ChannelsNavigationFeature() {
   const { data: channels } = useGetServerChannelsQuery(
     server ? server.id : skipToken
   )
+
+  const { currentData: banner } = useTransmitBannerQuery(
+    server?.id ?? skipToken,
+    {
+      skip: server?.banner === undefined || server?.banner === '',
+    }
+  )
+
 
   //const [joinServer] = useJoinVoiceChannelMutation()
   const [leaveServer] = useLeaveVoiceChannelMutation()
