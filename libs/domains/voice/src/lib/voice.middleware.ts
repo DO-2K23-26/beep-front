@@ -17,7 +17,7 @@ const WebRTCMiddleware: Middleware = (store) => {
     iceTransportPolicy: "relay",
   };
   let peerConnection: RTCPeerConnection | null = null;
-  let socket: Socket | null = null;
+  let socket: Socket = null;
   let watchedChannels: {id: string, channel: Channel}[] = []
   let currentChannel: Channel | undefined = undefined;
   let currentPresence: Presence | undefined = undefined;
@@ -97,11 +97,13 @@ const WebRTCMiddleware: Middleware = (store) => {
 
       case 'INITIALIZE_WEBRTC':
         if (!action.payload.isVoiceMuted) {
+          console.log("avant audio")
           audio = await navigator.mediaDevices.getUserMedia({
             audio: {
               // deviceId: action.payload.audioInputDevice.deviceId,
             }
           })
+          console.log("apres audio")
         }
         if (action.payload.isCamera) {
           video = await navigator.mediaDevices.getUserMedia({
@@ -113,6 +115,8 @@ const WebRTCMiddleware: Middleware = (store) => {
           })
           store.dispatch(setLocalStream(video));
         }
+        console.log("audio", audio)
+        console.log("video", video)
         peerConnection = new RTCPeerConnection(pcConfig);
 
         peerConnection.onconnectionstatechange = () => {
@@ -200,6 +204,8 @@ const WebRTCMiddleware: Middleware = (store) => {
           peerConnection.addIceCandidate(candidate);
         });
 
+
+        //TODO know why
         store.dispatch(setServerPresence({channelId: action.payload.channel, users: []}))
         currentPresence = new Presence(currentChannel);
 

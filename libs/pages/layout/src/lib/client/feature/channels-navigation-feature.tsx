@@ -198,6 +198,19 @@ export function ChannelsNavigationFeature() {
       //   },
       // })
       dispatch(setCurrentChannelId(channel.id))
+      console.log("onvoicechannel", {
+        type: 'INITIALIZE_WEBRTC',
+        payload: {
+          server: server.id,
+          channel: channel.id,
+          token: data?.id,
+          videoDevice: videoDevice,
+          audioInputDevice: audioInputDevice,
+          isVoiceMuted: isVoiceMuted,
+          isCamera: isCamera,
+          username: data?.username
+        },
+      } )
       dispatch({
         type: 'INITIALIZE_WEBRTC',
         payload: {

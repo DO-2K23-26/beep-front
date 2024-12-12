@@ -56,6 +56,7 @@ const webrtcSlice = createSlice({
     },
     setSortedMembers(state, action: PayloadAction<{ user: UserConnectedEntity, stream: MediaStream }[]>) {
       state.sortedMembers = action.payload;
+      console.log("update sortedMembers", state.sortedMembers)
     },
     setUserStreams(state, action: PayloadAction<{id: string, audio: string, video: string, channel: string }[]>) {
       state.userStreams = action.payload;

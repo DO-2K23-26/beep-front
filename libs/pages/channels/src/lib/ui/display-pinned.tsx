@@ -43,12 +43,12 @@ function DisplayPinned({
   return (
     <Popover>
       <PopoverTrigger>
-        <ButtonIcon
-          icon="lucide:pin"
-          title={t('channels.display-pinned.pinned_messages')}
-          buttonProps={buttonProps}
-          textHiddenResponsive
-        />
+        {/*<ButtonIcon*/}
+        {/*  icon="lucide:pin"*/}
+        {/*  title={t('channels.display-pinned.pinned_messages')}*/}
+        {/*  buttonProps={buttonProps}*/}
+        {/*  textHiddenResponsive*/}
+        {/*/>*/}
       </PopoverTrigger>
 
       {!isLoadingPinned && pinnedMessage !== undefined && (
