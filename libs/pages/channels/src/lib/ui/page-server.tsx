@@ -7,6 +7,7 @@ import { leftPaneState, rightPaneState } from '@beep/responsive'
 import { cn } from '@beep/utils'
 import { useSelector } from 'react-redux'
 import { Outlet, useParams } from 'react-router'
+import { VoiceChat } from './voice-chat'
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 export interface PageServerProps {}
@@ -20,7 +21,7 @@ export function PageServer() {
       <div className={cn({ 'w-1/3 sm:w-fit': leftDivState })}>
         <ChannelsNavigationFeature key={'members_navigation' + serverId} />
       </div>
-
+      <VoiceChat/>
       <div
         className={cn('h-full w-full bg-violet-200 ', {
           'rounded-none md:rounded-r-3xl xl:rounded-none': !rightDivState,
