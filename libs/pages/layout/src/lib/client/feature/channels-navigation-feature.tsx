@@ -40,7 +40,7 @@ export function ChannelsNavigationFeature() {
   const { remoteStreams, currentChannelId, videoDevice, audioInputDevice, userStreams, serverPresence } =
     useSelector(getVoiceState)
   const { isMuted, isVoiceMuted, isCamera } = useSelector(getUserState)
-  const { data } = useGetMeQuery()
+  const { payload: userPayload } = useSelector((getUserState))
 
   const dispatch = useDispatch<AppDispatch>()
   const { openModal, closeModal } = useModal()
@@ -69,7 +69,7 @@ export function ChannelsNavigationFeature() {
         payload: {
           channels: channels?.voiceChannels.map((channel) => channel.id),
           server: server?.id,
-          id: data?.id,
+          id: userPayload?.sub,
         },
       })
     }
@@ -86,7 +86,7 @@ export function ChannelsNavigationFeature() {
     )
     console.log(JSON.stringify(usersChannel), JSON.stringify(serverPresence))
     userStreams.map((userStream) => {
-      const userchan = usersChannel?.users?.find((userchan) => userchan.id === userStream.id && data?.id !== userStream.id)
+      const userchan = usersChannel?.users?.find((userchan) => userchan.id === userStream.id && userPayload?.sub !== userStream.id)
       if (userchan) {
         const userbis = {...userchan}
         const stream = new MediaStream()
@@ -121,7 +121,7 @@ export function ChannelsNavigationFeature() {
     userStreams,
     isCamera,
     currentChannelId,
-    data?.id,
+    userPayload?.sub,
     dispatch,
   ])
 
@@ -203,12 +203,12 @@ export function ChannelsNavigationFeature() {
         payload: {
           server: server.id,
           channel: channel.id,
-          token: data?.id,
+          token: userPayload?.sub,
           videoDevice: videoDevice,
           audioInputDevice: audioInputDevice,
           isVoiceMuted: isVoiceMuted,
           isCamera: isCamera,
-          username: data?.username
+          username: userPayload?.username
         },
       } )
       dispatch({
@@ -216,12 +216,12 @@ export function ChannelsNavigationFeature() {
         payload: {
           server: server.id,
           channel: channel.id,
-          token: data?.id,
+          token: userPayload?.sub,
           videoDevice: videoDevice,
           audioInputDevice: audioInputDevice,
           isVoiceMuted: isVoiceMuted,
           isCamera: isCamera,
-          username: data?.username
+          username: userPayload?.username
         },
       })
     }

@@ -1,5 +1,6 @@
 import {
   BaseQueryApi,
+  BaseQueryArg,
   createApi,
   fetchBaseQuery
 } from '@reduxjs/toolkit/query/react'
@@ -11,7 +12,6 @@ import {
   GetMultipleUsersRequest,
   GetUserRequest,
   LoginRequest,
-  LoginWithQRCodeRequest,
   LoginResponse,
   RefreshResponse,
   RegisterResponse,
@@ -23,9 +23,7 @@ import {
   UserEntity
 } from '@beep/contracts'
 // eslint-disable-next-line @nx/enforce-module-boundaries
-import {
-  BaseQueryArg
-} from '@reduxjs/toolkit/dist/query/baseQueryTypes'
+
 
 const baseQuery = fetchBaseQuery({
   baseUrl: backendUrl,
