@@ -1,9 +1,24 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 // eslint-disable-next-line @nx/enforce-module-boundaries
 import { RootState } from '@beep/store';
 import { IVoice, Media, OccupiedChannelEntity, UserConnectedEntity } from '@beep/contracts'
 
-// TODO Implement audioOutputDevice
+export const initializeDevices = createAsyncThunk(
+  'webRTC/initializeDevices',
+  async (_, { dispatch }) => {
+    const devices = await navigator.mediaDevices.enumerateDevices()
+
+    const audioInput =
+      devices.find((device) => device.kind === 'audioinput') || null
+    const videoInput =
+      devices.find((device) => device.kind === 'videoinput') || null
+
+    dispatch(setDevices(devices))
+    if (audioInput) dispatch(setAudioInputDevice(audioInput))
+    if (videoInput) dispatch(setVideoDevice(videoInput))
+  }
+)
+
 const initialState: IVoice = {
   serverPresence: [],
   currentChannelId: '',
@@ -16,9 +31,9 @@ const initialState: IVoice = {
   audioOutputDevice: null,
   videoDevice: null,
   devices: [],
-  sortedMembers: []
-};
-//
+  sortedMembers: [],
+}
+
 const webrtcSlice = createSlice({
   name: 'webRTC',
   initialState: initialState,

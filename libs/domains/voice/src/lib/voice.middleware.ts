@@ -100,7 +100,7 @@ const WebRTCMiddleware: Middleware = (store) => {
           console.log("avant audio")
           audio = await navigator.mediaDevices.getUserMedia({
             audio: {
-              // deviceId: action.payload.audioInputDevice.deviceId,
+              deviceId: action.payload.audioInputDevice.deviceId,
             }
           })
           console.log("apres audio")
@@ -110,7 +110,7 @@ const WebRTCMiddleware: Middleware = (store) => {
             video: {
               width: 320,
               height: 240,
-              // deviceId: action.payload.videoDevice.deviceId,
+              deviceId: action.payload.videoDevice.deviceId,
             }
           })
           store.dispatch(setLocalStream(video));
