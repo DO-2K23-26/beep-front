@@ -20,11 +20,9 @@ export function UserMediaFeature({}: UserMediaFeatureProps) {
   const [audioOutputs, setAudioOutputs] = useState<Device[]>([])
   const [audioInputs, setAudioInputs] = useState<Device[]>([])
   const [videoInputs, setVideoInputs] = useState<Device[]>([])
-  const { devices } = useSelector(getVoiceState)
+  const { devices, audioOutputDevice, videoDevice, audioInputDevice } = useSelector(getVoiceState)
   const audioOutputFeatureFlag = false
   const dispatch = useDispatch()
-  const { audioOutputDevice, videoDevice, audioInputDevice } =
-    useSelector(getVoiceState)
 
   const onChangeVideoInputDevice = (value: string | string[]) => {
     navigator.mediaDevices.enumerateDevices().then(function (devices) {
@@ -33,6 +31,7 @@ export function UserMediaFeature({}: UserMediaFeatureProps) {
       dispatch({ type: 'START_CAM', payload: devicesFiltered[0] })
     })
   }
+
   const onChangeAudioInputDevice = (value: string | string[]) => {
     navigator.mediaDevices.enumerateDevices().then(function (devices) {
       const devicesFiltered = devices.filter((device) => device.label === value)
@@ -40,6 +39,7 @@ export function UserMediaFeature({}: UserMediaFeatureProps) {
       dispatch({ type: 'START_MIC', payload: devicesFiltered[0] })
     })
   }
+
   const onChangeAudioOutputDevice = (value: string | string[]) => {
     navigator.mediaDevices.enumerateDevices().then(function (devices) {
       const devicesFiltered = devices.filter((device) => device.label === value)
@@ -56,21 +56,56 @@ export function UserMediaFeature({}: UserMediaFeatureProps) {
       dispatch(setDevices(streams))
     })
   }, [dispatch])
+
   useEffect(() => {
     navigator.mediaDevices.enumerateDevices().then((streams) => {
+      // update the list of available devices in the Redux store
       dispatch(setDevices(streams))
-      dispatch(
-        setAudioInputDevice(
-          streams.filter((info) => info.kind === 'audioinput')?.[0]
+
+      // Check if an audio input device is already selected
+      if (!audioInputDevice) {
+        const firstAudioInput = streams.find(
+          (info) => info.kind === 'audioinput'
         )
-      )
-      dispatch(
-        setVideoDevice(
-          streams.filter((info) => info.kind === 'videoinput')?.[0]
+        if (firstAudioInput) {
+          // If no audio input device is selected, set the first available device as the default
+          dispatch(setAudioInputDevice(firstAudioInput))
+        }
+      }
+
+      // Check if an viceo input device is already selected
+      if (!videoDevice) {
+        const firstVideoInput = streams.find(
+          (info) => info.kind === 'videoinput'
         )
-      )
+        if (firstVideoInput) {
+          // If no audio input device is selected, set the first available device as the default
+          dispatch(setVideoDevice(firstVideoInput))
+        }
+      }
+
+      // check if the audio output device is still available
+      if (audioOutputDevice) {
+        const matchingAudioOutput = streams.find(
+          (info) => info.deviceId === audioOutputDevice.id
+        )
+        if (!matchingAudioOutput) {
+          // check if it is disconnected, in that case, set the first available audio output device
+          const firstAudioOutput = streams.find(
+            (info) => info.kind === 'audiooutput'
+          )
+          if (firstAudioOutput) {
+            dispatch(
+              setAudioOutputDevice({
+                id: firstAudioOutput.deviceId,
+                name: firstAudioOutput.label,
+              })
+            )
+          }
+        }
+      }
     })
-  }, [dispatch])
+  }, [dispatch, audioInputDevice, videoDevice, audioOutputDevice])
 
   useEffect(() => {
     const audioOutputs: Device[] = []
