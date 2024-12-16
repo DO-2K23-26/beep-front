@@ -9,6 +9,7 @@ import { Navigate, Outlet, useLocation, useNavigate } from 'react-router-dom'
 
 export default function App() {
   const { isLoading, isAuthenticated, payload } = useSelector(getUserState)
+    const [devicesInitialized, setDevicesInitialized] = useState(false)
   const dispatch = useDispatch<AppDispatch>()
   useState<NodeJS.Timeout>()
   const location = useLocation()
