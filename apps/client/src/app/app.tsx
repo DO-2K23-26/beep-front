@@ -12,6 +12,7 @@ import { NotificationsHandler } from '@beep/notifications'
 export default function App() {
   const { t } = useTranslation()
   const { isLoading, isAuthenticated, payload } = useSelector(getUserState)
+    const [devicesInitialized, setDevicesInitialized] = useState(false)
   const dispatch = useDispatch<AppDispatch>()
   useState<NodeJS.Timeout>()
   const location = useLocation()

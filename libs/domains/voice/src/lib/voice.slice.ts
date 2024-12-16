@@ -11,14 +11,13 @@ import {
 export const initializeDevices = createAsyncThunk(
   'webRTC/initializeDevices',
   async (_, { dispatch }) => {
-    const devices = await navigator.mediaDevices.enumerateDevices()
-
+    await navigator.mediaDevices.getUserMedia({ audio: true, video: true });
+    const devicesIn = await navigator.mediaDevices.enumerateDevices()
     const audioInput =
-      devices.find((device) => device.kind === 'audioinput') || null
+      devicesIn.find((device) => device.kind === 'audioinput') || null
     const videoInput =
-      devices.find((device) => device.kind === 'videoinput') || null
-
-    dispatch(setDevices(devices))
+      devicesIn.find((device) => device.kind === 'videoinput') || null
+    dispatch(setDevices(devicesIn))
     if (audioInput) dispatch(setAudioInputDevice(audioInput))
     if (videoInput) dispatch(setVideoDevice(videoInput))
   }
@@ -68,6 +67,7 @@ const webrtcSlice = createSlice({
       state.videoDevice = action.payload
     },
     setDevices(state, action: PayloadAction<MediaDeviceInfo[]>) {
+      console.log("ds setDevices")
       state.devices = action.payload
 
       if (state.audioInputDevice) {
