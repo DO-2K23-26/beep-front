@@ -50,24 +50,28 @@ export function UserMedia({
             onChange={onChangeAudioOutputDevice}
           />
         )}
-        <InputSelect
-          label={t('layout.user-media.audio_inputs')}
-          options={audioInputs.map((device) => ({
-            label: device.label,
-            value: device.label,
-          }))}
-          value={audioInputDeviceLabel}
-          onChange={onChangeAudioInputDevice}
-        />
-        <InputSelect
-          label={t('layout.user-media.video_inputs')}
-          options={videoInputs.map((device) => ({
-            label: device.label,
-            value: device.label,
-          }))}
-          value={videoDeviceLabel}
-          onChange={onChangeVideoInputDevice}
-        />
+        {audioInputDeviceLabel && (
+          <InputSelect
+            label={t('layout.user-media.audio_inputs')}
+            options={audioInputs.map((device) => ({
+              label: device.label,
+              value: device.label,
+            }))}
+            value={audioInputDeviceLabel}
+            onChange={onChangeAudioInputDevice}
+          />
+        )}
+        {videoDeviceLabel && (
+          <InputSelect
+            label={t('layout.user-media.video_inputs')}
+            options={videoInputs.map((device) => ({
+              label: device.label,
+              value: device.label,
+            }))}
+            value={videoDeviceLabel}
+            onChange={onChangeVideoInputDevice}
+          />
+        )}
       </div>
     </div>
   )
