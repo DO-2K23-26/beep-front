@@ -2,14 +2,15 @@ import { useRegisterMutation } from '@beep/user'
 import { useCallback, useEffect, useState } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
 import { useNavigate } from 'react-router-dom'
-import { PageSignup } from '../ui/page-signup'
+import { PageSignupV2 } from '../ui/page-signup-v2'
+import { useTranslation } from 'react-i18next'
 
 export function PageSignupFeature() {
   const navigate = useNavigate()
   const [error, setError] = useState('')
   const [register, result] = useRegisterMutation()
   const [previewUrl, setPreviewUrl] = useState<string | null>(null)
-
+  const { t } = useTranslation()
   const methods = useForm({
     mode: 'onChange',
     defaultValues: {
@@ -40,7 +41,7 @@ export function PageSignupFeature() {
 
   useEffect(() => {
     if (result.isError) {
-      setError('Email already used')
+      setError(t('auth.page-signup.already_use'))
     } else if (result.isSuccess) {
       toSignin()
     }
@@ -59,7 +60,7 @@ export function PageSignupFeature() {
 
   return (
     <FormProvider {...methods}>
-      <PageSignup
+      <PageSignupV2
         onSubmit={onSubmit}
         error={error}
         loading={result.isLoading}

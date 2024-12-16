@@ -16,6 +16,7 @@
   "private": true,
   "dependencies": {
     "@adonisjs/transmit-client": "^1.0.0",
+    "@gsap/react": "^2.1.1",
     "@hookform/resolvers": "^3.9.1",
     "@iconify/react": "^4.1.1",
     "@markdoc/markdoc": "^0.4.0",
@@ -38,6 +39,7 @@
     "clsx": "^2.1.1",
     "date-fns": "^3.6.0",
     "framer-motion": "^11.2.12",
+    "gsap": "^3.12.5",
     "i18next": "^23.16.5",
     "i18next-browser-languagedetector": "^8.0.2",
     "immer": "^10.1.1",
