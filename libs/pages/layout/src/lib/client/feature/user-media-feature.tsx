@@ -1,6 +1,7 @@
 import { Device } from '@beep/contracts'
 import {
   getVoiceState,
+  initializeDevices,
   setAudioInputDevice,
   setAudioOutputDevice,
   setDevices,
@@ -10,6 +11,7 @@ import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { UserMedia } from '../ui/user-media'
 import { useTranslation } from 'react-i18next'
+import { AppDispatch } from '@beep/store'
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface UserMediaFeatureProps {}
@@ -23,7 +25,7 @@ export function UserMediaFeature({}: UserMediaFeatureProps) {
   const { devices, audioOutputDevice, videoDevice, audioInputDevice } =
     useSelector(getVoiceState)
   const audioOutputFeatureFlag = false
-  const dispatch = useDispatch()
+  const dispatch = useDispatch<AppDispatch>()
 
   const onChangeVideoInputDevice = (value: string | string[]) => {
     const selectedDevice = devices.find((device) => device.label === value)
@@ -56,6 +58,13 @@ export function UserMediaFeature({}: UserMediaFeatureProps) {
   }
 
   useEffect(() => {
+    if (!devices.length) {
+    dispatch(initializeDevices())
+      
+    }
+  }, [dispatch])
+
+  useEffect(() => {
     const updateDeviceLists = () => {
       const audioInputs = devices.filter(
         (device) => device.kind === 'audioinput'
@@ -66,7 +75,6 @@ export function UserMediaFeature({}: UserMediaFeatureProps) {
       const audioOutputs = devices.filter(
         (device) => device.kind === 'audiooutput'
       )
-
 
       setAudioInputs(audioInputs)
       setVideoInputs(videoInputs)
