@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
-import { PageSignin } from '../ui/page-signin'
 import { useLocation, useNavigate } from 'react-router-dom'
 import {
   HttpError,
@@ -19,9 +18,11 @@ import {
 import { TransmitSingleton } from '@beep/utils'
 import toast from 'react-hot-toast'
 import { Transmit } from '@adonisjs/transmit-client'
+import { PageSigninV2 } from '../ui/page-signin-v2'
 import { useTranslation } from 'react-i18next'
 
 export function PageSigninFeature() {
+  const { t } = useTranslation()
   const dispatch = useDispatch<AppDispatch>()
   const location = useLocation()
   const [login, loginResult] = useLoginMutation()
@@ -153,7 +154,7 @@ export function PageSigninFeature() {
 
   return (
     <FormProvider {...methods}>
-      <PageSignin
+      <PageSigninV2
         onSubmit={onSubmit}
         loading={loginResult.isLoading}
         toSignup={toSignup}

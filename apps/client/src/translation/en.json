@@ -32,21 +32,21 @@
       "signin": "Sign in"
     },
     "page-signin": {
+      "title": "Connect to Beep",
       "signin": "Sign in",
       "required_email": "Email is required",
       "email": "Email",
       "required_password": "Password is required",
       "password": "Password",
-      "password_error": "The password you entered is wrong",
-      "forgot_password": "You forgot your password ?",
+      "forgot_password": "Forgot password ?",
       "no_account": "Don't have an account ?",
       "signup": "Sign up",
-      "qrcode": "Se connecter avec votre téléphone",
-      "error": "Invalid email or password",
-      "success": "Successfully logged in"
+      "qrcode_title": "Connect with QRCode",
+      "qrcode_description": "Connect to your account then scan the QRCode with your phone",
+      "success": "Successfully connected"
     },
     "page-signup": {
-      "welcome_back": "We are happy to see you !",
+      "title": "Create your account",
       "required_firstname": "First name is required",
       "invalid_firstname": "First name should only contain letters of the alphabet (uppercase or lowercase)",
       "firstname": "First name",
@@ -63,12 +63,13 @@
       "invalid_password": "Password must be at least 8 characters long and contain at least one uppercase letter, one digit, and one special character",
       "password": "Password",
       "required_confirm_password": "You must confirm your password",
-      "password_missmatch": "Your passwords do not match",
+      "password_mismatch": "Your passwords do not match",
       "confirm_password": "Confirm password",
       "profile_picture": "Profile picture",
       "signup": "Sign up",
       "already_account": "Already have an account ?",
-      "signin": "Sign in"
+      "signin": "Sign in",
+      "already_use": "Email already in use"
     },
     "page-totp": {
       "verify-identity": "Verify your identity",
