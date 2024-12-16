@@ -1,7 +1,6 @@
 import { AppDispatch } from '@beep/store'
 import { LoadingScreen } from '@beep/ui'
 import { getUserState, userActions, useRefreshMutation } from '@beep/user'
-import { initializeDevices } from '@beep/voice'
 import { useEffect, useState } from 'react'
 import { Toaster } from 'react-hot-toast'
 import { useDispatch, useSelector } from 'react-redux'
@@ -12,7 +11,6 @@ import { NotificationsHandler } from '@beep/notifications'
 export default function App() {
   const { t } = useTranslation()
   const { isLoading, isAuthenticated, payload } = useSelector(getUserState)
-    const [devicesInitialized, setDevicesInitialized] = useState(false)
   const dispatch = useDispatch<AppDispatch>()
   useState<NodeJS.Timeout>()
   const location = useLocation()
@@ -44,11 +42,6 @@ export default function App() {
       )
     }
   }, [dispatch, isErrorRefresh, isSuccessRefresh, navigate, refreshData])
-
-  useEffect(() => {
-    // Initialize devices for voice
-    dispatch(initializeDevices())
-  }, [dispatch])
 
   if (
     !isLoading &&
