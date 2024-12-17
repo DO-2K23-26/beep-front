@@ -18,8 +18,8 @@ import {
 import { TransmitSingleton } from '@beep/utils'
 import toast from 'react-hot-toast'
 import { Transmit } from '@adonisjs/transmit-client'
-import { PageSigninV2 } from '../ui/page-signin-v2'
 import { useTranslation } from 'react-i18next'
+import { PageSignin } from '../ui/page-signin'
 
 export function PageSigninFeature() {
   const { t } = useTranslation()
@@ -92,14 +92,6 @@ export function PageSigninFeature() {
     mode: 'onChange',
   })
 
-  const toForgetPassword = () => {
-    navigate('/authentication/forgot-password')
-  }
-
-  const toSignup = () => {
-    navigate('/authentication/signup')
-  }
-
   const onSubmit = methods.handleSubmit((data) => {
     login(data as LoginRequest)
     setUserData(data as LoginRequest)
@@ -154,11 +146,8 @@ export function PageSigninFeature() {
 
   return (
     <FormProvider {...methods}>
-      <PageSigninV2
+      <PageSignin
         onSubmit={onSubmit}
-        loading={loginResult.isLoading}
-        toSignup={toSignup}
-        toForgetPassword={toForgetPassword}
         error={error}
         qrCodeFeatureFlag={qrCodeFeatureFlag}
         qrCodeLink={qrCodeLink} // Only pass qrCodeLink if subscribed
