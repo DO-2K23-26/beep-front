@@ -2,8 +2,8 @@ import { useRegisterMutation } from '@beep/user'
 import { useCallback, useEffect, useState } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
 import { useNavigate } from 'react-router-dom'
-import { PageSignupV2 } from '../ui/page-signup-v2'
 import { useTranslation } from 'react-i18next'
+import { PageSignup } from '../ui/page-signup'
 
 export function PageSignupFeature() {
   const navigate = useNavigate()
@@ -60,10 +60,9 @@ export function PageSignupFeature() {
 
   return (
     <FormProvider {...methods}>
-      <PageSignupV2
+      <PageSignup
         onSubmit={onSubmit}
         error={error}
-        loading={result.isLoading}
         addProfilePicture={addProfilePicture}
         previewUrl={previewUrl}
       />
