@@ -43,17 +43,17 @@ export function OverviewSettingsServer({
         updatedServer,
       })
 
-      toast.success('Server updated !')
+      toast.success(t('layout.overview-settings-server.success_update_server'))
     } catch (error) {
-      toast.error('An error occured while updating the server !')
+      toast.error(t('layout.overview-settings-server.error_update_server'))
     }
   }
 
   return (
     <div className="flex flex-col w-full bg-violet-200 p-4 overflow-y-auto gap-4">
-      <div className=" text-slate-700 font-bold max-w-sm text-base sm:text-xl md:text-3xl">
+      <p className="text-slate-700 font-bold max-w-sm text-base sm:text-xl md:text-3xl">
         {t('layout.overview-settings-server.server_overview')}
-      </div>
+      </p>
       <div className="flex flex-row gap-2 sm:gap-8 md:gap-10 items-start w-full ">
         <div className="w-1/3">
           <InputImageSettings

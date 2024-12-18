@@ -327,7 +327,9 @@
       "upload_banner": "Upload banner",
       "server_name": "Server name",
       "server_description": "Server description",
-      "save": "SAVE"
+      "save": "SAVE",
+      "success_update_server": "Server updated !",
+      "error_update_server": "An error occured while updating the server !"
     },
     "server-dropdown-menu": {
       "server": "Server",

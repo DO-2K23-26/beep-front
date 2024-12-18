@@ -19,6 +19,7 @@ import {
   UpdateChannelRequest,
 } from '@beep/contracts'
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
+import { RoleEntity } from 'libs/shared/contracts/src/lib/entities/role.entity'
 // eslint-disable-next-line @nx/enforce-module-boundaries
 
 const baseQuery = fetchBaseQuery({
@@ -35,6 +36,7 @@ export const serverApi = createApi({
   baseQuery,
   tagTypes: [
     'servers',
+    'roles',
     'channel',
     'textChannel',
     'voiceChannel',
@@ -248,7 +250,16 @@ export const serverApi = createApi({
             ]
           : [{ type: 'members', id: `LIST-${serverId}` }],
     }),
-
+    getRoles: builder.query<RoleEntity[], string>({
+      query: (serverId) => `servers/${serverId}/roles`,
+      providesTags: (result, _error, serverId) =>
+        result
+          ? [
+              ...result.map(({ id }) => ({ type: 'roles' as const, id })),
+              { type: 'roles', id: `LIST-${serverId}` },
+            ]
+          : [{ type: 'roles', id: `LIST-${serverId}` }],
+    }),
     updateServer: builder.mutation<
       ServerEntity,
       { serverId: string; updatedServer: Partial<ServerEntity> }
@@ -328,6 +339,7 @@ export const {
   useJoinVoiceChannelMutation,
   useLeaveVoiceChannelMutation,
   useGetCurrentStreamingUsersQuery,
+  useGetRolesQuery,
   useUpdateServerMutation,
   useUpdateBannerMutation,
   useUpdatePictureMutation,

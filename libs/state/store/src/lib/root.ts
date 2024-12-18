@@ -50,7 +50,6 @@ export function setupStore(preloadedState?: never) {
   })
 }
 
-
 export const resetStore = () => ({ type: 'RESET' })
 export type RootState = ReturnType<typeof appReducer>
 export type AppStore = ReturnType<typeof setupStore>

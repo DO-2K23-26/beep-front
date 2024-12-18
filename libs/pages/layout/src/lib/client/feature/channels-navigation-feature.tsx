@@ -10,10 +10,11 @@ import {
   useCreateChannelInServerMutation,
   useGetCurrentStreamingUsersQuery,
   useGetMyServersQuery,
+  useGetRolesQuery,
   useGetServerChannelsQuery,
   useJoinVoiceChannelMutation,
   useLeaveVoiceChannelMutation,
-  useTransmitBannerQuery
+  useTransmitBannerQuery,
 } from '@beep/server'
 import { AppDispatch, RootState } from '@beep/store'
 import { TransmitSingleton } from '@beep/transmit'
@@ -44,6 +45,7 @@ export function ChannelsNavigationFeature() {
     useSelector(getVoiceState)
   const { isMuted, isVoiceMuted, isCamera } = useSelector(getUserState)
   const { data } = useGetMeQuery()
+  const { data: roles } = useGetRolesQuery(server?.id ?? '')
 
   const dispatch = useDispatch<AppDispatch>()
   const { openModal, closeModal } = useModal()
@@ -121,6 +123,10 @@ export function ChannelsNavigationFeature() {
   const handleReload = useCallback(() => {
     leaveServer()
   }, [leaveServer])
+
+  useEffect(() => {
+    dispatch(serverActions.setRoles(roles ?? []))
+  }, [roles])
 
   useEffect(() => {
     window.addEventListener('beforeunload', handleReload)
