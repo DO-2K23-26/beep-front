@@ -17,7 +17,7 @@ export function ChannelNameDisplay({
   }
   if (isLoadingChannel)
     return (
-      <Skeleton className="h-10 sm:h-12 md:h-14 w-12 sm:w-16 md:w-24 rounded-xl bg-violet-300" />
+      <Skeleton className="h-10 sm:h-12 md:h-14 w-12 sm:w-16 md:w-24 rounded-xl bg-violet-300 transition-all" />
     )
   return (
     <ButtonIcon

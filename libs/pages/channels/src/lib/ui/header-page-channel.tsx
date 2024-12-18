@@ -1,7 +1,7 @@
 import { ChannelEntity, MemberEntity } from '@beep/contracts'
 import { ButtonShadCn, Icon } from '@beep/ui'
 import { ChannelNameDisplay } from './channel-name-display'
-import DisplayPinned from './display-pinned'
+import { DisplayPinned } from './display-pinned'
 import { useSelector } from 'react-redux'
 import { leftPaneState } from '@beep/responsive'
 

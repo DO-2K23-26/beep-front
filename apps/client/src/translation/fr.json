@@ -426,6 +426,9 @@
       "user-not-found": "Utilisateur non trouvé",
       "error": "Une erreur est survenue lors de l'envoi de l'invitation",
       "username-required": "Le nom d'utilisateur est requis"
+    },
+    "private-channels-navigation": {
+      "private_conversations": "Conversations privées"
     }
   }
 }

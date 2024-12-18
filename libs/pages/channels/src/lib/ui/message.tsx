@@ -2,42 +2,37 @@ import { MessageEntity } from '@beep/contracts'
 import { Button, ButtonStyle, Icon, InputMessageArea } from '@beep/ui'
 import { cn } from '@beep/utils'
 import Markdoc from '@markdoc/markdoc'
-import { DateTime } from 'luxon'
 import React, { ReactNode, useEffect } from 'react'
 import { Controller, useFormContext } from 'react-hook-form'
-import { useTranslation } from 'react-i18next'
 import AttachmentFeature from '../feature/attachment-feature'
 import { renderTextWithLinks } from '../utils/links-utils'
 import { config, markdownComponents } from '../utils/markdown-config'
 import { preprocessMarkdown } from '../utils/markdown-parser'
+import { DeleteMessageDialog } from './delete-message-dialog'
 import MediaEmbed from './media-embed'
+import { ReplyToDisplay } from './reply-to-display'
+import { MessageUserDisplay } from './message-user-display'
 
 interface MessageProps {
   message: MessageEntity
-  replyTo?: MessageEntity | null
-  displayedUsername: string
   isEditing: boolean
-  profilePicture?: string
   isDisplayedAsPinned?: boolean
   isLoadingCreate: boolean | null
+  isHighlighted: boolean
   switchEditing: (() => void) | null
-  onUpdateMessage: (() => void) | null
-  onDelete: (() => void) | null
+  onUpdateMessage: () => void
+  onDelete?: () => void
   cancelEditing: () => void
   onPin: () => void
-  replaceTagEntity: (message: ReactNode) => ReactNode
+  replaceUserTag: (message: ReactNode) => ReactNode
   replaceMentionChannel: (content: React.ReactNode) => React.ReactNode
-  isHighlighted: boolean
-  onReply: ((message: MessageEntity) => void) | null
+  onReply: () => void
   containsUrl: () => boolean
 }
 
 export default function Message({
   message,
-  replyTo,
-  displayedUsername,
   isEditing,
-  profilePicture,
   isHighlighted,
   isDisplayedAsPinned,
   isLoadingCreate,
@@ -47,27 +42,11 @@ export default function Message({
   cancelEditing,
   onPin,
   onReply,
-  replaceTagEntity,
+  replaceUserTag,
   replaceMentionChannel,
   containsUrl,
-}: Readonly<MessageProps>) {
+}: Readonly<MessageProps>) { 
   const { control } = useFormContext()
-  const { t } = useTranslation()
-
-  const formatDate = (dateString: string): string => {
-    const date = DateTime.fromISO(dateString)
-    const now = DateTime.now()
-
-    if (
-      date.hasSame(now, 'day') &&
-      date.hasSame(now, 'year') &&
-      date.hasSame(now, 'month')
-    ) {
-      return `${t('channels.message.today')} ${date.toFormat('HH:mm')}`
-    } else {
-      return date.toFormat('dd/MM/yyyy HH:mm')
-    }
-  }
 
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
@@ -95,19 +74,12 @@ export default function Message({
   const ast = Markdoc.transform(nodes, config)
   // Render the AST to React elements
   const renderedMessage = replaceMentionChannel(
-    replaceTagEntity(
+    replaceUserTag(
       Markdoc.renderers.react(ast, React, {
         components: markdownComponents,
       })
     )
   )
-
-  const renderedReplyedMessage = replyTo
-    ? replaceTagEntity(
-        replyTo.content.substring(0, 50) +
-          (replyTo.content.length > 50 ? ' ...' : '')
-      )
-    : undefined
 
   return (
     <div
@@ -118,35 +90,12 @@ export default function Message({
           : ' hover:bg-violet-300')
       }
     >
-      {replyTo && replyTo !== undefined && (
-        <div className={'flex items-center ml-4 opacity-60'}>
-          <Icon name="lucide:corner-up-right" className="w-4 h-4 mr-2" />
-          <div className="reply-to bg-violet-100 p-2 rounded">
-            <span className="text-sm text-gray-600">
-              <strong>{replyTo.owner?.username}</strong> :{' '}
-              <i>{renderedReplyedMessage}</i>
-            </span>
-          </div>
-        </div>
-      )}
+      <ReplyToDisplay
+        message={message.parentMessage}
+        replaceTagEntity={replaceUserTag}
+      />
       <div className="flex flex-row gap-2 justify-between">
-        <div className="flex flex-col sm:flex-row gap-0 sm:gap-4 sm:items-center items-start">
-          <div className="flex flex-row gap-3 items-center overflow-hidden">
-            <img
-              className="block w-9 min-w-[36px] h-9 min-h-[36px] object-cover bg-violet-50 rounded-xl"
-              src={profilePicture ?? '/picture.svg'}
-              alt={displayedUsername}
-            />
-            <div className='sm:flex gap-3 sm:flex-row'>
-              <h5 className="font-semibold text-xs truncate">
-                {displayedUsername}
-              </h5>
-              <p className="font-normal text-[10px] sm:text-xs truncate">
-                {!isLoadingCreate && formatDate(message.createdAt ?? '')}
-              </p>
-            </div>
-          </div>
-        </div>
+        <MessageUserDisplay message={message} />
         <div className="flex flex-row gap-4 items-center sm:invisible group-hover:visible pr-2">
           {!isDisplayedAsPinned && (
             <>
@@ -156,18 +105,15 @@ export default function Message({
                 </Button>
               )}
               {onDelete && (
-                <Button style={ButtonStyle.NONE} onClick={onDelete}>
+                <DeleteMessageDialog onDeleteMessage={onDelete}>
                   <Icon name="lucide:trash" className="w-4 h-4" />
-                </Button>
+                </DeleteMessageDialog>
               )}
               <Button style={ButtonStyle.NONE} onClick={onPin}>
                 <Icon name="lucide:pin" className="w-5 h-5" />
               </Button>
               {onReply && (
-                <Button
-                  style={ButtonStyle.NONE}
-                  onClick={() => onReply(message)}
-                >
+                <Button style={ButtonStyle.NONE} onClick={onReply}>
                   <Icon name="lucide:corner-up-left" className="w-5 h-5" />
                 </Button>
               )}
@@ -194,12 +140,7 @@ export default function Message({
                     type="text"
                     className="rounded-xl bg-violet-50 px-4 flex-grow w-full"
                   />
-                  <Button
-                    style={ButtonStyle.NONE}
-                    onClick={() => {
-                      if (onUpdateMessage) onUpdateMessage()
-                    }}
-                  >
+                  <Button style={ButtonStyle.NONE} onClick={onUpdateMessage}>
                     <Icon name="lucide:save" className="w-10 h-10 visible" />
                   </Button>
                 </div>

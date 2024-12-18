@@ -13,12 +13,12 @@ import { MemberEntity } from '@beep/contracts'
 
 interface DisplayPinnedProps {
   channelId: string
-  serverId: string
-  isLoading: boolean
-  usersServer: MemberEntity[]
+  serverId?: string
+  isLoading?: boolean
+  usersServer?: MemberEntity[]
 }
 
-function DisplayPinned({
+export function DisplayPinned({
   channelId,
   serverId,
   isLoading,
@@ -38,21 +38,23 @@ function DisplayPinned({
     )
   if (isLoading)
     return (
-      <Skeleton className="h-10 sm:h-12 md:h-14 w-12 sm:w-16 md:w-24 rounded-xl bg-violet-300" />
+      <Skeleton className="h-10 sm:h-12 md:h-14 w-12 sm:w-16 md:w-24 rounded-xl bg-violet-300 transition-all" />
     )
   return (
     <Popover>
-      <PopoverTrigger>
-        <ButtonIcon
-          icon="lucide:pin"
-          title={t('channels.display-pinned.pinned_messages')}
-          buttonProps={buttonProps}
-          textHiddenResponsive
-        />
+      <PopoverTrigger asChild>
+        <div>
+          <ButtonIcon
+            icon="lucide:pin"
+            title={t('channels.display-pinned.pinned_messages')}
+            buttonProps={buttonProps}
+            textHiddenResponsive
+          />
+        </div>
       </PopoverTrigger>
 
       {!isLoadingPinned && pinnedMessage !== undefined && (
-        <PopoverContent align="start" className="w-fit border-none p-0">
+        <PopoverContent align="start" className="border-none p-0">
           <PinnedMessagesList
             messages={pinnedMessage}
             serverId={serverId}
@@ -64,4 +66,4 @@ function DisplayPinned({
   )
 }
 
-export default DisplayPinned
+

@@ -5,7 +5,7 @@ export function EmptyInvitationList() {
   const { t } = useTranslation()
 
   return (
-    <div className="flex flex-col w-full h-full md:w-1/2 xl:w-1/3 items-center justify-center self-center">
+    <div className="flex flex-col w-3/4 h-full md:w-1/2 xl:w-1/3 items-center justify-center self-center">
       <Icon
         name="lucide:smile-plus"
         className="size-10 md:size-15 lg:size-20"

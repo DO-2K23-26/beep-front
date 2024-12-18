@@ -1,4 +1,4 @@
-import { CreateFriendInvitationRequest, AnswerInvitationRequest, backendUrl, DeleteFriendRequest, UserDisplayedEntity, InvitationEntity } from "@beep/contracts";
+import { CreateFriendInvitationRequest, AnswerInvitationRequest, backendUrl, DeleteFriendRequest, UserDisplayedEntity, InvitationEntity, ChannelEntity } from "@beep/contracts";
 import { fetchBaseQuery } from '@reduxjs/toolkit/query';
 import { createApi } from "@reduxjs/toolkit/query/react";
 const baseQuery = fetchBaseQuery({
@@ -9,7 +9,7 @@ const baseQuery = fetchBaseQuery({
 export const friendsApi = createApi({
   reducerPath: 'friendsApi',
   baseQuery,
-  tagTypes: ['friends', 'invitations'],
+  tagTypes: ['friends', 'invitations', 'channels'],
   endpoints: (builder) => ({
     deleteFriend: builder.mutation<void, DeleteFriendRequest>({
       query: (request) => ({
@@ -41,10 +41,21 @@ export const friendsApi = createApi({
         method: 'PATCH',
         body: { answer },
       }),
-      invalidatesTags: ['friends', 'invitations'],
+      invalidatesTags: ['friends', 'invitations', 'channels'],
+    }),
+
+    getPrivateChannels: builder.query<ChannelEntity[], void>({
+      query: () => '/v1/users/@me/channels',
+      providesTags: [{type: 'channels' , id: 'private'}],
     }),
   })
 })
 
 
-export const { useDeleteFriendMutation, useGetMyFriendsQuery, useAnswerFriendsInvitationMutation, useCreateFriendsInvitationMutation , useGetMyFriendInvitationsQuery} = friendsApi
+export const {
+  useDeleteFriendMutation,
+  useGetMyFriendsQuery,
+  useAnswerFriendsInvitationMutation,
+  useCreateFriendsInvitationMutation,
+  useGetMyFriendInvitationsQuery,
+  useGetPrivateChannelsQuery } = friendsApi

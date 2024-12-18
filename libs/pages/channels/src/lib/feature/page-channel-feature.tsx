@@ -1,26 +1,17 @@
 import {
-  useDeleteMessageMutation,
-  useGetMessagesByChannelIdQuery,
-  useUpdateMessageMutation,
-} from '@beep/channel'
-import {
   ActionSignalMessage,
-  ChannelEntity,
   MessageEntity,
-  ServerEntity,
-  SignalMessage,
-  UserDisplayedEntity,
+  SignalMessage
 } from '@beep/contracts'
 import { messageActions } from '@beep/message'
 import { responsiveActions } from '@beep/responsive'
 import {
-  serverActions,
   useGetMembersQuery,
   useGetMyServersQuery,
-  useGetServerChannelsQuery
+  useGetServerChannelsQuery,
 } from '@beep/server'
-import { AppDispatch, RootState } from '@beep/store'
-import { DynamicSelectorProps, useModal } from '@beep/ui'
+import { AppDispatch } from '@beep/store'
+import { DynamicSelectorProps } from '@beep/ui'
 import { useGetMeQuery } from '@beep/user'
 import { TransmitSingleton } from '@beep/utils'
 import { skipToken } from '@reduxjs/toolkit/query'
@@ -28,9 +19,8 @@ import { useEffect, useRef, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import toast from 'react-hot-toast'
 import { useTranslation } from 'react-i18next'
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import { useParams } from 'react-router'
-import { DeleteMessageModal } from '../ui/delete-message-modal'
 import { PageChannel } from '../ui/page-channel'
 import { DynamicSelectorChannelFeature } from './dynamic-selector-channel-feature'
 import { DynamicSelectorFeature } from './dynamic-selector-item-feature'
@@ -39,53 +29,21 @@ export function PageChannelFeature() {
   const { t } = useTranslation()
 
   const dispatch = useDispatch<AppDispatch>()
-  const limit = 50
   const { data: user } = useGetMeQuery()
-  const { serverId = '', channelId = '' } = useParams<{
+  const { serverId, channelId = '' } = useParams<{
     serverId: string
     channelId: string
   }>()
-  const messageListRef = useRef<HTMLDivElement>(null)
-
-  const { data: channels } = useGetServerChannelsQuery(serverId)
-  const { data: availableServers } = useGetMyServersQuery()
-  const [fetchBeforeId, setFetchBeforeId] = useState<string | null>(null)
-
-  const {
-    isLoading: isLoadingMessages,
-    isSuccess: isSuccessGetMessage,
-    isFetching: isFetchingMessage,
-  } = useGetMessagesByChannelIdQuery(
-    { channelId, before: fetchBeforeId, limit },
-    {
-      refetchOnFocus: true,
-      skip: channelId === undefined,
-      refetchOnMountOrArgChange: true,
-    }
-  )
-
-  useEffect(() => {
-    setFetchBeforeId(null)
-  }, [channelId])
-
-  const messageState = useSelector(
-    (state: RootState) => state.message.channels_messages[channelId]
-  )
   const { data: usersServer } = useGetMembersQuery(serverId ?? skipToken)
-  const { openModal, closeModal } = useModal()
+  const { data: channels } = useGetServerChannelsQuery(serverId ?? skipToken)
+  const { data: availableServers } = useGetMyServersQuery()
+
   const [files, setFiles] = useState<File[]>([])
   const [previewUrls, setPreviewUrls] = useState<{ content: string | null }[]>(
     []
   )
-  const [selectedTaggedChannel, setSelectedTaggedChannel] = useState<
-    ChannelEntity | undefined
-  >(undefined)
 
   const inputRef = useRef<HTMLTextAreaElement>(null)
-  const [selectedTaggedUser, setSelectedTaggedUser] = useState<
-    UserDisplayedEntity | undefined
-  >(undefined)
-  const [editingMessageId, setEditingMessageId] = useState<string | null>(null)
 
   const messageForm = useForm({
     mode: 'onChange',
@@ -100,7 +58,8 @@ export function PageChannelFeature() {
   }
   const [dynamicSelector, setDynamicSelector] = useState<
     DynamicSelectorProps | undefined
-  >(undefined)
+    >(undefined)
+
 
   const updateDynamicSelector = (message: string, cursorPos: number) => {
     const startWordIndex: number = message.slice(0, cursorPos).includes(' ')
@@ -187,19 +146,6 @@ export function PageChannelFeature() {
       setDynamicSelector(undefined)
     }
   }
-  const onScrollMessage = () => {
-    if (messageListRef.current && messageState !== undefined) {
-      const { scrollTop, scrollHeight, clientHeight } = messageListRef.current
-
-      if (
-        ((scrollTop - clientHeight) / scrollHeight) * -1 >= 0.75 &&
-        messageState?.[messageState.length - 1] !== undefined &&
-        messageState?.length >= limit
-      ) {
-        setFetchBeforeId(messageState[messageState.length - 1].id ?? null)
-      }
-    }
-  }
 
   const handleInputChange = (
     value: string,
@@ -230,7 +176,6 @@ export function PageChannelFeature() {
 
   const onAddFile = (file: File) => {
     setFiles((prev) => [...prev, file])
-
     if (file.type.includes('image')) {
       const reader = new FileReader()
 
@@ -250,40 +195,6 @@ export function PageChannelFeature() {
     setFiles((prev) => prev.filter((_, i) => i !== index))
     setPreviewUrls((prev) => prev.filter((_, i) => i !== index))
   }
-
-  const [updateMessage] = useUpdateMessageMutation()
-
-  const onUpdateMessage = async (messageId: string, newContent: string) => {
-    await updateMessage({
-      channelId: channelId,
-      messageId: messageId,
-      content: newContent,
-    }).unwrap()
-  }
-
-  const [deleteMessage, resultDeleteMessage] = useDeleteMessageMutation()
-
-  const onDeleteMessage = async (channelId: string, messageId: string) => {
-    openModal({
-      content: (
-        <DeleteMessageModal
-          closeModal={closeModal}
-          onDeleteMessage={async () => {
-            await deleteMessage({
-              channelId: channelId,
-              messageId: messageId,
-            }).unwrap()
-          }}
-        />
-      ),
-    })
-  }
-
-  useEffect(() => {
-    if (resultDeleteMessage.isError) {
-      toast.error(t('channels.page-channel.error.delete_message'))
-    }
-  }, [resultDeleteMessage])
 
   const onSendMessage = messageForm.handleSubmit(async (data) => {
     // check if message is not empty OR files are not empty
@@ -308,7 +219,6 @@ export function PageChannelFeature() {
     } else {
       toast.error(t('channels.page-channel.error.empty_message'))
     }
-
   })
 
   useEffect(() => {
@@ -333,52 +243,24 @@ export function PageChannelFeature() {
           break
       }
     })
-    if (availableServers) {
-      const curServer = availableServers.find(
-        (s: ServerEntity) => s.id === serverId
-      ) ?? {
-        id: '',
-        name: 'You have no servers',
-        createdAt: '',
-        updatedAt: '',
-        ownerId: '',
-        icon: '',
-        visibility: 'private',
-      }
-      dispatch(serverActions.setServer(curServer))
-    }
     return () => {
       TransmitSingleton.unsubscribeChannel(`channels/${channelId}/messages`)
     }
-  }, [serverId, isSuccessGetMessage, availableServers, dispatch, channelId])
+  }, [serverId, availableServers, dispatch, channelId])
 
   return (
     <PageChannel
       key={'page_channel' + channelId}
       messageForm={messageForm}
-      serverId={serverId}
-      messages={messageState ?? []}
-      messageListRef={messageListRef}
-      onScrollMessage={onScrollMessage}
       sendMessage={onSendMessage}
-      onUpdateMessage={onUpdateMessage}
-      onDeleteMessage={onDeleteMessage}
       files={files}
       filesPreview={previewUrls}
       onAddFiles={onAddFile}
       onDeleteFile={onDeleteFile}
       inputRef={inputRef}
-      usersServer={usersServer ?? []}
-      editingMessageId={editingMessageId}
-      setEditingMessageId={setEditingMessageId}
       onChange={handleInputChange}
       onCursorChange={handleCursorChange}
       dynamicSelector={dynamicSelector}
-      selectedTaggedChannel={selectedTaggedChannel}
-      setSelectedTaggedChannel={setSelectedTaggedChannel}
-      selectedTaggedUser={selectedTaggedUser}
-      setSelectedTaggedUser={setSelectedTaggedUser}
-      isLoadingMessages={isLoadingMessages || isFetchingMessage}
       onFocusChannel={onFocusChannel}
     />
   )

@@ -25,11 +25,13 @@ export default function DisplayChannel({
     settings: [
       {
         title: t('layout.display-channel.overview'),
+        id: 'overview',
         settingComponent: <OverviewSettingsChannelFeature channel={channel} />,
         settingBodySize: SettingBodyWidth.S,
       },
       {
         title: t('layout.display-channel.delete'),
+        id: 'delete',
         settingComponent: <DeleteChannelFeature channel={channel} />,
       },
     ],

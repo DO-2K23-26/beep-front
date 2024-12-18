@@ -15,7 +15,7 @@ import { useForm } from 'react-hook-form'
 import { useDispatch, useSelector } from 'react-redux'
 import CurrentUser from '../ui/current-user'
 
-export default function CurrentUserFeature() {
+export function CurrentUserFeature() {
   const { data: userMe } = useGetMeQuery()
   const server = useSelector((state: RootState) => state.servers.server)
   const { isMuted, isVoiceMuted, isCamera } = useSelector(getUserState)

@@ -26,7 +26,9 @@ export function FriendsInvitationRowFeature({
   }
 
   return (
-    <FriendRow user={user ?? emptyUser}>
+    <FriendRow
+      user={user ?? emptyUser}
+    >
       <InvitationAnswerButtonsFeature invitation={invitation} />
     </FriendRow>
   )

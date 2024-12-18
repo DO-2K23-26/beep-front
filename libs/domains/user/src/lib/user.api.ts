@@ -25,7 +25,6 @@ import {
   Complete2FARegistrationRequest,
 } from '@beep/contracts'
 // eslint-disable-next-line @nx/enforce-module-boundaries
-import { BaseQueryArg } from '@reduxjs/toolkit/dist/query/baseQueryTypes'
 
 const baseQuery = fetchBaseQuery({
   baseUrl: backendUrl,

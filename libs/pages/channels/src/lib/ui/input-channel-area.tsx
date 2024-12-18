@@ -1,6 +1,6 @@
 import { MessageEntity } from '@beep/contracts'
 import { ButtonIcon, ButtonShadCnProps, InputMessageArea } from '@beep/ui'
-import { useRef } from 'react'
+import { useCallback, useRef } from 'react'
 import { Controller, UseFormReturn } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 
@@ -14,9 +14,6 @@ interface InputChannelAreaProps {
     replyTo: MessageEntity | null
   }>
   inputRef?: React.RefObject<HTMLTextAreaElement>
-  handleKeyDownOnMessage: (
-    event: React.KeyboardEvent<HTMLTextAreaElement>
-  ) => void
 }
 
 export function InputChannelArea({
@@ -26,13 +23,24 @@ export function InputChannelArea({
   onCursorChange,
   sendMessage,
   messageForm,
-  handleKeyDownOnMessage,
 }: InputChannelAreaProps) {
   const inputButtonProps: ButtonShadCnProps = {
     variant: 'hoverRounded',
     size: 'responsiveSquare',
   }
   const fileInputRef = useRef<HTMLInputElement>(null)
+  const handleKeyDownOnMessage = useCallback(
+    (event: React.KeyboardEvent<HTMLTextAreaElement>) => {
+      if (event.shiftKey) {
+        return
+      }
+      if (event.key === 'Enter') {
+        event.preventDefault()
+        sendMessage()
+      }
+    },
+    [sendMessage]
+  )
 
   const handleButtonClick = () => {
     // Trigger click on the hidden input

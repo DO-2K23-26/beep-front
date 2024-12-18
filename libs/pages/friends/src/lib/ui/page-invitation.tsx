@@ -12,7 +12,7 @@ export function PageInvitation({
   isLoadingInvitations,
 }: PageInvitationProps) {
   return (
-    <div className=" flex flex-col w-full h-full p-2 sm:p-4 md:p-6 overflow-auto">
+    <div className=" flex flex-col w-full h-full p-2 sm:p-4 md:p-6 overflow-y-auto">
       <AddFriendInputFeature />
       <div className="flex flex-col w-full h-full overflow-y-scroll scroll-smooth no-scrollbar">
         <DisplayInvitations

@@ -6,8 +6,8 @@ import { cn } from '@beep/utils'
 
 interface PinnedMessagesListProps {
   messages: MessageEntity[]
-  serverId: string
-  usersServer: MemberEntity[]
+  serverId?: string
+  usersServer?: MemberEntity[]
 }
 
 function PinnedMessagesList({
@@ -35,7 +35,7 @@ function PinnedMessagesList({
               message={message}
               serverId={serverId}
               isDisplayedAsPinned={true}
-              usersServer={usersServer}
+              usersServer={usersServer ?? []}
             />
           ))
       )}

@@ -1,82 +1,43 @@
 import {
-  ChannelEntity,
-  MemberEntity,
-  MessageEntity,
-  UserDisplayedEntity,
+  MessageEntity
 } from '@beep/contracts'
 import { DynamicSelector, DynamicSelectorProps, Icon } from '@beep/ui'
-import { useCallback } from 'react'
 import { UseFormReturn } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
-import { TaggedChannelFeature } from '../feature/tagged-channel-feature'
-import { UserInformationsFeature } from '../feature/user-informations-feature'
+import { ListMessagesFeature } from '../feature/list-messages-feature'
 import { InputChannelArea } from './input-channel-area'
-import ListMessages from './list-messages'
 
 export interface PageChannelProps {
   messageForm: UseFormReturn<{
     message: string
     replyTo: MessageEntity | null
   }>
-  messageListRef: React.RefObject<HTMLDivElement>
-  messages?: MessageEntity[]
   sendMessage: () => void
-  onScrollMessage: () => void
-  onUpdateMessage: (messageId: string, newContent: string) => void
-  onDeleteMessage: (channelId: string, messageId: string) => void
   files: File[]
   onAddFiles: (file: File) => void
   onDeleteFile: (index: number) => void
   filesPreview: { content: string | null }[]
   inputRef?: React.RefObject<HTMLTextAreaElement>
-  usersServer: MemberEntity[]
-  editingMessageId: string | null
-  setEditingMessageId: React.Dispatch<React.SetStateAction<string | null>>
   onChange?: (value: string, onChange: (value: string) => void) => void
   onCursorChange?: () => void
   dynamicSelector?: DynamicSelectorProps
-  selectedTaggedUser: UserDisplayedEntity | undefined
-  setSelectedTaggedUser: React.Dispatch<
-    React.SetStateAction<UserDisplayedEntity | undefined>
-  >
-  selectedTaggedChannel: ChannelEntity | undefined
-  setSelectedTaggedChannel: React.Dispatch<
-    React.SetStateAction<ChannelEntity | undefined>
-  >
-  isLoadingMessages: boolean
-  serverId?: string
   onFocusChannel: () => void
 }
 
 export const PageChannel = ({
   messageForm,
-  messages,
-  messageListRef,
-  onScrollMessage,
   sendMessage,
-  onUpdateMessage,
   files,
   onAddFiles,
   onDeleteFile,
   filesPreview,
   inputRef,
-  usersServer,
-  editingMessageId,
-  setEditingMessageId,
   onChange,
   onFocusChannel,
   onCursorChange,
-  onDeleteMessage,
   dynamicSelector,
-  selectedTaggedUser,
-  setSelectedTaggedUser,
-  selectedTaggedChannel,
-  setSelectedTaggedChannel,
-  isLoadingMessages,
-  serverId,
 }: PageChannelProps) => {
   const { t } = useTranslation()
-
   const replyTo = messageForm.watch('replyTo')
   const setReplyTo = (message: MessageEntity | null) => {
     messageForm.setValue('replyTo', message)
@@ -86,53 +47,11 @@ export const PageChannel = ({
     }
   }
 
-  const handleKeyDownOnMessage = useCallback(
-    (event: React.KeyboardEvent<HTMLTextAreaElement>) => {
-      if (event.shiftKey) {
-        return
-      }
-      if (event.key === 'Enter') {
-        event.preventDefault()
-        sendMessage()
-      }
-    },
-    [sendMessage]
-  )
 
   return (
     <>
-      <ListMessages
-        messages={messages ?? []}
-        isLoading={isLoadingMessages}
-        messageListRef={messageListRef}
-        onScroll={onScrollMessage}
-        onUpdateMessage={onUpdateMessage}
-        onDeleteMessage={onDeleteMessage}
-        editingMessageId={editingMessageId}
-        setEditingMessageId={setEditingMessageId}
-        selectedTaggedUser={selectedTaggedUser}
-        setSelectedTaggedUser={setSelectedTaggedUser}
-        setSelectedTaggedChannel={setSelectedTaggedChannel}
-        onReply={setReplyTo}
-        serverId={serverId}
-        usersServer={usersServer}
-      />
+      <ListMessagesFeature setReplyTo={setReplyTo} />
       <div onClick={onFocusChannel}>
-        {selectedTaggedChannel ? (
-          <TaggedChannelFeature
-            channel={selectedTaggedChannel}
-            onClick={() => setSelectedTaggedChannel(undefined)}
-          />
-        ) : null}
-        {selectedTaggedUser ? (
-          <UserInformationsFeature
-            user={{
-              id: selectedTaggedUser.id,
-              username: selectedTaggedUser.username,
-            }}
-            onClose={() => setSelectedTaggedUser(undefined)}
-          />
-        ) : null}
         {/* Message input + bouttons + files */}
         <div className="flex flex-col w-full gap-3 ">
           {replyTo && (
@@ -145,7 +64,7 @@ export const PageChannel = ({
               }}
             >
               <span>
-                {t('channels.page-channel.reply_to')}{' '}
+                {t('channels.page-channel.reply_to')}
                 <strong>{replyTo.owner?.username}</strong> :{' '}
                 <em>
                   {replyTo.content.length > 15
@@ -216,7 +135,6 @@ export const PageChannel = ({
             inputRef={inputRef}
             onChange={onChange}
             messageForm={messageForm}
-            handleKeyDownOnMessage={handleKeyDownOnMessage}
             onCursorChange={onCursorChange}
           />
         </div>

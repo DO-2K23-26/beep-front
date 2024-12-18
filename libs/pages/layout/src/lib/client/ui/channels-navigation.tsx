@@ -26,7 +26,7 @@ import { ListVoiceChannels } from './list-voice-channels'
 import { cn } from '@beep/utils'
 import { getVoiceState } from '@beep/voice'
 import { useTranslation } from 'react-i18next'
-import CurrentUserFeature from '../feature/current-user-feature'
+import { CurrentUserFeature } from '../feature/current-user-feature'
 import { CreateChannelModal } from './create-channel-modal'
 import { ServerDropdown } from './server-dropdown'
 import { ServerPictureButton } from './server-picture-button'
@@ -103,7 +103,7 @@ export default function ChannelsNavigation({
         'hidden lg:flex': !showLeftPane,
       })}
     >
-      <div className=" bg-violet-300 p-3 lg:p-6 flex flex-col h-full w-full justify-between">
+      <div className=" bg-violet-300 p-3 flex flex-col h-full w-full justify-between">
         {/* Top bar: Server information */}
 
         <div className="flex flex-col gap-3 sm:gap-4 md:gap-6 h-full">
@@ -175,7 +175,9 @@ export default function ChannelsNavigation({
               serverName={serverName}
             />
           )}
-          <CurrentUserFeature />
+          <div className="flex justify-center w-full sm:min-w-32">
+            <CurrentUserFeature />
+          </div>
         </div>
       </div>
     </div>

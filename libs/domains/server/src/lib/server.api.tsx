@@ -52,6 +52,7 @@ export const serverApi = createApi({
       }),
       providesTags: [{ type: 'servers' }],
     }),
+
     discoverServers: builder.query<ServerEntity[], SearchServerRequest>({
       query: (params) => {
         const url = new URL(`/servers/discover`, backendUrl)
@@ -166,8 +167,12 @@ export const serverApi = createApi({
     getServerChannels: builder.query<GetChannelsResponse, string>({
       query: (serverId) => `/servers/${serverId}/channels`,
       transformResponse: (response: ChannelEntity[]) => {
-        const voice = response.filter((channel) => ChannelType.voice_server === channel.type)
-        const text = response.filter((channel) => ChannelType.text_server === channel.type)
+        const voice = response.filter(
+          (channel) => ChannelType.voice_server === channel.type
+        )
+        const text = response.filter(
+          (channel) => ChannelType.text_server === channel.type
+        )
         return { voiceChannels: voice, textChannels: text }
       },
       providesTags: (result, _error, serverId) =>

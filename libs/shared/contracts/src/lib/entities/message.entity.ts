@@ -1,6 +1,6 @@
-import { UserEntity } from "./user.entity"
-import { Attachment } from './attachment.entity';
 import { CreateMessageRequest } from "../request";
+import { Attachment } from './attachment.entity';
+import { UserDisplayedEntity } from "./user-displayed.entity";
 
 export interface MessageEntity {
   id: string
@@ -8,7 +8,7 @@ export interface MessageEntity {
   content: string
   channelId: string
   attachments?: Attachment[]
-  owner?: UserEntity
+  owner?: UserDisplayedEntity
   createdAt?: string
   updatedAt?: string
   pinned: boolean

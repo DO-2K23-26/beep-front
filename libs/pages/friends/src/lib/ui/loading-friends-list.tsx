@@ -7,7 +7,7 @@ export function LoadingFriendsList() {
         <Skeleton
           key={'friend_skeleton_' + index}
           className={`h-14 md:h-15 w-full rounded-md
-            bg-violet-800/40`}
+            bg-violet-500/40`}
         />
       ))}
     </div>

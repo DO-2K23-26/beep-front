@@ -7,6 +7,7 @@ import { ListMemberSkeleton } from './list-member-skeleton'
 import { ListMembers } from './list-members'
 import { useTranslation } from 'react-i18next'
 import { cn } from '@beep/utils'
+import { useParams } from 'react-router'
 
 interface MembersNavigationProps {
   usersConnected?: UserConnectedEntity[]
@@ -24,7 +25,7 @@ export default function MembersNavigation({
   isLoadingUsers,
 }: MembersNavigationProps) {
   const { t } = useTranslation()
-
+  const { serverId } = useParams<{ serverId: string }>()
   const { showRightPane } = useSelector(getResponsiveState)
 
   return (
@@ -45,7 +46,7 @@ export default function MembersNavigation({
           className="p-2 bg-violet-400 rounded-lg hover:rounded-xl transition-all"
           onClick={() => {
             openModal({
-              content: <InviteMemberModalFeature />,
+              content: <InviteMemberModalFeature serverId={serverId} />,
             })
           }}
         >

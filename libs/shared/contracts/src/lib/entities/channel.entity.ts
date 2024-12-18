@@ -1,11 +1,13 @@
 import { ChannelType } from "../enums/channel-type"
+import { UserDisplayedEntity } from "./user-displayed.entity"
 
 export interface ChannelEntity {
-    id: string
-    name: string
-    description: string
-    serverId: string
-    type: ChannelType
-    createdAt?: string
-    updatedAt?: string
+  id: string
+  name: string
+  description: string
+  serverId: string
+  type: ChannelType
+  users: UserDisplayedEntity[]
+  createdAt?: string
+  updatedAt?: string
 }

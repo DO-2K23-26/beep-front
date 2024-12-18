@@ -61,6 +61,7 @@
     "tailwind-merge": "^2.3.0",
     "ts-pattern": "^5.1.1",
     "tslib": "^2.6.2",
+    "useismobile": "^1.0.4",
     "utils": "link:@/lib/utils",
     "zod": "^3.23.8"
   },

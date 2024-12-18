@@ -12,7 +12,7 @@ import {
   FullScreenDialogContent,
   FullScreenDialogTrigger,
   Icon,
-  UseModalProps
+  UseModalProps,
 } from '@beep/ui'
 import { ReactNode } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -38,9 +38,7 @@ export function ServerDropdown({
 }: ServerDropdownProps) {
   const { t } = useTranslation()
   const navigate = useNavigate()
-  const afterDestroy = () => {
-    navigate('/servers/discover')
-  }
+  const navigateAfterDelete = () => navigate('/servers')
   // List of setting in the user setting modal
   const subSetting: SubSettings = {
     subGroupSettingTitle: 'Server',
@@ -74,8 +72,9 @@ export function ServerDropdown({
               openModal({
                 content: (
                   <DestroyServerFeature
+                    serverId={server.id}
                     closeModal={closeModal}
-                    afterDestroy={afterDestroy}
+                    navigateAfterDelete={navigateAfterDelete}
                   />
                 ),
               })
@@ -99,4 +98,3 @@ export function ServerDropdown({
     </FullScreenDialog>
   )
 }
-

@@ -421,6 +421,9 @@
       "user-not-found": "User not found",
       "error": "An error occurred while sending the invitation",
       "username-required": "Username is required"
+    },
+    "private-channels-navigation": {
+      "private_conversations": "Private conversations"
     }
   },
   "globals": {

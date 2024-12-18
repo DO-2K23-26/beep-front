@@ -1,15 +1,16 @@
-import { useEffect, useState } from 'react'
+import { addDays, addHours, addWeeks } from 'date-fns'
 import { DateTime } from 'luxon'
+import { useEffect, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { GenerateCodePrivateInvitation } from './generate-code-private-invitation'
 import { GeneratedCodePrivateInvitation } from './generated-code-private-invitation'
 import { IdCodePublicInvitation } from './id-code-public-invitation'
-import { addDays, addHours, addWeeks } from 'date-fns'
-import { useTranslation } from 'react-i18next'
 
 interface InviteMemberModalProps {
   serverInviteCode: string | undefined
   serverVisibility: string | undefined
   serverId: string | undefined
+  codeGenerated?: boolean
   onGenerateCode: (uniqueCode: boolean, expirationDate: Date) => void
   onGenerateNewCode: () => void
   copyToClipboard: (copiedText: string, toastText: string) => void
@@ -19,6 +20,7 @@ export function InviteMemberModal({
   serverInviteCode,
   serverVisibility,
   serverId,
+  codeGenerated,
   onGenerateCode,
   onGenerateNewCode,
   copyToClipboard,
@@ -87,9 +89,7 @@ export function InviteMemberModal({
       {serverVisibility === 'private' ? (
         <>
           <ModalHeader text={t('layout.invite-member-modal.share_code')} />
-          {serverInviteCode === null ||
-          serverInviteCode === '' ||
-          serverInviteCode === undefined ? (
+          {!codeGenerated ? (
             <GenerateCodePrivateInvitation
               isDateInPast={isDatePassed}
               isButtonDisabled={isButtonDisabled}

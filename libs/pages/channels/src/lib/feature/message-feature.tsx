@@ -1,29 +1,20 @@
 import {
   useCreateMessageMutation,
-  useGetOneMessageQuery,
+  useDeleteMessageMutation,
   usePinMessageMutation,
+  useUpdateMessageMutation,
 } from '@beep/channel'
 import {
   ChannelEntity,
   MemberEntity,
-  MessageEntity,
-  UserDisplayedEntity,
+  MessageEntity
 } from '@beep/contracts'
 import { messageActions } from '@beep/message'
-import {
-  getServersState,
-  useGetMemberQuery,
-  useGetServerChannelsQuery,
-} from '@beep/server'
+import { useGetServerChannelsQuery } from '@beep/server'
 import { AppDispatch } from '@beep/store'
-import {
-  getUserState,
-  useFetchProfilePictureQuery,
-  useGetUserByIdQuery,
-  useGetUsersFromQuery,
-} from '@beep/user'
+import { getUserState, useGetUsersFromQuery } from '@beep/user'
 import { skipToken } from '@reduxjs/toolkit/query'
-import React, { ReactNode, useEffect, useState } from 'react'
+import { ReactNode, useEffect } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
 import toast from 'react-hot-toast'
 import { useDispatch, useSelector } from 'react-redux'
@@ -39,18 +30,9 @@ import {
 interface MessageFeatureProps {
   message: MessageEntity
   isDisplayedAsPinned?: boolean
-  onUpdateMessage?: (messageId: string, newContent: string) => void
-  onDeleteMessage?: (channelId: string, messageId: string) => void
+  onReply?: (message: MessageEntity) => void
   editingMessageId?: string | null
   setEditingMessageId?: (id: string | null) => void
-  onReply?: (message: MessageEntity) => void
-  selectedTaggedUser?: UserDisplayedEntity | undefined
-  setSelectedTaggedUser?: React.Dispatch<
-    React.SetStateAction<UserDisplayedEntity | undefined>
-  >
-  setSelectedTaggedChannel?: React.Dispatch<
-    React.SetStateAction<ChannelEntity | undefined>
-  >
   serverId?: string
   usersServer: MemberEntity[]
 }
@@ -58,39 +40,29 @@ interface MessageFeatureProps {
 export default function MessageFeature({
   message,
   serverId,
-  onUpdateMessage,
-  onDeleteMessage,
+  onReply,
   isDisplayedAsPinned,
   editingMessageId,
   setEditingMessageId,
-  onReply,
-  selectedTaggedUser,
-  setSelectedTaggedUser,
   usersServer,
 }: MessageFeatureProps) {
-  const [replyToMessage, setReplyToMessage] = useState<
-    MessageEntity | undefined | null
-  >(message.parentMessage)
-  const { data: member } = useGetMemberQuery(
-    { serverId: serverId ?? '', userId: message.ownerId },
-    { skip: serverId === undefined }
-  )
-  const { data: replyMessage, isLoading: isLoadingReplyMessage } =
-    useGetOneMessageQuery(
-      {
-        channelId: message.channelId,
-        messageId: message.parentMessageId ?? '',
-      },
-      {
-        skip:
-          !message.parentMessageId ||
-          (message.parentMessage !== undefined &&
-            message.parentMessage !== null),
-      }
-    )
-
-  const [createMessage, createResult] = useCreateMessageMutation()
   const dispatch = useDispatch<AppDispatch>()
+  const { payload: userPayload } = useSelector(getUserState)
+  const currentUserIsOwner = userPayload?.sub === message.ownerId
+  const channelId = message.channelId
+
+  const [updateMessage] = useUpdateMessageMutation()
+  const [createMessage, createResult] = useCreateMessageMutation()
+  const [deleteMessage] = useDeleteMessageMutation()
+  const [pinMessage, result] = usePinMessageMutation()
+  const navigate = useNavigate()
+
+  const onDeleteMessage = async (channelId: string, messageId: string) => {
+    deleteMessage({
+      channelId: channelId,
+      messageId: messageId,
+    })
+  }
   // This is ignored if the message come from the server
   // In the case the message is sent by the current client it will be true
   // when the message is post correctly
@@ -110,26 +82,12 @@ export default function MessageFeature({
         })
       )
   }, [createResult, dispatch, message.id, message.isSentByCurrentClient])
-  const [pinMessage, result] = usePinMessageMutation()
-  const serverData = useSelector(getServersState)
-  const userId: string | undefined = useSelector(getUserState).payload?.sub
-  const navigate = useNavigate()
 
   const { data: channels } = useGetServerChannelsQuery(serverId ?? skipToken)
-  const { data: owner } = useGetUserByIdQuery(
-    { id: message.ownerId },
-    { skip: message.ownerId === undefined }
-  )
-  const { currentData: userProfilePicture } = useFetchProfilePictureQuery(
-    message.ownerId,
-    {
-      skip:
-        owner === undefined ||
-        owner.profilePicture === 'default_profile_picture.png' ||
-        owner.profilePicture === '',
-    }
-  )
 
+  const setAsRepliedMessage = () => {
+    if (onReply) onReply(message)
+  }
   const matches = RegExp(regexUserTagging).exec(message.content)
   const ids = matches
     ? matches
@@ -144,14 +102,11 @@ export default function MessageFeature({
 
   const isEditing = editingMessageId === message.id
 
-  useEffect(() => {
-    if (replyMessage !== undefined && !isLoadingReplyMessage) {
-      setReplyToMessage(replyMessage)
-    }
-  }, [replyMessage, isLoadingReplyMessage])
-
   const methods = useForm({
     mode: 'onChange',
+    defaultValues: {
+      message: message.content,
+    },
   })
   const switchEditing = () => {
     if (
@@ -161,31 +116,29 @@ export default function MessageFeature({
     ) {
       setEditingMessageId(null)
     }
-    methods.reset({ message: message.content })
+    methods.resetField('message')
     if (setEditingMessageId) setEditingMessageId(message.id)
   }
 
   const cancelEditing = () => {
-    methods.reset({ message: message.content })
+    methods.resetField('message')
     if (setEditingMessageId) setEditingMessageId(null)
   }
 
   const onPin = async () => {
-    await pinMessage({
+    pinMessage({
       channelId: message.channelId,
       messageId: message.id,
       action: message.pinned ? 'unpin' : 'pin',
     })
   }
 
-  function isUserMessageOwner(): boolean {
-    if (userId) return userId === message.ownerId
-    return false
-  }
-
-  function isUserServerOwner(): boolean {
-    if (userId) return userId === serverData.server?.ownerId
-    return false
+  const onUpdateMessage = async (messageId: string, newContent: string) => {
+    updateMessage({
+      channelId: channelId,
+      messageId: messageId,
+      content: newContent,
+    })
   }
 
   function containsUrl(): boolean {
@@ -208,7 +161,7 @@ export default function MessageFeature({
     if (
       data.message !== '' &&
       data.message !== undefined &&
-      isUserMessageOwner() &&
+      currentUserIsOwner &&
       onUpdateMessage !== undefined
     ) {
       onUpdateMessage(message.id, data.message)
@@ -218,23 +171,10 @@ export default function MessageFeature({
   })
 
   const onDeleteMessageSubmit = methods.handleSubmit(() => {
-    if (
-      (isUserMessageOwner() || isUserServerOwner()) &&
-      onDeleteMessage !== undefined
-    ) {
-      onDeleteMessage(message.channelId, message.id)
-    }
+    if (onDeleteMessage) onDeleteMessage(message.channelId, message.id)
   })
 
-  const onClickTagUser = (user: DisplayedEntity) => {
-    if (setSelectedTaggedUser)
-      !selectedTaggedUser ||
-      (selectedTaggedUser && selectedTaggedUser.id !== user.id)
-        ? setSelectedTaggedUser(user as UserDisplayedEntity)
-        : setSelectedTaggedUser(undefined)
-  }
-
-  const replaceTagEntity = (message: ReactNode): ReactNode => {
+  const replaceUserTag = (message: ReactNode): ReactNode => {
     const findUserForTag = (userId: string) => {
       const serverMember = usersServer.find((u) => u.userId === userId.slice(2))
       if (serverMember)
@@ -253,7 +193,9 @@ export default function MessageFeature({
       regexUserTagging,
       '@',
       findUserForTag,
-      onClickTagUser
+      () => {
+        /*Do nothing for the moment*/
+      }
     )
   }
 
@@ -283,29 +225,21 @@ export default function MessageFeature({
     <FormProvider {...methods}>
       <Message
         message={createResult.data ?? message}
-        replyTo={replyToMessage}
-        profilePicture={userProfilePicture}
         isEditing={isEditing}
         isDisplayedAsPinned={isDisplayedAsPinned}
-        displayedUsername={member?.nickname ?? 'Casper'}
-        onDelete={
-          (isUserMessageOwner() || isUserServerOwner()) &&
-          onDeleteMessage !== undefined
-            ? onDeleteMessageSubmit
-            : null
-        }
+        onDelete={onDeleteMessageSubmit}
         isLoadingCreate={createResult.isLoading}
-        switchEditing={isUserMessageOwner() ? switchEditing : null}
+        switchEditing={currentUserIsOwner ? switchEditing : null}
         cancelEditing={cancelEditing}
-        onUpdateMessage={onUpdateMessage ? onUpdateMessageSubmit : null}
+        onUpdateMessage={onUpdateMessageSubmit}
         replaceMentionChannel={replaceMentionChannel}
-        replaceTagEntity={replaceTagEntity}
+        replaceUserTag={replaceUserTag}
         isHighlighted={
-          message.content.includes('@$' + userId) ||
-          message.parentMessage?.ownerId === userId
+          message.content.includes('@$' + (userPayload?.sub ?? '')) ||
+          message.parentMessage?.ownerId === userPayload?.sub
         }
         onPin={onPin}
-        onReply={onReply !== undefined ? () => onReply(message) : null}
+        onReply={setAsRepliedMessage}
         containsUrl={containsUrl}
       />
     </FormProvider>
