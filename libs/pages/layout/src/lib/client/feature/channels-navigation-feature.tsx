@@ -20,6 +20,7 @@ import {
   getVoiceState,
   setCurrentChannelId,
   setSortedMembers,
+  initializeDevices
 } from '@beep/voice'
 import { skipToken } from '@reduxjs/toolkit/query'
 import { useCallback, useEffect } from 'react'
@@ -211,6 +212,7 @@ export function ChannelsNavigationFeature() {
           username: userPayload?.username
         },
       } )
+
       dispatch({
         type: 'INITIALIZE_WEBRTC',
         payload: {

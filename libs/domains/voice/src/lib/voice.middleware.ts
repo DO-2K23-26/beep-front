@@ -1,11 +1,14 @@
 import { Middleware } from '@reduxjs/toolkit';
 import {
   addRemoteStream,
+  setAudioInputDevice,
   setConnectionState,
+  setDevices,
   setLocalStream,
   setRemoteStreams,
   setServerPresence,
-  setUserStreams
+  setUserStreams,
+  setVideoDevice
 } from './voice.slice'
 import { webrtcUrl } from '@beep/contracts'
 import {Socket, Presence, Channel} from 'phoenix'
@@ -95,22 +98,38 @@ const WebRTCMiddleware: Middleware = (store) => {
         break
 
       case 'INITIALIZE_WEBRTC':
+        console.log("action.payload.videoDevice", action.payload.videoDevice)
+        if (action.payload.videoDevice == null) {
+          await navigator.mediaDevices.getUserMedia({
+            audio: true,
+            video: true,
+          })
+          const devicesIn = await navigator.mediaDevices.enumerateDevices()
+          action.payload.audioInputDevice =
+            devicesIn.find((device) => device.kind === 'audioinput') || null
+          action.payload.videoDevice =
+            devicesIn.find((device) => device.kind === 'videoinput') || null
+          store.dispatch(setDevices(devicesIn))
+          if (action.payload.audioInputDevice) store.dispatch(setAudioInputDevice(action.payload.audioInputDevice))
+          if (action.payload.videoDevice)
+            store.dispatch(setVideoDevice(action.payload.videoDevice))
+        }
+
         if (!action.payload.isVoiceMuted) {
-          console.log("avant audio")
           audio = await navigator.mediaDevices.getUserMedia({
             audio: {
               deviceId: action.payload.audioInputDevice.deviceId,
-            }
+            },
           })
-          console.log("apres audio")
         }
+
         if (action.payload.isCamera) {
           video = await navigator.mediaDevices.getUserMedia({
             video: {
               width: 320,
               height: 240,
               deviceId: action.payload.videoDevice.deviceId,
-            }
+            },
           })
           store.dispatch(setLocalStream(video));
         }

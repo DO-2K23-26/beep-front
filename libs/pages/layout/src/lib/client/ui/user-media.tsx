@@ -1,6 +1,9 @@
 import { Device } from '@beep/contracts'
 import { InputSelect } from '@beep/ui'
+import { useDispatch } from 'react-redux'
+import { initializeDevices } from '@beep/voice'
 import { useTranslation } from 'react-i18next'
+import { AppDispatch } from '@beep/store'
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface UserMediaProps {
@@ -28,6 +31,7 @@ export function UserMedia({
   onChangeAudioOutputDevice,
   onChangeAudioInputDevice,
 }: UserMediaProps) {
+  const dispatch = useDispatch<AppDispatch>()
   const { t } = useTranslation()
 
   return (
@@ -50,7 +54,7 @@ export function UserMedia({
             onChange={onChangeAudioOutputDevice}
           />
         )}
-        {audioInputDeviceLabel && (
+        {audioInputDeviceLabel ? (
           <InputSelect
             label={t('layout.user-media.audio_inputs')}
             options={audioInputs.map((device) => ({
@@ -60,8 +64,21 @@ export function UserMedia({
             value={audioInputDeviceLabel}
             onChange={onChangeAudioInputDevice}
           />
+        ) : (
+          <div className="text-slate-800 text-xs sm:text-sm md:text-base flex flex-col justify-center items-start">
+            {t('layout.user-media.no_audio_inputs')} !
+            <button
+              className="text-blue-500 underline"
+              onClick={() => {
+                dispatch(initializeDevices())
+              }}
+            >
+              {t('layout.user-media.permission_to_use')}
+            </button>
+            {t('layout.user-media.access_blocked')}
+          </div>
         )}
-        {videoDeviceLabel && (
+        {videoDeviceLabel ? (
           <InputSelect
             label={t('layout.user-media.video_inputs')}
             options={videoInputs.map((device) => ({
@@ -71,6 +88,19 @@ export function UserMedia({
             value={videoDeviceLabel}
             onChange={onChangeVideoInputDevice}
           />
+        ) : (
+          <div className="text-slate-800 text-xs sm:text-sm md:text-base flex flex-col justify-center items-start">
+            {t('layout.user-media.no_video_inputs')} !
+            <button
+              className="text-blue-500 underline"
+              onClick={() => {
+                dispatch(initializeDevices())
+              }}
+            >
+              {t('layout.user-media.permission_to_use')}
+            </button>
+            {t('layout.user-media.access_blocked')}
+          </div>
         )}
       </div>
     </div>

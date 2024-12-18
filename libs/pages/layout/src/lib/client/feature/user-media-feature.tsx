@@ -58,13 +58,6 @@ export function UserMediaFeature({}: UserMediaFeatureProps) {
   }
 
   useEffect(() => {
-    if (!devices.length) {
-    dispatch(initializeDevices())
-      
-    }
-  }, [dispatch])
-
-  useEffect(() => {
     const updateDeviceLists = () => {
       const audioInputs = devices.filter(
         (device) => device.kind === 'audioinput'
