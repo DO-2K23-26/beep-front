@@ -20,7 +20,8 @@ import {
   ServerEntity,
   UpdateChannelRequest,
 } from '@beep/contracts'
-import { createApi, fetchBaseQuery} from '@reduxjs/toolkit/query/react'
+import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
+import { RoleEntity } from 'libs/shared/contracts/src/lib/entities/role.entity'
 // eslint-disable-next-line @nx/enforce-module-boundaries
 
 const baseQuery = fetchBaseQuery({
@@ -37,6 +38,7 @@ export const serverApi = createApi({
   baseQuery,
   tagTypes: [
     'servers',
+    'roles',
     'channel',
     'textChannel',
     'voiceChannel',
@@ -114,8 +116,8 @@ export const serverApi = createApi({
       CreateChannelRequest
     >({
       queryFn: async (request, queryApi, _extraOptions, fetchWithBQ) => {
-        const { getState } = queryApi;
-        const state = getState();
+        const { getState } = queryApi
+        const state = getState()
 
         // Access your slice's state here
 
@@ -127,13 +129,13 @@ export const serverApi = createApi({
             name: request.name,
             type: +request.type,
           },
-        });
+        })
 
         if (response.error) {
-          return { error: response.error };
+          return { error: response.error }
         }
 
-        return { data: response.data as CreateChannelResponse };
+        return { data: response.data as CreateChannelResponse }
       },
 
       invalidatesTags: (_result, _error, req) => [
@@ -194,16 +196,16 @@ export const serverApi = createApi({
       providesTags: (result, _error, serverId) =>
         result
           ? [
-            ...result.voiceChannels.map(({ id }) => ({
-              type: 'voiceChannel' as const,
-              id,
-            })),
-            ...result.textChannels.map(({ id }) => ({
-              type: 'textChannel' as const,
-              id,
-            })),
-            { type: 'channel', id: `LIST-${serverId}` },
-          ]
+              ...result.voiceChannels.map(({ id }) => ({
+                type: 'voiceChannel' as const,
+                id,
+              })),
+              ...result.textChannels.map(({ id }) => ({
+                type: 'textChannel' as const,
+                id,
+              })),
+              { type: 'channel', id: `LIST-${serverId}` },
+            ]
           : [{ type: 'channel', id: `LIST-${serverId}` }],
     }),
     joinVoiceChannel: builder.mutation<
@@ -235,12 +237,12 @@ export const serverApi = createApi({
       providesTags: (result, _error, _arg) =>
         result
           ? [
-            ...result.map(({ channelId }) => ({
-              type: 'streamingUsers' as const,
-              channelId,
-            })),
-            'streamingUsers',
-          ]
+              ...result.map(({ channelId }) => ({
+                type: 'streamingUsers' as const,
+                channelId,
+              })),
+              'streamingUsers',
+            ]
           : ['streamingUsers'],
     }),
     getMember: builder.query<MemberEntity, GetMemberRequest>({
@@ -259,12 +261,21 @@ export const serverApi = createApi({
       providesTags: (result, _error, serverId) =>
         result
           ? [
-            ...result.map(({ id }) => ({ type: 'members' as const, id })),
-            { type: 'members', id: `LIST-${serverId}` },
-          ]
+              ...result.map(({ id }) => ({ type: 'members' as const, id })),
+              { type: 'members', id: `LIST-${serverId}` },
+            ]
           : [{ type: 'members', id: `LIST-${serverId}` }],
     }),
-
+    getRoles: builder.query<RoleEntity[], string>({
+      query: (serverId) => `servers/${serverId}/roles`,
+      providesTags: (result, _error, serverId) =>
+        result
+          ? [
+              ...result.map(({ id }) => ({ type: 'roles' as const, id })),
+              { type: 'roles', id: `LIST-${serverId}` },
+            ]
+          : [{ type: 'roles', id: `LIST-${serverId}` }],
+    }),
     updateServer: builder.mutation<
       ServerEntity,
       { serverId: string; updatedServer: Partial<ServerEntity> }
@@ -312,17 +323,14 @@ export const serverApi = createApi({
         { type: 'transmitBanner', id: id },
       ],
     }),
-    patchChannelPosition: builder.mutation<
-      ChannelEntity,
-      MoveChannelRequest
-    >({
+    patchChannelPosition: builder.mutation<ChannelEntity, MoveChannelRequest>({
       query: (request) => ({
         url: `/servers/${request.serverId}/channels/${request.channelId}`,
         method: 'PUT',
         body: {
-          position: request.position
+          position: request.position,
         },
-      })
+      }),
     }),
     getMyMember: builder.query<MemberEntity, GetMyMemberRequest>({
       query: (req) => ({
@@ -362,6 +370,7 @@ export const {
   useJoinVoiceChannelMutation,
   useLeaveVoiceChannelMutation,
   useGetCurrentStreamingUsersQuery,
+  useGetRolesQuery,
   useUpdateServerMutation,
   useUpdateBannerMutation,
   useUpdatePictureMutation,
@@ -369,5 +378,5 @@ export const {
   useTransmitPictureQuery,
   useDeleteServerMutation,
   useDiscoverServersQuery,
-  usePatchChannelPositionMutation
+  usePatchChannelPositionMutation,
 } = serverApi
