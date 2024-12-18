@@ -1,6 +1,7 @@
 export * from './lib/modal/setting-modal'
 export * from './lib/components/modify-username-email'
 export * from './lib/components/modify-profile-card'
+export * from './lib/components/enable-2fa-dialog'
 export * from './lib/feature/modify-profile-card-feature'
 export * from './lib/models/setting-navigation-models'
 export * from './lib/feature/change-language-feature'

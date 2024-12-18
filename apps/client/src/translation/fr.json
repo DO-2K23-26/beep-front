@@ -1,4 +1,8 @@
 {
+  "globals": {
+    "activated": "activé",
+    "not-activated": "non activé"
+  },
   "auth": {
     "page-after-signup": {
       "check_email": "Vérifiez vos emails",
@@ -34,13 +38,17 @@
     "page-signin": {
       "signin": "Se connecter",
       "required_email": "L'e-mail est requis",
+      "password_error": "Le mot de passe que vous avez saisi est incorrect",
+      "invalid_email": "Adresse e-mail invalide",
       "email": "Email",
       "required_password": "Le mot de passe est requis",
       "password": "Mot de passe",
       "forgot_password": "Vous avez oublié votre mot de passe ?",
       "no_account": "Vous n'avez pas de compte ?",
       "signup": "S'inscrire",
-      "qrcode": "Se connecter avec votre téléphone"
+      "qrcode": "Se connecter avec votre téléphone",
+      "error": "Email/password incorrect",
+      "success": "Connexion réussie"
     },
     "page-signup": {
       "welcome_back": "Nous sommes heureux de vous voir !!",
@@ -66,6 +74,14 @@
       "signup": "S'inscrire",
       "already_account": "Vous avez déjà un compte ?",
       "signin": "Se connecter"
+    },
+    "page-totp": {
+      "verify-identity": "Vérifiez votre identité",
+      "application-otp": "Ouvrez votre application OTP et entrez le code ci-dessous ou utiliser un code de secours",
+      "button": "Envoyer",
+      "error": "Une erreur est survenue lors de la vérification du code",
+      "error-totp-invalid": "Code incorrect",
+      "error-enter-6-digits": "Veuillez entrer un code à 6 chiffres"
     },
     "page-verify": {
       "account_verification": "Vérification du compte",
@@ -146,6 +162,32 @@
     }
   },
   "layout": {
+    "security-settings": {
+      "tfa-n-activated": {
+        "subtitle": "AUTHENTIFICATION 2FA",
+        "description": "Activez l'authentification à deux facteurs pour ajouter une couche de sécurité supplémentaire à votre compte Beep.",
+        "learn-more": "En savoir plus ici.",
+        "cta": "Activer l'application Authenticator",
+        "error": "Code TOTP erroné"
+      },
+      "ask-password": {
+        "title": "Entrez votre mot de passe",
+        "subtitle": "Veuillez saisir votre mot de passe pour activer 2FA",
+        "error": "Mot de passe requis."
+      },
+      "link-authenticator": {
+        "title": "Associez votre application Authenticator",
+        "subtitle": "Sécurisez votre compte en deux étapes :",
+        "scan": "SCANNEZ LE CODE QR",
+        "scan-description": "Ouvrez l'application d'authentification et scannez le QRCode.Ouvrez l'application d'authentification et scannez le QRCode.",
+        "2fa": "CLÉ 2FA (ENTRÉE MANUELLE)",
+        "2fa-description": "Saisissez le code de vérification à 6 chiffres généré."
+      },
+      "tfa-activated": {
+        "description": "Activez l'authentification à deux facteurs pour ajouter une couche de sécurité supplémentaire à votre compte Beep. Puisque vous l'avez fait, vous êtes en sécurité ! GG ;)",
+        "cta": "Supprimer l'application Authenticator"
+      }
+    },
     "add-server": {
       "add-server-modal": {
         "add_server": "Ajouter un serveur",
@@ -219,6 +261,7 @@
       "account": "Compte",
       "profile": "Profil",
       "voice_video": "Voix & Vidéo",
+      "security": "Sécurité",
       "online": "Connecté",
       "offline": "Déconnecté",
       "language": "Langue"

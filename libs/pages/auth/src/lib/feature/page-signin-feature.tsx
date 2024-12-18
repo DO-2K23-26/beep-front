@@ -2,7 +2,12 @@ import { useEffect, useState } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
 import { PageSignin } from '../ui/page-signin'
 import { useLocation, useNavigate } from 'react-router-dom'
-import { LoginRequest, LoginWithQRCodeRequest, backendUrl } from '@beep/contracts'
+import {
+  HttpError,
+  LoginRequest,
+  LoginWithQRCodeRequest,
+  backendUrl,
+} from '@beep/contracts'
 import { AppDispatch } from '@beep/store'
 import { useDispatch, useSelector } from 'react-redux'
 import { getUserState, useLoginMutation, userActions } from '@beep/user'
@@ -14,6 +19,7 @@ import {
 import { TransmitSingleton } from '@beep/transmit'
 import toast from 'react-hot-toast'
 import { Transmit } from '@adonisjs/transmit-client'
+import { useTranslation } from 'react-i18next'
 
 export function PageSigninFeature() {
   const dispatch = useDispatch<AppDispatch>()
@@ -26,6 +32,10 @@ export function PageSigninFeature() {
   const [generateToken, tokenResult] = useLazyGetGeneratedTokenQuery()
   const qrCodeFeatureFlag = true
   const [qrCodeLink, setQrCodeLink] = useState('')
+  const [userData, setUserData] = useState({
+    email: '',
+    password: '',
+  })
 
   useEffect(() => {
     generateToken(null, true)
@@ -35,21 +45,26 @@ export function PageSigninFeature() {
   const handleSubscription = async (token: string) => {
     const transmit = new Transmit({
       baseUrl: backendUrl,
-      uidGenerator: () => Math.random().toString(36).substring(7)
+      uidGenerator: () => Math.random().toString(36).substring(7),
     })
 
     const subscription = transmit.subscription(`qr-code/${token}`)
     await subscription.create() // Wait for the subscription to be created
 
     subscription.onMessage((passKey: string) => {
-      loginWithQRCode({token: token, passKey: passKey} as LoginWithQRCodeRequest)
-      toast.success('Successfully logged in!')
+      loginWithQRCode({
+        token: token,
+        passKey: passKey,
+      } as LoginWithQRCodeRequest)
+      toast.success(t('auth.page-signin.success'))
     })
 
     if (subscription.isCreated) {
-      const newQrCodeLink = `${window.location.protocol}//${window.location.hostname
-        }${window.location.port ? ':' : ''}${window.location.port
-        }/authentication/qrcode/${token}`
+      const newQrCodeLink = `${window.location.protocol}//${
+        window.location.hostname
+      }${window.location.port ? ':' : ''}${
+        window.location.port
+      }/authentication/qrcode/${token}`
 
       setQrCodeLink(newQrCodeLink)
       dispatch(authenticationActions.setQRCodeToken(token))
@@ -71,6 +86,7 @@ export function PageSigninFeature() {
     }
   }, [tokenResult, dispatch])
 
+  const { t } = useTranslation()
   const methods = useForm({
     mode: 'onChange',
   })
@@ -85,6 +101,7 @@ export function PageSigninFeature() {
 
   const onSubmit = methods.handleSubmit((data) => {
     login(data as LoginRequest)
+    setUserData(data as LoginRequest)
   })
 
   useEffect(() => {
@@ -92,9 +109,20 @@ export function PageSigninFeature() {
       dispatch(userActions.updateIsLoading(false))
       dispatch(userActions.setTokens(loginResult.data.tokens))
     } else if (loginResult?.isError) {
-      setError('Email/password incorrect')
+      const error = loginResult.error as HttpError
+      if (error.data.code === 'E_MISSING_TOTP_TOKEN') {
+        navigate('/authentication/totp', {
+          state: {
+            from: location,
+            email: userData.email,
+            password: userData.password,
+          },
+        })
+      } else {
+        setError(t('auth.page-signin.error'))
+      }
     }
-  }, [loginResult, dispatch])
+  }, [loginResult, userData, dispatch, navigate, location, t])
 
   useEffect(() => {
     if (
@@ -112,7 +140,7 @@ export function PageSigninFeature() {
       dispatch(userActions.updateIsLoading(false))
       dispatch(userActions.setTokens(loginWithQRCodeResult.data.tokens))
     } else if (loginWithQRCodeResult?.isError) {
-      setError('Email/password incorrect')
+      setError(t('auth.page-signin.error'))
     }
   }, [loginWithQRCodeResult, dispatch])
 

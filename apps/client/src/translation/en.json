@@ -37,10 +37,13 @@
       "email": "Email",
       "required_password": "Password is required",
       "password": "Password",
+      "password_error": "The password you entered is wrong",
       "forgot_password": "You forgot your password ?",
       "no_account": "Don't have an account ?",
       "signup": "Sign up",
-      "qrcode": "Se connecter avec votre téléphone"
+      "qrcode": "Se connecter avec votre téléphone",
+      "error": "Invalid email or password",
+      "success": "Successfully logged in"
     },
     "page-signup": {
       "welcome_back": "We are happy to see you !",
@@ -66,6 +69,14 @@
       "signup": "Sign up",
       "already_account": "Already have an account ?",
       "signin": "Sign in"
+    },
+    "page-totp": {
+      "verify-identity": "Verify your identity",
+      "application-otp": "Open your authenticator application and enter the code below or use a recovery code",
+      "button": "Send",
+      "error": "An error occurred while trying to verify your identity",
+      "error-totp-invalid": "Invalid code",
+      "error-enter-6-digits": "Please enter a 6-digit code"
     },
     "page-verify": {
       "account_verification": "Account verification",
@@ -219,6 +230,7 @@
       "account": "Account",
       "profile": "Profile",
       "voice_video": "Voice & Video",
+      "security": "Security",
       "online": "Online",
       "offline": "Offline",
       "language": "Language"
@@ -270,6 +282,32 @@
     },
     "members-navigation": {
       "members": "Members"
+    },
+    "security-settings": {
+      "tfa-n-activated": {
+        "subtitle": "2FA AUTHENTICATION",
+        "description": "Activate the two factor authentication to add an extra layer of security to your Beep account.",
+        "learn-more": "Learn more here.",
+        "cta": "Enable Authenticator App",
+        "error": "Wrong TOTP code"
+      },
+      "tfa-activated": {
+        "description": "Activate the two factor authentication to add an extra layer of security to your Beep account. Since you did it you're quite safe ! GG ;)",
+        "cta": "Remove Authenticator App"
+      },
+      "ask-password": {
+        "title": "Enter your password",
+        "subtitle": "Please enter your password to enable 2FA",
+        "error": "Password required."
+      },
+      "link-authenticator": {
+        "title": "Link your Authenticator App",
+        "subtitle": "Make your account safer in two steps :",
+        "scan": "SCAN THE QR CODE",
+        "scan-description": "Open the authentication app and scan the QRCode.",
+        "2fa": "2FA KEY (MANUAL ENTRY)",
+        "2fa-description": "Enter the 6-digit verification code generated."
+      }
     },
     "overview-settings-channel": {
       "overview": "Overview",
@@ -384,5 +422,9 @@
       "error": "An error occurred while sending the invitation",
       "username-required": "Username is required"
     }
+  },
+  "globals": {
+    "activated": "activated",
+    "not-activated": "not activated"
   }
 }

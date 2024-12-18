@@ -11,6 +11,7 @@ import { ModifyEmailDialog } from '../components/modify-email-dialog'
 import { ModifyProfileCard } from '../components/modify-profile-card'
 import { ModifyProfilePictureDialog } from '../components/modify-profile-picture-dialog'
 import { ModifyUsernameDialog } from '../components/modify-username-dialog'
+
 import { useTranslation } from 'react-i18next'
 
 export function ModifyProfileCardFeature() {

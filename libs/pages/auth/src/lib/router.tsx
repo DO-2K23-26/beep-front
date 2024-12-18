@@ -9,6 +9,7 @@ import { PageSignupFeature } from './feature/page-signup-feature'
 import PageVerifyFeature from './feature/page-verify-feature'
 import { PageQRCodeVerifyFeature } from './feature/page-verify-qrcode-feature'
 import PageAuthBackground from './ui/page-auth-background'
+import PageTotpFeature from './feature/page-totp-feature'
 
 export const autenticationRouter: RouteObject[] = [
   {
@@ -54,6 +55,10 @@ export const autenticationRouter: RouteObject[] = [
       {
         path: 'qrcode/:token',
         Component: PageQRCodeVerifyFeature,
+      },
+      {
+        path: 'totp',
+        Component: PageTotpFeature,
       },
       {
         path: '*',

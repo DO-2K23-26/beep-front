@@ -7,6 +7,8 @@ export * from './user/forgot-password.request'
 export * from './user/reset_password.request'
 export * from './user/get-user.request'
 export * from './user/login-qr-code.request'
+export * from './user/ask-totp-uri.request'
+export * from './user/complete-2fa-registration.request'
 
 export * from './channel/create-channel.request'
 export * from './channel/update-channel.request'

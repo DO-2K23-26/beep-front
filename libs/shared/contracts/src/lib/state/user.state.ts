@@ -4,6 +4,7 @@ export interface UserState {
   user?: UserEntity
   isAuthenticated: boolean
   isLoading: boolean
+  TOTPAuthentication: boolean
   tokens: {
     refreshToken?: string | null
     accessToken?: string | null
