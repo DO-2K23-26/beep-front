@@ -389,7 +389,9 @@
       "video_inputs": "Entrées vidéo",
       "no_audio_outputs": "Aucune sortie audio trouvée",
       "no_audio_inputs": "Aucune entrée audio trouvée",
-      "no_video_inputs": "Aucune entrée vidéo trouvée"
+      "no_video_inputs": "Aucune entrée vidéo trouvée",
+      "permission_to_use": "Demander l'autorisation d'utiliser votre microphone et votre caméra.",
+      "access_blocked": "Si vous avez bloqué l'accès, vous pouvez le débloquer dans les paramètres de votre navigateur."
     }
   },
   "settings": {
