@@ -7,9 +7,11 @@ import {
 import { ServerEntity, ServerState } from '@beep/contracts'
 // eslint-disable-next-line @nx/enforce-module-boundaries
 import { RootState } from '@beep/store'
+import { RoleEntity } from 'libs/shared/contracts/src/lib/entities/role.entity'
 
 export const initialServersState: ServerState = {
   server: undefined,
+  roles: [],
   inviteCode: null,
 }
 
@@ -21,6 +23,9 @@ export const serverSlice = createSlice({
   reducers: {
     setServer(state, action: PayloadAction<ServerEntity>) {
       state.server = action.payload
+    },
+    setRoles(state, action: PayloadAction<RoleEntity[]>) {
+      state.roles = action.payload
     },
     setInviteCode(state, action: PayloadAction<string | null>) {
       if (state.server) {
