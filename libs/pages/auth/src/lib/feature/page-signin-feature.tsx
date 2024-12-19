@@ -87,7 +87,6 @@ export function PageSigninFeature() {
     }
   }, [tokenResult, dispatch])
 
-  const { t } = useTranslation()
   const methods = useForm({
     mode: 'onChange',
   })
