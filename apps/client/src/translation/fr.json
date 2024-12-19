@@ -10,7 +10,8 @@
     },
     "page-confirm-email": {
       "check_email": "Vérifiez vos emails",
-      "confirm_account": "Confirmez votre compte pour vous connecter"
+      "confirm_account": "Confirmez votre compte pour vous connecter",
+      "next": "Suivant"
     },
     "page-forgot-password": {
       "forgot_password": "Mot de passe oublié ?",
@@ -51,6 +52,13 @@
       "qrcode_description": "Connectez vous sur votre télephone puis scannez le QRCode avec votre téléphone pour vous connecter",
       "success": "Connexion réussie",
       "error": "Email ou mot de passe incorrect"
+    },
+    "page-email-update-confirmation": {
+      "button": "Se connecter",
+      "wait": "Veuillez patienter...",
+      "redirect": "Vous allez être redirigé vers la page de connexion",
+      "error1": "Oups, une erreur est survenue",
+      "error2": "Le token est invalide ou vous n'avez pas le droit de faire cette action"
     },
     "page-signup": {
       "title": "Créer un compte",

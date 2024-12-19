@@ -6,7 +6,8 @@
     },
     "page-confirm-email": {
       "check_email": "Check your email",
-      "confirm_account": "Confirm your account to signin"
+      "confirm_account": "Confirm your account to signin",
+      "next": "Next"
     },
     "page-forgot-password": {
       "forgot_password": "Forgot your password ?",
@@ -45,6 +46,13 @@
       "qrcode_description": "Connect to your account then scan the QRCode with your phone",
       "success": "Successfully connected",
       "error": "An error occurred while trying to connect"
+    },
+    "page-email-update-confirmation": {
+      "button": "Sign in",
+      "wait": "Waiting for confirmation...",
+      "redirect": "You will be redirect to the signin page",
+      "error1": "Oups something went wrong",
+      "error2": "Either the token is expired or you are not allowed to do that"
     },
     "page-signup": {
       "title": "Create your account",
