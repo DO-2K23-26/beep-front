@@ -1,3 +1,8 @@
+import { Button } from '@beep/shadcn'
+import ContainerLight from './container-light'
+import { ArrowRight } from 'lucide-react'
+import { useTranslation } from 'react-i18next'
+
 export interface PageEmailUpdateConfirmation {
   state: 'pending' | 'error' | 'success'
   onErrorClick: () => void
@@ -9,36 +14,47 @@ export function PageEmailUpdateConfirmation({
 }: PageEmailUpdateConfirmation) {
   let title = ''
   let subtitle = ''
+  const { t } = useTranslation()
 
   switch (state) {
     case 'pending':
-      title = 'Waiting for confirmation...'
+      title = t('auth.page-email-update-confirmation.wait')
       break
     case 'success':
-      title = 'Waiting for confirmation...'
-      subtitle = 'You will be redirect to the signin page.'
+      title = t('auth.page-email-update-confirmation.wait')
+      subtitle = t('auth.page-email-update-confirmation.redirect')
       break
     default:
-      title = 'Oups something went wrong'
-      subtitle =
-        'Either the token is expired or you are not allowed to do that.'
+      title = t('auth.page-email-update-confirmation.error1')
+      subtitle = t('auth.page-email-update-confirmation.error2')
       break
   }
 
   return (
-    <div className="flex flex-col gap-6 justify-center items-start">
-      <h1 className="font-extrabold">{title}</h1>
-      <div className="flex flex-row gap-2 items-center">
-        <h5>{subtitle}</h5>
-        {state === 'error' ? (
-          <button
-            className="hover:underline text-violet-900"
-            onClick={onErrorClick}
-          >
-            Go to signin
-          </button>
-        ) : null}
-      </div>
+    <div className="flex justify-center items-center p-4">
+      {/* Container */}
+      <ContainerLight>
+        <div className="flex flex-col gap-12 z-10 max-w-3xl">
+          <div className="flex flex-col gap-3">
+            <p className="font-bold text-grayV2">BEEP 0.1</p>
+            <h1 className="font-extrabold text-whiteV2">{title}</h1>
+          </div>
+          <div className="flex flex-col sm:flex-row justify-between item sm:items-center gap-6 sm:gap-12">
+            <p className="text-text-grayV2 text-sm font-bold">{subtitle}</p>
+            {state === 'error' ? (
+              <Button variant={'signin'} size={'signin'} onClick={onErrorClick}>
+                <p className="font-bold text-whiteV2">
+                  {t('auth.page-email-update-confirmation.button')}
+                </p>
+                <ArrowRight
+                  className="w-6 h-6 text-whiteV2 font-bold"
+                  color="#FF82B6"
+                />
+              </Button>
+            ) : null}
+          </div>
+        </div>
+      </ContainerLight>
     </div>
   )
 }
