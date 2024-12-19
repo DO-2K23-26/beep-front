@@ -16,6 +16,8 @@ export function EmptyServerPageFeature() {
   useEffect(() => {
     if (channels && channels.textChannels.length !== 0) {
       const firstChan = channels.textChannels[0]
+
+      
       if (firstChan) {
         navigate(`/servers/${serverId}/channels/${firstChan.id}`)
       }

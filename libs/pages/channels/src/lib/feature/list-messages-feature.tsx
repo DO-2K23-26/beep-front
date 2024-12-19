@@ -1,11 +1,7 @@
 import { useGetMessagesByChannelIdQuery } from '@beep/channel'
-import {
-  MessageEntity
-} from '@beep/contracts'
-import { useGetMembersQuery } from '@beep/server'
+import { MessageEntity } from '@beep/contracts'
 import { RootState } from '@beep/store'
-import { skipToken } from '@reduxjs/toolkit/query'
-import { useEffect, useRef, useState } from 'react'
+import { useRef, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { useParams } from 'react-router-dom'
 import ListMessages from '../ui/list-messages'
@@ -16,6 +12,7 @@ interface ListMessagesFeatureProps {
 
 export function ListMessagesFeature({ setReplyTo }: ListMessagesFeatureProps) {
   const messageListRef = useRef<HTMLDivElement>(null)
+  const limit = 50
   const { serverId, channelId = '' } = useParams<{
     serverId: string
     channelId: string
@@ -23,11 +20,7 @@ export function ListMessagesFeature({ setReplyTo }: ListMessagesFeatureProps) {
   const messageState = useSelector(
     (state: RootState) => state.message.channels_messages[channelId]
   )
-
-  const { data: usersServer } = useGetMembersQuery(serverId ?? skipToken)
   const [fetchBeforeId, setFetchBeforeId] = useState<string | null>(null)
-  const limit = 50
-
   const [editingMessageId, setEditingMessageId] = useState<string | null>(null)
   const { isLoading: isLoadingMessages, isFetching: isFetchingMessage } =
     useGetMessagesByChannelIdQuery(
@@ -38,9 +31,6 @@ export function ListMessagesFeature({ setReplyTo }: ListMessagesFeatureProps) {
         refetchOnMountOrArgChange: true,
       }
     )
-  useEffect(() => {
-    setFetchBeforeId(null)
-  }, [channelId])
   const onScrollMessage = () => {
     if (messageListRef.current && messageState !== undefined) {
       const { scrollTop, scrollHeight, clientHeight } = messageListRef.current
@@ -64,7 +54,6 @@ export function ListMessagesFeature({ setReplyTo }: ListMessagesFeatureProps) {
       editingMessageId={editingMessageId}
       setEditingMessageId={setEditingMessageId}
       serverId={serverId}
-      usersServer={usersServer ?? []}
     />
   )
 }

@@ -4,13 +4,9 @@ import {
   usePinMessageMutation,
   useUpdateMessageMutation,
 } from '@beep/channel'
-import {
-  ChannelEntity,
-  MemberEntity,
-  MessageEntity
-} from '@beep/contracts'
+import { ChannelEntity, MemberEntity, MessageEntity } from '@beep/contracts'
 import { messageActions } from '@beep/message'
-import { useGetServerChannelsQuery } from '@beep/server'
+import { useGetMembersQuery, useGetServerChannelsQuery } from '@beep/server'
 import { AppDispatch } from '@beep/store'
 import { getUserState, useGetUsersFromQuery } from '@beep/user'
 import { skipToken } from '@reduxjs/toolkit/query'
@@ -34,7 +30,6 @@ interface MessageFeatureProps {
   editingMessageId?: string | null
   setEditingMessageId?: (id: string | null) => void
   serverId?: string
-  usersServer: MemberEntity[]
 }
 
 export default function MessageFeature({
@@ -44,13 +39,25 @@ export default function MessageFeature({
   isDisplayedAsPinned,
   editingMessageId,
   setEditingMessageId,
-  usersServer,
 }: MessageFeatureProps) {
   const dispatch = useDispatch<AppDispatch>()
   const { payload: userPayload } = useSelector(getUserState)
   const currentUserIsOwner = userPayload?.sub === message.ownerId
   const channelId = message.channelId
-
+  const matches = RegExp(regexUserTagging).exec(message.content)
+  const taggedUserIds = matches
+    ? matches
+        .map((match) => match.slice(2))
+        .filter(
+          (userId) =>
+            members && !members.map((member) => member.userId).includes(userId)
+        )
+    : []
+  const { data: taggedUsers } = useGetUsersFromQuery(
+    { userIds: taggedUserIds },
+    { skip: taggedUserIds.length === 0 }
+  )
+  const { data: members } = useGetMembersQuery(serverId ?? skipToken)
   const [updateMessage] = useUpdateMessageMutation()
   const [createMessage, createResult] = useCreateMessageMutation()
   const [deleteMessage] = useDeleteMessageMutation()
@@ -88,17 +95,6 @@ export default function MessageFeature({
   const setAsRepliedMessage = () => {
     if (onReply) onReply(message)
   }
-  const matches = RegExp(regexUserTagging).exec(message.content)
-  const ids = matches
-    ? matches
-        .map((match) => match.slice(2))
-        .filter((userId) => !usersServer.map((us) => us.id).includes(userId))
-    : []
-
-  const { data: taggedUsers } = useGetUsersFromQuery(
-    { userIds: ids },
-    { skip: ids.length === 0 }
-  )
 
   const isEditing = editingMessageId === message.id
 
@@ -176,7 +172,8 @@ export default function MessageFeature({
 
   const replaceUserTag = (message: ReactNode): ReactNode => {
     const findUserForTag = (userId: string) => {
-      const serverMember = usersServer.find((u) => u.userId === userId.slice(2))
+      const serverMember =
+        members && members.find((member) => member.userId === userId.slice(2))
       if (serverMember)
         return {
           id: serverMember.userId,

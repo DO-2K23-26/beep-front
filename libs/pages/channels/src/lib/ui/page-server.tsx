@@ -5,7 +5,7 @@ import {
 import { leftPaneState, rightPaneState } from '@beep/responsive'
 import { cn } from '@beep/utils'
 import { useSelector } from 'react-redux'
-import { Outlet } from 'react-router'
+import { Outlet, useParams } from 'react-router'
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 export interface PageServerProps {}
@@ -13,11 +13,11 @@ export interface PageServerProps {}
 export function PageServer() {
   const rightDivState = useSelector(rightPaneState)
   const leftDivState = useSelector(leftPaneState)
-
+  const { serverId } = useParams<{ serverId: string }>()
   return (
     <div className={cn('flex flex-row h-dvh w-full justify-start')}>
       <div className={cn({ 'w-1/3 sm:w-fit': leftDivState })}>
-        <ChannelsNavigationFeature />
+        <ChannelsNavigationFeature key={'members_navigation' + serverId} />
       </div>
 
       <div
@@ -29,7 +29,7 @@ export function PageServer() {
       >
         <Outlet />
       </div>
-        <MembersNavigationFeature />
+      <MembersNavigationFeature key={'members_navigation' + serverId} />
     </div>
   )
 }

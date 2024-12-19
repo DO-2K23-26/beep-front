@@ -1,7 +1,4 @@
-import {
-  MemberEntity,
-  MessageEntity
-} from '@beep/contracts'
+import { MessageEntity } from '@beep/contracts'
 import MessageFeature from '../feature/message-feature'
 import { ListMessageSkeleton } from './list-message-skeleton'
 
@@ -14,7 +11,6 @@ interface ListMessagesProps {
   onScroll: () => void
   onReply: (message: MessageEntity) => void
   serverId?: string
-  usersServer: MemberEntity[]
 }
 
 export default function ListMessages({
@@ -23,7 +19,6 @@ export default function ListMessages({
   messageListRef,
   serverId,
   editingMessageId,
-  usersServer,
   onReply,
   onScroll,
   setEditingMessageId,
@@ -43,7 +38,6 @@ export default function ListMessages({
             editingMessageId={editingMessageId}
             onReply={() => onReply(message)}
             setEditingMessageId={setEditingMessageId}
-            usersServer={usersServer}
             serverId={serverId}
           />
         ))}

@@ -1,14 +1,10 @@
 import { ServerEntity } from '@beep/contracts'
 import {
-  serverActions,
-  useGetServerChannelsQuery,
-  useTransmitPictureQuery,
+  useTransmitPictureQuery
 } from '@beep/server'
-import { AppDispatch } from '@beep/store'
-import { useDispatch } from 'react-redux'
+import { skipToken } from '@reduxjs/toolkit/query'
 import { useNavigate, useParams } from 'react-router-dom'
 import DisplayServer from '../ui/display-server'
-import { skipToken } from '@reduxjs/toolkit/query'
 
 interface DisplayServerFeatureProps {
   server: ServerEntity
@@ -18,24 +14,14 @@ export default function DisplayServerFeature({
   server,
 }: DisplayServerFeatureProps) {
   const navigate = useNavigate()
-  const dispatch = useDispatch<AppDispatch>()
-  const { data: channels } = useGetServerChannelsQuery(server.id)
   const { data: icon } = useTransmitPictureQuery(server?.id ?? skipToken, {
     skip: server?.icon === '',
   })
 
-  const params = useParams()
+  const { serverId } = useParams<{ serverId: string }>()
   const onServerChange = () => {
-    // Check if we are not already on the server
-    if (channels && params['*']?.split('/')[0] !== server.id) {
-      const firstChan = channels.textChannels[0]
-      dispatch(serverActions.setServer(server))
-      // If no channel are on the server display the default page
-      if (firstChan) {
-        navigate(`/servers/${server.id}/channels/${firstChan.id}`)
-      } else {
-        navigate(`/servers/${server.id}`)
-      }
+    if (serverId !== server.id) {
+      navigate(`/servers/${server.id}`)
     }
   }
   return (

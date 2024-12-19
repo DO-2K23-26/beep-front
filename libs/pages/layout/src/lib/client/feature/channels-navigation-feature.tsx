@@ -6,7 +6,6 @@ import {
   UserConnectedEntity,
 } from '@beep/contracts'
 import {
-  serverActions,
   useCreateChannelInServerMutation,
   useGetCurrentStreamingUsersQuery,
   useGetMyServersQuery,
@@ -15,7 +14,7 @@ import {
   useLeaveVoiceChannelMutation,
   useTransmitBannerQuery
 } from '@beep/server'
-import { AppDispatch, RootState } from '@beep/store'
+import { AppDispatch } from '@beep/store'
 import { TransmitSingleton } from '@beep/transmit'
 import { useModal } from '@beep/ui'
 import { getUserState, useGetMeQuery } from '@beep/user'
@@ -30,13 +29,23 @@ import { useForm } from 'react-hook-form'
 import { toast } from 'react-hot-toast'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
-import { useNavigate } from 'react-router'
+import { useNavigate, useParams } from 'react-router'
 import ChannelsNavigation from '../ui/channels-navigation'
 
 export function ChannelsNavigationFeature() {
   const { t } = useTranslation()
+  const { serverId } = useParams<{ serverId: string }>()
+  const { server } = useGetMyServersQuery(undefined, {
+    skip: serverId === undefined,
+    selectFromResult(state) {
+      if (state.data === undefined) return { server: undefined, ...state }
+      return {
+        server: state.data.find((server) => server.id === serverId),
+        ...state,
+      }
+    },
+  })
 
-  const server = useSelector((state: RootState) => state.servers.server)
   const { data: streamingUsers } = useGetCurrentStreamingUsersQuery(
     server?.id ?? ''
   )
@@ -47,7 +56,6 @@ export function ChannelsNavigationFeature() {
 
   const dispatch = useDispatch<AppDispatch>()
   const { openModal, closeModal } = useModal()
-  const { data: servers } = useGetMyServersQuery()
   const { data: channels } = useGetServerChannelsQuery(
     server ? server.id : skipToken
   )
@@ -133,12 +141,6 @@ export function ChannelsNavigationFeature() {
     }
   }, [handleReload]) // Make sure to include any dependencies if your leaveServer function depends on props or state
 
-  useEffect(() => {
-    if (!server && servers && servers.length > 0) {
-      dispatch(serverActions.setServer(servers[0]))
-    }
-  }, [server, servers, dispatch])
-
   const [createChannel, resultCreatedChannel] =
     useCreateChannelInServerMutation()
   useEffect(() => {
@@ -150,7 +152,7 @@ export function ChannelsNavigationFeature() {
     } else if (resultCreatedChannel.isError) {
       toast.error(t('layout.channels-navigation.error_create_channel'))
     }
-  }, [resultCreatedChannel])
+  }, [resultCreatedChannel, t])
 
   const { refetch } = useGetCurrentStreamingUsersQuery(server?.id ?? '')
   useEffect(() => {

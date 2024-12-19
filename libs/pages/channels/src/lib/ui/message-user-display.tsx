@@ -8,6 +8,7 @@ import { useTranslation } from 'react-i18next'
 import { useParams } from 'react-router'
 import { useSelector } from 'react-redux'
 import { leftPaneState } from '@beep/responsive'
+import { Popover, PopoverContent, PopoverTrigger, UserPopover } from '@beep/ui'
 
 interface MessageUserDisplayProps {
   message: MessageEntity
@@ -70,13 +71,15 @@ export function MessageUserDisplay({ message }: MessageUserDisplayProps) {
           alt={userDisplayedUsername}
         />
         <div className="sm:flex gap-3 sm:flex-row">
-          <p
-            className={cn(
-              'font-semibold text-xs max-w-20 sm:max-w-30 md:max-w-40 lg:max-w-60 truncate'
-            )}
-          >
-            {message.request ? userMe?.username : userDisplayedUsername}
-          </p>
+          <UserPopover userId={message.ownerId}>
+            <p
+              className={cn(
+                'font-semibold text-xs max-w-20 sm:max-w-30 md:max-w-40 lg:max-w-60 hover:underline truncate'
+              )}
+            >
+              {message.request ? userMe?.username : userDisplayedUsername}
+            </p>
+          </UserPopover>
           <p className={cn('font-normal text-[10px] sm:text-xs truncate')}>
             {formatDate(message.createdAt ?? '')}
           </p>
