@@ -1,4 +1,8 @@
 {
+  "globals": {
+    "activated": "activated",
+    "not-activated": "not activated"
+  },
   "auth": {
     "page-after-signup": {
       "check_email": "Check your email",
@@ -43,7 +47,8 @@
       "signup": "Sign up",
       "qrcode_title": "Connect with QRCode",
       "qrcode_description": "Connect to your account then scan the QRCode with your phone",
-      "success": "Successfully connected"
+      "success": "Successfully connected",
+      "error": "An error occurred while trying to connect"
     },
     "page-signup": {
       "title": "Create your account",
@@ -426,9 +431,5 @@
     "private-channels-navigation": {
       "private_conversations": "Private conversations"
     }
-  },
-  "globals": {
-    "activated": "activated",
-    "not-activated": "not activated"
   }
 }
