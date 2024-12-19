@@ -1,18 +1,15 @@
-import { MessageEntity } from '@beep/contracts'
+import { leftPaneState } from '@beep/responsive'
 import { useGetMemberQuery } from '@beep/server'
-import { cn } from '@beep/utils'
+import { UserPopover } from '@beep/ui'
 import { useFetchProfilePictureQuery, useGetMeQuery } from '@beep/user'
+import { cn } from '@beep/utils'
 import { skipToken } from '@reduxjs/toolkit/query'
 import { DateTime } from 'luxon'
+import { useContext } from 'react'
 import { useTranslation } from 'react-i18next'
-import { useParams } from 'react-router'
 import { useSelector } from 'react-redux'
-import { leftPaneState } from '@beep/responsive'
-import { Popover, PopoverContent, PopoverTrigger, UserPopover } from '@beep/ui'
-
-interface MessageUserDisplayProps {
-  message: MessageEntity
-}
+import { useParams } from 'react-router'
+import { MessageContext } from '../feature/message-feature'
 
 /**
  * Component to display a message user information.
@@ -22,7 +19,8 @@ interface MessageUserDisplayProps {
  * - If the message is in a private channel, it displays the username of the user.
  *
  */
-export function MessageUserDisplay({ message }: MessageUserDisplayProps) {
+export function MessageUserDisplay() {
+  const { message } = useContext(MessageContext)
   const leftDivState = useSelector(leftPaneState)
 
   const { t } = useTranslation()

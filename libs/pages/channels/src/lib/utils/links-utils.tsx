@@ -1,3 +1,5 @@
+import { MessageEntity } from '@beep/contracts'
+
 export const renderTextWithLinks = (text: string) => {
   const urlPattern = /(https?:\/\/[^\s]+)/g
   return text.split(urlPattern).map((part, index) => {
@@ -18,3 +20,6 @@ export const renderTextWithLinks = (text: string) => {
   })
 }
 
+export function containsUrl(message: MessageEntity): boolean {
+  return /https?:\/\/[^\s]+/.test(message.content)
+}

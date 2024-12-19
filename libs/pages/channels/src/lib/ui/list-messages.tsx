@@ -4,8 +4,6 @@ import { ListMessageSkeleton } from './list-message-skeleton'
 
 interface ListMessagesProps {
   messages: MessageEntity[]
-  editingMessageId: string | null
-  setEditingMessageId: React.Dispatch<React.SetStateAction<string | null>>
   isLoading: boolean
   messageListRef: React.RefObject<HTMLDivElement>
   onScroll: () => void
@@ -18,10 +16,8 @@ export default function ListMessages({
   isLoading,
   messageListRef,
   serverId,
-  editingMessageId,
   onReply,
   onScroll,
-  setEditingMessageId,
 }: ListMessagesProps) {
   return (
     <div className="relative h-full w-full">
@@ -35,9 +31,7 @@ export default function ListMessages({
           <MessageFeature
             key={message.id}
             message={message}
-            editingMessageId={editingMessageId}
             onReply={() => onReply(message)}
-            setEditingMessageId={setEditingMessageId}
             serverId={serverId}
           />
         ))}

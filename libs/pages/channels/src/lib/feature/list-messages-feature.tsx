@@ -21,7 +21,6 @@ export function ListMessagesFeature({ setReplyTo }: ListMessagesFeatureProps) {
     (state: RootState) => state.message.channels_messages[channelId]
   )
   const [fetchBeforeId, setFetchBeforeId] = useState<string | null>(null)
-  const [editingMessageId, setEditingMessageId] = useState<string | null>(null)
   const { isLoading: isLoadingMessages, isFetching: isFetchingMessage } =
     useGetMessagesByChannelIdQuery(
       { channelId, before: fetchBeforeId, limit },
@@ -51,8 +50,6 @@ export function ListMessagesFeature({ setReplyTo }: ListMessagesFeatureProps) {
       messageListRef={messageListRef}
       onReply={setReplyTo}
       onScroll={onScrollMessage}
-      editingMessageId={editingMessageId}
-      setEditingMessageId={setEditingMessageId}
       serverId={serverId}
     />
   )

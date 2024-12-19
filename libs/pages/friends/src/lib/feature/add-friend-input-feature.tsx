@@ -1,4 +1,4 @@
-import { useCreateFriendsInvitationMutation } from '@beep/friend'
+import { useCreateFriendsInvitationByUsernameMutation } from '@beep/friend'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useEffect } from 'react'
 import { useForm } from 'react-hook-form'
@@ -15,7 +15,7 @@ export function AddFriendInputFeature() {
     }),
   })
   const [createInvitation, createInvitationResult] =
-    useCreateFriendsInvitationMutation()
+    useCreateFriendsInvitationByUsernameMutation()
   const form = useForm<z.infer<typeof formSchema>>({
     reValidateMode: 'onChange',
     mode: 'onTouched',

@@ -65,7 +65,7 @@ export const PageChannel = ({
             >
               <span>
                 {t('channels.page-channel.reply_to')}
-                <strong>{replyTo.owner?.username}</strong> :{' '}
+                <strong>{" " + replyTo.owner?.username}</strong> :{' '}
                 <em>
                   {replyTo.content.length > 15
                     ? `${replyTo.content.substring(0, 15)} ...`
