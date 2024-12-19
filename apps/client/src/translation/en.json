@@ -43,7 +43,8 @@
       "signup": "Sign up",
       "qrcode_title": "Connect with QRCode",
       "qrcode_description": "Connect to your account then scan the QRCode with your phone",
-      "success": "Successfully connected"
+      "success": "Successfully connected",
+      "error": "An error occurred while trying to connect"
     },
     "page-signup": {
       "title": "Create your account",
