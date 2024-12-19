@@ -31,30 +31,25 @@ export function PageEmailUpdateConfirmation({
   }
 
   return (
-    <div className="flex justify-center items-center p-4">
-      {/* Container */}
-      <ContainerLight>
-        <div className="flex flex-col gap-12 z-10 max-w-3xl">
-          <div className="flex flex-col gap-3">
-            <p className="font-bold text-grayV2">BEEP 0.1</p>
-            <h1 className="font-extrabold text-whiteV2">{title}</h1>
-          </div>
-          <div className="flex flex-col sm:flex-row justify-between item sm:items-center gap-6 sm:gap-12">
-            <p className="text-text-grayV2 text-sm font-bold">{subtitle}</p>
-            {state === 'error' ? (
-              <Button variant={'signin'} size={'signin'} onClick={onErrorClick}>
-                <p className="font-bold text-whiteV2">
-                  {t('auth.page-email-update-confirmation.button')}
-                </p>
-                <ArrowRight
-                  className="w-6 h-6 text-whiteV2 font-bold"
-                  color="#FF82B6"
-                />
-              </Button>
-            ) : null}
-          </div>
-        </div>
-      </ContainerLight>
+    <div className="flex flex-col gap-12 z-10 max-w-3xl">
+      <div className="flex flex-col gap-3">
+        <p className="font-bold text-grayV2">BEEP 0.1</p>
+        <h1 className="font-extrabold text-whiteV2">{title}</h1>
+      </div>
+      <div className="flex flex-col sm:flex-row justify-between item sm:items-center gap-6 sm:gap-12">
+        <p className="text-text-grayV2 text-sm font-bold">{subtitle}</p>
+        {state === 'error' ? (
+          <Button variant={'signin'} size={'signin'} onClick={onErrorClick}>
+            <p className="font-bold text-whiteV2">
+              {t('auth.page-email-update-confirmation.button')}
+            </p>
+            <ArrowRight
+              className="w-6 h-6 text-whiteV2 font-bold"
+              color="#FF82B6"
+            />
+          </Button>
+        ) : null}
+      </div>
     </div>
   )
 }
