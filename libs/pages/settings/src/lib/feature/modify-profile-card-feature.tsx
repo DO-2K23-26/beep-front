@@ -204,13 +204,19 @@ export function ModifyProfileCardFeature() {
         setIsEmailValidateModalOpen(false)
       }
     }
-  }, [errorUpdateMe, isErrorUpdateMe, usernameFormController, emailFormController])
+    if (isSuccessUpdateMe) {
+      toast.success('Updated succesfully !')
+      setIsEmailValidateModalOpen(false)
+      setIsUsernameModalOpen(false)
+    }
+  }, [errorUpdateMe, isErrorUpdateMe, isSuccessUpdateMe, usernameFormController, emailFormController])
 
   // use effect of the otp email send
   useEffect(() => {
     if (isSuccessOtpEmail) {
       toast.success('Email sent successfully! Please check your inbox.')
-    } if (isErrorOtpEmail || errorOtpEmail) {
+    }
+    if (isErrorOtpEmail || errorOtpEmail) {
       toast.error('Failed to send email. Please try again.')
     }
   }, [isSuccessOtpEmail, isErrorOtpEmail, errorOtpEmail])
@@ -251,22 +257,22 @@ export function ModifyProfileCardFeature() {
     />
   )
   const otpValidateButton = (
-      <ValidateOtpDialog
-        otpFormController={otpFormController}
-        isModalOpen={isOtpModalOpen}
-        resendOtp={handleEmailSubmit}
-        setIsModalOpen={setIsOtpModalOpen}
-        action={handleOtpSubmit}
-      />
+    <ValidateOtpDialog
+      otpFormController={otpFormController}
+      isModalOpen={isOtpModalOpen}
+      resendOtp={handleEmailSubmit}
+      setIsModalOpen={setIsOtpModalOpen}
+      action={handleOtpSubmit}
+    />
   )
   const emailChangeButton = (
-      <ModifyEmailDialog
-        emailFormController={emailFormController}
-        isModalOpen={isEmailModalOpen}
-        setIsModalOpen={setIsEmailModalOpen}
-        action={handleEmailSubmit}
-        currentUserEmail={currentUserEmail}
-      />
+    <ModifyEmailDialog
+      emailFormController={emailFormController}
+      isModalOpen={isEmailModalOpen}
+      setIsModalOpen={setIsEmailModalOpen}
+      action={handleEmailSubmit}
+      currentUserEmail={currentUserEmail}
+    />
   )
   const pictureChangeButton = (
     <ModifyProfilePictureDialog
