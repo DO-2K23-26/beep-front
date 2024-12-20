@@ -18,6 +18,7 @@ import {
   RefreshResponse,
   RegisterResponse,
   ResetPasswordRequest,
+  UpdateEmailRequest,
   UpdateMicRequest,
   UpdateUserResponse,
   UserConnectedEntity,
@@ -156,6 +157,14 @@ export const userApi = createApi({
         body: data,
       }),
     }),
+    updateEmail: builder.mutation<void, UpdateEmailRequest>({
+      query: (data) => ({
+        url: `/users/@me/email/update`,
+        method: 'POST',
+        body: data,
+      }),
+      invalidatesTags: ['me'],
+    }),
     fetchAllUsers: builder.query<UserConnectedEntity[], void>({
       query: () => '/users/display',
       providesTags: ['users'],
@@ -230,4 +239,5 @@ export const {
   useUpdateStateMutation,
   useSendOtpEmailMutation, // to send OTP
   useVerifyOtpCodeMutation, // to verify OTP
+  useUpdateEmailMutation,
 } = userApi

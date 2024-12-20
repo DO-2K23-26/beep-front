@@ -7,6 +7,7 @@ export * from './user/forgot-password.request'
 export * from './user/reset_password.request'
 export * from './user/get-user.request'
 export * from './user/otp-mail-send.request'
+export * from './user/update-email.request'
 
 export * from './channel/create-channel.request'
 export * from './channel/update-channel.request'

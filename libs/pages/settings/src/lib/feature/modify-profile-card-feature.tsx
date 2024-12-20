@@ -2,6 +2,7 @@ import {
   useFetchProfilePictureQuery,
   useGetMeQuery,
   useSendOtpEmailMutation,
+  useUpdateEmailMutation,
   useUpdateMeMutation,
   useVerifyOtpCodeMutation,
 } from '@beep/user'
@@ -59,8 +60,16 @@ export function ModifyProfileCardFeature() {
       error: errorUpdateMe,
     },
   ] = useUpdateMeMutation()
+  const [
+    updateEmail,
+    {
+      isLoading: isLoadingUpdateEmail,
+      isSuccess: isSuccessUpdateEmail,
+      isError: isErrorUpdateEmail,
+      error: errorUpdateEmail,
+    },
+  ] = useUpdateEmailMutation()
   const { data: userMe } = useGetMeQuery()
-  const currentUserEmail = userMe?.email || ''
   // useEffect(() => {
   //   if (isSuccessUpdateMe) {
   //     toast.success('Update successful')
@@ -74,6 +83,13 @@ export function ModifyProfileCardFeature() {
   const emailFormController = useForm({
     mode: 'onChange',
     defaultValues: {
+      email: '',
+    },
+  })
+  const updateEmailFormController = useForm({
+    mode: 'onChange',
+    defaultValues: {
+      password: '',
       email: '',
     },
   })
@@ -148,15 +164,19 @@ export function ModifyProfileCardFeature() {
   })
 
   // update of the email
-  const handleEmailUpdate = emailFormController.handleSubmit((data) => {
-    const formData = new FormData()
-    formData.append('email', data.email)
-    updateMe(formData)
+  const handleEmailUpdate = updateEmailFormController.handleSubmit((data) => {
+    const formData = {
+      newEmail: data.email,
+      oldEmail: userMe?.email || '',
+      password: data.password,
+    }
+    updateEmail(formData)
   })
 
   // Send email to generate otp code
   const handleEmailSubmit = emailFormController.handleSubmit((data) => {
-    const requestData = { email: currentUserEmail }
+    const requestData = { email: userMe?.email || '' }
+    updateEmailFormController.reset()
     sendOtpEmail(requestData)
     setIsEmailModalOpen(false)
     setIsOtpModalOpen(true)
@@ -164,7 +184,7 @@ export function ModifyProfileCardFeature() {
 
   // Verify the OTP entered by the user
   const handleOtpSubmit = otpFormController.handleSubmit((data) => {
-    const requestData = { email: currentUserEmail, otp: data.otp }
+    const requestData = { email: userMe?.email || '', otp: data.otp }
     verifyOtpCode(requestData)
     otpFormController.reset()
   })
@@ -189,7 +209,7 @@ export function ModifyProfileCardFeature() {
           type: 'validate',
         })
       } else if (error.code === 'E_EMAILALREADYEXISTS') {
-        emailFormController.setError('email', {
+        updateEmailFormController.setError('email', {
           message: 'This email already exists',
           type: 'validate',
         })
@@ -201,10 +221,9 @@ export function ModifyProfileCardFeature() {
     }
     if (isSuccessUpdateMe) {
       toast.success('Updated succesfully !')
-      setIsEmailValidateModalOpen(false)
       setIsUsernameModalOpen(false)
     }
-  }, [errorUpdateMe, isErrorUpdateMe, isSuccessUpdateMe, usernameFormController, emailFormController])
+  }, [errorUpdateMe, isErrorUpdateMe, isSuccessUpdateMe, usernameFormController, updateEmailFormController])
 
   // use effect of the otp email send
   useEffect(() => {
@@ -228,11 +247,35 @@ export function ModifyProfileCardFeature() {
     }
   }, [isSuccessOtpVerify, isErrorOtpVerify, errorOtpVerify, otpFormController])
 
+  // use effect when we update the email
   useEffect(() => {
-    if (isSuccessUpdateMe) {
-      setIsUsernameModalOpen(false)
+    if (errorUpdateEmail && isErrorUpdateEmail !== undefined) {
+      // @ts-expect-error errorCreateServer is not undefined
+      const error = errorUpdateEmail.data as HttpError
+      if (error.code === 'E_EMAILALREADYEXISTS') {
+        updateEmailFormController.setError('email', {
+          message: 'This email already exists',
+          type: 'validate',
+        })
+      } else if (error.code === 'E_ROWNOTFOUND') {
+        updateEmailFormController.setError('password', {
+          message: 'The current password is wrong',
+          type: 'validate',
+        })
+      }
     }
-  }, [isSuccessUpdateMe, usernameFormController])
+    if (isSuccessUpdateEmail) {
+      toast.success('Updated succesfully !')
+      updateEmailFormController.reset()
+      setIsEmailValidateModalOpen(false)
+    }
+  }, [
+    errorUpdateEmail,
+    isErrorUpdateEmail,
+    isSuccessUpdateEmail,
+    updateEmailFormController
+  ])
+
 
   //Dialog button
   const usernameChangeButton = (
@@ -248,7 +291,7 @@ export function ModifyProfileCardFeature() {
       action={handleEmailUpdate}
       isModalOpen={isEmailValidateModalOpen}
       setIsModalOpen={setIsEmailValidateModalOpen}
-      emailFormController={emailFormController}
+      updateEmailFormController={updateEmailFormController}
     />
   )
   const otpValidateButton = (
@@ -266,7 +309,7 @@ export function ModifyProfileCardFeature() {
       isModalOpen={isEmailModalOpen}
       setIsModalOpen={setIsEmailModalOpen}
       action={handleEmailSubmit}
-      currentUserEmail={currentUserEmail}
+      currentUserEmail={userMe?.email || ''}
     />
   )
   const pictureChangeButton = (
