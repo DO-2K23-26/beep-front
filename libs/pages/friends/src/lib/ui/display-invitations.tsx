@@ -13,14 +13,15 @@ export function DisplayInvitations({
   loading,
 }: DisplayInvitationsProps) {
   if (invitations === undefined || invitations.length === 0)
-    return (
-        <EmptyInvitationList />
-    )
+    return <EmptyInvitationList />
   if (loading) return <LoadingFriendsList />
   return (
     <>
       {invitations.map((invitation) => (
-        <FriendsInvitationRowFeature invitation={invitation} />
+        <FriendsInvitationRowFeature
+          key={'invitation' + invitation.id}
+          invitation={invitation}
+        />
       ))}
     </>
   )

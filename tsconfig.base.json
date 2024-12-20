@@ -16,10 +16,12 @@
     "baseUrl": ".",
     "paths": {
       "@beep/auth": ["libs/pages/auth/src/index.ts"],
+      "@beep/authentication": ["libs/domains/authentication/src/index.ts"],
       "@beep/channel": ["libs/domains/channel/src/index.ts"],
       "@beep/contracts": ["libs/shared/contracts/src/index.ts"],
       "@beep/discover": ["libs/pages/discover/src/index.ts"],
       "@beep/events": ["libs/shared/events/src/index.ts"],
+      "@beep/friend": ["libs/domains/friend/src/index.ts"],
       "@beep/layout": ["libs/pages/layout/src/index.ts"],
       "@beep/message": ["libs/domains/message/src/index.ts"],
       "@beep/pages/auth": ["libs/pages/auth/src/index.ts"],
@@ -36,8 +38,7 @@
       "@beep/user": ["libs/domains/user/src/index.ts"],
       "@beep/utils": ["libs/shared/utils/src/index.ts"],
       "@beep/voice": ["libs/domains/voice/src/index.ts"],
-      "@beep/friend": ["libs/domains/friend/src/index.ts"],
-      "@beep/authentication": ["libs/domains/authentication/src/index.ts"]
+      "@beep/messages": ["libs/shared/messages/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]

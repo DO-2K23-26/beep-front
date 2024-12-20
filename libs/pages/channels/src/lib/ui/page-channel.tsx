@@ -4,8 +4,8 @@ import {
 import { DynamicSelector, DynamicSelectorProps, Icon } from '@beep/ui'
 import { UseFormReturn } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
-import { ListMessagesFeature } from '../feature/list-messages-feature'
 import { InputChannelArea } from './input-channel-area'
+import { ListMessagesFeature } from '@beep/messages'
 
 export interface PageChannelProps {
   messageForm: UseFormReturn<{
@@ -65,7 +65,7 @@ export const PageChannel = ({
             >
               <span>
                 {t('channels.page-channel.reply_to')}
-                <strong>{replyTo.owner?.username}</strong> :{' '}
+                <strong>{" " + replyTo.owner?.username}</strong> :{' '}
                 <em>
                   {replyTo.content.length > 15
                     ? `${replyTo.content.substring(0, 15)} ...`

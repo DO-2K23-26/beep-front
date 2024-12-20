@@ -1,22 +1,17 @@
-import { MessageEntity } from '@beep/contracts'
 import { Icon } from '@beep/ui'
-import { ReactNode } from 'react'
+import { useContext } from 'react'
+import { MessageContext } from '../feature/message-feature'
 
-interface ReplyToDisplayProps {
-  message?: MessageEntity | null
-  replaceTagEntity: (content: ReactNode) => ReactNode
-}
+export function ReplyToDisplay() {
+  const { message, replaceUserTag } = useContext(MessageContext)
 
-export function ReplyToDisplay({
-  message,
-  replaceTagEntity,
-}: ReplyToDisplayProps) {
   const renderedReplyedMessage = message
-    ? replaceTagEntity(
-        message.content.substring(0, 50) +
-          (message.content.length > 50 ? ' ...' : '')
+    ? replaceUserTag(
+        message?.parentMessage?.content.substring(0, 50) +
+          (message?.parentMessage?.content?.length ?? 0 > 50 ? ' ...' : '')
       )
     : undefined
+  if (!message.parentMessage) return null
   return (
     message && (
       <div className={'flex items-center ml-4 opacity-60'}>

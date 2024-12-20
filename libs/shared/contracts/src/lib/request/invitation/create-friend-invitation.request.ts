@@ -1,3 +1,4 @@
 export interface CreateFriendInvitationRequest {
-  targetUsername: string
+  targetUsername?: string
+  targetId?: string
 }

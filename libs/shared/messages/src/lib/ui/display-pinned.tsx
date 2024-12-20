@@ -3,26 +3,23 @@ import {
   ButtonIcon,
   ButtonShadCnProps,
   Popover,
-  PopoverTrigger,
   PopoverContent,
+  PopoverTrigger,
   Skeleton,
 } from '@beep/ui'
 import { useTranslation } from 'react-i18next'
 import PinnedMessagesList from './pinned-messages-list'
-import { MemberEntity } from '@beep/contracts'
 
 interface DisplayPinnedProps {
   channelId: string
   serverId?: string
   isLoading?: boolean
-  usersServer?: MemberEntity[]
 }
 
 export function DisplayPinned({
   channelId,
   serverId,
   isLoading,
-  usersServer,
 }: DisplayPinnedProps) {
   const buttonProps: ButtonShadCnProps = {
     size: 'responsiveThick',
@@ -58,7 +55,6 @@ export function DisplayPinned({
           <PinnedMessagesList
             messages={pinnedMessage}
             serverId={serverId}
-            usersServer={usersServer}
           />
         </PopoverContent>
       )}

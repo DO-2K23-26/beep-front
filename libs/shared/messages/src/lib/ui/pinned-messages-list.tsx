@@ -1,19 +1,16 @@
-import { MemberEntity, MessageEntity } from '@beep/contracts'
-import React from 'react'
+import { MessageEntity } from '@beep/contracts'
+import { cn } from '@beep/utils'
 import MessageFeature from '../feature/message-feature'
 import { EmptyPinnedMessageList } from './empty-pinned-message-list'
-import { cn } from '@beep/utils'
 
 interface PinnedMessagesListProps {
   messages: MessageEntity[]
   serverId?: string
-  usersServer?: MemberEntity[]
 }
 
 function PinnedMessagesList({
   messages,
   serverId,
-  usersServer,
 }: PinnedMessagesListProps) {
   return (
     <div
@@ -35,7 +32,6 @@ function PinnedMessagesList({
               message={message}
               serverId={serverId}
               isDisplayedAsPinned={true}
-              usersServer={usersServer ?? []}
             />
           ))
       )}

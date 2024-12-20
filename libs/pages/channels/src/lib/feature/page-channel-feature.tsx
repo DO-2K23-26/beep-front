@@ -27,7 +27,6 @@ import { DynamicSelectorFeature } from './dynamic-selector-item-feature'
 
 export function PageChannelFeature() {
   const { t } = useTranslation()
-
   const dispatch = useDispatch<AppDispatch>()
   const { data: user } = useGetMeQuery()
   const { serverId, channelId = '' } = useParams<{

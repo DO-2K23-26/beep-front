@@ -4,7 +4,7 @@ import { Icon } from '@beep/ui'
 
 interface AttachmentFeatureProps {
   attachment: Attachment
-  isLoading: boolean | null
+  isLoading?: boolean
 }
 
 export default function AttachmentFeature({

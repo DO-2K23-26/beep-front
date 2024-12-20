@@ -26,15 +26,24 @@ export const friendsApi = createApi({
       query: () => '/v1/users/@me/invitations',
       providesTags: ['invitations'],
     }),
-    createFriendsInvitation: builder.mutation<void, CreateFriendInvitationRequest>({
-      query: ({ targetUsername }) => ({
+    createFriendsInvitationByUsername: builder.mutation<void, CreateFriendInvitationRequest>({
+      query: ({ targetUsername }) =>
+      ({
         url: '/invitations',
         method: 'POST',
         body: { targetUsername },
       }),
       invalidatesTags: ['invitations'],
     }),
-
+    createFriendsInvitationById: builder.mutation<void, CreateFriendInvitationRequest>({
+      query: ({ targetId }) =>
+      ({
+        url: '/invitations',
+        method: 'POST',
+        body: { targetId },
+      }),
+      invalidatesTags: ['invitations'],
+    }),
     answerFriendsInvitation: builder.mutation<void, AnswerInvitationRequest>({
       query: ({ invitationId, answer }) => ({
         url: `/invitations/${invitationId}`,
@@ -46,7 +55,7 @@ export const friendsApi = createApi({
 
     getPrivateChannels: builder.query<ChannelEntity[], void>({
       query: () => '/v1/users/@me/channels',
-      providesTags: [{type: 'channels' , id: 'private'}],
+      providesTags: [{ type: 'channels', id: 'private' }],
     }),
   })
 })
@@ -56,6 +65,7 @@ export const {
   useDeleteFriendMutation,
   useGetMyFriendsQuery,
   useAnswerFriendsInvitationMutation,
-  useCreateFriendsInvitationMutation,
+  useCreateFriendsInvitationByUsernameMutation,
+  useCreateFriendsInvitationByIdMutation,
   useGetMyFriendInvitationsQuery,
   useGetPrivateChannelsQuery } = friendsApi
