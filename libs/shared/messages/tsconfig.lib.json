@@ -4,9 +4,9 @@
     "outDir": "../../../dist/out-tsc",
     "types": [
       "node",
+
       "@nx/react/typings/cssmodule.d.ts",
-      "@nx/react/typings/image.d.ts",
-      "vite/client"
+      "@nx/react/typings/image.d.ts"
     ]
   },
   "exclude": [
@@ -19,12 +19,5 @@
     "**/*.spec.jsx",
     "**/*.test.jsx"
   ],
-  "include": [
-    "src/**/*.js",
-    "src/**/*.jsx",
-    "src/**/*.ts",
-    "src/**/*.tsx",
-    "../../shared/messages/src/lib/feature/media-embed-feature.tsx",
-    "../../shared/messages/src/lib/ui/media-embed.tsx"
-  ]
+  "include": ["src/**/*.js", "src/**/*.jsx", "src/**/*.ts", "src/**/*.tsx", "../../pages/channels/src/lib/ui/media.tsx"]
 }

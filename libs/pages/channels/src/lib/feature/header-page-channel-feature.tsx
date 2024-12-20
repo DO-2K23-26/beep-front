@@ -32,7 +32,6 @@ export function HeaderPageFeature() {
       toggleLeftPane={toggleLeftPane}
       toggleRightPane={toggleRightPane}
       displayChannelInfo={channelId !== undefined}
-      usersServer={usersServer ?? []}
     />
   )
 }

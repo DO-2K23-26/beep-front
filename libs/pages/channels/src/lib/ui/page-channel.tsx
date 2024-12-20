@@ -4,8 +4,8 @@ import {
 import { DynamicSelector, DynamicSelectorProps, Icon } from '@beep/ui'
 import { UseFormReturn } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
-import { ListMessagesFeature } from '../feature/list-messages-feature'
 import { InputChannelArea } from './input-channel-area'
+import { ListMessagesFeature } from '@beep/messages'
 
 export interface PageChannelProps {
   messageForm: UseFormReturn<{

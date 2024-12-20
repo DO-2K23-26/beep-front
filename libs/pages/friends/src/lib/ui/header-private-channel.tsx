@@ -5,7 +5,7 @@ import { useSelector } from 'react-redux'
 import { PrivateChannelContext } from '../feature/page-private-channel-feature'
 import { FriendRow, ProfilePictureSize } from './friend-row'
 import { ToggleLeftPaneButton } from './toggle-left-pane-button'
-import { DisplayPinned } from '@beep/pages/channels'
+import { DisplayPinned } from '@beep/messages'
 import { useParams } from 'react-router'
 
 export function HeaderPrivateChannel() {

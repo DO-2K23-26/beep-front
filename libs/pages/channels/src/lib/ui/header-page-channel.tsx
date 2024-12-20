@@ -1,9 +1,9 @@
-import { ChannelEntity, MemberEntity } from '@beep/contracts'
-import { ButtonShadCn, Icon } from '@beep/ui'
-import { ChannelNameDisplay } from './channel-name-display'
-import { DisplayPinned } from './display-pinned'
-import { useSelector } from 'react-redux'
+import { ChannelEntity } from '@beep/contracts'
+import { DisplayPinned } from '@beep/messages'
 import { leftPaneState } from '@beep/responsive'
+import { ButtonShadCn, Icon } from '@beep/ui'
+import { useSelector } from 'react-redux'
+import { ChannelNameDisplay } from './channel-name-display'
 
 interface HeaderPageChannelProps {
   channel?: ChannelEntity
@@ -11,7 +11,6 @@ interface HeaderPageChannelProps {
   displayChannelInfo: boolean
   toggleRightPane: () => void
   toggleLeftPane: () => void
-  usersServer: MemberEntity[]
 }
 
 export function HeaderPageChannel({
@@ -20,7 +19,6 @@ export function HeaderPageChannel({
   displayChannelInfo,
   toggleLeftPane,
   toggleRightPane,
-  usersServer,
 }: HeaderPageChannelProps) {
   const leftDivState = useSelector(leftPaneState)
   return (
@@ -52,7 +50,6 @@ export function HeaderPageChannel({
             channelId={channel?.id ?? ''}
             serverId={channel?.serverId ?? ''}
             isLoading={channel === undefined || isLoadingChannel}
-            usersServer={usersServer}
           />
         )}
 

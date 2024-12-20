@@ -66,6 +66,8 @@ export default function MessageFeature({
 }: MessageFeatureProps) {
   const dispatch = useDispatch<AppDispatch>()
   const { payload: userPayload } = useSelector(getUserState)
+  const { data: members } = useGetMembersQuery(serverId ?? skipToken)
+
   const currentUserIsOwner = userPayload?.sub === message.ownerId
   const matches = RegExp(regexUserTagging).exec(message.content)
   const taggedUserIds = matches
@@ -81,7 +83,6 @@ export default function MessageFeature({
     { skip: taggedUserIds.length === 0 }
   )
   const { data: channels } = useGetServerChannelsQuery(serverId ?? skipToken)
-  const { data: members } = useGetMembersQuery(serverId ?? skipToken)
   const [createMessage, createResult] = useCreateMessageMutation()
   const [isEditing, setIsEditing] = useState(false)
   const navigate = useNavigate()
@@ -182,14 +183,14 @@ export default function MessageFeature({
         isLoadingCreate: createResult.isLoading,
         currentUserIsOwner,
         messageForm,
-        switchEditing,
-        onReply: setAsRepliedMessage,
-        replaceUserTag,
-        replaceMentionChannel,
         isDisplayedAsPinned,
         isHighlighted:
           message.content.includes('@$' + (userPayload?.sub ?? '')) ||
           message.parentMessage?.ownerId === userPayload?.sub,
+        switchEditing,
+        onReply: setAsRepliedMessage,
+        replaceUserTag,
+        replaceMentionChannel,
         cancelEditing,
       }}
     >
