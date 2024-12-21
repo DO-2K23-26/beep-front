@@ -67,7 +67,6 @@ const webrtcSlice = createSlice({
       state.videoDevice = action.payload
     },
     setDevices(state, action: PayloadAction<MediaDeviceInfo[]>) {
-      console.log("ds setDevices")
       state.devices = action.payload
 
       if (state.audioInputDevice) {
