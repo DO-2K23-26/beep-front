@@ -3,7 +3,6 @@ import { CreateMessage, MessageEntity, MessageState, PaginatedMessage, ReplaceMe
 import { RootState } from '@beep/store';
 import { createSlice } from '@reduxjs/toolkit';
 import { sortMessagesByCreation, toFormData, toMessage } from './utils';
-import { Transmit } from '@adonisjs/transmit-client';
 import { TransmitSingleton } from '@beep/transmit';
 
 export const MESSAGE_KEY = 'message'

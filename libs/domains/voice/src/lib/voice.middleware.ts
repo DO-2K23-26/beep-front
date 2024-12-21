@@ -99,7 +99,7 @@ const WebRTCMiddleware: Middleware = (store) => {
         break
 
       case 'INITIALIZE_WEBRTC':
-        console.log("action.payload.videoDevice", action.payload.videoDevice)
+        console.log('action.payload.videoDevice', action.payload.videoDevice)
         if (action.payload.videoDevice == null) {
           await navigator.mediaDevices.getUserMedia({
             audio: true,
@@ -135,7 +135,6 @@ const WebRTCMiddleware: Middleware = (store) => {
           store.dispatch(setLocalStream(video));
         }
         console.log("audio", audio)
-        console.log("video", video)
         peerConnection = new RTCPeerConnection(pcConfig);
 
         peerConnection.onconnectionstatechange = () => {
