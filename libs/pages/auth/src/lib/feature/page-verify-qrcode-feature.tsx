@@ -1,13 +1,14 @@
 import { useValidateTokenMutation } from '@beep/authentication'
 import { LoaderSpinner } from '@beep/ui'
 import { useEffect, useState } from 'react'
-import { useParams } from 'react-router'
+import { useNavigate, useParams } from 'react-router'
 import PageQRCodeVerify from '../ui/page-verify-qrcode'
 
 export function PageQRCodeVerifyFeature() {
   const { token = '' } = useParams<{ token: string }>()
   const [validateToken, { isSuccess }] = useValidateTokenMutation()
   const [isValidated, setIsValidated] = useState(false)
+  const navigate = useNavigate()
 
   useEffect(() => {
     const validate = async () => {
@@ -20,6 +21,10 @@ export function PageQRCodeVerifyFeature() {
     validate()
   }, [validateToken, token])
 
+  const onSignin = () => {
+    navigate('/signin')
+  }
+
   if (!isValidated) {
     return (
       <div className="flex justify-center items-center h-screen w-screen">
@@ -28,5 +33,5 @@ export function PageQRCodeVerifyFeature() {
     )
   }
 
-  return <PageQRCodeVerify error={!isSuccess} />
+  return <PageQRCodeVerify error={!isSuccess} onSignin={onSignin} />
 }

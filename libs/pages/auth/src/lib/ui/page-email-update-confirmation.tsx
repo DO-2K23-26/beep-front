@@ -2,6 +2,7 @@ import { Button } from '@beep/shadcn'
 import ContainerLight from './container-light'
 import { ArrowRight } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
+import { AuthHeader } from './auth-header'
 
 export interface PageEmailUpdateConfirmation {
   state: 'pending' | 'error' | 'success'
@@ -32,10 +33,7 @@ export function PageEmailUpdateConfirmation({
 
   return (
     <div className="flex flex-col gap-12 z-10 max-w-3xl">
-      <div className="flex flex-col gap-3">
-        <p className="font-bold text-grayV2">BEEP 0.1</p>
-        <h1 className="font-extrabold text-whiteV2">{title}</h1>
-      </div>
+      <AuthHeader title={title} />
       <div className="flex flex-col sm:flex-row justify-between item sm:items-center gap-6 sm:gap-12">
         <p className="text-text-grayV2 text-sm font-bold">{subtitle}</p>
         {state === 'error' ? (

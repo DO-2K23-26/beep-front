@@ -1,18 +1,20 @@
 {
   "auth": {
     "page-after-signup": {
-      "check_email": "Check your email",
-      "validate_email": "Your account has been successfully created, validate your email to be able to signin"
+      "title": "Check your email",
+      "description": "Your account has been successfully created, validate your email to be able to signin",
+      "button": "Sign in"
     },
     "page-confirm-email": {
-      "check_email": "Check your email",
-      "confirm_account": "Confirm your account to signin",
+      "title": "Confirm your email",
+      "description": "Please confirm your email address to complete your registration.",
       "next": "Next"
     },
     "page-forgot-password": {
+      "description": "Enter your email address to reset your password",
       "forgot_password": "Forgot your password ?",
-      "insert_email": "It's okay, it happens ! Please insert your email below to reset your password.",
       "send": "Send",
+      "email_sent": "If this email address is in our records, a reset link will be sent. Please check your inbox.",
       "go_back_signin": "Go back to signin page ?",
       "signin": "Sign in",
       "email": "Email",
@@ -20,17 +22,20 @@
       "invalid_email": "Invalid email address"
     },
     "page-reset-password": {
+      "description": "Enter your new password",
       "reset": "Reset your password",
-      "new_password": "Please enter your new password below.",
       "required_password": "Password is required",
       "invalid_password": "Password must be at least 8 characters long and contain at least one uppercase letter, one digit, and one special character",
       "password": "Password",
-      "confirm_password": "You must confirm your password",
+      "required_confirm_password": "You must confirm your password",
       "password_mismatch": "Your passwords do not match",
       "confirm": "Confirm password",
       "submit": "Submit",
       "go_back_signin": "Go back to signin page?",
-      "signin": "Sign in"
+      "signin": "Sign in",
+      "success": "Password successfully reset",
+      "fail": "Failed to reset password",
+      "no_match": "Passwords do not match"
     },
     "page-signin": {
       "title": "Connect to Beep",
@@ -86,19 +91,21 @@
       "button": "Send",
       "error": "An error occurred while trying to verify your identity",
       "error-totp-invalid": "Invalid code",
-      "error-enter-6-digits": "Please enter a 6-digit code"
+      "error-enter-6-digits": "Please enter a 6-digit code",
+      "go_back_signin": "Go back to signin page?",
+      "signin": "Sign in"
     },
     "page-verify": {
       "account_verification": "Account verification",
       "loading": "Loading...",
       "verified_account": "Your account has been verified",
       "invalid-token": "Invalid token",
-      "signin": "Time to signin !"
+      "button": "Sign in"
     },
     "page-verify-qrcode": {
       "error": "Error validating QRCode",
       "expiration": "This QRCode has expired",
-      "homepage": "Go to the homepage",
+      "homepage": "Back",
       "success": "You have successfully connected to your account",
       "description": "Go back on your main page, you should be authenticated."
     }

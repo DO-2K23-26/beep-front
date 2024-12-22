@@ -4,6 +4,7 @@ import { FormProvider, useForm } from 'react-hook-form'
 import toast from 'react-hot-toast'
 import { PageResetPassword } from '../ui/page-reset-password'
 import { useParams } from 'react-router'
+import { useTranslation } from 'react-i18next'
 
 export function PageResetPasswordFeature() {
   const [error, setError] = useState('')
@@ -16,20 +17,21 @@ export function PageResetPasswordFeature() {
   })
 
   const { token = '' } = useParams<{ token: string }>()
+  const { t } = useTranslation()
   const [verifyResetPassword, result] = useResetPasswordMutation()
   useEffect(() => {
     if (result.isLoading || (!result.data && !result.isError)) {
       return
     }
     if (result.isSuccess) {
-      toast.success('Password has been reset successfully.')
+      toast.success(t('auth.page-reset-password.success'))
       return
     }
-    toast.error('Failed to reset password.')
+    toast.error(t('auth.page-reset-password.fail'))
   }, [result])
   const onSubmit = methods.handleSubmit(async (data) => {
     if (data.password !== data.confirmPassword) {
-      setError('Passwords do not match')
+      setError(t('auth.page-reset-password.no_match'))
       return
     }
     verifyResetPassword({

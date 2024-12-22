@@ -1,13 +1,16 @@
+import { KeyboardEventHandler } from 'react'
+import { useTranslation } from 'react-i18next'
+import { Control, Controller } from 'react-hook-form'
+import { ArrowRight, X } from 'lucide-react'
 import {
   Button,
   InputOTP,
   InputOTPGroup,
   InputOTPSeparator,
   InputOTPSlot,
-} from '@beep/ui'
-import { KeyboardEventHandler } from 'react'
-import { useTranslation } from 'react-i18next'
-import { Control, Controller } from 'react-hook-form'
+} from '@beep/shadcn'
+import { Link } from 'react-router-dom'
+import { AuthHeader } from './auth-header'
 
 export interface PageTotpProps {
   onSubmit: () => void
@@ -30,11 +33,12 @@ export function PageTotp({
     e.key === 'Enter' ? onSubmit() : {}
 
   return (
-    <div className="flex flex-col gap-6 justify-center items-start w-[400px] p-4">
-      <h1 className="font-extrabold text-5xl">Beep</h1>
-      <h5 className="font-semibold">{t('auth.page-totp.verify-identity')}</h5>
-      <h5>{t('auth.page-totp.application-otp')}</h5>
-      <div className="w-full flex justify-center">
+    <div className="flex flex-col gap-12 z-10 max-w-3xl">
+      <AuthHeader
+        title={t('auth.page-totp.verify-identity')}
+        description={t('auth.page-totp.application-otp')}
+      />
+      <div className="flex flex-col items-center gap-4 max-w-3xl">
         {control && (
           <Controller
             name="totp"
@@ -48,30 +52,30 @@ export function PageTotp({
               >
                 <InputOTPGroup>
                   <InputOTPSlot
-                    className="bg-violet-50 border-slate-400"
+                    className="text-whiteV2 font-medium border-input-borderV2  bg-input-backgroundV2 ring-primaryV2/75"
                     index={0}
                   />
                   <InputOTPSlot
-                    className="bg-violet-50 border-slate-400"
+                    className="text-whiteV2 font-medium border-input-borderV2  bg-input-backgroundV2 ring-primaryV2/75"
                     index={1}
                   />
                   <InputOTPSlot
-                    className="bg-violet-50 border-slate-400"
+                    className="text-whiteV2 font-medium border-input-borderV2  bg-input-backgroundV2 ring-primaryV2/75"
                     index={2}
                   />
                 </InputOTPGroup>
                 <InputOTPSeparator />
                 <InputOTPGroup>
                   <InputOTPSlot
-                    className="bg-violet-50 border-slate-400"
+                    className="text-whiteV2 font-medium border-input-borderV2  bg-input-backgroundV2 ring-primaryV2/75"
                     index={3}
                   />
                   <InputOTPSlot
-                    className="bg-violet-50 border-slate-400"
+                    className="text-whiteV2 font-medium border-input-borderV2  bg-input-backgroundV2 ring-primaryV2/75"
                     index={4}
                   />
                   <InputOTPSlot
-                    className="bg-violet-50 border-slate-400"
+                    className="text-whiteV2 font-medium border-input-borderV2  bg-input-backgroundV2 ring-primaryV2/75"
                     index={5}
                   />
                 </InputOTPGroup>
@@ -79,19 +83,32 @@ export function PageTotp({
             )}
           />
         )}
-      </div>
-
-      <div className="flex flex-col w-full">
-        <Button
-          onClick={onSubmit}
-          loading={loading}
-          className="!bg-slate-800 hover:!bg-slate-900 w-full !rounded-lg min-h-[40px]"
-        >
-          <p className="text-violet-50">{t('auth.page-totp.button')}</p>
-        </Button>
         {error && (
-          <p className="mt-1 px-4 font-medium text-xs text-red-500">{error}</p>
+          <div className="flex flex-row gap-1 px-4">
+            <X color="#FC3B8C" className="w-4 h-4" />
+            <p className="font-medium text-xs text-primaryV2">{error}</p>
+          </div>
         )}
+      </div>
+      <div className="flex flex-col sm:flex-row justify-between item sm:items-center gap-6 sm:gap-12">
+        <div className="flex flex-row gap-1 font-bold text-sm">
+          <p className="text-text-grayV2">
+            {t('auth.page-totp.go_back_signin')}
+          </p>
+          <Link
+            className="text-primaryV2/90 hover:text-primaryV2"
+            to="/authentication/signin"
+          >
+            {t('auth.page-totp.signin')}
+          </Link>
+        </div>
+        <Button variant={'signin'} size={'signin'} onClick={onSubmit}>
+          <p className="font-bold text-whiteV2">{t('auth.page-totp.button')}</p>
+          <ArrowRight
+            className="w-6 h-6 text-whiteV2 font-bold"
+            color="#FF82B6"
+          />
+        </Button>
       </div>
     </div>
   )

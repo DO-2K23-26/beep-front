@@ -1,9 +1,10 @@
-import { Controller, useFormContext } from 'react-hook-form'
+import { useFormContext } from 'react-hook-form'
 import { Link } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
-import ContainerLight from './container-light'
-import { Button, Input, Label } from '@beep/shadcn'
+import { Button, Label } from '@beep/shadcn'
 import { ArrowRight, Upload, X } from 'lucide-react'
+import { FormField } from './form-field'
+import { AuthHeader } from './auth-header'
 
 export interface PageSignupProps {
   onSubmit: () => void
@@ -24,16 +25,15 @@ export function PageSignup({
 
   return (
     <div className="flex flex-col gap-12 z-10">
-      <div className="flex flex-col gap-3">
-        <p className="font-bold text-grayV2">BEEP 0.1</p>
-        <h1 className="font-extrabold text-whiteV2">
-          {t('auth.page-signup.title')}
-        </h1>
-      </div>
+      <AuthHeader title={t('auth.page-signup.title')} />
       <div className="flex flex-col sm:flex-row gap-4 sm:gap-10">
         <div className="flex flex-col gap-4 max-w-3xl">
-          <Controller
+          <FormField
+            control={control}
             name="firstname"
+            type="text"
+            label={`${t('auth.page-signup.firstname')}*`}
+            placeholder="John"
             rules={{
               required: t('auth.page-signup.required_firstname'),
               pattern: {
@@ -41,36 +41,13 @@ export function PageSignup({
                 message: t('auth.page-signup.invalid_firstname'),
               },
             }}
-            control={control}
-            render={({ field, fieldState: { error } }) => (
-              <div className="flex flex-col gap-2 group/input1">
-                <Label
-                  htmlFor="firstname"
-                  className="text-label-V2 group-hover/input1:text-label-hoverV2 group-focus-within/input1:text-label-hoverV2 font-medium text-xs transition-colors duration-200"
-                >
-                  {t('auth.page-signup.firstname')}*
-                </Label>
-                <Input
-                  type="text"
-                  name="firstname"
-                  placeholder="John"
-                  className="text-whiteV2 font-medium border-input-borderV2  bg-input-backgroundV2 placeholder:text-input-placeholderV2 focus-visible:ring-primaryV2/25 focus-visible:ring-offset-primaryV2 focus-visible:ring-offset-1 focus-visible:ring-4"
-                  value={field.value}
-                  onChange={field.onChange}
-                />
-                {error && (
-                  <div className="flex flex-row gap-1 px-4">
-                    <X color="#FC3B8C" className="w-4 h-4" />
-                    <p className="font-medium text-xs text-primaryV2">
-                      {error?.message}
-                    </p>
-                  </div>
-                )}
-              </div>
-            )}
           />
-          <Controller
+          <FormField
+            control={control}
             name="lastname"
+            type="text"
+            label={`${t('auth.page-signup.lastname')}*`}
+            placeholder="Doe"
             rules={{
               required: t('auth.page-signup.required_lastname'),
               pattern: {
@@ -78,36 +55,13 @@ export function PageSignup({
                 message: t('auth.page-signup.invalid_lastname'),
               },
             }}
-            control={control}
-            render={({ field, fieldState: { error } }) => (
-              <div className="flex flex-col gap-2 group/input2">
-                <Label
-                  htmlFor="lastname"
-                  className="text-label-V2 group-hover/input2:text-label-hoverV2 group-focus-within/input2:text-label-hoverV2 font-medium text-xs transition-colors duration-200"
-                >
-                  {t('auth.page-signup.lastname')}*
-                </Label>
-                <Input
-                  type="text"
-                  name="lastname"
-                  placeholder="Doe"
-                  className="text-whiteV2 font-medium border-input-borderV2  bg-input-backgroundV2 placeholder:text-input-placeholderV2 focus-visible:ring-primaryV2/25 focus-visible:ring-offset-primaryV2 focus-visible:ring-offset-1 focus-visible:ring-4"
-                  value={field.value}
-                  onChange={field.onChange}
-                />
-                {error && (
-                  <div className="flex flex-row gap-1 px-4">
-                    <X color="#FC3B8C" className="w-4 h-4" />
-                    <p className="font-medium text-xs text-primaryV2">
-                      {error?.message}
-                    </p>
-                  </div>
-                )}
-              </div>
-            )}
           />
-          <Controller
+          <FormField
+            control={control}
             name="username"
+            type="text"
+            label={`${t('auth.page-signup.username')}*`}
+            placeholder="johndoe"
             rules={{
               required: t('auth.page-signup.required_username'),
               pattern: {
@@ -115,36 +69,13 @@ export function PageSignup({
                 message: t('auth.page-signup.invalid_username'),
               },
             }}
-            control={control}
-            render={({ field, fieldState: { error } }) => (
-              <div className="flex flex-col gap-2 group/input3">
-                <Label
-                  htmlFor="lastname"
-                  className="text-label-V2 group-hover/input3:text-label-hoverV2 group-focus-within/input3:text-label-hoverV2 font-medium text-xs transition-colors duration-200"
-                >
-                  {t('auth.page-signup.username')}*
-                </Label>
-                <Input
-                  type="text"
-                  name="username"
-                  placeholder="johndoe"
-                  className="text-whiteV2 font-medium border-input-borderV2  bg-input-backgroundV2 placeholder:text-input-placeholderV2 focus-visible:ring-primaryV2/25 focus-visible:ring-offset-primaryV2 focus-visible:ring-offset-1 focus-visible:ring-4"
-                  value={field.value}
-                  onChange={field.onChange}
-                />
-                {error && (
-                  <div className="flex flex-row gap-1 px-4">
-                    <X color="#FC3B8C" className="w-4 h-4" />
-                    <p className="font-medium text-xs text-primaryV2">
-                      {error?.message}
-                    </p>
-                  </div>
-                )}
-              </div>
-            )}
           />
-          <Controller
+          <FormField
+            control={control}
             name="email"
+            type="email"
+            label={`${t('auth.page-signup.email')}*`}
+            placeholder="user@gmail.com"
             rules={{
               required: t('auth.page-signup.required_email'),
               pattern: {
@@ -152,33 +83,6 @@ export function PageSignup({
                 message: t('auth.page-signup.invalid_email'),
               },
             }}
-            control={control}
-            render={({ field, fieldState: { error } }) => (
-              <div className="flex flex-col gap-2 group/input3">
-                <Label
-                  htmlFor="email"
-                  className="text-label-V2 group-hover/input3:text-label-hoverV2 group-focus-within/input3:text-label-hoverV2 font-medium text-xs transition-colors duration-200"
-                >
-                  {t('auth.page-signup.email')}*
-                </Label>
-                <Input
-                  type="email"
-                  name="email"
-                  placeholder="user@gmail.com"
-                  className="text-whiteV2 font-medium border-input-borderV2  bg-input-backgroundV2 placeholder:text-input-placeholderV2 focus-visible:ring-primaryV2/25 focus-visible:ring-offset-primaryV2 focus-visible:ring-offset-1 focus-visible:ring-4"
-                  value={field.value}
-                  onChange={field.onChange}
-                />
-                {error && (
-                  <div className="flex flex-row gap-1 px-4">
-                    <X color="#FC3B8C" className="w-4 h-4" />
-                    <p className="font-medium text-xs text-primaryV2">
-                      {error?.message}
-                    </p>
-                  </div>
-                )}
-              </div>
-            )}
           />
           {error && (
             <div className="flex flex-row gap-1 px-4">
@@ -188,10 +92,10 @@ export function PageSignup({
           )}
         </div>
         <div className="flex flex-col-reverse sm:flex-col gap-4">
-          <div className="flex flex-col gap-2 group/input3 h-fit max-w-[120px]">
+          <div className="flex flex-col gap-2 group/input h-fit max-w-[120px]">
             <Label
               htmlFor="file_upload"
-              className="text-label-V2 group-hover/input3:text-label-hoverV2 group-focus-within/input3:text-label-hoverV2 font-medium text-xs transition-colors duration-200 rounded-md"
+              className="text-label-V2 group-hover/input:text-label-hoverV2 group-focus-within/input:text-label-hoverV2 font-medium text-xs transition-colors duration-200 rounded-md"
             >
               {t('auth.page-signup.profile_picture')}
             </Label>
@@ -220,8 +124,12 @@ export function PageSignup({
             }}
           />
           <div className="flex flex-col gap-4">
-            <Controller
+            <FormField
+              control={control}
               name="password"
+              type="password"
+              label={`${t('auth.page-signup.password')}*`}
+              placeholder={t('auth.page-signup.password')}
               rules={{
                 required: t('auth.page-signup.required_password'),
                 pattern: {
@@ -230,36 +138,13 @@ export function PageSignup({
                   message: t('auth.page-signup.invalid_password'),
                 },
               }}
-              control={control}
-              render={({ field, fieldState: { error } }) => (
-                <div className="flex flex-col gap-2 group/input3">
-                  <Label
-                    htmlFor="password"
-                    className="text-label-V2 group-hover/input3:text-label-hoverV2 group-focus-within/input3:text-label-hoverV2 font-medium text-xs transition-colors duration-200"
-                  >
-                    {t('auth.page-signup.password')}*
-                  </Label>
-                  <Input
-                    type="password"
-                    name="password"
-                    placeholder={t('auth.page-signup.password')}
-                    className="text-whiteV2 font-medium border-input-borderV2  bg-input-backgroundV2 placeholder:text-input-placeholderV2 focus-visible:ring-primaryV2/25 focus-visible:ring-offset-primaryV2 focus-visible:ring-offset-1 focus-visible:ring-4"
-                    value={field.value}
-                    onChange={field.onChange}
-                  />
-                  {error && (
-                    <div className="flex flex-row gap-1 px-4">
-                      <X color="#FC3B8C" className="w-4 h-4" />
-                      <p className="font-medium text-xs text-primaryV2">
-                        {error?.message}
-                      </p>
-                    </div>
-                  )}
-                </div>
-              )}
             />
-            <Controller
+            <FormField
+              control={control}
               name="confirm-password"
+              type="password"
+              label={`${t('auth.page-signup.confirm_password')}*`}
+              placeholder={t('auth.page-signup.password')}
               rules={{
                 required: t('auth.page-signup.required_confirm_password'),
                 validate: (val: string) => {
@@ -268,33 +153,6 @@ export function PageSignup({
                   }
                 },
               }}
-              control={control}
-              render={({ field, fieldState: { error } }) => (
-                <div className="flex flex-col gap-2 group/input3">
-                  <Label
-                    htmlFor="confirm-password"
-                    className="text-label-V2 group-hover/input3:text-label-hoverV2 group-focus-within/input3:text-label-hoverV2 font-medium text-xs transition-colors duration-200"
-                  >
-                    {t('auth.page-signup.confirm_password')}*
-                  </Label>
-                  <Input
-                    type="password"
-                    name="confirm-password"
-                    placeholder={t('auth.page-signup.password')}
-                    className="text-whiteV2 font-medium border-input-borderV2  bg-input-backgroundV2 placeholder:text-input-placeholderV2 focus-visible:ring-primaryV2/25 focus-visible:ring-offset-primaryV2 focus-visible:ring-offset-1 focus-visible:ring-4"
-                    value={field.value}
-                    onChange={field.onChange}
-                  />
-                  {error && (
-                    <div className="flex flex-row gap-1 px-4">
-                      <X color="#FC3B8C" className="w-4 h-4" />
-                      <p className="font-medium text-xs text-primaryV2">
-                        {error?.message}
-                      </p>
-                    </div>
-                  )}
-                </div>
-              )}
             />
           </div>
         </div>

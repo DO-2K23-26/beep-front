@@ -1,6 +1,7 @@
 import React, { useEffect, useRef } from 'react'
 import { cn } from '@/lib/utils'
 import gsap from 'gsap'
+import { useLocation } from 'react-router'
 
 interface ContainerLightProps extends React.HTMLAttributes<HTMLDivElement> {
   children: React.ReactNode
@@ -13,6 +14,7 @@ export default function ContainerLight({
   ...props
 }: ContainerLightProps) {
   const containerRef = useRef<HTMLDivElement>(null)
+  const location = useLocation()
 
   // Animation GSAP
   useEffect(() => {
@@ -25,7 +27,7 @@ export default function ContainerLight({
     }, containerRef)
 
     return () => ctx.revert()
-  }, [])
+  }, [location.pathname])
   return (
     <div
       ref={containerRef}
