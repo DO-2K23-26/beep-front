@@ -1,6 +1,4 @@
-import { Button } from '@beep/shadcn'
 import { LoaderSpinner } from '@beep/ui'
-import { ArrowRight, X } from 'lucide-react'
 import { QRCodeSVG } from 'qrcode.react'
 import { KeyboardEventHandler } from 'react'
 import { useFormContext } from 'react-hook-form'
@@ -8,6 +6,8 @@ import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router-dom'
 import { FormField } from './form-field'
 import { AuthHeader } from './auth-header'
+import AuthButton from './auth-button'
+import AuthError from './auth-error'
 
 export interface PageSigninProps {
   onSubmit: () => void
@@ -63,12 +63,7 @@ export function PageSignin({
               </Link>
             }
           />
-          {error && (
-            <div className="flex flex-row gap-1 px-4">
-              <X color="#FC3B8C" className="w-4 h-4" />
-              <p className="font-medium text-xs text-primaryV2">{error}</p>
-            </div>
-          )}
+          {error && <AuthError error={error} />}
         </div>
         <div className="flex flex-col sm:flex-row justify-between item sm:items-center gap-6 sm:gap-12">
           <div className="flex flex-row w-full gap-1 font-bold text-sm">
@@ -82,15 +77,7 @@ export function PageSignin({
               {t('auth.page-signin.signup')}
             </Link>
           </div>
-          <Button variant={'signin'} size={'signin'} onClick={onSubmit}>
-            <p className="font-bold text-whiteV2">
-              {t('auth.page-signin.signin')}
-            </p>
-            <ArrowRight
-              className="w-6 h-6 text-whiteV2 font-bold"
-              color="#FF82B6"
-            />
-          </Button>
+          <AuthButton onSubmit={onSubmit} text={t('auth.page-signin.signin')} />
         </div>
       </div>
 

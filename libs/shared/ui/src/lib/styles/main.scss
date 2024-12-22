@@ -52,24 +52,30 @@
 
 @layer base {
   :root {
-    --sidebar-background: 0 0% 98%;
-    --sidebar-foreground: 240 5.3% 26.1%;
-    --sidebar-primary: 240 5.9% 10%;
-    --sidebar-primary-foreground: 0 0% 98%;
-    --sidebar-accent: 240 4.8% 95.9%;
-    --sidebar-accent-foreground: 240 5.9% 10%;
-    --sidebar-border: 220 13% 91%;
-    --sidebar-ring: 217.2 91.2% 59.8%;
+    --color-primary: 127 59 252;
+    --color-background: 15 16 19;
+    --color-white: 226 229 237;
+    --color-gray: 101 104 122;
+    --color-text: 101 104 122;
+    --color-label: 101 104 122;
+    --color-label-hover: 167 172 187;
+    --color-input-border: 25 29 41;
+    --color-input-placeholder: 61 65 83;
+    --color-input-background: 17 19 25;
+    --color-error: 195 180 253;
   }
 
   .dark {
-    --sidebar-background: 240 5.9% 10%;
-    --sidebar-foreground: 240 4.8% 95.9%;
-    --sidebar-primary: 224.3 76.3% 48%;
-    --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 240 3.7% 15.9%;
-    --sidebar-accent-foreground: 240 4.8% 95.9%;
-    --sidebar-border: 240 3.7% 15.9%;
-    --sidebar-ring: 217.2 91.2% 59.8%;
+    --color-primary: 252 59 140;
+    --color-background: 15 16 19;
+    --color-white: 226 229 237;
+    --color-gray: 101 104 122;
+    --color-text: 101 104 122;
+    --color-label: 101 104 122;
+    --color-label-hover: 167 172 187;
+    --color-input-border: 25 29 41;
+    --color-input-placeholder: 61 65 83;
+    --color-input-background: 17 19 25;
+    --color-error: 195 180 253;
   }
 }

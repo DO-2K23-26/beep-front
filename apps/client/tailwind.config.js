@@ -4,6 +4,7 @@ const { join } = require('path')
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   presets: [require('../../tailwind-workspace-preset.js')],
+  darkMode: 'selector',
   content: [
     join(
       __dirname,
@@ -53,17 +54,17 @@ module.exports = {
         slideOut: 'slideOut 0.3s ease-out forwards',
       },
       colors: {
-        primaryV2: '#FC3B8C',
-        backgroundV2: '#0F1013',
-        whiteV2: '#E2E5ED',
-        grayV2: '#65687A',
-        'text-grayV2': '#65687A',
-        'label-V2': '#65687A',
-        'label-hoverV2': '#A7ACBB',
-        'input-borderV2': '#191D29',
-        'input-border-hoverV2': '#FC3B8C',
-        'input-placeholderV2': '#3D4153',
-        'input-backgroundV2': '#111319',
+        primaryV2: 'rgb(var(--color-primary))',
+        backgroundV2: 'rgb(var(--color-background))',
+        whiteV2: 'rgb(var(--color-white))',
+        grayV2: 'rgb(var(--color-gray))',
+        'text-grayV2': 'rgb(var(--color-text))',
+        labelV2: 'rgb(var(--color-label))',
+        'label-hoverV2': 'rgb(var(--color-label-hover))',
+        'input-borderV2': 'rgb(var(--color-input-border))',
+        'input-placeholderV2': 'rgb(var(--color-input-placeholder))',
+        'input-backgroundV2': 'rgb(var(--color-input-background))',
+        errorV2: 'rgb(var(--color-error))',
       },
       boxShadow: {
         'custom-black': '0px 11px 12px rgba(0, 0, 0, 0.4)',

@@ -1,11 +1,11 @@
 import { KeyboardEventHandler } from 'react'
-import { Controller, useFormContext } from 'react-hook-form'
+import { useFormContext } from 'react-hook-form'
 import { Link } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
-import { ArrowRight, X } from 'lucide-react'
-import { Button, Input, Label } from '@beep/shadcn'
 import { FormField } from './form-field'
 import { AuthHeader } from './auth-header'
+import AuthButton from './auth-button'
+import AuthError from './auth-error'
 
 export interface PageForgotPasswordProps {
   onSubmit: () => void
@@ -46,12 +46,7 @@ export function PageForgotPassword({
             },
           }}
         />
-        {error && (
-          <div className="flex flex-row gap-1 px-4">
-            <X color="#FC3B8C" className="w-4 h-4" />
-            <p className="font-medium text-xs text-primaryV2">{error}</p>
-          </div>
-        )}
+        {error && <AuthError error={error} />}
       </div>
       <div className="flex flex-col sm:flex-row justify-between item sm:items-center gap-6 sm:gap-12">
         <div className="flex flex-row gap-1 font-bold text-sm">
@@ -65,15 +60,10 @@ export function PageForgotPassword({
             {t('auth.page-forgot-password.signin')}
           </Link>
         </div>
-        <Button variant={'signin'} size={'signin'} onClick={onSubmit}>
-          <p className="font-bold text-whiteV2">
-            {t('auth.page-forgot-password.send')}
-          </p>
-          <ArrowRight
-            className="w-6 h-6 text-whiteV2 font-bold"
-            color="#FF82B6"
-          />
-        </Button>
+        <AuthButton
+          onSubmit={onSubmit}
+          text={t('auth.page-forgot-password.send')}
+        />
       </div>
     </div>
   )
