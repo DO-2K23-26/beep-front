@@ -1,11 +1,13 @@
-import { Button, Input, Label } from '@beep/shadcn'
+import { Button } from '@beep/shadcn'
 import { LoaderSpinner } from '@beep/ui'
 import { ArrowRight, X } from 'lucide-react'
 import { QRCodeSVG } from 'qrcode.react'
 import { KeyboardEventHandler } from 'react'
-import { Controller, useFormContext } from 'react-hook-form'
+import { useFormContext } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router-dom'
+import { FormField } from './form-field'
+import { AuthHeader } from './auth-header'
 
 export interface PageSigninProps {
   onSubmit: () => void
@@ -29,90 +31,37 @@ export function PageSignin({
     <>
       {/* Login */}
       <div className="flex flex-col gap-12 z-10 max-w-3xl">
-        <div className="flex flex-col gap-3">
-          <p className="font-bold text-grayV2">BEEP 0.1</p>
-          <h1 className="font-extrabold text-whiteV2">
-            {t('auth.page-signin.title')}
-          </h1>
-        </div>
+        <AuthHeader title={t('auth.page-signin.title')} />
         <div className="flex flex-col gap-4">
-          <Controller
+          <FormField
+            control={control}
             name="email"
+            type="email"
+            label={t('auth.page-signin.email')}
+            placeholder="user@gmail.com"
+            onKeyDown={onKeyDown}
             rules={{
               required: t('auth.page-signin.required_email'),
             }}
-            control={control}
-            render={({ field, fieldState: { error } }) => (
-              <div className="flex flex-col gap-2 group/input1">
-                <Label
-                  htmlFor="email"
-                  className="text-label-V2 group-hover/input1:text-label-hoverV2 group-focus-within/input1:text-label-hoverV2 font-medium text-xs transition-colors duration-200"
-                >
-                  {t('auth.page-signin.email')}
-                </Label>
-                <Input
-                  id="email"
-                  type="email"
-                  name="email"
-                  placeholder="user@gmail.com"
-                  value={field.value}
-                  onChange={field.onChange}
-                  onKeyDown={onKeyDown}
-                  className="text-whiteV2 font-medium border-input-borderV2  bg-input-backgroundV2 placeholder:text-input-placeholderV2 focus-visible:ring-primaryV2/25 focus-visible:ring-offset-primaryV2 focus-visible:ring-offset-1 focus-visible:ring-4"
-                />
-                {error && (
-                  <div className="flex flex-row gap-1 px-4">
-                    <X color="#FC3B8C" className="w-4 h-4" />
-                    <p className="font-medium text-xs text-primaryV2">
-                      {error?.message}
-                    </p>
-                  </div>
-                )}
-              </div>
-            )}
           />
-          <Controller
+          <FormField
+            control={control}
             name="password"
+            type="password"
+            label={t('auth.page-signin.password')}
+            placeholder={t('auth.page-signin.password')}
+            onKeyDown={onKeyDown}
             rules={{
               required: t('auth.page-signin.required_password'),
             }}
-            control={control}
-            render={({ field, fieldState: { error } }) => (
-              <div className="flex flex-col gap-2 group/input2">
-                <div className="flex flex-row justify-between">
-                  <Label
-                    htmlFor="password"
-                    className="text-label-V2 group-hover/input2:text-label-hoverV2 group-focus-within/input1:text-label-hoverV2 font-medium text-xs transition-colors duration-200"
-                  >
-                    {t('auth.page-signin.password')}
-                  </Label>
-                  <Link
-                    className="text-primaryV2/90 hover:text-primaryV2 font-medium text-xs"
-                    to="/authentication/forgot-password"
-                  >
-                    {t('auth.page-signin.forgot_password')}
-                  </Link>
-                </div>
-                <Input
-                  id="password"
-                  type="password"
-                  name="password"
-                  placeholder={t('auth.page-signin.password')}
-                  value={field.value}
-                  onChange={field.onChange}
-                  onKeyDown={onKeyDown}
-                  className="text-whiteV2 font-medium border-input-borderV2  bg-input-backgroundV2 placeholder:text-input-placeholderV2 focus-visible:ring-primaryV2/25 focus-visible:ring-offset-primaryV2 focus-visible:ring-offset-1 focus-visible:ring-4"
-                />
-                {error && (
-                  <div className="flex flex-row gap-1 px-4">
-                    <X color="#FC3B8C" className="w-4 h-4" />
-                    <p className="font-medium text-xs text-primaryV2">
-                      {error?.message}
-                    </p>
-                  </div>
-                )}
-              </div>
-            )}
+            headerContent={
+              <Link
+                className="text-primaryV2/90 hover:text-primaryV2 font-medium text-xs"
+                to="/authentication/forgot-password"
+              >
+                {t('auth.page-signin.forgot_password')}
+              </Link>
+            }
           />
           {error && (
             <div className="flex flex-row gap-1 px-4">

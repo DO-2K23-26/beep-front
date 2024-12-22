@@ -14,6 +14,10 @@ module.exports = {
   theme: {
     extend: {
       keyframes: {
+        'caret-blink': {
+          '0%,70%,100%': { opacity: '1' },
+          '20%,50%': { opacity: '0' },
+        },
         breathe1: {
           '0%, 100%': { transform: 'scale(1)', opacity: '0.2' },
           '50%': { transform: 'scale(1.1)', opacity: '0.25' },
@@ -40,6 +44,7 @@ module.exports = {
         },
       },
       animation: {
+        'caret-blink': 'caret-blink 1.25s ease-out infinite',
         breathe1: 'breathe1 6s ease-in-out infinite',
         breathe2: 'breathe2 7s ease-in-out infinite',
         breathe3: 'breathe3 5s ease-in-out infinite',

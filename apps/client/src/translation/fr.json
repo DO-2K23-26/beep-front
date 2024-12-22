@@ -5,18 +5,20 @@
   },
   "auth": {
     "page-after-signup": {
-      "check_email": "Vérifiez vos emails",
-      "validate_email": "Votre compte a été créé avec succès, validez votre email pour pouvoir vous connecter"
+      "title": "Vérifiez vos emails",
+      "description": "Votre compte a été créé avec succès, validez votre email pour pouvoir vous connecter",
+      "button": "Se connecter"
     },
     "page-confirm-email": {
-      "check_email": "Vérifiez vos emails",
-      "confirm_account": "Confirmez votre compte pour vous connecter",
+      "title": "Confirmez votre email",
+      "description": "Veuillez confirmer votre compte en cliquant sur le lien envoyé à votre adresse e-mail",
       "next": "Suivant"
     },
     "page-forgot-password": {
+      "description": "Entrez votre adresse e-mail pour réinitialiser votre mot de passe",
       "forgot_password": "Mot de passe oublié ?",
-      "insert_email": "C'est ok, ça arrive ! Veuillez insérer votre email ci-dessous pour réinitialiser votre mot de passe.",
       "send": "Envoyer",
+      "email_sent": "Si l'adresse e-mail est valide, un e-mail vous sera envoyé pour réinitialiser votre mot de passe.",
       "go_back_signin": "Revenir à la page de connexion ?",
       "signin": "Se connecter",
       "email": "Email",
@@ -24,24 +26,25 @@
       "invalid_email": "Adresse e-mail invalide"
     },
     "page-reset-password": {
+      "description": "Entrez votre nouveau mot de passe",
       "reset": "Réinitialisez votre mot de passe",
-      "new_password": "Veuillez entrer votre nouveau mot de passe ci-dessous.",
       "required_password": "Le mot de passe est requis",
       "invalid_password": "Le mot de passe doit comporter au moins 8 caractères et contenir au moins une lettre majuscule, un chiffre et un caractère spécial.",
       "password": "Mot de passe",
-      "confirm_password": "Vous devez confirmer votre mot de passe",
+      "required_confirm_password": "Vous devez confirmer votre mot de passe",
       "password_mismatch": "Vos mots de passe ne correspondent pas",
       "confirm": "Confirmez le mot de passe",
       "submit": "Envoyer",
       "go_back_signin": "Revenir à la page de connexion ?",
-      "signin": "Se connecter"
+      "signin": "Se connecter",
+      "success": "Mot de passe réinitialisé avec succès",
+      "fail": "Erreur lors de la réinitialisation du mot de passe",
+      "no_match": "Les mots de passe ne correspondent pas"
     },
     "page-signin": {
       "title": "Se connecter à Beep",
       "signin": "Se connecter",
       "required_email": "L'e-mail est requis",
-      "password_error": "Le mot de passe que vous avez saisi est incorrect",
-      "invalid_email": "Adresse e-mail invalide",
       "email": "Email",
       "required_password": "Le mot de passe est requis",
       "password": "Mot de passe",
@@ -92,19 +95,21 @@
       "button": "Envoyer",
       "error": "Une erreur est survenue lors de la vérification du code",
       "error-totp-invalid": "Code incorrect",
-      "error-enter-6-digits": "Veuillez entrer un code à 6 chiffres"
+      "error-enter-6-digits": "Veuillez entrer un code à 6 chiffres",
+      "go_back_signin": "Revenir à la page de connexion ?",
+      "signin": "Se connecter"
     },
     "page-verify": {
       "account_verification": "Vérification du compte",
       "loading": "Chargement...",
       "verified_account": "Votre compte a été vérifié",
       "invalid-token": "Jeton invalide",
-      "signin": "Il est temps de vous connecter !"
+      "button": "Se connecter"
     },
     "page-verify-qrcode": {
       "error": "Erreur en validant le QRCode",
       "expiration": "Le QRCode a expiré",
-      "homepage": "Retour à la page d'accueil",
+      "homepage": "Retour",
       "success": "Connexion réussie",
       "description": "Vous pouvez retourner sur votre navigateur pour continuer à utiliser Beep"
     }

@@ -3,10 +3,12 @@ import { useState } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
 import toast from 'react-hot-toast'
 import { PageForgotPassword } from '../ui/page-forgot-password'
+import { useTranslation } from 'react-i18next'
 
 export function PageForgotPasswordFeature() {
   const [reset, result] = useSendResetPasswordMailMutation()
   const [error] = useState('')
+  const { t } = useTranslation()
   const methods = useForm({
     mode: 'onChange',
     defaultValues: {
@@ -18,9 +20,7 @@ export function PageForgotPasswordFeature() {
     reset({
       email: data.email,
     })
-    toast(
-      'If this email address is in our records, a reset link will be sent. Please check your inbox.'
-    )
+    toast(t('auth.page-forgot-password.email_sent'))
     methods.reset()
   })
 

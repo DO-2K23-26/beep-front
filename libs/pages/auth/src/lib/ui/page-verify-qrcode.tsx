@@ -1,31 +1,42 @@
+import { Button } from '@beep/shadcn'
+import { ArrowRight } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router-dom'
+import { AuthHeader } from './auth-header'
 
-export default function PageQRCodeVerify({ error }: { error: boolean }) {
+interface PageQRCodeVerifyProps {
+  error: boolean
+  onSignin: () => void
+}
+
+export default function PageQRCodeVerify({
+  error,
+  onSignin,
+}: PageQRCodeVerifyProps) {
   const { t } = useTranslation()
 
-  if (error) {
-    return (
-      <div className="flex flex-col gap-6 justify-center items-start m-5">
-        <h1 className="font-extrabold">{t('auth.page-verify-qrcode.error')}</h1>
-        <div className="flex flex-row gap-2 items-center">
-          <h5>{t('auth.page-verify-qrcode.expiration')}</h5>
-        </div>
-        <Link to="/" className="text-black underline">
-          {t('auth.page-verify-qrcode.homepage')}
-        </Link>
-      </div>
-    )
-  }
+  const title = error
+    ? t('auth.page-verify-qrcode.error')
+    : t('auth.page-verify-qrcode.success')
+  const description = error
+    ? t('auth.page-verify-qrcode.expiration')
+    : t('auth.page-verify-qrcode.description')
+
   return (
-    <div className="flex flex-col gap-6 justify-center items-start m-5">
-      <h1 className="font-extrabold">{t('auth.page-verify-qrcode.success')}</h1>
-      <div className="flex flex-row gap-2 items-center">
-        <h5>{t('auth.page-verify-qrcode.description')}</h5>
+    <div className="flex flex-col gap-12 z-10 max-w-3xl">
+      <AuthHeader title={title} />
+      <div className="flex flex-col sm:flex-row justify-between item sm:items-center gap-6 sm:gap-12">
+        <p className="text-text-grayV2 text-sm font-bold">{description} </p>
+        <Button variant={'signin'} size={'signin'} onClick={onSignin}>
+          <p className="font-bold text-whiteV2">
+            {t('auth.page-verify-qrcode.homepage')}
+          </p>
+          <ArrowRight
+            className="w-6 h-6 text-whiteV2 font-bold"
+            color="#FF82B6"
+          />
+        </Button>
       </div>
-      <Link to="/" className="text-black underline">
-        {t('auth.page-verify-qrcode.homepage')}
-      </Link>
     </div>
   )
 }

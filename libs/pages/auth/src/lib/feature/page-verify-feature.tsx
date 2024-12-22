@@ -30,7 +30,7 @@ export default function PageVerifyFeature () {
 
   return (
     <PageVerify
-      stateVerification={stateVerification}
+      stateVerification={true}
       loading={loading}
       onClickButton={onClickButton}
     />
