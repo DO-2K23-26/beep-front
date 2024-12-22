@@ -1,7 +1,6 @@
-import { Button } from '@beep/shadcn'
-import { ArrowRight } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import { AuthHeader } from './auth-header'
+import AuthButton from './auth-button'
 
 interface PageAfterSignupProps {
   onSignin: () => void
@@ -17,15 +16,10 @@ export default function PageAfterSignup({ onSignin }: PageAfterSignupProps) {
         <p className="text-text-grayV2 text-sm font-bold">
           {t('auth.page-after-signup.description')}
         </p>
-        <Button variant={'signin'} size={'signin'} onClick={onSignin}>
-          <p className="font-bold text-whiteV2">
-            {t('auth.page-after-signup.button')}
-          </p>
-          <ArrowRight
-            className="w-6 h-6 text-whiteV2 font-bold"
-            color="#FF82B6"
-          />
-        </Button>
+        <AuthButton
+          onSubmit={onSignin}
+          text={t('auth.page-after-signup.button')}
+        />
       </div>
     </div>
   )

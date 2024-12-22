@@ -1,5 +1,4 @@
 import { Button } from '@beep/shadcn'
-import ContainerLight from './container-light'
 import { ArrowRight } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import { AuthHeader } from './auth-header'
@@ -43,7 +42,7 @@ export function PageEmailUpdateConfirmation({
             </p>
             <ArrowRight
               className="w-6 h-6 text-whiteV2 font-bold"
-              color="#FF82B6"
+              color="#C4B5FD"
             />
           </Button>
         ) : null}

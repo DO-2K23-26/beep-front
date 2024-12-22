@@ -1,10 +1,12 @@
 import { useFormContext } from 'react-hook-form'
 import { Link } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
-import { Button, Label } from '@beep/shadcn'
-import { ArrowRight, Upload, X } from 'lucide-react'
+import { Label } from '@beep/shadcn'
+import { Upload } from 'lucide-react'
 import { FormField } from './form-field'
 import { AuthHeader } from './auth-header'
+import AuthButton from './auth-button'
+import AuthError from './auth-error'
 
 export interface PageSignupProps {
   onSubmit: () => void
@@ -84,18 +86,13 @@ export function PageSignup({
               },
             }}
           />
-          {error && (
-            <div className="flex flex-row gap-1 px-4">
-              <X color="#FC3B8C" className="w-4 h-4" />
-              <p className="font-medium text-xs text-primaryV2">{error}</p>
-            </div>
-          )}
+          {error && <AuthError error={error} />}
         </div>
         <div className="flex flex-col-reverse sm:flex-col gap-4">
           <div className="flex flex-col gap-2 group/input h-fit max-w-[120px]">
             <Label
               htmlFor="file_upload"
-              className="text-label-V2 group-hover/input:text-label-hoverV2 group-focus-within/input:text-label-hoverV2 font-medium text-xs transition-colors duration-200 rounded-md"
+              className="text-labelV2 group-hover/input:text-label-hoverV2 group-focus-within/input:text-label-hoverV2 font-medium text-xs transition-colors duration-200 rounded-md"
             >
               {t('auth.page-signup.profile_picture')}
             </Label>
@@ -103,8 +100,8 @@ export function PageSignup({
               htmlFor="file_upload"
               className="border-dashed cursor-pointer h-[120px] w-[120px] relative border-2 overflow-hidden border-input-borderV2 rounded-lg flex flex-col items-center justify-center transition-colors gap-2"
             >
-              <Upload color="#65687A" className="h-4 w-4 text-label-V2" />
-              <span className="text-label-V2 text-sm">Upload</span>
+              <Upload color="#65687A" className="h-4 w-4 text-labelV2" />
+              <span className="text-labelV2 text-sm">Upload</span>
               {previewUrl && (
                 <img
                   src={previewUrl}
@@ -169,15 +166,7 @@ export function PageSignup({
             {t('auth.page-signup.signin')}
           </Link>
         </div>
-        <Button variant={'signin'} size={'signin'} onClick={onSubmit}>
-          <p className="font-bold text-whiteV2">
-            {t('auth.page-signup.signup')}
-          </p>
-          <ArrowRight
-            className="w-6 h-6 text-whiteV2 font-bold"
-            color="#FF82B6"
-          />
-        </Button>
+        <AuthButton onSubmit={onSubmit} text={t('auth.page-signup.signup')} />
       </div>
     </div>
   )

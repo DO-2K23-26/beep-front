@@ -1,7 +1,6 @@
 import { useTranslation } from 'react-i18next'
-import { Button } from '@beep/shadcn'
-import { ArrowRight } from 'lucide-react'
 import { AuthHeader } from './auth-header'
+import AuthButton from './auth-button'
 
 interface PageConfirmEmailProps {
   onSignin: () => void
@@ -17,15 +16,10 @@ export default function PageConfirmEmail({ onSignin }: PageConfirmEmailProps) {
         <p className="text-text-grayV2 text-sm font-bold">
           {t('auth.page-confirm-email.description')}
         </p>
-        <Button variant={'signin'} size={'signin'} onClick={onSignin}>
-          <p className="font-bold text-whiteV2">
-            {t('auth.page-confirm-email.next')}
-          </p>
-          <ArrowRight
-            className="w-6 h-6 text-whiteV2 font-bold"
-            color="#FF82B6"
-          />
-        </Button>
+        <AuthButton
+          onSubmit={onSignin}
+          text={t('auth.page-confirm-email.next')}
+        />
       </div>
     </div>
   )

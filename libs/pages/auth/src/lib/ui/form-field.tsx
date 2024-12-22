@@ -5,9 +5,9 @@ import {
   Controller,
   FieldValues,
   Path,
-  RegisterOptions,
 } from 'react-hook-form'
 import { ReactNode } from 'react'
+import AuthError from './auth-error'
 
 interface FormFieldProps<T extends FieldValues> {
   name: Path<T>
@@ -40,7 +40,7 @@ export function FormField<T extends FieldValues>({
           <div className="flex flex-row justify-between">
             <Label
               htmlFor={name}
-              className="text-label-V2 group-hover/input:text-label-hoverV2 group-focus-within/input:text-label-hoverV2 font-medium text-xs transition-colors duration-200"
+              className="text-labelV2 group-hover/input:text-label-hoverV2 group-focus-within/input:text-label-hoverV2 font-medium text-xs transition-colors duration-200"
             >
               {label}
             </Label>
@@ -56,14 +56,7 @@ export function FormField<T extends FieldValues>({
             onKeyDown={onKeyDown}
             className="text-whiteV2 font-medium border-input-borderV2 bg-input-backgroundV2 placeholder:text-input-placeholderV2 focus-visible:ring-primaryV2/25 focus-visible:ring-offset-primaryV2 focus-visible:ring-offset-1 focus-visible:ring-4"
           />
-          {error && (
-            <div className="flex flex-row gap-1 px-4">
-              <X color="#FC3B8C" className="w-4 h-4" />
-              <p className="font-medium text-xs text-primaryV2">
-                {error?.message}
-              </p>
-            </div>
-          )}
+          {error && <AuthError error={error.message} />}
         </div>
       )}
     />
