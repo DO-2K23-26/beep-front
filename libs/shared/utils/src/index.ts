@@ -4,6 +4,7 @@ export * from './lib/sort-by-key'
 export * from './lib/tw-merge'
 export * from './lib/transmit'
 export * from './lib/debounce'
+export * from './lib/sort-channels'
 
 type ReactElementProps = {
   tag: (...props: unknown[]) => JSX.Element

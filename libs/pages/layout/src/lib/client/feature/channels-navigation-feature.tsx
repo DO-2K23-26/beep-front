@@ -12,10 +12,10 @@ import {
   useGetServerChannelsQuery,
   useJoinVoiceChannelMutation,
   useLeaveVoiceChannelMutation,
-  useTransmitBannerQuery
+  useTransmitBannerQuery,
 } from '@beep/server'
 import { AppDispatch } from '@beep/store'
-import { TransmitSingleton } from '@beep/transmit'
+import { sortChannels, TransmitSingleton } from '@beep/transmit'
 import { useModal } from '@beep/ui'
 import { getUserState, useGetMeQuery } from '@beep/user'
 import {
@@ -225,11 +225,13 @@ export function ChannelsNavigationFeature() {
     toast.success(t('layout.channels-navigation.copy_server_id'))
   }
 
+  const textChannels = sortChannels(channels)
+
   return (
     <ChannelsNavigation
       key={'server_' + server?.id}
       onJoinTextChannel={onJoinTextChannel}
-      textChannels={channels?.textChannels ?? []}
+      textChannels={textChannels}
       voiceChannels={channels?.voiceChannels ?? []}
       streamingUsers={streamingUsers ?? []}
       onJoinVoiceChannel={onJoinVoiceChannel}
