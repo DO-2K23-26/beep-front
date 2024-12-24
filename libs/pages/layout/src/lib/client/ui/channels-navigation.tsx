@@ -20,7 +20,7 @@ import { useEffect, useState } from 'react'
 import { FormProvider, UseFormReturn } from 'react-hook-form'
 import { useSelector } from 'react-redux'
 import { ConnectedChannelRow } from './connect-channel-row'
-import { ListTextChannels } from './list-channels'
+import { ListChannels } from './list-channels'
 import { ListVoiceChannels } from './list-voice-channels'
 
 import { cn } from '@beep/utils'
@@ -155,14 +155,11 @@ export default function ChannelsNavigation({
           {/* Channels list */}
 
           <div className="flex flex-col gap-2 overflow-y-scroll scroll-smooth scroll-bar h-full">
-            <ListTextChannels
+            <ListChannels
               channels={textChannels || []}
               onJoinTextChannel={onJoinTextChannel}
-            />
-            <ListVoiceChannels
-              channels={voiceChannels || []}
+              onJoinVoiceChannel={onJoinVoiceChannel}
               occupiedChannels={streamingUsers}
-              onJoinChannel={onJoinVoiceChannel}
             />
           </div>
 
