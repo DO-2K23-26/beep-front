@@ -14,10 +14,14 @@ export default function DisplayChannelFeature({
   const { channelId } = useParams<{ channelId: string }>()
 
   return (
-    <DisplayChannel
-      channel={channel}
-      onJoinChannel={onJoinTextChannel}
-      isSelected={channelId === channel.id}
-    />
+    <div data-swapy-slot={channel.id}>
+      <div data-swapy-item={channel.id}>
+        <DisplayChannel
+          channel={channel}
+          onJoinChannel={onJoinTextChannel}
+          isSelected={channelId === channel.id}
+        />
+      </div>
+    </div>
   )
 }
