@@ -5,10 +5,8 @@ import { useEffect, useState } from 'react'
 import { Toaster } from 'react-hot-toast'
 import { useDispatch, useSelector } from 'react-redux'
 import { Navigate, Outlet, useLocation, useNavigate } from 'react-router-dom'
-import { TransmitSingleton, upperCaseFirstLetter } from '@beep/utils'
-import toast from 'react-hot-toast'
 import { useTranslation } from 'react-i18next'
-import { logger } from 'nx/src/utils/logger'
+import { NotificationsHandler } from '@beep/notifications'
 
 export default function App() {
   const { t } = useTranslation()
@@ -45,10 +43,6 @@ export default function App() {
     }
   }, [dispatch, isErrorRefresh, isSuccessRefresh, navigate, refreshData])
 
-  useEffect(() => {
-    subscribeToNotifs(payload)
-  }, [payload])
-
   if (
     !isLoading &&
     !isAuthenticated &&
@@ -79,70 +73,7 @@ export default function App() {
     <>
       <Toaster />
       <Outlet />
+      <NotificationsHandler userInfo = {payload} />
     </>
   )
-
-  function subscribeToNotifs(payload: any) {
-    if (payload) {
-      TransmitSingleton.subscribe(
-        `notifications/users/${payload.sub}`,
-        (data) => {
-          try {
-            if (typeof data === 'object' &&
-              data !== null &&
-              'event' in data) {
-              const outerData = data as { event: string}
-              if (outerData.event.trim().startsWith('{') &&
-                outerData.event.trim().endsWith('}')) {
-                const parsedMessage = JSON.parse(outerData.event)
-                switch (parsedMessage.type) {
-                  case 'USER_MENTIONED_IN_MESSAGE':
-                    toast(
-                      <div style={{ display: 'flex', alignItems: 'center' }}>
-                        <div>
-                          <strong>
-                            {upperCaseFirstLetter(parsedMessage.serverName)} :{' '}
-                            {upperCaseFirstLetter(parsedMessage.channelName)}
-                          </strong>
-                          <div>
-                            {upperCaseFirstLetter(parsedMessage.senderName)}{' '}
-                            {t('notifications.mentions.mentioned')}
-                          </div>
-                        </div>
-                      </div>,
-                      {
-                        icon: '🔔',
-                      }
-                    )
-                    break
-                  case 'FRIEND_REQUEST':
-                    toast(
-                      <div style={{ display: 'flex', alignItems: 'center' }}>
-                        <div>
-                          <strong>
-                            {upperCaseFirstLetter(parsedMessage.senderName)}
-                          </strong>{t('notifications.friend-request.request')}
-                        </div>
-                      </div>,
-                      {
-                        icon: '🔔',
-                      }
-                    )
-                    break
-                  default:
-                    break
-                }
-              } else {
-                throw new Error('Invalid JSON data in message field')
-              }
-            } else {
-              throw new Error('Data does not contain a valid message field')
-            }
-          } catch (error) {
-            logger.debug('Failed to parse JSON data:', error)
-          }
-        }
-      )
-    }
-  }
 }

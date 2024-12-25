@@ -1,1 +1,2 @@
-export * from './lib/notifications.slice'
+export * from './lib/types'
+export * from './lib/notifications-handler'

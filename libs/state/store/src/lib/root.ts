@@ -8,7 +8,6 @@ import { toggleListenerMiddleware, userApi, userReducer } from '@beep/user'
 import { webRTCMiddleware, webrtcSliceReducer } from '@beep/voice'
 import { Action, combineReducers, configureStore } from '@reduxjs/toolkit'
 import { authApi, authenticationReducer } from '@beep/authentication'
-import { notifReducer } from '@beep/notifications'
 
 export const appReducer = combineReducers({
   authentication: authenticationReducer,
@@ -18,7 +17,6 @@ export const appReducer = combineReducers({
   servers: serverReducer,
   message: messageReducer,
   webRTC: webrtcSliceReducer,
-  notifications: notifReducer,
   [userApi.reducerPath]: userApi.reducer,
   [channelApi.reducerPath]: channelApi.reducer,
   [serverApi.reducerPath]: serverApi.reducer,

@@ -1,13 +1,14 @@
-import { upperCaseFirstLetter } from "@beep/transmit"
-import { FriendRequestNotification } from "./notifications.slice"
+import { upperCaseFirstLetter } from '@beep/transmit'
+import { FriendRequestNotification } from './types'
 import { useTranslation } from 'react-i18next'
-
 
 export interface NotificationsFriendRequestProps {
   friendRequestNotification: FriendRequestNotification
 }
 
-export function NotificationsFriendRequest({ friendRequestNotification }: NotificationsFriendRequestProps) {
+export function NotificationsFriendRequest({
+  friendRequestNotification,
+}: NotificationsFriendRequestProps) {
   const { t } = useTranslation()
   return (
     <div>

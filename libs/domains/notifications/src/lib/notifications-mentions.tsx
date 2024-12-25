@@ -1,7 +1,6 @@
 import { upperCaseFirstLetter } from '@beep/transmit'
-import { UserMentionedInMessageNotification } from './notifications.slice'
+import { UserMentionedInMessageNotification } from './types'
 import { useTranslation } from 'react-i18next'
-
 
 export interface NotificationsMentionsProps {
   notification: UserMentionedInMessageNotification
@@ -10,7 +9,7 @@ export interface NotificationsMentionsProps {
 export function NotificationsMentions({
   notification,
 }: NotificationsMentionsProps) {
-    const { t } = useTranslation()
+  const { t } = useTranslation()
   return (
     <div>
       <strong>
