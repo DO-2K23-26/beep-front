@@ -17,7 +17,7 @@
     "paths": {
       "@beep/auth": ["libs/pages/auth/src/index.ts"],
       "@beep/authentication": ["libs/domains/authentication/src/index.ts"],
-      "@beep/authentication": ["libs/domains/authentication/src/index.ts"],
+      "@beep/notifications": ["libs/domains/notifications/src/index.ts"],
       "@beep/channel": ["libs/domains/channel/src/index.ts"],
       "@beep/contracts": ["libs/shared/contracts/src/index.ts"],
       "@beep/discover": ["libs/pages/discover/src/index.ts"],

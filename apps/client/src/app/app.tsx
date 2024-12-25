@@ -88,7 +88,6 @@ export default function App() {
         `notifications/users/${payload.sub}`,
         (data) => {
           try {
-            console.log(data)
             if (typeof data === 'object' &&
               data !== null &&
               'event' in data) {
