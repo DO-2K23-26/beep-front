@@ -1,9 +1,11 @@
 import { Device } from '@beep/contracts'
-import { InputSelect } from '@beep/ui'
+import { InputSelect, Button } from '@beep/ui'
 import { useDispatch } from 'react-redux'
 import { initializeDevices } from '@beep/voice'
 import { useTranslation } from 'react-i18next'
 import { AppDispatch } from '@beep/store'
+import { useState } from 'react'
+import { unwrapResult } from '@reduxjs/toolkit'
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface UserMediaProps {
@@ -33,6 +35,17 @@ export function UserMedia({
 }: UserMediaProps) {
   const dispatch = useDispatch<AppDispatch>()
   const { t } = useTranslation()
+  const [isError, setIsError] = useState(false)
+
+  const handleRequestPermissions = async () => {
+    setIsError(false)
+    try {
+      const resultAction = await dispatch(initializeDevices())
+      unwrapResult(resultAction)
+    } catch (error) {
+      setIsError(true)
+    }
+  }
 
   return (
     <div className="p-6">
@@ -42,6 +55,15 @@ export function UserMedia({
       <div className="text-slate-800 text-xs sm:text-sm md:text-base">
         {t('layout.user-media.change_method')}
       </div>
+
+      {!audioInputs.length && !videoInputs.length && (
+        <div className="py-4">
+          <Button onClick={handleRequestPermissions}>
+            {t('layout.user-media.permission_to_use')}
+          </Button>
+        </div>
+      )}
+
       <div className="flex flex-col gap-4 py-4">
         {audioOutputFeatureFlag && (
           <InputSelect
@@ -54,55 +76,33 @@ export function UserMedia({
             onChange={onChangeAudioOutputDevice}
           />
         )}
-        {audioInputDeviceLabel ? (
-          <InputSelect
-            label={t('layout.user-media.audio_inputs')}
-            options={audioInputs.map((device) => ({
-              label: device.label,
-              value: device.label,
-            }))}
-            value={audioInputDeviceLabel}
-            onChange={onChangeAudioInputDevice}
-          />
-        ) : (
-          <div className="text-slate-800 text-xs sm:text-sm md:text-base flex flex-col justify-center items-start">
-            {t('layout.user-media.no_audio_inputs')} !
-            <button
-              className="text-blue-500 underline"
-              onClick={() => {
-                dispatch(initializeDevices())
-              }}
-            >
-              {t('layout.user-media.permission_to_use')}
-            </button>
-            {t('layout.user-media.access_blocked')}
-          </div>
-        )}
-        {videoDeviceLabel ? (
-          <InputSelect
-            label={t('layout.user-media.video_inputs')}
-            options={videoInputs.map((device) => ({
-              label: device.label,
-              value: device.label,
-            }))}
-            value={videoDeviceLabel}
-            onChange={onChangeVideoInputDevice}
-          />
-        ) : (
-          <div className="text-slate-800 text-xs sm:text-sm md:text-base flex flex-col justify-center items-start">
-            {t('layout.user-media.no_video_inputs')} !
-            <button
-              className="text-blue-500 underline"
-              onClick={() => {
-                dispatch(initializeDevices())
-              }}
-            >
-              {t('layout.user-media.permission_to_use')}
-            </button>
-            {t('layout.user-media.access_blocked')}
-          </div>
-        )}
+        <InputSelect
+          label={t('layout.user-media.audio_inputs')}
+          options={audioInputs.map((device) => ({
+            label: device.label,
+            value: device.label,
+          }))}
+          value={audioInputDeviceLabel}
+          onChange={onChangeAudioInputDevice}
+          disabled={!audioInputs.length}
+        />
+        <InputSelect
+          label={t('layout.user-media.video_inputs')}
+          options={videoInputs.map((device) => ({
+            label: device.label,
+            value: device.label,
+          }))}
+          value={videoDeviceLabel}
+          onChange={onChangeVideoInputDevice}
+          disabled={!videoInputs.length}
+        />
       </div>
+
+      {isError && (
+        <div className="bg-red-100 text-red-700 p-4 rounded-md mt-4">
+          {t('layout.user-media.access_blocked')}
+        </div>
+      )}
     </div>
   )
 }
