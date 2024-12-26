@@ -8,6 +8,7 @@ import {
 } from './types'
 import { NotificationsMentions } from './notifications-mentions'
 import { useEffect } from 'react'
+// eslint-disable-next-line @nx/enforce-module-boundaries
 import { TransmitSingleton } from '@beep/transmit'
 
 export interface NotificationsHandlerProps {

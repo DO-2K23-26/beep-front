@@ -1,3 +1,4 @@
+// eslint-disable-next-line @nx/enforce-module-boundaries
 import { upperCaseFirstLetter } from '@beep/transmit'
 import { UserMentionedInMessageNotification } from './types'
 import { useTranslation } from 'react-i18next'
