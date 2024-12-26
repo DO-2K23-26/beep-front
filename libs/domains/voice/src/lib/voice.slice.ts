@@ -10,18 +10,27 @@ import {
 
 export const initializeDevices = createAsyncThunk(
   'webRTC/initializeDevices',
-  async (_, { dispatch }) => {
-    await navigator.mediaDevices.getUserMedia({ audio: true, video: true });
-    const devicesIn = await navigator.mediaDevices.enumerateDevices()
-    const audioInput =
-      devicesIn.find((device) => device.kind === 'audioinput') || null
-    const videoInput =
-      devicesIn.find((device) => device.kind === 'videoinput') || null
-    dispatch(setDevices(devicesIn))
-    if (audioInput) dispatch(setAudioInputDevice(audioInput))
-    if (videoInput) dispatch(setVideoDevice(videoInput))
+  async (_, { dispatch, rejectWithValue }) => {
+    try {
+      await navigator.mediaDevices.getUserMedia({ audio: true, video: true })
+      const devicesIn = await navigator.mediaDevices.enumerateDevices()
+      const audioInput =
+        devicesIn.find((device) => device.kind === 'audioinput') || null
+      const videoInput =
+        devicesIn.find((device) => device.kind === 'videoinput') || null
+      dispatch(setDevices(devicesIn))
+      if (audioInput) dispatch(setAudioInputDevice(audioInput))
+      if (videoInput) dispatch(setVideoDevice(videoInput))
+      return { success: true }
+    } catch (error) {
+      console.error(
+        "Error when initializing input devices, permission may have been denied"
+      )
+      return rejectWithValue('Refused permission or error')
+    }
   }
 )
+
 
 const initialState: IVoice = {
   serverPresence: [],
