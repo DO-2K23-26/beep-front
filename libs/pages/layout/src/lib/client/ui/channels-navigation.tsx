@@ -21,7 +21,6 @@ import { FormProvider, UseFormReturn } from 'react-hook-form'
 import { useSelector } from 'react-redux'
 import { ConnectedChannelRow } from './connect-channel-row'
 import { ListChannels } from './list-channels'
-import { ListVoiceChannels } from './list-voice-channels'
 
 import { cn } from '@beep/utils'
 import { getVoiceState } from '@beep/voice'
@@ -32,8 +31,7 @@ import { ServerDropdown } from './server-dropdown'
 import { ServerPictureButton } from './server-picture-button'
 
 export interface ChannelsNavigationProps {
-  textChannels?: ChannelEntity[]
-  voiceChannels?: ChannelEntity[]
+  channels?: ChannelEntity[]
   streamingUsers: OccupiedChannelEntity[]
   server?: ServerEntity
   banner?: string
@@ -49,8 +47,7 @@ export interface ChannelsNavigationProps {
 }
 
 export default function ChannelsNavigation({
-  textChannels,
-  voiceChannels,
+  channels,
   server,
   streamingUsers,
   banner,
@@ -156,7 +153,7 @@ export default function ChannelsNavigation({
 
           <div className="flex flex-col gap-2 overflow-y-scroll scroll-smooth scroll-bar h-full">
             <ListChannels
-              channels={textChannels || []}
+              channels={channels || []}
               onJoinTextChannel={onJoinTextChannel}
               onJoinVoiceChannel={onJoinVoiceChannel}
               occupiedChannels={streamingUsers}

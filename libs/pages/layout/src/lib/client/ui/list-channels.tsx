@@ -4,7 +4,6 @@ import {
   OccupiedChannelEntity,
 } from '@beep/contracts'
 import DisplayChannelFeature from '../feature/display-channel-feature'
-import { Channel } from 'diagnostics_channel'
 import VoiceChannel from '../feature/voice-channel'
 import { createSwapy, Swapy } from 'swapy'
 import { useEffect, useRef } from 'react'
@@ -24,14 +23,25 @@ export function ListChannels({
 }: ListTextChannelsProps) {
   const swapy = useRef<Swapy | null>(null)
   const container = useRef(null)
+  const startingPosition = useRef<
+    {
+      slot: string
+      item: string
+    }[]
+  >([])
 
   useEffect(() => {
     if (container.current) {
       swapy.current = createSwapy(container.current, {
         dragAxis: 'y',
       })
-      swapy.current.onSwap((event) => {
-        console.log('swap', event) // we will want to save the state
+
+      swapy.current.onSwapStart((event) => {
+        startingPosition.current = event.slotItemMap.asArray
+      })
+
+      swapy.current.onSwapEnd((event) => {
+        console.log(startingPosition.current)
       })
     }
 

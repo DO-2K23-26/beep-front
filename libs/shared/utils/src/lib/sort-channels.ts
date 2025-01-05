@@ -23,3 +23,38 @@ export function sortChannels(
   }
   return allChannels
 }
+
+export function getPositionsDuringSwap(
+  draggedItem: string,
+  swappedItem: string,
+  newPositions: string[]
+): {
+  id: string
+  position: number
+}[] {
+  const toReturn = []
+  const posDragged = newPositions.findIndex((elt) => elt === draggedItem)
+  const posSwapped = newPositions.findIndex((elt) => elt === swappedItem)
+
+  toReturn.push({
+    id: draggedItem,
+    position: posDragged,
+  })
+
+  toReturn.push({
+    id: swappedItem,
+    position: posSwapped,
+  })
+
+  return toReturn
+}
+
+export function getPositionsAfterSwap(
+  oldPositions: { slot: string; item: string }[],
+  newPositions: { slot: string; item: string }[]
+): { id: string; position: number }[] {
+  const filtered = newPositions.filter((value) => {
+    const old = oldPositions.filter((val) => value.slot === val.slot) //only one elt since slot is unique
+    return old[0].item !== value.item
+  })
+}

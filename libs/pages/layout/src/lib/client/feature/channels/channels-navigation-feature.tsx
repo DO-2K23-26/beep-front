@@ -30,7 +30,7 @@ import { toast } from 'react-hot-toast'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate, useParams } from 'react-router'
-import ChannelsNavigation from '../ui/channels-navigation'
+import ChannelsNavigation from '../../ui/channels-navigation'
 
 export function ChannelsNavigationFeature() {
   const { t } = useTranslation()
@@ -225,14 +225,11 @@ export function ChannelsNavigationFeature() {
     toast.success(t('layout.channels-navigation.copy_server_id'))
   }
 
-  const textChannels = sortChannels(channels)
-
   return (
     <ChannelsNavigation
       key={'server_' + server?.id}
       onJoinTextChannel={onJoinTextChannel}
-      textChannels={textChannels}
-      voiceChannels={channels?.voiceChannels ?? []}
+      channels={sortChannels(channels)}
       streamingUsers={streamingUsers ?? []}
       onJoinVoiceChannel={onJoinVoiceChannel}
       onLeaveVoiceChannel={onLeaveVoiceChannel}
