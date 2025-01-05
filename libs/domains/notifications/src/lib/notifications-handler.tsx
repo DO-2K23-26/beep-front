@@ -12,7 +12,20 @@ import { useEffect } from 'react'
 import { TransmitSingleton } from '@beep/transmit'
 
 export interface NotificationsHandlerProps {
-  userInfo: any
+  userInfo:
+    | {
+        audited_account: boolean
+        sub: string
+        exp: number
+        resource_access: {
+          roles: string[]
+        }
+        username: string
+        firstName: string
+        lastName: string
+        email: string
+      }
+    | undefined
 }
 
 export function NotificationsHandler({ userInfo }: NotificationsHandlerProps) {
