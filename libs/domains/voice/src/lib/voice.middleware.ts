@@ -13,8 +13,6 @@ import {Socket, Presence, Channel} from 'phoenix'
 
 const WebRTCMiddleware: Middleware = (store) => {
   const pcConfig : RTCConfiguration = {
-    iceServers: [{ urls: 'turn:162.38.112.211:33436?transport=udp', username: 'user-1', credential: 'pass-1'}],
-    iceTransportPolicy: "relay",
   };
   let peerConnection: RTCPeerConnection | null = null;
   let socket: Socket = null;
@@ -49,7 +47,7 @@ const WebRTCMiddleware: Middleware = (store) => {
   return (next) => async (action: any) => {
     switch (action.type) {
       case 'INITIALIZE_PRESENCE':
-        socket = new Socket("wss://"+endpoint + "/socket/"+ action.payload.server)
+        socket = new Socket("ws://"+endpoint + "/socket/"+ action.payload.server)
         socket.connect()
         for (const channelId of action.payload.channels) {
           const socketChannel = socket.channel(`peer:signalling-${channelId}`, {
@@ -58,6 +56,7 @@ const WebRTCMiddleware: Middleware = (store) => {
           })
           const presence = new Presence(socketChannel);
           presence.onSync(() => {
+            console.log("presence update ", presence.list())
             const users = presence.list().map((user) => {
               if (!user.metas[0].user.watcher) {
                 return {
@@ -65,7 +64,7 @@ const WebRTCMiddleware: Middleware = (store) => {
                   username: user.metas[0].user.username,
                   expiresAt: 0,
                   userSn: "not used",
-                  voiceMuted: ! user.metas[0].user.audio !== null,
+                  voiceMuted: user.metas[0].user.audio !== undefined,
                   muted: false,
                   camera: user.metas[0].user.video !== null                }
               }
@@ -212,7 +211,8 @@ const WebRTCMiddleware: Middleware = (store) => {
         currentPresence.onSync(() => {
           const presence = []
           currentPresence.list().map((user) => {
-            if (!user.metas[0].user.watcher){
+            if (!user.metas[0].user.watcher) {
+              console.log('user meta', user.metas)
               if (user.metas[0].user.id === action.payload.token) {
                 const outbounds = user.metas[0].user.outbounds
                 if (outbounds) {
@@ -231,47 +231,32 @@ const WebRTCMiddleware: Middleware = (store) => {
               }
             }
           })
-          console.log("presence update", presence)
+          console.log("presence", presence)
 
           store.dispatch(setUserStreams(presence))
-          const users = []
-          currentPresence.list().map((user) => {
-            if(!user.metas[0].user.watcher){
-              const outbounds = user.metas[0].user.outbounds
-              console.log("outbounds outbounds",outbounds)
-              if (!(outbounds && Object.keys(outbounds))){
-                users.push({
-                  id: outbounds.id,
-                  username: outbounds.username,
+
+          const users = currentPresence
+            .list()
+            .map((user) => {
+              if (!user.metas[0].user.watcher) {
+                return {
+                  id: user.metas[0].user.id,
+                  username: user.metas[0].user.username,
                   expiresAt: 0,
-                  userSn: "not used",
-                  voiceMuted: false,
+                  userSn: 'not used',
+                  voiceMuted: user.metas[0].user.audio !== undefined,
                   muted: false,
-                  camera: true
-                })
-              }else if(outbounds){
-                Object.keys(outbounds).map((inbound) => {
-                  console.log(outbounds)
-                  const inbounds = outbounds[inbound]
-                  users.push({
-                    id: inbounds.stream,
-                    username: currentPresence.list().find(user => user.metas[0].user.id === inbounds.stream).username,
-                    expiresAt: 0,
-                    userSn: "not used",
-                    voiceMuted: inbounds.audio !== null,
-                    muted: false,
-                    camera: ! inbounds.video !== null
-                  })
-                })
+                  camera: user.metas[0].user.video !== null,
+                }
               }
-            }
-          })
-          console.log("updated server Presence ", {
-            channelId: action.payload.channel, users: users
-          });
-          store.dispatch(setServerPresence({
-            channelId: action.payload.channel, users: users.filter((user)=> user.id !== undefined),
-          }))
+            })
+            .filter((user) => user !== undefined)
+          store.dispatch(
+            setServerPresence({
+              channelId: action.payload.channel,
+              users: users,
+            })
+          )
         });
 
         currentChannel
