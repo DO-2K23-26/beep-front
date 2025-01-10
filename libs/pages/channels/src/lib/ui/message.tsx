@@ -1,5 +1,5 @@
 import { MessageEntity } from '@beep/contracts'
-import { Button, ButtonStyle, Icon, InputMessageArea } from '@beep/ui'
+import { Button, ButtonShadCn, ButtonStyle, Icon, InputMessageArea } from '@beep/ui'
 import { cn } from '@beep/utils'
 import Markdoc from '@markdoc/markdoc'
 import React, { ReactNode, useEffect } from 'react'
@@ -12,16 +12,19 @@ import { DeleteMessageDialog } from './delete-message-dialog'
 import MediaEmbed from './media-embed'
 import { ReplyToDisplay } from './reply-to-display'
 import { MessageUserDisplay } from './message-user-display'
+import { RotateCcw } from 'lucide-react'
 
 interface MessageProps {
   message: MessageEntity
   isEditing: boolean
   isDisplayedAsPinned?: boolean
   isLoadingCreate: boolean | null
+  isErrorCreate: boolean | null
   isHighlighted: boolean
   switchEditing: (() => void) | null
   onUpdateMessage: () => void
   onDelete?: () => void
+  retryMessage: () => void
   cancelEditing: () => void
   onPin: () => void
   replaceUserTag: (message: ReactNode) => ReactNode
@@ -36,16 +39,18 @@ export default function Message({
   isHighlighted,
   isDisplayedAsPinned,
   isLoadingCreate,
+  isErrorCreate,
   switchEditing,
   onUpdateMessage,
   onDelete,
   cancelEditing,
+  retryMessage,
   onPin,
   onReply,
   replaceUserTag,
   replaceMentionChannel,
   containsUrl,
-}: Readonly<MessageProps>) { 
+}: Readonly<MessageProps>) {
   const { control } = useFormContext()
 
   useEffect(() => {
@@ -97,7 +102,7 @@ export default function Message({
       <div className="flex flex-row gap-2 justify-between">
         <MessageUserDisplay message={message} />
         <div className="flex flex-row gap-4 items-center sm:invisible group-hover:visible pr-2">
-          {!isDisplayedAsPinned && (
+          {!isDisplayedAsPinned && !isErrorCreate && (
             <>
               {switchEditing && !isEditing && (
                 <Button style={ButtonStyle.NONE} onClick={switchEditing}>
@@ -117,6 +122,20 @@ export default function Message({
                   <Icon name="lucide:corner-up-left" className="w-5 h-5" />
                 </Button>
               )}
+            </>
+          )}
+          {isErrorCreate && (
+            <>
+              <span className="text-red-600 visible">
+                ⓘ Failed to send message
+              </span>
+              <Button
+                style={ButtonStyle.NONE}
+                className="visible"
+                onClick={retryMessage}
+              >
+                <RotateCcw color="#ef4444" />
+              </Button>
             </>
           )}
           {isEditing && (
@@ -154,6 +173,7 @@ export default function Message({
               {
                 'bg-violet-50': !isLoadingCreate,
                 'bg-slate-500/30': isLoadingCreate,
+                '[&>*]:[&>*]:text-red-600': isErrorCreate,
               }
             )}
           >

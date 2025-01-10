@@ -4,7 +4,7 @@ import {
   usePinMessageMutation,
   useUpdateMessageMutation,
 } from '@beep/channel'
-import { ChannelEntity, MemberEntity, MessageEntity } from '@beep/contracts'
+import { ChannelEntity, MessageEntity } from '@beep/contracts'
 import { messageActions } from '@beep/message'
 import { useGetMembersQuery, useGetServerChannelsQuery } from '@beep/server'
 import { AppDispatch } from '@beep/store'
@@ -45,6 +45,7 @@ export default function MessageFeature({
   const currentUserIsOwner = userPayload?.sub === message.ownerId
   const channelId = message.channelId
   const matches = RegExp(regexUserTagging).exec(message.content)
+  const { data: members } = useGetMembersQuery(serverId ?? skipToken)
   const taggedUserIds = matches
     ? matches
         .map((match) => match.slice(2))
@@ -57,7 +58,6 @@ export default function MessageFeature({
     { userIds: taggedUserIds },
     { skip: taggedUserIds.length === 0 }
   )
-  const { data: members } = useGetMembersQuery(serverId ?? skipToken)
   const [updateMessage] = useUpdateMessageMutation()
   const [createMessage, createResult] = useCreateMessageMutation()
   const [deleteMessage] = useDeleteMessageMutation()
@@ -95,6 +95,20 @@ export default function MessageFeature({
   const setAsRepliedMessage = () => {
     if (onReply) onReply(message)
   }
+
+  const retryMessage = () => {
+    dispatch(messageActions.delete(message))
+    dispatch(
+      messageActions.send({
+        channelId: channelId,
+        files: [],    // for the moment it does not support files when retrying maybe in a futur
+        message: message.content,
+        replyTo: message.parentMessage ?? null,
+        userId: message.ownerId ?? '',
+      })
+    )
+  }
+
 
   const isEditing = editingMessageId === message.id
 
@@ -226,8 +240,10 @@ export default function MessageFeature({
         isDisplayedAsPinned={isDisplayedAsPinned}
         onDelete={onDeleteMessageSubmit}
         isLoadingCreate={createResult.isLoading}
+        isErrorCreate={createResult.isError}
         switchEditing={currentUserIsOwner ? switchEditing : null}
         cancelEditing={cancelEditing}
+        retryMessage={retryMessage}
         onUpdateMessage={onUpdateMessageSubmit}
         replaceMentionChannel={replaceMentionChannel}
         replaceUserTag={replaceUserTag}
