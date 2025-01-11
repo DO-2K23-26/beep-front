@@ -70,7 +70,7 @@ export function ListChannels({
                 <DisplayChannelFeature
                   key={channel.id}
                   channel={channel}
-                  onJoinTextChannel={onJoinTextChannel}
+                  onJoinChannel={onJoinTextChannel}
                 />
               </Swappable>
             )
@@ -79,7 +79,6 @@ export function ListChannels({
               <Swappable slot={index.toString()} item={channel.id}>
                 <VoiceChannel
                   key={channel.id}
-                  position={index}
                   channel={channel}
                   users={occupiedChannel ? occupiedChannel.users : []}
                   onJoinChannel={onJoinVoiceChannel}

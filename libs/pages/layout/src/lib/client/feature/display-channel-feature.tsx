@@ -4,19 +4,19 @@ import { useParams } from 'react-router'
 
 interface DisplayChannelFeature {
   channel: ChannelEntity
-  onJoinTextChannel: (serverId: string, channelId: string) => void
+  onJoinChannel: (serverId: string, channelId: string) => void
 }
 
 export default function DisplayChannelFeature({
   channel,
-  onJoinTextChannel,
+  onJoinChannel,
 }: DisplayChannelFeature) {
   const { channelId } = useParams<{ channelId: string }>()
 
   return (
         <DisplayChannel
           channel={channel}
-          onJoinChannel={onJoinTextChannel}
+          onJoinChannel={onJoinChannel}
           isSelected={channelId === channel.id}
         />
   )
