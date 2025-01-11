@@ -7,6 +7,7 @@ import DisplayChannelFeature from '../feature/display-channel-feature'
 import VoiceChannel from '../feature/voice-channel'
 import { createSwapy, Swapy } from 'swapy'
 import { useEffect, useRef } from 'react'
+import {Swappable} from '@beep/utils'
 
 export interface ListTextChannelsProps {
   channels: ChannelEntity[]
@@ -43,8 +44,8 @@ export function ListChannels({
       })
 
       swapy.current.onSwapEnd((event) => {
-        if(event.hasChanged) {
-          for(const {slot, item} of event.slotItemMap.asArray) {
+        if (event.hasChanged) {
+          for (const { slot, item } of event.slotItemMap.asArray) {
             moveChannel(item, parseInt(slot))
           }
         }
@@ -65,22 +66,25 @@ export function ListChannels({
         switch (channel.type) {
           case ChannelType.text_server:
             return (
-              <DisplayChannelFeature
-                position={index}
-                key={channel.id}
-                channel={channel}
-                onJoinTextChannel={onJoinTextChannel}
-              />
+              <Swappable slot={index.toString()} item={channel.id}>
+                <DisplayChannelFeature
+                  key={channel.id}
+                  channel={channel}
+                  onJoinTextChannel={onJoinTextChannel}
+                />
+              </Swappable>
             )
           default:
             return (
-              <VoiceChannel
-                key={channel.id}
-                position={index}
-                channel={channel}
-                users={occupiedChannel ? occupiedChannel.users : []}
-                onJoinChannel={onJoinVoiceChannel}
-              />
+              <Swappable slot={index.toString()} item={channel.id}>
+                <VoiceChannel
+                  key={channel.id}
+                  position={index}
+                  channel={channel}
+                  users={occupiedChannel ? occupiedChannel.users : []}
+                  onJoinChannel={onJoinVoiceChannel}
+                />
+              </Swappable>
             )
         }
       })}
