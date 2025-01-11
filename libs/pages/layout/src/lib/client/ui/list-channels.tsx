@@ -44,7 +44,6 @@ export function ListChannels({
 
       swapy.current.onSwapEnd((event) => {
         if(event.hasChanged) {
-          console.log(event.slotItemMap.asArray)
           for(const {slot, item} of event.slotItemMap.asArray) {
             moveChannel(item, parseInt(slot))
           }
