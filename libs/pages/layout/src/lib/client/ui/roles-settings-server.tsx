@@ -1,6 +1,7 @@
 import { ServerEntity } from '@beep/contracts'
 import { ButtonIcon } from '@beep/ui'
 import { RoleEntity } from 'libs/shared/contracts/src/lib/entities/role.entity'
+import { RoleServer } from './role-server'
 
 export interface RolesSettingsServerProps {
   server: ServerEntity
@@ -32,15 +33,13 @@ export function RolesSettingsServer({
           textHiddenResponsive
         />
       </div>
-      {roles.length === 0 ? (
+      {roles.length === 0 && (
         <p className="text-slate-700 text-base sm:text-lg md:text-xl text-center w-full">
           Il n'y a aucun rôle pour ce serveur
         </p>
-      ) : (
-        <p>Y'en a {roles.length}</p>
       )}
       {roles.map((role) => (
-        <p>{role.name + ' (' + role.permissions + ')'}</p>
+        <RoleServer key={role.id} role={role} />
       ))}
     </div>
   )
