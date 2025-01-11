@@ -12,6 +12,7 @@ export interface ListTextChannelsProps {
   channels: ChannelEntity[]
   onJoinTextChannel: (serverId: string, channelId: string) => void
   onJoinVoiceChannel: (channel: ChannelEntity) => void
+  moveChannel: (channelId: string, newPosition: number) => void
   occupiedChannels: OccupiedChannelEntity[]
 }
 
@@ -19,6 +20,7 @@ export function ListChannels({
   channels,
   onJoinTextChannel,
   onJoinVoiceChannel,
+  moveChannel,
   occupiedChannels,
 }: ListTextChannelsProps) {
   const swapy = useRef<Swapy | null>(null)
@@ -41,7 +43,12 @@ export function ListChannels({
       })
 
       swapy.current.onSwapEnd((event) => {
-        console.log(startingPosition.current)
+        if(event.hasChanged) {
+          console.log(event.slotItemMap.asArray)
+          for(const {slot, item} of event.slotItemMap.asArray) {
+            moveChannel(item, parseInt(slot))
+          }
+        }
       })
     }
 
@@ -60,6 +67,7 @@ export function ListChannels({
           case ChannelType.text_server:
             return (
               <DisplayChannelFeature
+                position={index}
                 key={channel.id}
                 channel={channel}
                 onJoinTextChannel={onJoinTextChannel}
@@ -69,6 +77,7 @@ export function ListChannels({
             return (
               <VoiceChannel
                 key={channel.id}
+                position={index}
                 channel={channel}
                 users={occupiedChannel ? occupiedChannel.users : []}
                 onJoinChannel={onJoinVoiceChannel}

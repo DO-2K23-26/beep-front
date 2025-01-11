@@ -13,12 +13,14 @@ import {
   GetMembersResponse,
   JoinInvitationResponse,
   MemberEntity,
+  MoveChannelRequest,
   OccupiedChannelEntity,
   SearchServerRequest,
   ServerEntity,
   UpdateChannelRequest,
 } from '@beep/contracts'
-import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
+import { RootState } from '@beep/store'
+import { createApi, fetchBaseQuery} from '@reduxjs/toolkit/query/react'
 // eslint-disable-next-line @nx/enforce-module-boundaries
 
 const baseQuery = fetchBaseQuery({
@@ -107,24 +109,39 @@ export const serverApi = createApi({
       }),
       invalidatesTags: ['servers'],
     }),
-
     createChannelInServer: builder.mutation<
       CreateChannelResponse,
       CreateChannelRequest
     >({
-      query: (request) => ({
-        url: `/servers/${request.serverId}/channels`,
-        method: 'POST',
-        body: {
-          name: request.name,
-          type: +request.type,
-        },
-      }),
+      queryFn: async (request, queryApi, _extraOptions, fetchWithBQ) => {
+        const { getState } = queryApi;
+        const state = getState();
+
+        // Access your slice's state here
+
+        // Perform the API call
+        const response = await fetchWithBQ({
+          url: `/servers/${request.serverId}/channels`,
+          method: 'POST',
+          body: {
+            name: request.name,
+            type: +request.type,
+            position: request.position,
+          },
+        });
+
+        if (response.error) {
+          return { error: response.error };
+        }
+
+        return { data: response.data as CreateChannelResponse };
+      },
 
       invalidatesTags: (_result, _error, req) => [
         { type: 'channel', id: `LIST-${req.serverId}` },
       ],
     }),
+
     updateChannelInServer: builder.mutation<
       ChannelEntity,
       UpdateChannelRequest
@@ -178,16 +195,16 @@ export const serverApi = createApi({
       providesTags: (result, _error, serverId) =>
         result
           ? [
-              ...result.voiceChannels.map(({ id }) => ({
-                type: 'voiceChannel' as const,
-                id,
-              })),
-              ...result.textChannels.map(({ id }) => ({
-                type: 'textChannel' as const,
-                id,
-              })),
-              { type: 'channel', id: `LIST-${serverId}` },
-            ]
+            ...result.voiceChannels.map(({ id }) => ({
+              type: 'voiceChannel' as const,
+              id,
+            })),
+            ...result.textChannels.map(({ id }) => ({
+              type: 'textChannel' as const,
+              id,
+            })),
+            { type: 'channel', id: `LIST-${serverId}` },
+          ]
           : [{ type: 'channel', id: `LIST-${serverId}` }],
     }),
     joinVoiceChannel: builder.mutation<
@@ -219,12 +236,12 @@ export const serverApi = createApi({
       providesTags: (result, _error, _arg) =>
         result
           ? [
-              ...result.map(({ channelId }) => ({
-                type: 'streamingUsers' as const,
-                channelId,
-              })),
-              'streamingUsers',
-            ]
+            ...result.map(({ channelId }) => ({
+              type: 'streamingUsers' as const,
+              channelId,
+            })),
+            'streamingUsers',
+          ]
           : ['streamingUsers'],
     }),
     getMember: builder.query<MemberEntity, GetMemberRequest>({
@@ -243,9 +260,9 @@ export const serverApi = createApi({
       providesTags: (result, _error, serverId) =>
         result
           ? [
-              ...result.map(({ id }) => ({ type: 'members' as const, id })),
-              { type: 'members', id: `LIST-${serverId}` },
-            ]
+            ...result.map(({ id }) => ({ type: 'members' as const, id })),
+            { type: 'members', id: `LIST-${serverId}` },
+          ]
           : [{ type: 'members', id: `LIST-${serverId}` }],
     }),
 
@@ -296,7 +313,18 @@ export const serverApi = createApi({
         { type: 'transmitBanner', id: id },
       ],
     }),
-
+    patchChannelPosition: builder.mutation<
+      ChannelEntity,
+      MoveChannelRequest
+    >({
+      query: (request) => ({
+        url: `/servers/${request.serverId}/channels/${request.channelId}`,
+        method: 'PUT',
+        body: {
+          position: request.position
+        },
+      })
+    }),
     transmitPicture: builder.query<string, string>({
       query: (serverId) => ({
         url: `/servers/${serverId}/picture`,
@@ -335,4 +363,5 @@ export const {
   useTransmitPictureQuery,
   useDeleteServerMutation,
   useDiscoverServersQuery,
+  usePatchChannelPositionMutation
 } = serverApi

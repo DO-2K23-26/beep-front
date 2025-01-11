@@ -29,6 +29,7 @@ import { CurrentUserFeature } from '../feature/current-user-feature'
 import { CreateChannelModal } from './create-channel-modal'
 import { ServerDropdown } from './server-dropdown'
 import { ServerPictureButton } from './server-picture-button'
+import { usePatchChannelPositionMutation } from '@beep/server'
 
 export interface ChannelsNavigationProps {
   channels?: ChannelEntity[]
@@ -69,6 +70,7 @@ export default function ChannelsNavigation({
 
   const [isAdmin, setIsAdmin] = useState(false)
   const { connectionState } = useSelector(getVoiceState)
+  const [moveChannel] = usePatchChannelPositionMutation()
 
   useEffect(() => {
     if (server) {
@@ -157,6 +159,13 @@ export default function ChannelsNavigation({
               onJoinTextChannel={onJoinTextChannel}
               onJoinVoiceChannel={onJoinVoiceChannel}
               occupiedChannels={streamingUsers}
+              moveChannel={(channelId: string, newPosition: number) => {
+                moveChannel({
+                  position: newPosition,
+                  channelId,
+                  serverId: server?.id ?? '' //TODO: envoyer du refacto dans ce fichier car j'ai envie de m'exploser le caisson
+                })
+              }}
             />
           </div>
 
