@@ -343,7 +343,10 @@
     },
     "server-dropdown": {
       "settings": "Paramètres",
-      "destroy": "Supprimer le serveur"
+      "destroy": "Supprimer le serveur",
+      "server": "Serveur",
+      "overview": "Aperçu",
+      "roles": "Rôles"
     },
     "servers-navigation": {
       "logout": "Déconnexion réussie"

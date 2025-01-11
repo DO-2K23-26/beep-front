@@ -338,7 +338,10 @@
     },
     "server-dropdown": {
       "settings": "Settings",
-      "destroy": "Destroy server"
+      "destroy": "Destroy server",
+      "server": "Server",
+      "overview": "Overview",
+      "roles": "Roles"
     },
     "servers-navigation": {
       "logout": "Successfully logged out !"
