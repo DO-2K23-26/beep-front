@@ -331,6 +331,11 @@
       "success_update_server": "Server updated !",
       "error_update_server": "An error occured while updating the server !"
     },
+    "role-settings-server": {
+      "roles": "Roles",
+      "no_roles": "Any roles found",
+      "create_role": "Create a role"
+    },
     "server-dropdown-menu": {
       "server": "Server",
       "overview": "Overview",
