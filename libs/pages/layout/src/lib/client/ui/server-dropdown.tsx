@@ -19,7 +19,7 @@ import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router'
 import DestroyServerFeature from '../feature/destroy-server-feature'
 import { OverviewSettingsServer } from './overview-settings-server'
-import { RolesSettingsServer } from './roles-settings-server'
+import RolesSettingsServerFeature from '../feature/roles-settings-server-feature'
 
 interface ServerDropdownProps {
   server: ServerEntity
@@ -54,7 +54,9 @@ export function ServerDropdown({
       },
       {
         title: 'Roles',
-        settingComponent: server && <RolesSettingsServer server={server} />,
+        settingComponent: server && (
+          <RolesSettingsServerFeature server={server} />
+        ),
         id: 'roles',
         settingBodySize: SettingBodyWidth.L,
       },
