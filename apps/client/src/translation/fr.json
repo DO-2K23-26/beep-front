@@ -336,6 +336,11 @@
       "success_update_server": "Serveur mis à jour !",
       "error_update_server": "Une erreur est survenue lors de la mise à jour du serveur"
     },
+    "role-settings-server": {
+      "roles": "Rôles",
+      "no_roles": "Aucun rôle trouvé",
+      "create_role": "Créer un rôle"
+    },
     "server-dropdown-menu": {
       "server": "Serveur",
       "overview": "Aperçu",
