@@ -5,8 +5,11 @@ import { useEffect, useState } from 'react'
 import { Toaster } from 'react-hot-toast'
 import { useDispatch, useSelector } from 'react-redux'
 import { Navigate, Outlet, useLocation, useNavigate } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
+import { NotificationsHandler } from '@beep/notifications'
 
 export default function App() {
+  const { t } = useTranslation()
   const { isLoading, isAuthenticated, payload } = useSelector(getUserState)
   const dispatch = useDispatch<AppDispatch>()
   useState<NodeJS.Timeout>()
@@ -70,6 +73,7 @@ export default function App() {
     <>
       <Toaster />
       <Outlet />
+      <NotificationsHandler userInfo = {payload} />
     </>
   )
 }
