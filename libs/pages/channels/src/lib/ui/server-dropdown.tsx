@@ -22,6 +22,7 @@ import { ServerContext } from '@beep/pages/channels'
 import { RolesSettingsServerFeature } from '@beep/pages/role-settings'
 import DestroyServerFeature from '../feature/destroy-server-feature'
 import { OverviewSettingsServer } from './overview-settings-server'
+import { WebhoohSettingsServer } from './webhook-settings-server'
 
 interface ServerDropdownProps {
   server: ServerEntity
@@ -47,6 +48,12 @@ export function ServerDropdown({
         title: 'Overview',
         settingComponent: server && <OverviewSettingsServer server={server} />,
         id: 'overview',
+        settingBodySize: SettingBodyWidth.L,
+      },
+      {
+        title: 'Webhooks',
+        settingComponent: server && <WebHookSettingsServer server={server} />,
+        id: 'webhooks',
         settingBodySize: SettingBodyWidth.L,
       },
     ],
