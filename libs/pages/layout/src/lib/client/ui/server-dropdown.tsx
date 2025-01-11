@@ -22,6 +22,7 @@ import DestroyServerFeature from '../feature/destroy-server-feature'
 import { OverviewSettingsServer } from './overview-settings-server'
 import { ServerContext } from '@beep/pages/channels'
 import { RolesSettingsServerFeature } from '@beep/pages/role-settings'
+import { WebHookSettingsServer } from './webhook-settings-server'
 
 interface ServerDropdownProps {
   server: ServerEntity
@@ -49,6 +50,14 @@ export function ServerDropdown({
         id: 'overview',
         settingBodySize: SettingBodyWidth.L,
       },
+      {
+        title: 'Webhooks',
+        settingComponent: server && (
+          <WebHookSettingsServer server={server} />
+        ),
+        id: 'webhooks',
+        settingBodySize: SettingBodyWidth.L,
+      }
     ],
   }
   if (myMember?.hasPermission(Permissions.MANAGE_ROLES)) {
