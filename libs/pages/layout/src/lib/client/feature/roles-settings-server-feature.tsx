@@ -1,8 +1,7 @@
 import { ServerEntity } from '@beep/contracts'
 import { RolesSettingsServer } from '../ui/roles-settings-server'
-import { useSelector } from 'react-redux'
-import { RootState } from '@beep/store'
 import { useModal } from '@beep/ui'
+import { useGetRolesQuery } from '@beep/server'
 
 interface RolesSettingsServerFeatureProps {
   server: ServerEntity
@@ -11,7 +10,7 @@ interface RolesSettingsServerFeatureProps {
 export default function RolesSettingsServerFeature({
   server,
 }: Readonly<RolesSettingsServerFeatureProps>) {
-  const roles = useSelector((state: RootState) => state.servers.roles)
+  const { data: roles } = useGetRolesQuery(server.id)
   const { openModal, closeModal } = useModal()
 
   const onCreateRole = () => {
@@ -25,7 +24,7 @@ export default function RolesSettingsServerFeature({
   return (
     <RolesSettingsServer
       server={server}
-      roles={roles}
+      roles={roles ?? []}
       onCreateRole={onCreateRole}
       onUpdateRole={onUpdateRole}
       onDeleteRole={onDeleteRole}
