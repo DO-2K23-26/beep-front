@@ -39,6 +39,9 @@ export function RolesSettingsServer({
       ) : (
         <p>Y'en a {roles.length}</p>
       )}
+      {roles.map((role) => (
+        <p>{role.name + ' (' + role.permissions + ')'}</p>
+      ))}
     </div>
   )
 }
