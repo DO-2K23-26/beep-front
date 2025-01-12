@@ -309,7 +309,21 @@ export const serverApi = createApi({
         { type: 'transmitPicture', id: id },
       ],
     }),
+    createWebHook: builder.mutation<void, { serverId: string; channelId: string; name:string; profilePicture:File }>(
+      {
+        query: (request) => ({
+          url: `/servers/${request.serverId}/channels/${request.channelId}/webhook`,
+          method: 'POST',
+          body: {
+            name: request.name,
+            profilePicture: request.profilePicture,
+          },
+        }),
+      }
+    ),
+
   }),
+  
 })
 
 export const {
@@ -335,4 +349,5 @@ export const {
   useTransmitPictureQuery,
   useDeleteServerMutation,
   useDiscoverServersQuery,
+  useCreateWebHookMutation,
 } = serverApi
