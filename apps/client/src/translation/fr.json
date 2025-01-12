@@ -398,7 +398,27 @@
       "no_video_inputs": "Aucune entrée vidéo trouvée",
       "permission_to_use": "Demander l'autorisation d'utiliser les médias",
       "access_blocked": "Permission d'accès aux médias bloquée"
+    },
+    "webhooks-settings-server":{
+      "webhooks": "Webhooks",
+      "new_webhook": "Nouveau webhook"
+    },
+    "new-webhook-modal": {
+      "success_create": "Le webhook a bien été créé!",
+      "error_create": "Erreur dans la création du webhook.",
+      "error_name_exists": "Un webhook avec ce nom à déjà été créé.",
+      "create_modal": {
+        "title": "Créer un nouveau Webhook",
+        "subtitle": "Remplir les détails suivant pour créer votre webhook.",
+        "name_label": "Nom du Webhook",
+        "name_placeholder": "Entrer le nom du webhook",
+        "name_required": "Le nom du webhook est requis.",
+        "channel_label": "Channel",
+        "channel_required": "Sélectionner le channel.",
+        "cancel": "Annuler",
+        "create": "Créer"
     }
+  }
   },
   "settings": {
     "components": {

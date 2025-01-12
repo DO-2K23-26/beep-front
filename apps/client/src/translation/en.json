@@ -393,7 +393,27 @@
       "no_video_inputs": "No video input device found",
       "permission_to_use": "Ask for input device permission",
       "access_blocked": "Permission denied. Access to video and audio input devices is blocked."
+    },
+    "webhooks-settings-server":{
+      "webhooks": "WEBHOOKS",
+      "new_webhook": "New webhook"
+    },
+    "new-webhook-modal": {
+      "success_create": "Webhook created successfully!",
+      "error_create": "Failed to create the webhook.",
+      "error_name_exists": "A webhook with this name already exists.",
+      "create_modal": {
+        "title": "Create a New Webhook",
+        "subtitle": "Fill in the details below to create your webhook.",
+        "name_label": "Webhook Name",
+        "name_placeholder": "Enter the webhook name",
+        "name_required": "Webhook name is required.",
+        "channel_label": "Channel",
+        "channel_required": "Please select a channel.",
+        "cancel": "Cancel",
+        "create": "Create"
     }
+  }
   },
   "settings": {
     "components": {

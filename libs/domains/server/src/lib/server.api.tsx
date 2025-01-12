@@ -125,7 +125,7 @@ export const serverApi = createApi({
           body: {
             name: request.name,
             type: +request.type,
-            parentId: request.parentId
+            parentId: request.parentId,
           },
         })
 
@@ -337,7 +337,7 @@ export const serverApi = createApi({
         },
       }),
       invalidatesTags: (_result, _error, arg) => [
-        { type: 'channel', id: `LIST-${arg.serverId}` }
+        { type: 'channel', id: `LIST-${arg.serverId}` },
       ],
     }),
     moveChannelToFolder: builder.mutation<
@@ -348,11 +348,11 @@ export const serverApi = createApi({
         url: `/servers/${request.serverId}/channels/${request.channelId}`,
         method: 'PUT',
         body: {
-          parentId: request.parentId
+          parentId: request.parentId,
         },
       }),
       invalidatesTags: (_result, _error, arg) => [
-        { type: 'channel', id: `LIST-${arg.serverId}` }
+        { type: 'channel', id: `LIST-${arg.serverId}` },
       ],
     }),
     getMyMember: builder.query<MemberEntity, GetMyMemberRequest>({
@@ -433,6 +433,25 @@ export const serverApi = createApi({
         { type: 'members', id: `LIST-${req.serverId}` },
         { type: 'members', id: `${req.serverId}:${req.memberId}` },
       ],
+
+      createWebHook: builder.mutation<
+        void,
+        {
+          serverId: string
+          channelId: string
+          name: string
+          profilePicture: File
+        }
+      >({
+        query: (request) => ({
+          url: `/servers/${request.serverId}/channels/${request.channelId}/webhook`,
+          method: 'POST',
+          body: {
+            name: request.name,
+            profilePicture: request.profilePicture,
+          },
+        }),
+      }),
     }),
   }),
 })
@@ -470,5 +489,6 @@ export const {
   useCreateRoleMutation,
   useGetMyMemberQuery,
   useUpdateMemberNicknameMutation,
-  useMoveChannelToFolderMutation
+  useMoveChannelToFolderMutation,
+  useCreateWebHookMutation,
 } = serverApi
