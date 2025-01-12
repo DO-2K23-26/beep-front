@@ -418,6 +418,24 @@ export const serverApi = createApi({
         { type: 'roles', id: `LIST-${req.serverId}` },
       ],
     }),
+    createWebHook: builder.mutation<
+      void,
+      {
+        serverId: string
+        channelId: string
+        name: string
+        profilePicture: File
+      }
+    >({
+      query: (request) => ({
+        url: `/servers/${request.serverId}/channels/${request.channelId}/webhook`,
+        method: 'POST',
+        body: {
+          name: request.name,
+          profilePicture: request.profilePicture,
+        },
+      }),
+    }),
   }),
 })
 
@@ -453,4 +471,5 @@ export const {
   useUnassignMemberFromRoleMutation,
   useCreateRoleMutation,
   useGetMyMemberQuery,
+  useCreateWebHookMutation,
 } = serverApi
