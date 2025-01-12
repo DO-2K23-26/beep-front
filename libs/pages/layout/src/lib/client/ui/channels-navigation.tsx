@@ -1,10 +1,4 @@
 import { getChannelsState } from '@beep/channel'
-import {
-  ChannelEntity,
-  ChannelType,
-  OccupiedChannelEntity,
-  ServerEntity,
-} from '@beep/contracts'
 import { getResponsiveState } from '@beep/responsive'
 import {
   Badge,
@@ -13,11 +7,9 @@ import {
   Tooltip,
   TooltipContent,
   TooltipTrigger,
-  UseModalProps,
 } from '@beep/ui'
 import { getUserState } from '@beep/user'
-import { useEffect, useState } from 'react'
-import { FormProvider, UseFormReturn } from 'react-hook-form'
+import { useContext, useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { ConnectedChannelRow } from './connect-channel-row'
 import { ListChannels } from './list-channels'
@@ -26,40 +18,17 @@ import { cn } from '@beep/utils'
 import { getVoiceState } from '@beep/voice'
 import { useTranslation } from 'react-i18next'
 import { CurrentUserFeature } from '../feature/current-user-feature'
-import { CreateChannelModal } from './create-channel-modal'
 import { ServerDropdown } from './server-dropdown'
 import { ServerPictureButton } from './server-picture-button'
 import { usePatchChannelPositionMutation } from '@beep/server'
+import { ChannelContext } from '../feature/channels/channels-navigation-context'
 
 export interface ChannelsNavigationProps {
-  channels?: ChannelEntity[]
-  streamingUsers: OccupiedChannelEntity[]
-  server?: ServerEntity
   banner?: string
-  onClickId: (id: string) => void
-  onCreateChannel: () => void
-  onLeaveVoiceChannel: () => void
-  onJoinVoiceChannel: (channel: ChannelEntity) => void
-  onJoinTextChannel: (serverId: string, channelId: string) => void
-  openModal: React.Dispatch<React.SetStateAction<UseModalProps | undefined>>
-  closeModal: () => void
-  methodsAddChannel: UseFormReturn<{ name: string; type: ChannelType }>
-  hideLeftDiv?: () => void
 }
 
 export default function ChannelsNavigation({
-  channels,
-  server,
-  streamingUsers,
   banner,
-  onClickId,
-  onCreateChannel,
-  onJoinVoiceChannel,
-  onJoinTextChannel,
-  onLeaveVoiceChannel,
-  openModal,
-  closeModal,
-  methodsAddChannel,
 }: ChannelsNavigationProps) {
   const { t } = useTranslation()
 
@@ -71,29 +40,15 @@ export default function ChannelsNavigation({
   const [isAdmin, setIsAdmin] = useState(false)
   const { connectionState } = useSelector(getVoiceState)
   const [moveChannel] = usePatchChannelPositionMutation()
+  const { openCreateChannelModal, openModal, closeModal, onLeaveVoiceChannel, server, onClickId } = useContext(ChannelContext);
 
   useEffect(() => {
-    if (server) {
-      if (!payload) {
-        return
-      }
-      setIsAdmin(server.ownerId === payload.sub)
+    if (!payload) {
+      return
     }
+    setIsAdmin(server.ownerId === payload.sub)
   }, [server, payload])
 
-  const openCreateChannelModal = () => {
-    openModal({
-      content: (
-        <FormProvider {...methodsAddChannel}>
-          <CreateChannelModal
-            closeModal={closeModal}
-            onCreateChannel={onCreateChannel}
-            methodsAddChannel={methodsAddChannel}
-          />
-        </FormProvider>
-      ),
-    })
-  }
 
   return (
     <div
@@ -155,15 +110,11 @@ export default function ChannelsNavigation({
 
           <div className="flex flex-col gap-2 overflow-y-scroll scroll-smooth scroll-bar h-full">
             <ListChannels
-              channels={channels || []}
-              onJoinTextChannel={onJoinTextChannel}
-              onJoinVoiceChannel={onJoinVoiceChannel}
-              occupiedChannels={streamingUsers}
               moveChannel={(channelId: string, newPosition: number) => {
                 moveChannel({
                   position: newPosition,
                   channelId,
-                  serverId: server?.id ?? '' //TODO: envoyer du refacto dans ce fichier car j'ai envie de m'exploser le caisson
+                  serverId: server.id ?? ''
                 })
               }}
             />

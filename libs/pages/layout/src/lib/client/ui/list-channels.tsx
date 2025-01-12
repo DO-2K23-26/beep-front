@@ -1,29 +1,22 @@
 import {
   ChannelEntity,
   ChannelType,
-  OccupiedChannelEntity,
 } from '@beep/contracts'
 import DisplayChannelFeature from '../feature/display-channel-feature'
 import VoiceChannel from '../feature/voice-channel'
 import { createSwapy, Swapy } from 'swapy'
-import { useEffect, useRef } from 'react'
+import { useContext, useEffect, useRef } from 'react'
 import {Swappable} from '@beep/utils'
+import { ChannelContext } from '../feature/channels/channels-navigation-context'
 
 export interface ListTextChannelsProps {
-  channels: ChannelEntity[]
-  onJoinTextChannel: (serverId: string, channelId: string) => void
-  onJoinVoiceChannel: (channel: ChannelEntity) => void
   moveChannel: (channelId: string, newPosition: number) => void
-  occupiedChannels: OccupiedChannelEntity[]
 }
 
 export function ListChannels({
-  channels,
-  onJoinTextChannel,
-  onJoinVoiceChannel,
   moveChannel,
-  occupiedChannels,
 }: ListTextChannelsProps) {
+  const {streamingUsers: occupiedChannels, channels} = useContext(ChannelContext)
   const swapy = useRef<Swapy | null>(null)
   const container = useRef(null)
   const startingPosition = useRef<
@@ -70,7 +63,6 @@ export function ListChannels({
                 <DisplayChannelFeature
                   key={channel.id}
                   channel={channel}
-                  onJoinChannel={onJoinTextChannel}
                 />
               </Swappable>
             )
@@ -81,7 +73,6 @@ export function ListChannels({
                   key={channel.id}
                   channel={channel}
                   users={occupiedChannel ? occupiedChannel.users : []}
-                  onJoinChannel={onJoinVoiceChannel}
                 />
               </Swappable>
             )

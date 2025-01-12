@@ -125,7 +125,6 @@ export const serverApi = createApi({
           body: {
             name: request.name,
             type: +request.type,
-            position: request.position,
           },
         });
 

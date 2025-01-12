@@ -5,21 +5,16 @@ import { ListConnectedUsers } from '../ui/list-connected-user'
 interface VoiceChannelProps {
   channel: ChannelEntity
   users: UserConnectedEntity[]
-  onJoinChannel: (channel: ChannelEntity) => void
 }
 
 export default function VoiceChannel({
   channel,
   users,
-  onJoinChannel,
 }: VoiceChannelProps) {
-  const onJoin = () => {
-    onJoinChannel(channel)
-  }
 
   return (
     <>
-      <DisplayChannel channel={channel} onJoinChannel={onJoin} />
+      <DisplayChannel channel={channel} />
       <ListConnectedUsers users={users} />
     </>
   )
