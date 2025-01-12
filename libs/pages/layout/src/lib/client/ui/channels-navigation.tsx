@@ -1,10 +1,4 @@
 import { getChannelsState } from '@beep/channel'
-import {
-  ChannelEntity,
-  ChannelType,
-  OccupiedChannelEntity,
-  ServerEntity,
-} from '@beep/contracts'
 import { getResponsiveState } from '@beep/responsive'
 import {
   Badge,
@@ -13,55 +7,28 @@ import {
   Tooltip,
   TooltipContent,
   TooltipTrigger,
-  UseModalProps,
 } from '@beep/ui'
 import { getUserState } from '@beep/user'
-import { useEffect, useState } from 'react'
-import { FormProvider, UseFormReturn } from 'react-hook-form'
+import { useContext, useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { ConnectedChannelRow } from './connect-channel-row'
-import { ListTextChannels } from './list-channels'
-import { ListVoiceChannels } from './list-voice-channels'
+import { ListChannels } from './list-channels'
 
 import { cn } from '@beep/utils'
 import { getVoiceState } from '@beep/voice'
 import { useTranslation } from 'react-i18next'
 import { CurrentUserFeature } from '../feature/current-user-feature'
-import { CreateChannelModal } from './create-channel-modal'
 import { ServerDropdown } from './server-dropdown'
 import { ServerPictureButton } from './server-picture-button'
+import { usePatchChannelPositionMutation } from '@beep/server'
+import { ChannelContext } from '../feature/channels/channels-navigation-context'
 
 export interface ChannelsNavigationProps {
-  textChannels?: ChannelEntity[]
-  voiceChannels?: ChannelEntity[]
-  streamingUsers: OccupiedChannelEntity[]
-  server?: ServerEntity
   banner?: string
-  onClickId: (id: string) => void
-  onCreateChannel: () => void
-  onLeaveVoiceChannel: () => void
-  onJoinVoiceChannel: (channel: ChannelEntity) => void
-  onJoinTextChannel: (serverId: string, channelId: string) => void
-  openModal: React.Dispatch<React.SetStateAction<UseModalProps | undefined>>
-  closeModal: () => void
-  methodsAddChannel: UseFormReturn<{ name: string; type: ChannelType }>
-  hideLeftDiv?: () => void
 }
 
 export default function ChannelsNavigation({
-  textChannels,
-  voiceChannels,
-  server,
-  streamingUsers,
   banner,
-  onClickId,
-  onCreateChannel,
-  onJoinVoiceChannel,
-  onJoinTextChannel,
-  onLeaveVoiceChannel,
-  openModal,
-  closeModal,
-  methodsAddChannel,
 }: ChannelsNavigationProps) {
   const { t } = useTranslation()
 
@@ -72,29 +39,16 @@ export default function ChannelsNavigation({
 
   const [isAdmin, setIsAdmin] = useState(false)
   const { connectionState } = useSelector(getVoiceState)
+  const [moveChannel] = usePatchChannelPositionMutation()
+  const { openCreateChannelModal, openModal, closeModal, onLeaveVoiceChannel, server, onClickId } = useContext(ChannelContext);
 
   useEffect(() => {
-    if (server) {
-      if (!payload) {
-        return
-      }
-      setIsAdmin(server.ownerId === payload.sub)
+    if (!payload) {
+      return
     }
+    setIsAdmin(server.ownerId === payload.sub)
   }, [server, payload])
 
-  const openCreateChannelModal = () => {
-    openModal({
-      content: (
-        <FormProvider {...methodsAddChannel}>
-          <CreateChannelModal
-            closeModal={closeModal}
-            onCreateChannel={onCreateChannel}
-            methodsAddChannel={methodsAddChannel}
-          />
-        </FormProvider>
-      ),
-    })
-  }
 
   return (
     <div
@@ -155,14 +109,14 @@ export default function ChannelsNavigation({
           {/* Channels list */}
 
           <div className="flex flex-col gap-2 overflow-y-scroll scroll-smooth scroll-bar h-full">
-            <ListTextChannels
-              channels={textChannels || []}
-              onJoinTextChannel={onJoinTextChannel}
-            />
-            <ListVoiceChannels
-              channels={voiceChannels || []}
-              occupiedChannels={streamingUsers}
-              onJoinChannel={onJoinVoiceChannel}
+            <ListChannels
+              moveChannel={(channelId: string, newPosition: number) => {
+                moveChannel({
+                  position: newPosition,
+                  channelId,
+                  serverId: server.id ?? ''
+                })
+              }}
             />
           </div>
 

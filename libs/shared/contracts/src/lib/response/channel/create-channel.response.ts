@@ -5,5 +5,6 @@ export interface CreateChannelResponse {
   type: string
   serverId: string
   createdAt: string
+  position: string
   updatedAt: string
 }

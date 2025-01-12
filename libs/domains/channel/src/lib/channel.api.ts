@@ -131,6 +131,7 @@ export const channelApi = createApi({
           ]
           : [{ type: 'message', id: `LIST-PINNED-${req}` }],
     }),
+
   }),
 })
 

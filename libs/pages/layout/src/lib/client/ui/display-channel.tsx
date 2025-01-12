@@ -5,19 +5,20 @@ import DeleteChannelFeature from '../feature/delete-channel-feature'
 import OverviewSettingsChannelFeature from '../feature/overview-settings-channel-feature'
 import { useTranslation } from 'react-i18next'
 import { cn } from '@beep/utils'
+import { ChannelContext } from '../feature/channels/channels-navigation-context'
+import { useContext } from 'react'
 
 interface DisplayChannelProps {
   channel: ChannelEntity
-  onJoinChannel?: (serverId: string, channelId: string) => void
   isSelected?: boolean
 }
 
 export default function DisplayChannel({
   channel,
-  onJoinChannel,
   isSelected,
 }: DisplayChannelProps) {
   const { t } = useTranslation()
+  const { onJoinChannel } = useContext(ChannelContext);
 
   // List of setting in the user setting modal
   const subSetting: SubSettings = {
@@ -41,7 +42,7 @@ export default function DisplayChannel({
     <div
       className="flex flex-col group w-full"
       onClick={() =>
-        onJoinChannel ? onJoinChannel(channel.serverId, channel.id) : {}
+        onJoinChannel ? onJoinChannel(channel) : {}
       }
     >
       <div
