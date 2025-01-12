@@ -1,8 +1,8 @@
 import { ServerEntity } from '@beep/contracts'
 import { ButtonIcon } from '@beep/ui'
 import { RoleEntity } from 'libs/shared/contracts/src/lib/entities/role.entity'
-import { RoleServer } from './role-server'
 import { useTranslation } from 'react-i18next'
+import RoleServerFeature from '../feature/role-server-feature'
 
 export interface RolesSettingsServerProps {
   server: ServerEntity
@@ -42,7 +42,7 @@ export function RolesSettingsServer({
         </p>
       )}
       {roles.map((role) => (
-        <RoleServer key={role.id} role={role} />
+        <RoleServerFeature key={role.id} role={role} />
       ))}
     </div>
   )
