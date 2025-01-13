@@ -375,7 +375,7 @@
         "confirm": "Confirmer"
       },
       "modify-username-dialog": {
-        "title": "Choisissez un nouveau surnom",
+        "title": "Choisissez un nouveau nom d'utilisateur",
         "modify": "Modifier",
         "required_username": "Entrez un nouveau nom d'utilisateur",
         "invalid_username": "Le nom d'utilisateur ne doit contenir que des lettres minuscules de l'alphabet",
