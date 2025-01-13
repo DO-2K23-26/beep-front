@@ -382,6 +382,14 @@
         "username": "Nom d'utilisateur",
         "confirm": "Confirmer"
       },
+      "modify-lastname-dialog": {
+        "title": "Choisissez un nouveau nom de famille",
+        "modify": "Modifier",
+        "content_required": "Le nom de famille est requis",
+        "content_message": "Le nom de famille doit commencer par une lettre majuscule, ne contenir que des lettres, et autoriser un seul tiret, espace ou apostrophe entre deux parties du nom",
+        "render_label": "Nom de famille",
+        "confirm": "Confirmer"
+      },
       "modify-username-email": {
         "firstName": "Prénom",
         "lastName": "Nom de famille",

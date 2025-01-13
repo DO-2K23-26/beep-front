@@ -357,11 +357,11 @@
         "modify": "Modify"
       },
       "modify-email-dialog": {
-        "title":"Choose a new email",
+        "title": "Choose a new email",
         "modify": "Modify",
-        "content_1":"We need to verify your old email address",
-        "content_2":"in order to change it",
-        "content_3":"Have you lost access to your email? Contact your email provider to regain access",
+        "content_1": "We need to verify your old email address",
+        "content_2": "in order to change it",
+        "content_3": "Have you lost access to your email? Contact your email provider to regain access",
         "action_content_button":"Send verification code"
       },
       "modify-profile-picture-dialog": {
@@ -375,6 +375,14 @@
         "required_username": "Enter a new username",
         "invalid_username": " Username should only contain lowercase letters of the alphabet",
         "username": "Username",
+        "confirm": "Confirm"
+      },
+      "modify-lastname-dialog":{
+        "title": "Choose a new Last name",
+        "modify": "Modify",
+        "content_required": "Last name is required",
+        "content_message": "Last name should start with an uppercase letter, contain only letters, and allow one hyphen, space, or apostrophe between two parts of the name",
+        "render_label": "Lastname",
         "confirm": "Confirm"
       },
       "modify-username-email": {
