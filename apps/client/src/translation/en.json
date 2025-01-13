@@ -357,11 +357,12 @@
         "modify": "Modify"
       },
       "modify-email-dialog": {
+        "title":"Choose a new email",
         "modify": "Modify",
-        "required_email": "Enter a new email adress",
-        "invalid_email": "Invalid email address",
-        "email": "Email",
-        "email_sented": "An email will be sent to your current email adress for confirmation"
+        "content_1":"We need to verify your old email address",
+        "content_2":"in order to change it",
+        "content_3":"Have you lost access to your email? Contact your email provider to regain access",
+        "action_content_button":"Send verification code"
       },
       "modify-profile-picture-dialog": {
         "choose_picture": "Choose a new picture",

@@ -1,5 +1,5 @@
-import { Button, DialogComponent, InputText } from '@beep/ui'
-import { Controller, UseFormReturn } from 'react-hook-form'
+import { Button, DialogComponent } from '@beep/ui'
+import { UseFormReturn } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 
 interface ModifyEmailDialogProps {
@@ -20,23 +20,21 @@ export function ModifyEmailDialog({
 
   return (
     <DialogComponent
-      title={'Choose a new email'}
+      title={t('settings.components.modify-email-dialog.title')}
       triggerModalButton={
         <Button>{t('settings.components.modify-email-dialog.modify')}</Button>
       }
       content={
         <>
           <p>
-            We need to verify your old email address,{' '}
-            <strong>{currentUserEmail}</strong>, in order to change it.
+            {t('settings.components.modify-email-dialog.content_1')},{' '}
+            <strong>{currentUserEmail}</strong>,{' '}
+            {t('settings.components.modify-email-dialog.content_2')}.
           </p>
-          <p>
-            Have you lost access to your email? Contact your email provider to
-            regain access.
-          </p>
+          <p>{t('settings.components.modify-email-dialog.content_3')}.</p>
         </>
       }
-      actionButtonTitle="Send verification code"
+      actionButtonTitle={t('settings.components.modify-email-dialog.action_content_button')}
       action={action}
       isModalOpen={isModalOpen}
       setIsModalOpen={setIsModalOpen}

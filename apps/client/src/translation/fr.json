@@ -362,11 +362,12 @@
         "modify": "Modifier"
       },
       "modify-email-dialog": {
+        "title": "Choisissez un nouvel e-mail",
         "modify": "Modifier",
-        "required_email": "Entrez une nouvelle adresse e-mail",
-        "invalid_email": "Adresse e-mail invalide",
-        "email": "E-mail",
-        "email_sented": "Un e-mail sera envoyé à votre adresse e-mail actuelle pour confirmation"
+        "content_1": "Nous devons vérifier votre ancienne adresse e-mail",
+        "content_2": "afin de la changer",
+        "content_3": "Avez-vous perdu l'accès à votre e-mail ? Contactez votre fournisseur d'e-mails pour récupérer l'accès",
+        "action_content_button": "Envoyer le code de vérification"
       },
       "modify-profile-picture-dialog": {
         "choose_picture": "Choisissez une nouvelle image",
