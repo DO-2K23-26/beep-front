@@ -1,6 +1,7 @@
 import { Button, DialogComponent, InputText } from '@beep/ui'
 import { Controller, UseFormReturn } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
+
 interface ModifyUsernameDialogProps {
   usernameFormController: UseFormReturn<{ username: string }, any, undefined>
   isModalOpen: boolean

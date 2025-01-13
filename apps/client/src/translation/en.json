@@ -385,6 +385,14 @@
         "render_label": "Lastname",
         "confirm": "Confirm"
       },
+      "modify-firstname-dialog":{
+        "title": "Choose a new First name",
+        "modify": "Modify",
+        "content_required": "First name is required",
+        "content_message": "Last name should start with an uppercase letter, contain only letters, and allow one hyphen, space, or apostrophe between two parts of the name",
+        "render_label": "First name",
+        "confirm": "Confirm"
+      },
       "modify-username-email": {
         "firstName": "First name",
         "lastName": "Last name",

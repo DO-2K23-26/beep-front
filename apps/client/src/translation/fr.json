@@ -390,6 +390,14 @@
         "render_label": "Nom de famille",
         "confirm": "Confirmer"
       },
+      "modify-firstname-dialog": {
+        "title": "Choisissez un nouveau prénom",
+        "modify": "Modifier",
+        "content_required": "Le prénom est requis",
+        "content_message": "Le prénom doit commencer par une lettre majuscule, ne contenir que des lettres, et autoriser un seul tiret, espace ou apostrophe entre deux parties du prénom",
+        "render_label": "Prénom",
+        "confirm": "Confirmer"
+      },
       "modify-username-email": {
         "firstName": "Prénom",
         "lastName": "Nom de famille",

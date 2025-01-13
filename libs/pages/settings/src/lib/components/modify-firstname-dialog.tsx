@@ -1,5 +1,6 @@
 import { Button, DialogComponent, InputText } from '@beep/ui'
 import { Controller, UseFormReturn } from 'react-hook-form'
+import { useTranslation } from 'react-i18next'
 
 interface ModifyFirstnameDialogProps {
   firstnameFormController: UseFormReturn<{ firstName: string }, any, undefined>
@@ -13,29 +14,38 @@ export function ModifyFirstnameDialog({
   setIsModalOpen,
   firstnameFormController,
 }: ModifyFirstnameDialogProps) {
+  const { t } = useTranslation()
+
   return (
     <DialogComponent
-      title={'Choose a new First name'}
+      title={t('settings.components.modify-firstname-dialog.title')}
       triggerModalButton={
         <div>
-          <Button>Modify</Button>
+          <Button>
+            {t('settings.components.modify-firstname-dialog.modify')}
+          </Button>
         </div>
       }
       content={
         <Controller
           name="firstName"
           rules={{
-            required: 'First name is required',
+            required: t(
+              'settings.components.modify-firstname-dialog.content_required'
+            ),
             pattern: {
               value: /^[A-ZÀ-Ý][a-zà-ÿ]*(?:[ '-][A-ZÀ-Ý][a-zà-ÿ]*)?$/,
-              message:
-                'Last name should start with an uppercase letter, contain only letters, and allow one hyphen, space, or apostrophe between two parts of the name',
+              message: t(
+                'settings.components.modify-firstname-dialog.content_message'
+              ),
             },
           }}
           control={firstnameFormController.control}
           render={({ field, fieldState: { error } }) => (
             <InputText
-              label="First name"
+              label={t(
+                'settings.components.modify-firstname-dialog.render_label'
+              )}
               type="text"
               name="firstName"
               className="w-full !rounded-lg min-h-[40px]"
@@ -46,7 +56,9 @@ export function ModifyFirstnameDialog({
           )}
         />
       }
-      actionButtonTitle="Confirm"
+      actionButtonTitle={t(
+        'settings.components.modify-firstname-dialog.confirm'
+      )}
       action={action}
       isModalOpen={isModalOpen}
       setIsModalOpen={setIsModalOpen}
