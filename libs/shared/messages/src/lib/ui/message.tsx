@@ -59,7 +59,7 @@ export default function Message() {
               {
                 'bg-violet-50': !isLoadingCreate,
                 'bg-slate-500/30': isLoadingCreate,
-                '[&>*]:[&>*]:text-red-600': isErrorCreate,
+                '[&>*]:[&>*]:text-red-500': isErrorCreate,
               }
             )}
           >
