@@ -1,4 +1,4 @@
-import { Button, ButtonStyle, Icon } from '@beep/ui'
+import { Button, ButtonIcon, ButtonStyle, Icon } from '@beep/ui'
 import { DeleteMessageDialog } from './delete-message-dialog'
 import { RotateCcw } from 'lucide-react'
 
@@ -30,10 +30,12 @@ export function MessageToolbar({
   if (isErrorCreate) {
     return (
       <div className="flex flex-row gap-2 sm:gap-4 items-center visible pr-2">
-        <span className="text-red-500 text-[10px] sm:text-xs">ⓘ Failed to send message</span>
-        <Button style={ButtonStyle.NONE} onClick={retryMessage}>
-          <RotateCcw color="#ff6240" />
-        </Button>
+        <span className="text-red-500 text-[10px] sm:text-xs">
+          ⓘ Failed to send message
+        </span>
+        <ButtonIcon onClick={retryMessage} className="  p-1 size-7">
+          <RotateCcw color="#ffffff" />
+        </ButtonIcon>
       </div>
     )
   }
