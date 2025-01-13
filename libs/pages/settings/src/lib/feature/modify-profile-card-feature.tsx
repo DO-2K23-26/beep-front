@@ -217,11 +217,19 @@ export function ModifyProfileCardFeature() {
         setIsEmailValidateModalOpen(false)
       }
     }
+  }, [
+    errorUpdateMe,
+    isErrorUpdateMe,
+    usernameFormController,
+    updateEmailFormController,
+  ])
+
+  useEffect(() => {
     if (isSuccessUpdateMe) {
       toast.success('Updated succesfully !')
       setIsUsernameModalOpen(false)
     }
-  }, [errorUpdateMe, isErrorUpdateMe, isSuccessUpdateMe, usernameFormController, updateEmailFormController])
+  }, [isSuccessUpdateMe])
 
   // use effect of the otp email send
   useEffect(() => {
@@ -264,16 +272,14 @@ export function ModifyProfileCardFeature() {
     }
     if (isSuccessUpdateEmail) {
       toast.success('Updated succesfully !')
-      updateEmailFormController.reset()
       setIsEmailValidateModalOpen(false)
     }
   }, [
     errorUpdateEmail,
     isErrorUpdateEmail,
     isSuccessUpdateEmail,
-    updateEmailFormController
+    updateEmailFormController,
   ])
-
 
   //Dialog button
   const usernameChangeButton = (
