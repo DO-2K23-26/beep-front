@@ -378,7 +378,10 @@
         "confirm": "Confirm"
       },
       "modify-username-email": {
-        "username": "Username"
+        "firstName": "First name",
+        "lastName": "Last name",
+        "username": "Username",
+        "email": "Email"
       },
       "validate-otp-dialog": {
         "title":"Enter Code",

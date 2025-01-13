@@ -28,12 +28,12 @@ export function ModifyUsernameEmail({
   return (
     <div className="flex flex-col gap-4 bg-violet-300 rounded-md p-4">
       <ModifyTextSetting
-        title={'First name'}
+        title={t('settings.components.modify-username-email.firstName')}
         value={firstName}
         modalButton={firstnameButtonModal}
       />
       <ModifyTextSetting
-        title={'Last name'}
+        title={t('settings.components.modify-username-email.lastName')}
         value={lastName}
         modalButton={lastnameButtonModal}
       />
@@ -43,7 +43,7 @@ export function ModifyUsernameEmail({
         modalButton={usernameButtonModal}
       />
       <ModifyTextSetting
-        title={'Email'}
+        title={t('settings.components.modify-username-email.email')}
         value={email}
         modalButton={emailButtonModal}
       />

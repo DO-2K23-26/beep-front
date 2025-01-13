@@ -383,7 +383,10 @@
         "confirm": "Confirmer"
       },
       "modify-username-email": {
-        "username": "Nom d'utilisateur"
+        "firstName": "Prénom",
+        "lastName": "Nom de famille",
+        "username": "Nom d'utilisateur",
+        "email": "E-mail"
       },
       "validate-otp-dialog": {
         "title": "Entrez le code",
