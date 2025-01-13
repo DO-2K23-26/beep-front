@@ -33,9 +33,9 @@ export function MessageToolbar({
         <span className="text-red-500 text-[10px] sm:text-xs">
           ⓘ Failed to send message
         </span>
-        <ButtonIcon onClick={retryMessage} className="  p-1 size-7">
-          <RotateCcw color="#ffffff" />
-        </ButtonIcon>
+        <Button style={ButtonStyle.NONE} onClick={retryMessage}>
+          <RotateCcw color="#ff6240" />
+        </Button>
       </div>
     )
   }
