@@ -1,5 +1,6 @@
 import { Button, DialogComponent, InputText } from '@beep/ui'
 import { Controller, UseFormReturn } from 'react-hook-form'
+import { useTranslation } from 'react-i18next'
 
 interface ValidateOtpDialog {
   otpFormController: UseFormReturn<{ otp: string }, any, undefined>
@@ -16,35 +17,39 @@ export function ValidateOtpDialog({
   otpFormController,
   resendOtp,
 }: ValidateOtpDialog) {
+  const { t } = useTranslation()
   return (
     <DialogComponent
-      title={'Enter Code'}
+      title={t('settings.components.validate-otp-dialog.title')}
       triggerModalButton={
         !isModalOpen && ( // Hide the button when the modal is open
           <div>
-            <Button>Modify</Button>
+            <Button>
+              {t('settings.components.validate-otp-dialog.modify')}
+            </Button>
           </div>
         )
       }
       content={
         <>
-          <p>
-            Check your email: we've sent you a verification code. Enter it here
-            to verify your identity.
-          </p>
+          <p>{t('settings.components.validate-otp-dialog.content')}.</p>
           <Controller
             name="otp"
             rules={{
-              required: 'Otp code is required',
+              required: t(
+                'settings.components.validate-otp-dialog.otp_rules_required'
+              ),
               pattern: {
                 value: /^\d{6}$/, // Expression régulière pour exactement 6 chiffres
-                message: 'OTP code must be exactly 6 digits',
+                message: t(
+                  'settings.components.validate-otp-dialog.otp_rules_message'
+                ),
               },
             }}
             control={otpFormController.control}
             render={({ field, fieldState: { error } }) => (
               <InputText
-                label="OTP Code"
+                label={t('settings.components.validate-otp-dialog.field_label')}
                 type="text"
                 name="otp"
                 className="w-full !rounded-lg min-h-[40px]"
@@ -54,7 +59,8 @@ export function ValidateOtpDialog({
               />
             )}
           />
-          <p> Didn't receive a code or it expired?{' '}
+          <p>
+            {t('settings.components.validate-otp-dialog.resend_message')}{' '}
             <button
               onClick={resendOtp}
               className="text-purple-600 font-medium hover:underline !bg-transparent !p-0 !m-0 !min-w-0 !h-fit inline"
@@ -66,12 +72,15 @@ export function ValidateOtpDialog({
                 cursor: 'pointer',
               }}
             >
-              Resend
+              {t('settings.components.validate-otp-dialog.resend_button')}
             </button>
           </p>
         </>
       }
-      actionButtonTitle="Confirm"
+      actionButtonTitle={t(
+        'settings.components.validate-otp-dialog.action_button'
+      )
+}
       action={action}
       isModalOpen={isModalOpen}
       setIsModalOpen={setIsModalOpen}

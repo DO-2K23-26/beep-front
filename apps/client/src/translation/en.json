@@ -379,6 +379,17 @@
       },
       "modify-username-email": {
         "username": "Username"
+      },
+      "validate-otp-dialog": {
+        "title":"Enter Code",
+        "modify": "Modify",
+        "content":"Check your email: we've sent you a verification code. Enter it here to verify your identity",
+        "otp_rules_required":"Otp code is required",
+        "otp_rules_message":"OTP code must be exactly 6 digits",
+        "field_label":"OTP Code",
+        "resend_message":"Didn't receive a code or it expired?",
+        "resend_button":"Resend",
+        "action_button":"Confirm"
       }
     },
     "modify-profile-card": {
