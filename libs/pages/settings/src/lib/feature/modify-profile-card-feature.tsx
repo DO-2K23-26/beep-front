@@ -74,13 +74,6 @@ export function ModifyProfileCardFeature() {
     },
   ] = useUpdateEmailMutation()
   const { data: userMe } = useGetMeQuery()
-  // useEffect(() => {
-  //   if (isSuccessUpdateMe) {
-  //     toast.success('Update successful')
-  //   } else if (isErrorUpdateMe) {
-  //     toast.error('Something went wrong when updating your profile')
-  //   }
-  // }, [isErrorUpdateMe, isSuccessUpdateMe])
 
   const errorPictureNotFilled = t(
     'settings.modify-profile-card.picture_not_filled'

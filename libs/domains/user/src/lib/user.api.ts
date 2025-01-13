@@ -1,5 +1,6 @@
 import {
   BaseQueryApi,
+  BaseQueryArg,
   createApi,
   fetchBaseQuery,
 } from '@reduxjs/toolkit/query/react'
@@ -79,13 +80,13 @@ export const userApi = createApi({
         formData: true,
       }),
     }),
-    refresh: builder.mutation<RefreshResponse, void>({
-      query: () => ({
-        url: '/authentication/refresh',
-        method: 'POST',
-        credentials: 'include',
-      }),
-    }),
+    // refresh: builder.mutation<RefreshResponse, void>({
+    //   query: () => ({
+    //     url: '/authentication/refresh',
+    //     method: 'POST',
+    //     credentials: 'include',
+    //   }),
+    // }),
     askTOTPURI: builder.mutation<AskTOTPURIResponse, AskTOPTURIRequest>({
       query: (body) => ({
         url: '/authentication/totp',

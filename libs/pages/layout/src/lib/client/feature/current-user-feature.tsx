@@ -67,6 +67,7 @@ export function CurrentUserFeature() {
         username: userMe.username,
         firstName: userMe.firstName,
         lastName: userMe.lastName,
+        // totpAuthentication: userMe.totpAuthentication,
         profilePicture: userProfilePicture ?? '/picture.svg',
         verifiedAt: new Date(),
       }
@@ -76,6 +77,7 @@ export function CurrentUserFeature() {
         username: 'rapidement',
         firstName: 'Dorian',
         lastName: 'Grasset',
+        // totpAuthentication: true,
         profilePicture: '/picture.svg',
         verifiedAt: new Date(),
       }

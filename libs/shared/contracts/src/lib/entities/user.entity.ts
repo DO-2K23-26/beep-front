@@ -4,8 +4,8 @@ export interface UserEntity {
   id: string
   email: string
   username: string
-  firstname: string
-  lastname: string
+  firstName: string
+  lastName: string
   profilePicture?: string
   totpAuthentication: boolean
   roles?: UserRole[]

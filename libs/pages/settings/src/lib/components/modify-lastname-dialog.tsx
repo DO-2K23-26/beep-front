@@ -37,7 +37,7 @@ export function ModifyLastnameDialog({
             <InputText
               label="Lastname"
               type="text"
-              name="lastname"
+              name="lastName"
               className="w-full !rounded-lg min-h-[40px]"
               value={field.value}
               onChange={field.onChange}
