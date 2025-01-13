@@ -10,9 +10,11 @@ export function MessageToolbarFeature() {
     isEditing,
     isDisplayedAsPinned,
     currentUserIsOwner,
+    isErrorCreate,
     switchEditing,
     cancelEditing,
     onReply,
+    retryMessage,
   } = useContext(MessageContext)
   const [pinMessage, result] = usePinMessageMutation()
   const [deleteMessage] = useDeleteMessageMutation()
@@ -47,6 +49,7 @@ export function MessageToolbarFeature() {
   return (
     <MessageToolbar
       isEditing={isEditing}
+      isErrorCreate={isErrorCreate}
       isDisplayedAsPinned={isDisplayedAsPinned}
       currentUserIsOwner={currentUserIsOwner}
       cancelEditing={cancelEditing}
@@ -54,6 +57,7 @@ export function MessageToolbarFeature() {
       onPin={onPin}
       onDelete={onDeleteMessage}
       onReply={onReply}
+      retryMessage={retryMessage}
     />
   )
 }

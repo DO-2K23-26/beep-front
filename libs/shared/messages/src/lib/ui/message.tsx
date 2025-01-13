@@ -17,6 +17,7 @@ export default function Message() {
     message,
     isEditing,
     isLoadingCreate,
+    isErrorCreate,
     isHighlighted,
     replaceMentionChannel,
     replaceUserTag,
@@ -58,6 +59,7 @@ export default function Message() {
               {
                 'bg-violet-50': !isLoadingCreate,
                 'bg-slate-500/30': isLoadingCreate,
+                '[&>*]:[&>*]:text-red-600': isErrorCreate,
               }
             )}
           >

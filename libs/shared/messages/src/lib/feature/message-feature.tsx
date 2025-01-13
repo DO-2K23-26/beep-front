@@ -36,6 +36,7 @@ export interface IMessageContext {
   message: MessageEntity
   isDisplayedAsPinned?: boolean
   isLoadingCreate?: boolean
+  isErrorCreate?: boolean
   isEditing?: boolean
   isHighlighted?: boolean
   messageForm?: UseFormReturn<{
@@ -43,6 +44,7 @@ export interface IMessageContext {
   }>
   switchEditing?: () => void
   cancelEditing?: () => void
+  retryMessage?: () => void
   replaceUserTag: (message: ReactNode) => ReactNode
   replaceMentionChannel: (content: React.ReactNode) => React.ReactNode
   onReply?: () => void
@@ -109,6 +111,21 @@ export default function MessageFeature({
 
   const setAsRepliedMessage = () => {
     if (onReply) onReply(message)
+  }
+
+  const retryMessage = () => {
+    dispatch(
+      messageActions.delete(message)
+    )
+    dispatch(
+      messageActions.send({
+        channelId: message.channelId,
+        files: [], //files arent supported when resending yet
+        message: message.content,
+        replyTo: message.parentMessage ?? null,
+        userId: message.ownerId ?? '',
+      })
+    )
   }
 
   const messageForm = useForm({
@@ -181,6 +198,7 @@ export default function MessageFeature({
         message,
         isEditing,
         isLoadingCreate: createResult.isLoading,
+        isErrorCreate: createResult.isError,
         currentUserIsOwner,
         messageForm,
         isDisplayedAsPinned,
@@ -190,6 +208,7 @@ export default function MessageFeature({
         switchEditing,
         onReply: setAsRepliedMessage,
         replaceUserTag,
+        retryMessage,
         replaceMentionChannel,
         cancelEditing,
       }}

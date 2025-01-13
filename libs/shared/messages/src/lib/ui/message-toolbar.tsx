@@ -1,27 +1,43 @@
 import { Button, ButtonStyle, Icon } from '@beep/ui'
 import { DeleteMessageDialog } from './delete-message-dialog'
+import { RotateCcw } from 'lucide-react'
 
 export interface MessageToolbarProps {
   isEditing?: boolean
   isDisplayedAsPinned?: boolean
   currentUserIsOwner?: boolean
+  isErrorCreate?: boolean
   switchEditing?: () => void
   onDelete?: () => void
   onPin: () => void
   onReply?: () => void
+  retryMessage?: () => void
   cancelEditing?: () => void
 }
 export function MessageToolbar({
   isEditing,
   isDisplayedAsPinned,
   currentUserIsOwner,
+  isErrorCreate,
   switchEditing,
   onDelete,
   onPin,
   onReply,
+  retryMessage,
   cancelEditing,
 }: MessageToolbarProps) {
   if (isDisplayedAsPinned) return
+  if (isErrorCreate) {
+    return (
+      <div className="flex flex-row gap-2 sm:gap-4 items-center visible pr-2">
+        <span className="text-red-500 text-[10px] sm:text-xs">ⓘ Failed to send message</span>
+        <Button style={ButtonStyle.NONE} onClick={retryMessage}>
+          <RotateCcw color="#ff6240" />
+        </Button>
+      </div>
+    )
+  }
+
   return (
     <div className="flex flex-row gap-4 items-center sm:invisible group-hover:visible pr-2">
       {switchEditing && !isEditing && currentUserIsOwner && (
