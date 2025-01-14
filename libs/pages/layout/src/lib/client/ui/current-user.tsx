@@ -1,4 +1,3 @@
-import { UserEntity } from '@beep/contracts'
 import {
   ModifyProfileCardFeature,
   ChangeLanguageFeature,
@@ -14,39 +13,17 @@ import {
   Icon,
 } from '@beep/ui'
 
-import { UseFormReturn } from 'react-hook-form'
 import { UserMediaFeature } from '../feature/user-media-feature'
 import { useTranslation } from 'react-i18next'
 import { SecuritySettingFeature } from '../feature/security-setting-feature'
+import { useCurrentUser } from '../feature/current-user/current-user-context'
+import UserImage from './user-image'
+import Username from './user-name'
 
-interface CurrentUserProps {
-  user: UserEntity
-  onMicrophone?: () => void
-  onPhone?: () => void
-  onCamera?: () => void
-  methods: UseFormReturn<{
-    username: string
-    email: string
-    'actual-password': string
-    'new-password': string
-    'confirm-password': string
-  }>
-
-  isMuted?: boolean
-  isVoiceMuted?: boolean
-  isCamera?: boolean
-}
-
-export default function CurrentUser({
-  user,
-  isMuted,
-  isVoiceMuted,
-  isCamera,
-  onMicrophone,
-  onPhone,
-  onCamera,
-}: CurrentUserProps) {
+export default function CurrentUser() {
   const { t } = useTranslation()
+  const { onMicrophone, isCamera, isMuted, isVoiceMuted, onPhone, onCamera } =
+    useCurrentUser()
   const iconSize = '!w-4 !h-4 sm:!w-4 sm:!h-4 md:!w-5 md:!h-5'
   // List of setting in the user setting modal
   const subSetting: SubSettings = {
@@ -78,15 +55,9 @@ export default function CurrentUser({
   return (
     <div className="flex flex-col sm:flex-row sm:min-w-32 md:min-w-48 items-center md:justify-between gap-3 md:gap-4 lg:gap-6">
       <div className="flex flex-col sm:flex-row gap-3 items-center">
-        <img
-          className="size-10 object-cover bg-violet-50 flex justify-center items-center rounded-lg"
-          src={user.profilePicture ?? 'current user picture'}
-          alt="Profilepicture"
-        />
+        <UserImage />
         <div className="flex flex-row sm:flex-col gap-2 justify-between">
-          <div className="font-bold text-xs md:text-base max-w-12 md:max-w-24 truncate">
-            {user.username}
-          </div>
+          <Username />
           <Badge
             type={BadgeType.ONLINE}
             title={t('layout.current-user.online')}
