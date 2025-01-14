@@ -22,7 +22,7 @@ import { ServerContext } from '@beep/pages/channels'
 import { RolesSettingsServerFeature } from '@beep/pages/role-settings'
 import DestroyServerFeature from '../feature/destroy-server-feature'
 import { OverviewSettingsServer } from './overview-settings-server'
-import { WebhoohSettingsServer } from './webhook-settings-server'
+import { WebHookSettingsServer } from './webhook-settings-server'
 
 interface ServerDropdownProps {
   server: ServerEntity
