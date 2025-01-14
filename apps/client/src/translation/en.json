@@ -409,6 +409,16 @@
         "resend_message":"Didn't receive a code or it expired?",
         "resend_button":"Resend",
         "action_button":"Confirm"
+      },
+      "validate-email-dialog": {
+        "title": "Choose a new email",
+        "modify": "Modify",
+        "enter_password": "Enter your current password",
+        "enter_password_label": "Current Password",
+        "enter_email": "Email is required",
+        "enter_email_error": "Invalid email address",
+        "enter_email_label": "Email",
+        "action_button": "Confirm"
       }
     },
     "modify-profile-card": {

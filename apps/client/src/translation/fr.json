@@ -414,6 +414,16 @@
         "resend_message": "Vous n'avez pas reçu de code ou il a expiré ?",
         "resend_button": "Renvoyer",
         "action_button": "Confirmer"
+      },
+      "validate-email-dialog": {
+        "title": "Choisissez un nouvel email",
+        "modify": "Modifier",
+        "enter_password": "Entrez votre mot de passe actuel",
+        "enter_password_label": "Mot de passe actuel",
+        "enter_email": "L'email est requis",
+        "enter_email_error": "Adresse email invalide",
+        "enter_email_label": "Email",
+        "action_button": "Confirmer"
       }
     },
     "modify-profile-card": {
