@@ -17,7 +17,7 @@ import { ListChannels } from './list-channels'
 import { cn } from '@beep/utils'
 import { getVoiceState } from '@beep/voice'
 import { useTranslation } from 'react-i18next'
-import { CurrentUserFeature } from '../feature/current-user-feature'
+import { CurrentUserFeature } from '../feature/current-user/current-user-feature'
 import { ServerDropdown } from './server-dropdown'
 import { ServerPictureButton } from './server-picture-button'
 import { usePatchChannelPositionMutation } from '@beep/server'
@@ -40,7 +40,14 @@ export default function ChannelsNavigation({
   const [isAdmin, setIsAdmin] = useState(false)
   const { connectionState } = useSelector(getVoiceState)
   const [moveChannel] = usePatchChannelPositionMutation()
-  const { openCreateChannelModal, openModal, closeModal, onLeaveVoiceChannel, server, onClickId } = useContext(ChannelContext);
+  const {
+    openCreateChannelModal,
+    openModal,
+    closeModal,
+    onLeaveVoiceChannel,
+    server,
+    onClickId,
+  } = useContext(ChannelContext)
 
   useEffect(() => {
     if (!payload) {
@@ -48,7 +55,6 @@ export default function ChannelsNavigation({
     }
     setIsAdmin(server.ownerId === payload.sub)
   }, [server, payload])
-
 
   return (
     <div
@@ -114,7 +120,7 @@ export default function ChannelsNavigation({
                 moveChannel({
                   position: newPosition,
                   channelId,
-                  serverId: server.id ?? ''
+                  serverId: server.id ?? '',
                 })
               }}
             />
