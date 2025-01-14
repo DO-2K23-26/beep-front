@@ -19,7 +19,7 @@ import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router'
 import DestroyServerFeature from '../feature/destroy-server-feature'
 import { OverviewSettingsServer } from './overview-settings-server'
-import { WebHookSettingsServer } from './webhook-settings-server'
+import WebHookSettingsServer from './webhook-settings-server'
 
 interface ServerDropdownProps {
   server: ServerEntity
@@ -40,6 +40,7 @@ export function ServerDropdown({
   const { t } = useTranslation()
   const navigate = useNavigate()
   const navigateAfterDelete = () => navigate('/servers')
+
   // List of setting in the user setting modal
   const subSetting: SubSettings = {
     subGroupSettingTitle: 'Server',
@@ -54,12 +55,10 @@ export function ServerDropdown({
       },
       {
         title: 'Webhooks',
-        settingComponent: server && (
-          <WebHookSettingsServer server={server} />
-        ),
+        settingComponent: server && <WebHookSettingsServer server={server} />,
         id: 'webhooks',
         settingBodySize: SettingBodyWidth.L,
-      }
+      },
     ],
   }
   return (
