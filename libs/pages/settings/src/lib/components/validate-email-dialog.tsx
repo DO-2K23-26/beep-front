@@ -1,5 +1,6 @@
 import { Button, DialogComponent, InputText } from '@beep/ui'
 import { Controller, UseFormReturn } from 'react-hook-form'
+import { useTranslation } from 'react-i18next'
 
 interface ValidateEmailDialogProps {
   updateEmailFormController: UseFormReturn<{ password: string, email: string }, any, undefined>
@@ -13,9 +14,11 @@ export function ValidateEmailDialog({
   setIsModalOpen,
   updateEmailFormController,
 }: ValidateEmailDialogProps) {
+  const { t } = useTranslation()
+
   return (
     <DialogComponent
-      title={'Choose a new email'}
+      title={t('settings.modify-email-dialog.title')}
       triggerModalButton={
         !isModalOpen && ( // Hide the button when the modal is open
           <div>

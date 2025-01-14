@@ -417,9 +417,16 @@
       }
     },
     "modify-profile-card": {
-      "successfull_update": "Mise à jour réussie",
-      "error_update": "Une erreur est survenue lors de la mise à jour de votre profil",
-      "picture_not_filled": "La photo de profil n'est pas remplie"
+      "picture_not_filled": "Choisissez une image en cliquant d'abord sur le bouton",
+      "error_message_username_already_exist": "Ce nom d'utilisateur existe déjà",
+      "error_message_email_already_exist": "Cet email existe déjà",
+      "error_profile_update": "Une erreur s'est produite lors de la mise à jour",
+      "success_update_profile": "Mise à jour réussie !",
+      "success_email_send": "Email envoyé avec succès ! Veuillez vérifier votre boîte de réception.",
+      "error_email_send": "Échec de l'envoi de l'email. Veuillez réessayer.",
+      "success_otp_code": "Code valide !",
+      "error_otp_code": "Une erreur s'est produite. Veuillez réessayer.",
+      "error_password_email_update": "Le mot de passe actuel est incorrect"
     },
     "change-language": {
       "language": "Langue"

@@ -412,9 +412,16 @@
       }
     },
     "modify-profile-card": {
-      "successfull_update": "Update successful",
-      "error_update": "Something went wrong when updating your profile",
-      "picture_not_filled": "Choose a picture by clicking on the button first"
+      "picture_not_filled": "Choose a picture by clicking on the button first",
+      "error_message_username_already_exist": "This username already exists",
+      "error_message_email_already_exist": "This email already exists",
+      "error_profile_update": "An error occurred while updating",
+      "success_update_profile": "Updated succesfully !",
+      "success_email_send": "Email sent successfully! Please check your inbox.",
+      "error_email_send": "Failed to send email. Please try again.",
+      "success_otp_code": "Valid code !",
+      "error_otp_code": "An error occured. Please try again.",
+      "error_password_email_update": "The current password is wrong"
     },
     "change-language": {
       "language": "Language"

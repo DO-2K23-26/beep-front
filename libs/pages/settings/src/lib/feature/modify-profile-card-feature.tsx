@@ -203,16 +203,24 @@ export function ModifyProfileCardFeature() {
       const error = errorUpdateMe.data as HttpError
       if (error.code === 'E_USERNAMEALREADYEXISTS') {
         usernameFormController.setError('username', {
-          message: 'This username already exists',
+          message: t(
+            'settings.modify-profile-card.error_message_username_already_exist'
+          ),
           type: 'validate',
         })
-      } else if (error.code === 'E_EMAILALREADYEXISTS') {
-        updateEmailFormController.setError('email', {
-          message: 'This email already exists',
-          type: 'validate',
-        })
-      } else {
-        toast.error('An error occurred while updating')
+      }
+      // else if (error.code === 'E_EMAILALREADYEXISTS') {
+      //   updateEmailFormController.setError('email', {
+      //     message: t(
+      //       'settings.modify-profile-card.error_message_email_already_exist'
+      //     ),
+      //     type: 'validate',
+      //   })
+      // }
+      else {
+        toast.error(
+          t('settings.modify-profile-card.error_profile_update')
+        )
         setIsUsernameModalOpen(false)
         setIsEmailValidateModalOpen(false)
       }
@@ -221,37 +229,37 @@ export function ModifyProfileCardFeature() {
     errorUpdateMe,
     isErrorUpdateMe,
     usernameFormController,
-    updateEmailFormController,
+    updateEmailFormController, t
   ])
 
   useEffect(() => {
     if (isSuccessUpdateMe) {
-      toast.success('Updated succesfully !')
+      toast.success(t('settings.modify-profile-card.success_update_profile'))
       setIsUsernameModalOpen(false)
     }
-  }, [isSuccessUpdateMe])
+  }, [isSuccessUpdateMe, t])
 
   // use effect of the otp email send
   useEffect(() => {
     if (isSuccessOtpEmail) {
-      toast.success('Email sent successfully! Please check your inbox.')
+      toast.success(t('settings.modify-profile-card.success_email_send'))
     }
     if (isErrorOtpEmail || errorOtpEmail) {
-      toast.error('Failed to send email. Please try again.')
+      toast.error(t('settings.modify-profile-card.error_email_send'))
     }
-  }, [isSuccessOtpEmail, isErrorOtpEmail, errorOtpEmail])
+  }, [isSuccessOtpEmail, isErrorOtpEmail, errorOtpEmail, t])
 
   // use effect of the verification of the otp code
   useEffect(() => {
     if (isSuccessOtpVerify) {
-      toast.success('Valid code !')
+      toast.success(t('settings.modify-profile-card.success_otp_code'))
       setIsEmailValidateModalOpen(true)
       setIsOtpModalOpen(false)
     }
     if (isErrorOtpVerify || errorOtpVerify) {
-      toast.error('An error occured. Please try again.')
+      toast.error(t('settings.modify-profile-card.error_otp_code'))
     }
-  }, [isSuccessOtpVerify, isErrorOtpVerify, errorOtpVerify, otpFormController])
+  }, [isSuccessOtpVerify, isErrorOtpVerify, errorOtpVerify, otpFormController, t])
 
   // use effect when we update the email
   useEffect(() => {
@@ -260,25 +268,29 @@ export function ModifyProfileCardFeature() {
       const error = errorUpdateEmail.data as HttpError
       if (error.code === 'E_EMAILALREADYEXISTS') {
         updateEmailFormController.setError('email', {
-          message: 'This email already exists',
+          message: t(
+            'settings.modify-profile-card.error_message_email_already_exist'
+          ),
           type: 'validate',
         })
       } else if (error.code === 'E_ROWNOTFOUND') {
         updateEmailFormController.setError('password', {
-          message: 'The current password is wrong',
+          message: t(
+            'settings.modify-profile-card.error_password_email_update'
+          ),
           type: 'validate',
         })
       }
     }
     if (isSuccessUpdateEmail) {
-      toast.success('Updated succesfully !')
+      toast.success(t('settings.modify-profile-card.success_update_profile'))
       setIsEmailValidateModalOpen(false)
     }
   }, [
     errorUpdateEmail,
     isErrorUpdateEmail,
     isSuccessUpdateEmail,
-    updateEmailFormController,
+    updateEmailFormController, t
   ])
 
   //Dialog button
