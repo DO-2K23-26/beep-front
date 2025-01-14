@@ -6,11 +6,14 @@ export default function UserImage() {
   return (
     <div>
       {isLoadingProfilePicture || userProfilePicture === undefined ? (
-        <Skeleton className="flex"></Skeleton>
+        <Skeleton
+          id="test"
+          className="h-10 w-10 flex justify-center items-center bg-violet-400"
+        ></Skeleton>
       ) : (
         <img
           className="size-10 object-cover bg-violet-50 flex justify-center items-center rounded-lg"
-          src={userProfilePicture}
+          src={userProfilePicture || '/picture.svg'}
           alt="Profilepicture"
         />
       )}
