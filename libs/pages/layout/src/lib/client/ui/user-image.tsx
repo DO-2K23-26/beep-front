@@ -5,15 +5,19 @@ export default function UserImage() {
   const { userProfilePicture, isLoadingProfilePicture } = useCurrentUser()
   return (
     <div>
-      {isLoadingProfilePicture || userProfilePicture === undefined ? (
+      {isLoadingProfilePicture && userProfilePicture === undefined ? (
         <Skeleton
           id="test"
           className="h-10 w-10 flex justify-center items-center bg-violet-400"
-        ></Skeleton>
+        />
       ) : (
         <img
           className="size-10 object-cover bg-violet-50 flex justify-center items-center rounded-lg"
-          src={userProfilePicture || '/picture.svg'}
+          src={
+            userProfilePicture === undefined
+              ? '/picture.svg'
+              : userProfilePicture
+          }
           alt="Profilepicture"
         />
       )}
