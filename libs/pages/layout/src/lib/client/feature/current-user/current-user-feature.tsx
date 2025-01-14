@@ -15,13 +15,14 @@ function CurrentUserContainer() {
     userProfilePicture,
     isLoadingUser,
     isLoadingProfilePicture,
+    isSuccessProfilePicture,
+    isErrorProfilePicture,
     isMuted,
     isVoiceMuted,
     isCamera,
     onMicrophone,
     onPhone,
     onCamera,
-    methods,
   } = useCurrentUser()
 
   return (
@@ -30,13 +31,14 @@ function CurrentUserContainer() {
       userProfilePicture={userProfilePicture}
       isLoadingUser={isLoadingUser}
       isLoadingProfilePicture={isLoadingProfilePicture}
+      isErrorProfilePicture={isErrorProfilePicture}
+      isSuccessProfilePicture={isSuccessProfilePicture}
       isMuted={isMuted}
       isVoiceMuted={isVoiceMuted}
       isCamera={isCamera}
       onMicrophone={onMicrophone}
       onPhone={onPhone}
       onCamera={onCamera}
-      methods={methods}
     >
       <CurrentUser />
     </CurrentUserProvider>

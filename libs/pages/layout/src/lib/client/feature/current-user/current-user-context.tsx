@@ -13,26 +13,20 @@ import { TransmitSingleton } from '@beep/utils'
 import { getVoiceState } from '@beep/voice'
 import { skipToken } from '@reduxjs/toolkit/query'
 import { useDispatch, useSelector } from 'react-redux'
-import { useForm, UseFormReturn } from 'react-hook-form'
 
 interface CurrentUserContextType {
   user: UserEntity | undefined
   userProfilePicture: string | undefined
   isLoadingUser: boolean
   isLoadingProfilePicture: boolean
+  isErrorProfilePicture: boolean
+  isSuccessProfilePicture: boolean
   isMuted: boolean
   isVoiceMuted: boolean
   isCamera: boolean
   onMicrophone: () => void
   onPhone: () => void
   onCamera: () => void
-  methods: UseFormReturn<{
-    username: string
-    email: string
-    'actual-password': string
-    'new-password': string
-    'confirm-password': string
-  }>
 }
 
 const CurrentUserContext = createContext<CurrentUserContextType | undefined>(
@@ -49,6 +43,8 @@ export const CurrentUserProvider: React.FC<{ children: React.ReactNode }> = ({
   const {
     currentData: userProfilePicture,
     isLoading: isLoadingProfilePicture,
+    isError: isErrorProfilePicture,
+    isSuccess: isSuccessProfilePicture,
   } = useFetchProfilePictureQuery(userMe?.id ?? skipToken, {
     skip:
       userMe === undefined ||
@@ -88,17 +84,6 @@ export const CurrentUserProvider: React.FC<{ children: React.ReactNode }> = ({
     })
   }, [refetch, server])
 
-  const methods = useForm({
-    mode: 'onChange',
-    defaultValues: {
-      username: userMe?.username ?? '',
-      email: userMe?.email ?? '',
-      'actual-password': '',
-      'new-password': '',
-      'confirm-password': '',
-    },
-  })
-
   return (
     <CurrentUserContext.Provider
       value={{
@@ -106,13 +91,14 @@ export const CurrentUserProvider: React.FC<{ children: React.ReactNode }> = ({
         userProfilePicture,
         isLoadingUser,
         isLoadingProfilePicture,
+        isSuccessProfilePicture,
+        isErrorProfilePicture,
         isMuted,
         isVoiceMuted,
         isCamera,
         onMicrophone,
         onPhone,
         onCamera,
-        methods,
       }}
     >
       {children}
