@@ -1,6 +1,5 @@
-import { ServerEntity } from '@beep/contracts'
+import { RoleEntity, ServerEntity } from '@beep/contracts'
 import { ButtonIcon } from '@beep/ui'
-import { RoleEntity } from 'libs/shared/contracts/src/lib/entities/role.entity'
 import { useTranslation } from 'react-i18next'
 import RoleServerFeature from '../feature/role-server-feature'
 

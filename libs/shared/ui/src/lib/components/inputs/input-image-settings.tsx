@@ -6,7 +6,7 @@ import { Icon } from '../icons/icon'
 interface InputImageSettingsProps {
   label: string
   name: string
-  serverId: string
+  serverId: string | undefined
   initialImage?: string
   type: 'banner' | 'picture'
 }
@@ -44,7 +44,7 @@ export function InputImageSettings({
           reader.readAsDataURL(file)
           const formData = new FormData()
           formData.append('attachment', file)
-          updateImage({ serverId, formData })
+          updateImage({ serverId: serverId ?? '' , formData })
         }
       })
     }
