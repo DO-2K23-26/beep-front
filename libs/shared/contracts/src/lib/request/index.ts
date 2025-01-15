@@ -36,5 +36,6 @@ export * from './invitation/answer-invitation.request'
 export * from './invitation/create-friend-invitation.request'
 
 export * from './member/get-member.request'
+export * from './member/get-my-member.request'
 
 export * from './friends/delete-friend.request'

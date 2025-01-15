@@ -11,6 +11,7 @@ import {
   GetChannelsResponse,
   GetMemberRequest,
   GetMembersResponse,
+  GetMyMemberRequest,
   JoinInvitationResponse,
   MemberEntity,
   MoveChannelRequest,
@@ -323,6 +324,13 @@ export const serverApi = createApi({
         },
       })
     }),
+    getMyMember: builder.query<MemberEntity, GetMyMemberRequest>({
+      query: (req) => ({
+        url: `/v1/servers/${req.serverId}/members/@me`,
+        method: 'GET',
+      }),
+      providesTags: (res,error,req)=>[{ type: 'members', id: 'me' + req.serverId }],
+    }),    
     transmitPicture: builder.query<string, string>({
       query: (serverId) => ({
         url: `/servers/${serverId}/picture`,
