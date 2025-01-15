@@ -386,7 +386,7 @@
         "title": "Choisissez un nouveau nom de famille",
         "modify": "Modifier",
         "content_required": "Le nom de famille est requis",
-        "content_message": "Le nom de famille doit commencer par une lettre majuscule, ne contenir que des lettres, et autoriser un seul tiret, espace ou apostrophe entre deux parties du nom",
+        "content_message": "Le nom de famille ne doit contenir que des lettres, et autoriser un seul tiret, espace ou apostrophe entre deux parties du nom",
         "render_label": "Nom de famille",
         "confirm": "Confirmer"
       },
@@ -394,7 +394,7 @@
         "title": "Choisissez un nouveau prénom",
         "modify": "Modifier",
         "content_required": "Le prénom est requis",
-        "content_message": "Le prénom doit commencer par une lettre majuscule, ne contenir que des lettres, et autoriser un seul tiret, espace ou apostrophe entre deux parties du prénom",
+        "content_message": "Le prénom ne doit contenir que des lettres, et autoriser un seul tiret, espace ou apostrophe entre deux parties du prénom",
         "render_label": "Prénom",
         "confirm": "Confirmer"
       },

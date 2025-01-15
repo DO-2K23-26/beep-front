@@ -34,7 +34,7 @@ export function ModifyLastnameDialog({
               'settings.components.modify-lastname-dialog.content_required'
             ),
             pattern: {
-              value: /^[A-ZÀ-Ý][a-zà-ÿ]*(?:[ '-][A-ZÀ-Ý][a-zà-ÿ]*)?$/,
+              value: /^[A-Za-zÀ-ÿ][A-Za-zà-ÿ]*(?:[ '-][A-Za-zà-ÿ][A-Za-zà-ÿ]*)?$/,
               message: t(
                 'settings.components.modify-lastname-dialog.content_message'
               ),
