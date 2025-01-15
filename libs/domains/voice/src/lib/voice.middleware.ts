@@ -12,6 +12,7 @@ import {
 } from './voice.slice'
 import { webrtcUrl } from '@beep/contracts'
 import { Socket, Presence, Channel } from 'phoenix'
+import { channel } from 'diagnostics_channel'
 
 const WebRTCMiddleware: Middleware = (store) => {
   const pcConfig: RTCConfiguration = {}
@@ -20,11 +21,10 @@ const WebRTCMiddleware: Middleware = (store) => {
   let watchedChannels: { id: string; channel: Channel }[] = []
   let currentChannel: Channel | undefined = undefined
   let currentPresence: Presence | undefined = undefined
-  let localTracksAdded = false
   let currentChannelId: string | undefined
   let id: string | undefined
-  let camTransceiver: RTCRtpTransceiver | undefined = undefined
-  let micTransceiver: RTCRtpTransceiver | undefined = undefined
+  let camSender: RTCRtpSender | undefined = undefined
+  let micSender: RTCRtpSender | undefined = undefined
   let callback: ((value: string | PromiseLike<string>) => void) | null
   let path: string
   let offer
@@ -243,6 +243,7 @@ const WebRTCMiddleware: Middleware = (store) => {
         }
 
         peerConnection.ontrack = (event: RTCTrackEvent) => {
+          console.log('ontrack', event)
           const stream = event.transceiver
           store.dispatch(addRemoteStream(stream))
         }
@@ -271,7 +272,19 @@ const WebRTCMiddleware: Middleware = (store) => {
         currentChannelId = action.payload.channel
         currentChannel.onError(() => {
           console.error('Error in currentChannel peer:signalling')
-          socket.disconnect()
+          store.dispatch({
+            type: 'INITIALIZE_WEBRTC',
+            payload: {
+              server: action.payload.server,
+              channel: currentChannelId,
+              token: action.payload.token,
+              videoDevice: action.payload.videoDevice,
+              audioInputDevice: action.payload.audioInputDevice,
+              isVoiceMuted: action.payload.isVoiceMuted,
+              isCamera: action.payload.isCamera,
+              username: action.payload.username,
+            },
+          })
           //window.location.reload();
         })
 
@@ -285,11 +298,21 @@ const WebRTCMiddleware: Middleware = (store) => {
             sdp: sdpOffer,
           })
 
-          if (!localTracksAdded) {
-            console.log('Adding local tracks to peer connection')
-            audio.getTracks().forEach((track) => peerConnection.addTrack(track))
-            video.getTracks().forEach((track) => peerConnection.addTrack(track))
-            localTracksAdded = true
+          if (video !== null) {
+            console.log('Adding local video tracks to peer connection')
+            video.getTracks().forEach((track) => {
+              if (!peerConnection.getSenders().some(sender => sender.track === track)) {
+              camSender = peerConnection.addTrack(track)
+              }
+            })
+          }
+          if (audio !== null) {
+            console.log('Adding local audio tracks to peer connection')
+            audio.getTracks().forEach((track) => {
+              if (!peerConnection.getSenders().some(sender => sender.track === track)) {
+                micSender = peerConnection.addTrack(track)
+              }
+            })
           }
 
           const sdpAnswer = await peerConnection.createAnswer()
@@ -394,7 +417,7 @@ const WebRTCMiddleware: Middleware = (store) => {
       case 'START_CAM':
         if (!peerConnection) break
         try {
-          if (camTransceiver) {
+          if (camSender) {
             video = await navigator.mediaDevices.getUserMedia({
               video: {
                 width: 320,
@@ -403,10 +426,7 @@ const WebRTCMiddleware: Middleware = (store) => {
               },
             })
             video.getTracks()[0].enabled = true
-            await camTransceiver?.sender.replaceTrack(video.getTracks()[0])
-            if (camTransceiver) {
-              store.dispatch(setLocalStream(video))
-            }
+            await camSender.replaceTrack(video.getTracks()[0])
           } else {
             video = await navigator.mediaDevices.getUserMedia({
               video: {
@@ -415,33 +435,33 @@ const WebRTCMiddleware: Middleware = (store) => {
                 deviceId: action.payload.deviceId,
               },
             })
-            camTransceiver = peerConnection?.addTransceiver(
-              video.getTracks()[0],
-              {
-                direction: 'sendonly',
-              }
-            )
-            if (camTransceiver) {
-              store.dispatch(setLocalStream(video))
-            }
+            camSender = peerConnection.addTrack(video.getTracks()[0])
           }
-          // await negotiate()
+          store.dispatch(setLocalStream(video))
         } catch (error) {
-          /* empty */
+          console.error('Error starting camera:', error)
         }
         break
 
       case 'STOP_CAM':
-        await camTransceiver?.sender?.replaceTrack(null)
+        currentChannel.push('sdp_offer', { body: null })
         store.dispatch(setLocalStream(null))
         video?.getTracks().forEach((track) => {
           track.stop()
         })
         video = null
+        // peerConnection?.removeTrack(camSender)
+        // await camSender?.replaceTrack(null)
+        // peerConnection?.getTransceivers().forEach((transceiver) => {
+        //   if (transceiver.sender.track === null) {
+        //     peerConnection.removeTrack(transceiver.sender)
+        //     transceiver.stop()
+        //   }
+        // })
         break
 
       case 'STOP_MIC':
-        await micTransceiver?.sender?.replaceTrack(null)
+        await micSender?.replaceTrack(null)
         audio?.getTracks().forEach((track) => track.stop())
         audio = null
         break
