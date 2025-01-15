@@ -34,29 +34,9 @@ export function ServerDropdownMenu({ server }: ServerDropDownMenuProps) {
         title: t('layout.server-dropdown-menu.overview'),
         id: 'overview',
         settingComponent: (
-          <OverviewSettingsServer
-            server={
-              server
-                ? server
-                : ({
-                    id: '',
-                    name: '',
-                    ownerId: '',
-                    visibility: 'private',
-                    icon: '',
-                    createdAt: '',
-                    updatedAt: '',
-                    invite_code: '',
-                    banner: '',
-                    description: '',
-                  } as ServerEntity)
-            }
-            isAdmin={true}
-          />
+          <OverviewSettingsServer server={server} isAdmin={true} />
         ),
       },
-      // { title: 'voice', settingComponent: <Input /> },
-      // { title: 'text', settingComponent: <Input /> },
     ],
   }
 

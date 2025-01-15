@@ -1,11 +1,4 @@
-import {
-  Button,
-  ButtonShadCn,
-  ButtonStyle,
-  buttonVariants,
-  InputText,
-  InputTextArea,
-} from '@beep/ui'
+import { ButtonShadCn, InputText, InputTextArea } from '@beep/ui'
 import { Controller, UseFormReturn } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 
