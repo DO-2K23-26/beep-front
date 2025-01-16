@@ -101,7 +101,7 @@ export function ServerDropdown({
         <DialogDescription hidden>SettingsPage</DialogDescription>
       </DialogHeader>
 
-      <FullScreenDialogContent className="flex flex-row w-full h-full">
+      <FullScreenDialogContent className="flex flex-row w-full h-full z-40">
         <SettingsModal settings={[subSetting]} />
       </FullScreenDialogContent>
     </FullScreenDialog>
