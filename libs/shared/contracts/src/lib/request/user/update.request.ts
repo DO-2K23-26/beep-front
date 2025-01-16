@@ -1,6 +1,6 @@
 export interface UpdateUserRequest{
     username?: string
-    firstname?: string
+    firstName?: string
     lastName?: string
     email?: string
     profilePicture?: File

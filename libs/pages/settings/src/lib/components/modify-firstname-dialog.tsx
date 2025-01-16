@@ -2,50 +2,53 @@ import { Button, DialogComponent, InputText } from '@beep/ui'
 import { Controller, UseFormReturn } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 
-interface ModifyUsernameDialogProps {
-  usernameFormController: UseFormReturn<{ username: string }, any, undefined>
+interface ModifyFirstnameDialogProps {
+  firstnameFormController: UseFormReturn<{ firstName: string }, any, undefined>
   isModalOpen: boolean
   setIsModalOpen: (value: boolean) => void
   action: () => void
 }
-export function ModifyUsernameDialog({
+export function ModifyFirstnameDialog({
   action,
   isModalOpen,
   setIsModalOpen,
-  usernameFormController,
-}: ModifyUsernameDialogProps) {
+  firstnameFormController,
+}: ModifyFirstnameDialogProps) {
   const { t } = useTranslation()
 
   return (
     <DialogComponent
-      title={t('settings.components.modify-username-dialog.title')}
+      title={t('settings.components.modify-firstname-dialog.title')}
       triggerModalButton={
         <div>
           <Button>
-            {t('settings.components.modify-username-dialog.modify')}
+            {t('settings.components.modify-firstname-dialog.modify')}
           </Button>
         </div>
       }
       content={
         <Controller
-          name="username"
+          name="firstName"
           rules={{
             required: t(
-              'settings.components.modify-username-dialog.required_username'
+              'settings.components.modify-firstname-dialog.content_required'
             ),
             pattern: {
-              value: /^[a-z]+$/,
+              value:
+                /^[A-Za-zÀ-ÿ][A-Za-zà-ÿ]*(?:[ '-][A-Za-zà-ÿ][A-Za-zà-ÿ]*)?$/,
               message: t(
-                'settings.components.modify-username-dialog.invalid_username'
+                'settings.components.modify-firstname-dialog.content_message'
               ),
             },
           }}
-          control={usernameFormController.control}
+          control={firstnameFormController.control}
           render={({ field, fieldState: { error } }) => (
             <InputText
-              label={t('settings.components.modify-username-dialog.username')}
+              label={t(
+                'settings.components.modify-firstname-dialog.render_label'
+              )}
               type="text"
-              name="username"
+              name="firstName"
               className="w-full !rounded-lg min-h-[40px]"
               value={field.value}
               onChange={field.onChange}
@@ -55,7 +58,7 @@ export function ModifyUsernameDialog({
         />
       }
       actionButtonTitle={t(
-        'settings.components.modify-username-dialog.confirm'
+        'settings.components.modify-firstname-dialog.confirm'
       )}
       action={action}
       isModalOpen={isModalOpen}

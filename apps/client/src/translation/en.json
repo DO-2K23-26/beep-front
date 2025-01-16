@@ -357,11 +357,12 @@
         "modify": "Modify"
       },
       "modify-email-dialog": {
+        "title": "Choose a new email",
         "modify": "Modify",
-        "required_email": "Enter a new email adress",
-        "invalid_email": "Invalid email address",
-        "email": "Email",
-        "email_sented": "An email will be sent to your current email adress for confirmation"
+        "content_1": "We need to verify your old email address",
+        "content_2": "in order to change it",
+        "content_3": "Have you lost access to your email? Contact your email provider to regain access",
+        "action_content_button":"Send verification code"
       },
       "modify-profile-picture-dialog": {
         "choose_picture": "Choose a new picture",
@@ -376,14 +377,61 @@
         "username": "Username",
         "confirm": "Confirm"
       },
+      "modify-lastname-dialog":{
+        "title": "Choose a new Last name",
+        "modify": "Modify",
+        "content_required": "Last name is required",
+        "content_message": "Last name should contain only letters, and allow one hyphen, space, or apostrophe between two parts of the name",
+        "render_label": "Lastname",
+        "confirm": "Confirm"
+      },
+      "modify-firstname-dialog":{
+        "title": "Choose a new First name",
+        "modify": "Modify",
+        "content_required": "First name is required",
+        "content_message": "Last name should contain only letters, and allow one hyphen, space, or apostrophe between two parts of the name",
+        "render_label": "First name",
+        "confirm": "Confirm"
+      },
       "modify-username-email": {
-        "username": "Username"
+        "firstName": "First name",
+        "lastName": "Last name",
+        "username": "Username",
+        "email": "Email"
+      },
+      "validate-otp-dialog": {
+        "title":"Enter Code",
+        "modify": "Modify",
+        "content":"Check your email: we've sent you a verification code. Enter it here to verify your identity",
+        "otp_rules_required":"Otp code is required",
+        "otp_rules_message":"OTP code must be exactly 6 digits",
+        "field_label":"OTP Code",
+        "resend_message":"Didn't receive a code or it expired?",
+        "resend_button":"Resend",
+        "action_button":"Confirm"
+      },
+      "validate-email-dialog": {
+        "title": "Choose a new email",
+        "modify": "Modify",
+        "enter_password": "Enter your current password",
+        "enter_password_label": "Current Password",
+        "enter_email": "Email is required",
+        "enter_email_error": "Invalid email address",
+        "enter_email_label": "Email",
+        "action_button": "Confirm"
       }
     },
     "modify-profile-card": {
-      "successfull_update": "Update successful",
-      "error_update": "Something went wrong when updating your profile",
-      "picture_not_filled": "Choose a picture by clicking on the button first"
+      "picture_not_filled": "Choose a picture by clicking on the button first",
+      "error_message_username_already_exist": "This username already exists",
+      "error_message_email_already_exist": "This email already exists",
+      "error_profile_update": "An error occurred while updating",
+      "success_update_profile": "Updated succesfully !",
+      "success_email_send": "Email sent successfully! Please check your inbox.",
+      "error_email_send": "Failed to send email. Please try again.",
+      "success_otp_code": "Valid code !",
+      "error_otp_code": "An error occured. Please try again.",
+      "error_password_email_update": "The current password is wrong"
     },
     "change-language": {
       "language": "Language"

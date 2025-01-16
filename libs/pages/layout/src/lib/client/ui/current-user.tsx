@@ -110,3 +110,16 @@ export default function CurrentUser() {
     </div>
   )
 }
+
+// List of setting in the user setting modal
+const subSetting: SubSettings = {
+  subGroupSettingTitle: 'User settings',
+  settings: [
+    { title: 'Account', settingComponent: <ModifyProfileCardFeature /> },
+    // { title: 'Profile', settingComponent: "test" },
+    {
+      title: 'Voice & Video',
+      settingComponent: <UserMediaFeature />,
+    },
+  ],
+}

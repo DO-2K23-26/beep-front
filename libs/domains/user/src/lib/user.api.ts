@@ -1,5 +1,6 @@
 import {
   BaseQueryApi,
+  BaseQueryArg,
   createApi,
   fetchBaseQuery,
 } from '@reduxjs/toolkit/query/react'
@@ -14,9 +15,12 @@ import {
   GetUserRequest,
   LoginRequest,
   LoginResponse,
+  OtpMailSendRequest,
+  RefreshRequest,
   RefreshResponse,
   RegisterResponse,
   ResetPasswordRequest,
+  UpdateEmailRequest,
   UpdateMicRequest,
   UpdateUserResponse,
   UserConnectedEntity,
@@ -76,13 +80,13 @@ export const userApi = createApi({
         formData: true,
       }),
     }),
-    refresh: builder.mutation<RefreshResponse, void>({
-      query: () => ({
-        url: '/authentication/refresh',
-        method: 'POST',
-        credentials: 'include',
-      }),
-    }),
+    // refresh: builder.mutation<RefreshResponse, void>({
+    //   query: () => ({
+    //     url: '/authentication/refresh',
+    //     method: 'POST',
+    //     credentials: 'include',
+    //   }),
+    // }),
     askTOTPURI: builder.mutation<AskTOTPURIResponse, AskTOPTURIRequest>({
       query: (body) => ({
         url: '/authentication/totp',
@@ -129,12 +133,43 @@ export const userApi = createApi({
       }),
       providesTags: (_, __, id) => [{ type: 'profilePicture', id: id }],
     }),
+    refresh: builder.mutation<RefreshResponse, RefreshRequest>({
+      query: (refreshToken) => ({
+        url: '/authentication/refresh',
+        method: 'POST',
+        body: refreshToken,
+      }),
+    }),
+    // Send OTP for email change
+    sendOtpEmail: builder.mutation<void, OtpMailSendRequest>({
+      query: (data) => ({
+        url: '/users/otp/generate', // Make sure this URL matches your backend route
+        method: 'POST',
+        body: data, // This will send the email to the backend
+      }),
+    }),
+    // Verify OTP for email change
+    verifyOtpCode: builder.mutation<void, { email: string; otp: string }>({
+      query: (data) => ({
+        url: '/users/otp/verify', // Make sure this URL matches your backend route
+        method: 'POST',
+        body: data, // This will send the email and OTP to verify
+      }),
+    }),
     confirmEmail: builder.mutation<void, ConfirmEmailRequest>({
       query: (data) => ({
         url: `/users/@me/email`,
         method: 'PUT',
         body: data,
       }),
+    }),
+    updateEmail: builder.mutation<void, UpdateEmailRequest>({
+      query: (data) => ({
+        url: `/users/@me/email/update`,
+        method: 'POST',
+        body: data,
+      }),
+      invalidatesTags: ['me'],
     }),
     fetchAllUsers: builder.query<UserConnectedEntity[], void>({
       query: () => '/users/display',
@@ -234,6 +269,9 @@ export const {
   useVerifyEmailMutation,
   useGetUserByIdQuery,
   useUpdateStateMutation,
+  useSendOtpEmailMutation, // to send OTP
+  useVerifyOtpCodeMutation, // to verify OTP
+  useUpdateEmailMutation,
   useLogoutMutation,
   useAskTOTPURIMutation,
   useComplete2FARegistrationMutation,

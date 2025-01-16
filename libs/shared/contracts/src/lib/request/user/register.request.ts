@@ -1,8 +1,8 @@
 export interface RegisterRequest {
     email: string
     username: string
-    firstname: string
-    lastname: string
+    firstName: string
+    lastName: string
     password: string
     profilePicture: File | undefined
 }

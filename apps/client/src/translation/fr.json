@@ -362,11 +362,12 @@
         "modify": "Modifier"
       },
       "modify-email-dialog": {
+        "title": "Choisissez un nouvel e-mail",
         "modify": "Modifier",
-        "required_email": "Entrez une nouvelle adresse e-mail",
-        "invalid_email": "Adresse e-mail invalide",
-        "email": "E-mail",
-        "email_sented": "Un e-mail sera envoyé à votre adresse e-mail actuelle pour confirmation"
+        "content_1": "Nous devons vérifier votre ancienne adresse e-mail",
+        "content_2": "afin de la changer",
+        "content_3": "Avez-vous perdu l'accès à votre e-mail ? Contactez votre fournisseur d'e-mails pour récupérer l'accès",
+        "action_content_button": "Envoyer le code de vérification"
       },
       "modify-profile-picture-dialog": {
         "choose_picture": "Choisissez une nouvelle image",
@@ -374,21 +375,68 @@
         "confirm": "Confirmer"
       },
       "modify-username-dialog": {
-        "title": "Choisissez un nouveau surnom",
+        "title": "Choisissez un nouveau nom d'utilisateur",
         "modify": "Modifier",
         "required_username": "Entrez un nouveau nom d'utilisateur",
         "invalid_username": "Le nom d'utilisateur ne doit contenir que des lettres minuscules de l'alphabet",
         "username": "Nom d'utilisateur",
         "confirm": "Confirmer"
       },
+      "modify-lastname-dialog": {
+        "title": "Choisissez un nouveau nom de famille",
+        "modify": "Modifier",
+        "content_required": "Le nom de famille est requis",
+        "content_message": "Le nom de famille ne doit contenir que des lettres, et autoriser un seul tiret, espace ou apostrophe entre deux parties du nom",
+        "render_label": "Nom de famille",
+        "confirm": "Confirmer"
+      },
+      "modify-firstname-dialog": {
+        "title": "Choisissez un nouveau prénom",
+        "modify": "Modifier",
+        "content_required": "Le prénom est requis",
+        "content_message": "Le prénom ne doit contenir que des lettres, et autoriser un seul tiret, espace ou apostrophe entre deux parties du prénom",
+        "render_label": "Prénom",
+        "confirm": "Confirmer"
+      },
       "modify-username-email": {
-        "username": "Nom d'utilisateur"
+        "firstName": "Prénom",
+        "lastName": "Nom de famille",
+        "username": "Nom d'utilisateur",
+        "email": "E-mail"
+      },
+      "validate-otp-dialog": {
+        "title": "Entrez le code",
+        "modify": "Modifier",
+        "content": "Vérifiez votre e-mail : nous vous avons envoyé un code de vérification. Saisissez-le ici pour vérifier votre identité",
+        "otp_rules_required": "Le code OTP est requis",
+        "otp_rules_message": "Le code OTP doit comporter exactement 6 chiffres",
+        "field_label": "Code OTP",
+        "resend_message": "Vous n'avez pas reçu de code ou il a expiré ?",
+        "resend_button": "Renvoyer",
+        "action_button": "Confirmer"
+      },
+      "validate-email-dialog": {
+        "title": "Choisissez un nouvel email",
+        "modify": "Modifier",
+        "enter_password": "Entrez votre mot de passe actuel",
+        "enter_password_label": "Mot de passe actuel",
+        "enter_email": "L'email est requis",
+        "enter_email_error": "Adresse email invalide",
+        "enter_email_label": "Email",
+        "action_button": "Confirmer"
       }
     },
     "modify-profile-card": {
-      "successfull_update": "Mise à jour réussie",
-      "error_update": "Une erreur est survenue lors de la mise à jour de votre profil",
-      "picture_not_filled": "La photo de profil n'est pas remplie"
+      "picture_not_filled": "Choisissez une image en cliquant d'abord sur le bouton",
+      "error_message_username_already_exist": "Ce nom d'utilisateur existe déjà",
+      "error_message_email_already_exist": "Cet email existe déjà",
+      "error_profile_update": "Une erreur s'est produite lors de la mise à jour",
+      "success_update_profile": "Mise à jour réussie !",
+      "success_email_send": "Email envoyé avec succès ! Veuillez vérifier votre boîte de réception.",
+      "error_email_send": "Échec de l'envoi de l'email. Veuillez réessayer.",
+      "success_otp_code": "Code valide !",
+      "error_otp_code": "Une erreur s'est produite. Veuillez réessayer.",
+      "error_password_email_update": "Le mot de passe actuel est incorrect"
     },
     "change-language": {
       "language": "Langue"
