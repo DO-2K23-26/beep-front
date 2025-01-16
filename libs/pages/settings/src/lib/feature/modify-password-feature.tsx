@@ -9,24 +9,21 @@ export function ModifyPasswordFeature() {
   const [isPasswordModalOpen, setIsPasswordModalOpen] = useState(false)
   const [changePassword, result] = useChangePasswordMutation()
 
-  useEffect(() => {
-    if (!result.isSuccess) {
-      toast.error(
-        'Something went wrong when updating your profile'
-      )
-    } else {
-      toast.success('Update successful')
-    }
-  }, [result])
-
   const passwordFormController = useForm({
     mode: 'onChange',
     defaultValues: {
       currentPassword: '',
       verifyNewPassword: '',
-      newPassword: ''
+      newPassword: '',
     },
   })
+
+  useEffect(() => {
+    if (result.isSuccess) {
+      toast.success('Update successful')
+      setIsPasswordModalOpen(false)
+    }
+  }, [result])
 
   const handlePasswordSubmit = passwordFormController.handleSubmit((data) => {
     const request: UpdatePassword = {
@@ -37,9 +34,25 @@ export function ModifyPasswordFeature() {
     passwordFormController.reset()
   })
 
+  useEffect(() => {
+    if (result.isError && result.error !== undefined) {
+      // @ts-expect-error errorCreateServer is not undefined
+      const error = result.error.data as HttpError
+      if (error.code === 'E_CURRENT_PASSWORD_MISMATCHING') {
+        passwordFormController.setError('currentPassword', {
+          message: 'The current password is wrong',
+          type: 'validate',
+        })
+      } else {
+        toast.error('Something whent wrong, please try again')
+        setIsPasswordModalOpen(false)
+      }
+    }
+  }, [result, passwordFormController])
+
   return (
-    <div className='flex flex-col pt-6 space-y-1'>
-      <p className='text-2xl'>Password & Authentification</p>
+    <div className="flex flex-col pt-6 space-y-1">
+      <p className="text-2xl">Password & Authentification</p>
       <ModifyPasswordDialog
         action={handlePasswordSubmit}
         isModalOpen={isPasswordModalOpen}
