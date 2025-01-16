@@ -1,5 +1,6 @@
 import {
   ModifyProfileCardFeature,
+  ModifyPasswordFeature,
   ChangeLanguageFeature,
   SettingsModal,
   SubSettings,
@@ -32,7 +33,7 @@ export default function CurrentUser() {
       {
         title: t('layout.current-user.profile'),
         id: 'profile',
-        settingComponent: <ModifyProfileCardFeature />,
+        settingComponent: <> <ModifyProfileCardFeature />  <ModifyPasswordFeature/> </>,
       },
       {
         title: t('layout.current-user.voice_video'),
