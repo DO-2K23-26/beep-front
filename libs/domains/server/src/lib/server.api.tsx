@@ -330,7 +330,7 @@ export const serverApi = createApi({
         method: 'GET',
       }),
       providesTags: (res,error,req)=>[{ type: 'members', id: 'me' + req.serverId }],
-    }),    
+    }),
     transmitPicture: builder.query<string, string>({
       query: (serverId) => ({
         url: `/servers/${serverId}/picture`,
@@ -369,5 +369,6 @@ export const {
   useTransmitPictureQuery,
   useDeleteServerMutation,
   useDiscoverServersQuery,
-  usePatchChannelPositionMutation
+  usePatchChannelPositionMutation,
+  useGetMyMemberQuery,
 } = serverApi

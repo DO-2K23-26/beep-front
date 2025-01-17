@@ -14,7 +14,7 @@ import { useSelector } from 'react-redux'
 import { ConnectedChannelRow } from './connect-channel-row'
 import { ListChannels } from './list-channels'
 
-import { cn } from '@beep/utils'
+import { cn, permissionsService } from '@beep/utils'
 import { getVoiceState } from '@beep/voice'
 import { useTranslation } from 'react-i18next'
 import { CurrentUserFeature } from '../feature/current-user/current-user-feature'
@@ -22,6 +22,7 @@ import { ServerDropdown } from './server-dropdown'
 import { ServerPictureButton } from './server-picture-button'
 import { usePatchChannelPositionMutation } from '@beep/server'
 import { ChannelContext } from '../feature/channels/channels-navigation-context'
+import { Permissions } from '@beep/contracts'
 
 export interface ChannelsNavigationProps {
   banner?: string
@@ -47,13 +48,14 @@ export default function ChannelsNavigation({
     onLeaveVoiceChannel,
     server,
     onClickId,
+    canSeeChannels,
   } = useContext(ChannelContext)
 
   useEffect(() => {
     if (!payload) {
       return
     }
-    setIsAdmin(server.ownerId === payload.sub)
+    setIsAdmin(server?.ownerId === payload.sub)
   }, [server, payload])
 
   return (
@@ -115,15 +117,23 @@ export default function ChannelsNavigation({
           {/* Channels list */}
 
           <div className="flex flex-col gap-2 overflow-y-scroll scroll-smooth scroll-bar h-full">
-            <ListChannels
-              moveChannel={(channelId: string, newPosition: number) => {
-                moveChannel({
-                  position: newPosition,
-                  channelId,
-                  serverId: server.id ?? '',
-                })
-              }}
-            />
+            {canSeeChannels ? (
+              <ListChannels
+                moveChannel={(channelId: string, newPosition: number) => {
+                  moveChannel({
+                    position: newPosition,
+                    channelId,
+                    serverId: server?.id ?? '',
+                  })
+                }}
+              />
+            ) : (
+              <div className="flex justify-center w-full">
+                <p className="text-xs md:text-sm  text-center text-violet-900 ">
+                  {t("layout.channels-navigation.cannot_see_channel")}
+                </p>
+              </div>
+            )}
           </div>
 
           {/* Bottom bar: User information / vocal information */}

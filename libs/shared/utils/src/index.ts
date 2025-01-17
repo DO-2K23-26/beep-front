@@ -6,6 +6,7 @@ export * from './lib/transmit'
 export * from './lib/debounce'
 export * from './lib/swappable'
 export * from './lib/sort-channels'
+export * from './lib/permissions-services'
 
 type ReactElementProps = {
   tag: (...props: unknown[]) => JSX.Element

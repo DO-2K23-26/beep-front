@@ -1,3 +1,4 @@
+import { Role } from "./role.entity";
 
 export interface MemberEntity {
   nickname: string;
@@ -12,4 +13,5 @@ export interface MemberEntity {
   updatedAt: string;
   id: string;
   userId: string;
+  roles: Role[];
 }

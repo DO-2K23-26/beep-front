@@ -28,13 +28,8 @@ export function ChannelsNavigationFeature() {
     }
   )
 
-
-  if (!server) {
-    return (<></>) // add error boundary
-  }
-
   return (
-    <ChannelsProvider server={server}>
+    <ChannelsProvider>
       <ChannelsNavigation
         key={'server_' + server?.id}
         banner={server?.banner !== '' ? banner : undefined}
