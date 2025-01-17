@@ -455,4 +455,5 @@ export const {
   useAssignMembersToRoleMutation,
   useUnassignMemberFromRoleMutation,
   useCreateRoleMutation,
+  useGetMyMemberQuery,
 } = serverApi

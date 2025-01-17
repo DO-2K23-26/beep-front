@@ -17,7 +17,7 @@ export function useVoiceChannels({
   server
 }: {
   streamingUsers: OccupiedChannelEntity[] | undefined,
-  server: ServerEntity
+  server: ServerEntity | undefined
 }): VoiceChannelsReturn {
 
   const dispatch = useDispatch<AppDispatch>()
@@ -37,7 +37,7 @@ export function useVoiceChannels({
   }, [leaveServer])
 
   const onJoinVoiceChannel = async (channel: ChannelEntity) => {
-    if (server.id) {
+    if (server?.id) {
       dispatch(
         voiceChannelActions.setFocusedVoiceChannel({
           channel: channel,

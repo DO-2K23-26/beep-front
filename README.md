@@ -78,7 +78,7 @@ This will let us easily add message coming from different sources. For example, 
 Some expected behavior:
 - When opening a channel the messages will be refetch
 - When a message is sent from local client it instantly displayed as loading while the request complete
-- Display real time updates of messages in the channel  without refetching all messages of the channels
+- Display real time updates of messages in the channel  without refetching all messages of the 
 
 To handle this we use a Redux slice for messages (in ``message.slice.ts``)
 

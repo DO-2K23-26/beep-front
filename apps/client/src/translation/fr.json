@@ -245,7 +245,8 @@
       "create_channel": "Créer un salon de discussion",
       "success_create_channel": "Salon de discussion créé !",
       "error_create_channel": "Une erreur est survenue lors de la création du salon de discussion !",
-      "copy_server_id": "Identifiant du serveur copié dans le press papier"
+      "copy_server_id": "Identifiant du serveur copié dans le press papier",
+      "cannot_see_channel": "Vous n'êtes pas autorisé à voir les salons de discussion"
     },
     "create-channel-modal": {
       "create_channel": "Créer un salon de discussion",
