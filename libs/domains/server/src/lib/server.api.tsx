@@ -16,12 +16,12 @@ import {
   MemberEntity,
   MoveChannelRequest,
   OccupiedChannelEntity,
+  RoleEntity,
   SearchServerRequest,
   ServerEntity,
   UpdateChannelRequest,
 } from '@beep/contracts'
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
-import { RoleEntity } from 'libs/shared/contracts/src/lib/entities/role.entity'
 // eslint-disable-next-line @nx/enforce-module-boundaries
 
 const baseQuery = fetchBaseQuery({
