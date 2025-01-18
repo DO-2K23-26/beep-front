@@ -38,9 +38,6 @@ export default function ChannelsNavigation({
   const { showLeftPane } = useSelector(getResponsiveState)
   const { connected, focusedChannel, serverName } =
     useSelector(getChannelsState)
-  const { payload } = useSelector(getUserState)
-
-  const [isAdmin, setIsAdmin] = useState(false)
   const { connectionState } = useSelector(getVoiceState)
   const [moveChannel] = usePatchChannelPositionMutation()
   const {
@@ -53,12 +50,7 @@ export default function ChannelsNavigation({
   } = useContext(ChannelContext)
 
   const { myMember } = useContext(ServerContext)
-  useEffect(() => {
-    if (!payload) {
-      return
-    }
-    setIsAdmin(server?.ownerId === payload.sub)
-  }, [server, payload])
+
 
   return (
     <div
@@ -81,7 +73,6 @@ export default function ChannelsNavigation({
                 onClickId={onClickId}
                 openModal={openModal}
                 closeModal={closeModal}
-                isAdmin={isAdmin}
               >
                 <ServerPictureButton server={server} />
               </ServerDropdown>
@@ -106,7 +97,7 @@ export default function ChannelsNavigation({
             </div>
           </div>
           {/* Create channel modal */}
-          {isAdmin && (
+          {(!myMember || myMember?.hasPermission(Permissions.MANAGE_CHANNELS)) && (
             <ButtonIcon
               icon={'lucide:circle-plus'}
               className="bg-violet-400 px-2 xl:px-3 py-2 font-semibold"

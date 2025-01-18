@@ -1,5 +1,4 @@
 import {
-  ChannelEntity,
   ChannelType,
 } from '@beep/contracts'
 import DisplayChannelFeature from '../feature/display-channel-feature'

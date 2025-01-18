@@ -1,4 +1,6 @@
 import { ServerEntity } from '@beep/contracts'
+// eslint-disable-next-line @nx/enforce-module-boundaries
+import { ServerContext } from '@beep/pages/channels'
 import {
   useTransmitBannerQuery,
   useTransmitPictureQuery,
@@ -6,30 +8,30 @@ import {
 } from '@beep/server'
 import { Button, ButtonStyle, InputText, InputImageSettings } from '@beep/ui'
 import { skipToken } from '@reduxjs/toolkit/query'
-import { useState } from 'react'
+import { useContext, useState } from 'react'
 import toast from 'react-hot-toast'
 import { useTranslation } from 'react-i18next'
+import { Permissions } from '@beep/contracts'
 
 export interface OverviewSettingsServerProps {
   server: ServerEntity
-  isAdmin: boolean
 }
 
 export function OverviewSettingsServer({
   server,
-  isAdmin,
 }: OverviewSettingsServerProps) {
   const { t } = useTranslation()
 
   const [serverName, setServerName] = useState(server.name)
   const [serverDescription, setServerDescription] = useState(server.description)
   const [updateServer] = useUpdateServerMutation()
-
+  const { myMember } = useContext(ServerContext)
   const { currentData: banner } = useTransmitBannerQuery(
     server?.id ?? skipToken
   )
   const { data: icon } = useTransmitPictureQuery(server.id)
-
+  
+  const canEditServer = !myMember || myMember?.hasPermissions([Permissions.MANAGE_SERVER])
   const handleSave = async () => {
     try {
       const updatedServer = {
@@ -62,10 +64,13 @@ export function OverviewSettingsServer({
             name="profile"
             serverId={server.id}
             initialImage={icon}
+            disabled={!canEditServer}
+
           />
         </div>
         <div className="w-2/3">
           <InputImageSettings
+          disabled={!canEditServer}
             type="banner"
             label={t('layout.overview-settings-server.upload_banner')}
             name="banner"
@@ -83,7 +88,7 @@ export function OverviewSettingsServer({
           className="!rounded-lg w-full "
           value={serverName}
           onChange={(e) => setServerName(e.target.value)}
-          disabled={!isAdmin}
+          disabled={!canEditServer}
         />
         <InputText
           label={t('layout.overview-settings-server.server_description')}
@@ -92,9 +97,9 @@ export function OverviewSettingsServer({
           className="!rounded-lg w-full"
           value={serverDescription}
           onChange={(e) => setServerDescription(e.target.value)}
-          disabled={!isAdmin}
+          disabled={!canEditServer}
         />
-        {isAdmin && (
+        {canEditServer && (
           <div className="flex flex-row justify-end">
             <Button style={ButtonStyle.BASIC} onClick={handleSave}>
               {t('layout.overview-settings-server.save')}
