@@ -14,7 +14,7 @@ import { useSelector } from 'react-redux'
 import { ConnectedChannelRow } from './connect-channel-row'
 import { ListChannels } from './list-channels'
 
-import { cn, permissionsService } from '@beep/utils'
+import { cn } from '@beep/utils'
 import { getVoiceState } from '@beep/voice'
 import { useTranslation } from 'react-i18next'
 import { CurrentUserFeature } from '../feature/current-user/current-user-feature'
@@ -22,6 +22,8 @@ import { ServerDropdown } from './server-dropdown'
 import { ServerPictureButton } from './server-picture-button'
 import { usePatchChannelPositionMutation } from '@beep/server'
 import { ChannelContext } from '../feature/channels/channels-navigation-context'
+// eslint-disable-next-line @nx/enforce-module-boundaries
+import { ServerContext } from '@beep/pages/channels'
 import { Permissions } from '@beep/contracts'
 
 export interface ChannelsNavigationProps {
@@ -48,9 +50,9 @@ export default function ChannelsNavigation({
     onLeaveVoiceChannel,
     server,
     onClickId,
-    canSeeChannels,
   } = useContext(ChannelContext)
 
+  const { myMember } = useContext(ServerContext)
   useEffect(() => {
     if (!payload) {
       return
@@ -117,7 +119,7 @@ export default function ChannelsNavigation({
           {/* Channels list */}
 
           <div className="flex flex-col gap-2 overflow-y-scroll scroll-smooth scroll-bar h-full">
-            {canSeeChannels ? (
+            {myMember?.hasPermission(Permissions.VIEW_CHANNELS) || !myMember ? (
               <ListChannels
                 moveChannel={(channelId: string, newPosition: number) => {
                   moveChannel({
@@ -130,7 +132,7 @@ export default function ChannelsNavigation({
             ) : (
               <div className="flex justify-center w-full">
                 <p className="text-xs md:text-sm  text-center text-violet-900 ">
-                  {t("layout.channels-navigation.cannot_see_channel")}
+                  {t('layout.channels-navigation.cannot_see_channel')}
                 </p>
               </div>
             )}

@@ -11,6 +11,7 @@ interface HeaderPageChannelProps {
   displayChannelInfo: boolean
   toggleRightPane: () => void
   toggleLeftPane: () => void
+  canViewChannels?: boolean
 }
 
 export function HeaderPageChannel({
@@ -19,6 +20,7 @@ export function HeaderPageChannel({
   displayChannelInfo,
   toggleLeftPane,
   toggleRightPane,
+  canViewChannels,
 }: HeaderPageChannelProps) {
   const leftDivState = useSelector(leftPaneState)
   return (
@@ -33,7 +35,7 @@ export function HeaderPageChannel({
         >
           <Icon name="lucide:arrow-left" className="w-4 h-4" />
         </ButtonShadCn>
-        {displayChannelInfo && (
+        {displayChannelInfo && canViewChannels && (
           <ChannelNameDisplay
             key={'display_pinned_' + channel?.id}
             channelName={channel?.name}
@@ -44,7 +46,7 @@ export function HeaderPageChannel({
       </div>
       {/* Button to display the list of pinned messages of a channel */}
       <div className="flex flex-row gap-2 lg:gap-6">
-        {displayChannelInfo && (
+        {displayChannelInfo && canViewChannels &&  (
           <DisplayPinned
             key={'display_pinned_' + channel?.id}
             channelId={channel?.id ?? ''}

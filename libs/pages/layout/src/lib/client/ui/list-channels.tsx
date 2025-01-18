@@ -59,7 +59,8 @@ export function ListChannels({
         switch (channel.type) {
           case ChannelType.text_server:
             return (
-              <Swappable slot={index.toString()} item={channel.id}>
+              <Swappable key ={"text_channel"+ channel.id}
+                slot={index.toString()} item={channel.id}>
                 <DisplayChannelFeature
                   key={channel.id}
                   channel={channel}
@@ -68,7 +69,7 @@ export function ListChannels({
             )
           default:
             return (
-              <Swappable slot={index.toString()} item={channel.id}>
+              <Swappable key ={"voice_channel"+ channel.id} slot={index.toString()} item={channel.id}>
                 <VoiceChannel
                   key={channel.id}
                   channel={channel}

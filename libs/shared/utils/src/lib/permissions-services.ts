@@ -49,7 +49,7 @@ class PermissionsService {
     return allPermissions.reduce((sum, permission) => sum + permission, 0)
   }
 
-  has_permission(member: MemberEntity, permission: Permissions): boolean {
+  hasPermission(member: MemberEntity, permission: Permissions): boolean {
     const mask = this.aggregate_roles_permissions(member.roles)
     // Check if mask is valid
     if (!this.isValidMask(mask)) return false
@@ -58,10 +58,19 @@ class PermissionsService {
     return (mask & permission) === permission
   }
 
-  validate_permissions(member: MemberEntity, permissions: Permissions[]): boolean {
+  validatePermissions(member: MemberEntity, permissions: Permissions[]): boolean {
     return permissions.every((permission) =>
-      this.has_permission(member, permission)
+      this.hasPermission(member, permission)
     )
+  }
+  
+  hasOne(member: MemberEntity, permissions: Permissions[]): boolean {
+      const mask = this.aggregate_roles_permissions(member.roles)
+      // Check if mask is valid
+      if (!this.isValidMask(mask)) return false
+
+      // Check if at least one required permission is present
+      return permissions.some((permission) => (mask & permission) === permission)
   }
 
   private extractHighestPermission(mask: number): number {

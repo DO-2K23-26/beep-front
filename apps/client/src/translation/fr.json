@@ -135,6 +135,8 @@
     "page-channel": {
       "reply_to": "Répondre à",
       "message_placeholder": "Saisissez un message",
+      "cannot_see_channel": "Vous n'êtes pas autorisé à voir les salons de discussion",
+      "no_permission_sending_message": "Vous n'avez pas la permission d'envoyer un message",
       "user_selector": {
         "title": "Utilisateur",
         "empty_result": "Aucun utilisateur."

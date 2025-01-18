@@ -15,7 +15,7 @@ import { DynamicSelectorProps } from '@beep/ui'
 import { useGetMeQuery } from '@beep/user'
 import { TransmitSingleton } from '@beep/utils'
 import { skipToken } from '@reduxjs/toolkit/query'
-import { useEffect, useRef, useState } from 'react'
+import { useContext, useEffect, useRef, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import toast from 'react-hot-toast'
 import { useTranslation } from 'react-i18next'
@@ -24,6 +24,7 @@ import { useParams } from 'react-router'
 import { PageChannel } from '../ui/page-channel'
 import { DynamicSelectorChannelFeature } from './dynamic-selector-channel-feature'
 import { DynamicSelectorFeature } from './dynamic-selector-item-feature'
+import { ServerContext } from './page-server-feature'
 
 export function PageChannelFeature() {
   const { t } = useTranslation()
@@ -36,7 +37,7 @@ export function PageChannelFeature() {
   const { data: usersServer } = useGetMembersQuery(serverId ?? skipToken)
   const { data: channels } = useGetServerChannelsQuery(serverId ?? skipToken)
   const { data: availableServers } = useGetMyServersQuery()
-
+  const { myMember } = useContext(ServerContext)
   const [files, setFiles] = useState<File[]>([])
   const [previewUrls, setPreviewUrls] = useState<{ content: string | null }[]>(
     []
@@ -261,6 +262,7 @@ export function PageChannelFeature() {
       onCursorChange={handleCursorChange}
       dynamicSelector={dynamicSelector}
       onFocusChannel={onFocusChannel}
+      myMember={myMember}
     />
   )
 }
