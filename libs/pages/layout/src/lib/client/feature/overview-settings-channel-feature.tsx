@@ -24,7 +24,7 @@ export default function OverviewSettingsChannelFeature({
     } else if (result.isError) {
       toast.error(t('layout.overview-settings-channel.error_update_channel'))
     }
-  }, [result])
+  }, [result, t])
 
   const form = useForm({
     mode: 'onChange',
@@ -40,6 +40,7 @@ export default function OverviewSettingsChannelFeature({
       channelId: channel.id,
       name: data.channelName,
       description: data.channelDescription,
+      position: channel.position,
     }
     updateChannel(updatedChannel)
   })

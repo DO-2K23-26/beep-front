@@ -9,6 +9,7 @@ interface InputImageSettingsProps {
   serverId: string | undefined
   initialImage?: string
   type: 'banner' | 'picture'
+  disabled?: boolean
 }
 
 export function InputImageSettings({
@@ -17,6 +18,7 @@ export function InputImageSettings({
   serverId,
   initialImage,
   type,
+  disabled,
 }: InputImageSettingsProps): JSX.Element {
   const inputRef = useRef<HTMLInputElement>(null)
   const [previewImage, setPreviewImage] = useState<string | ArrayBuffer | null>(
@@ -91,13 +93,11 @@ export function InputImageSettings({
           />
         ) : (
           <div className={placeholderClasses}>
-            <Icon
-              name="lucide:image-plus"
-              className="size-10 sm:size-20"
-            />
+            <Icon name="lucide:image-plus" className="size-10 sm:size-20" />
           </div>
         )}
         <input
+          disabled={disabled}
           ref={inputRef}
           className="hidden"
           type="file"
@@ -105,7 +105,7 @@ export function InputImageSettings({
           id={uuid}
         />
       </div>
-      <label className={labelClasses}>{label}</label>
+      {!disabled && <label className={labelClasses}>{label}</label>}
     </label>
   )
 }

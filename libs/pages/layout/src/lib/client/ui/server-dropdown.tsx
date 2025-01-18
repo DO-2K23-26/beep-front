@@ -1,4 +1,4 @@
-import { ServerEntity } from '@beep/contracts'
+import { Permissions, ServerEntity } from '@beep/contracts'
 import { SettingBodyWidth, SettingsModal, SubSettings } from '@beep/settings'
 import {
   DialogDescription,
@@ -14,18 +14,19 @@ import {
   Icon,
   UseModalProps,
 } from '@beep/ui'
-import { ReactNode } from 'react'
+import { ReactNode, useContext } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router'
 import DestroyServerFeature from '../feature/destroy-server-feature'
 import { OverviewSettingsServer } from './overview-settings-server'
+// eslint-disable-next-line @nx/enforce-module-boundaries
+import { ServerContext } from '@beep/pages/channels'
 
 interface ServerDropdownProps {
   server: ServerEntity
   onClickId: (id: string) => void
   openModal: React.Dispatch<React.SetStateAction<UseModalProps | undefined>>
   closeModal: () => void
-  isAdmin: boolean
   children: ReactNode
 }
 
@@ -33,21 +34,19 @@ export function ServerDropdown({
   server,
   openModal,
   closeModal,
-  isAdmin,
   children,
 }: ServerDropdownProps) {
   const { t } = useTranslation()
   const navigate = useNavigate()
   const navigateAfterDelete = () => navigate('/servers')
+  const { myMember } = useContext(ServerContext)
   // List of setting in the user setting modal
   const subSetting: SubSettings = {
     subGroupSettingTitle: t('layout.server-dropdown.server'),
     settings: [
       {
-        title: t('layout.server-dropdown.overview'),
-        settingComponent: server && (
-          <OverviewSettingsServer server={server} isAdmin={isAdmin} />
-        ),
+        title: 'Overview',
+        settingComponent: server && <OverviewSettingsServer server={server} />,
         id: 'overview',
         settingBodySize: SettingBodyWidth.L,
       },
@@ -74,25 +73,28 @@ export function ServerDropdown({
               </div>
             </DropdownMenuItem>
           </FullScreenDialogTrigger>
-          <DropdownMenuItem
-            className="flex flex-row h-full w-full hover:bg-red-500/10 gap-2 rounded-md cursor-pointer"
-            onClick={() => {
-              openModal({
-                content: (
-                  <DestroyServerFeature
-                    serverId={server.id}
-                    closeModal={closeModal}
-                    navigateAfterDelete={navigateAfterDelete}
-                  />
-                ),
-              })
-            }}
-          >
-            <Icon name="lucide:trash-2" className="fill-red-600" />
-            <div className="flex h-full w-full font-semibold text-red-500">
-              {t('layout.server-dropdown.destroy')}
-            </div>
-          </DropdownMenuItem>
+          {(!myMember ||
+            myMember?.hasPermission(Permissions.MANAGE_SERVER)) && (
+            <DropdownMenuItem
+              className="flex flex-row h-full w-full hover:bg-red-500/10 gap-2 rounded-md cursor-pointer"
+              onClick={() => {
+                openModal({
+                  content: (
+                    <DestroyServerFeature
+                      serverId={server.id}
+                      closeModal={closeModal}
+                      navigateAfterDelete={navigateAfterDelete}
+                    />
+                  ),
+                })
+              }}
+            >
+              <Icon name="lucide:trash-2" className="fill-red-600" />
+              <div className="flex h-full w-full font-semibold text-red-500">
+                {t('layout.server-dropdown.destroy')}
+              </div>
+            </DropdownMenuItem>
+          )}
         </DropdownMenuContent>
       </DropdownMenu>
       <DialogHeader hidden>
