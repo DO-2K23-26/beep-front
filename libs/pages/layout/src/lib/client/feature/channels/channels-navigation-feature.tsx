@@ -29,7 +29,7 @@ export function ChannelsNavigationFeature() {
   )
 
   return (
-    <ChannelsProvider>
+    <ChannelsProvider server={server}>
       <ChannelsNavigation
         key={'server_' + server?.id}
         banner={server?.banner !== '' ? banner : undefined}

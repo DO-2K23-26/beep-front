@@ -1,10 +1,10 @@
-import { ChannelEntity, ChannelType } from '@beep/contracts'
+import { ChannelType } from '@beep/contracts'
+import { Swappable } from '@beep/utils'
+import { useContext, useEffect, useRef } from 'react'
+import { createSwapy, Swapy } from 'swapy'
+import { ChannelContext } from '../feature/channels/channels-navigation-context'
 import DisplayChannelFeature from '../feature/display-channel-feature'
 import VoiceChannel from '../feature/voice-channel'
-import { createSwapy, Swapy } from 'swapy'
-import { useContext, useEffect, useRef } from 'react'
-import { Swappable } from '@beep/utils'
-import { ChannelContext } from '../feature/channels/channels-navigation-context'
 
 export interface ListTextChannelsProps {
   moveChannel: (channelId: string, newPosition: number) => void

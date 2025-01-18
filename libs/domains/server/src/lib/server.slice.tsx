@@ -13,11 +13,10 @@ export const initialServersState: ServerState = {
   inviteCode: null,
 }
 
-const serverAdapter = createEntityAdapter<ServerEntity>()
 export const SERVER_KEY = 'servers'
 export const serverSlice = createSlice({
   name: SERVER_KEY,
-  initialState: serverAdapter.getInitialState(initialServersState),
+  initialState: initialServersState,
   reducers: {
     setServer(state, action: PayloadAction<ServerEntity>) {
       state.server = action.payload

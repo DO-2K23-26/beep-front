@@ -3,7 +3,6 @@ import {
   ChannelType,
   CreateChannelRequest,
   OccupiedChannelEntity,
-  Permissions,
   ServerEntity,
 } from '@beep/contracts'
 import {
@@ -11,14 +10,13 @@ import {
   useGetCurrentStreamingUsersQuery,
   useGetServerChannelsQuery,
 } from '@beep/server'
-import { permissionsService, sortChannels } from '@beep/transmit'
+import { sortChannels } from '@beep/transmit'
 import { UseModalProps, useModal } from '@beep/ui'
 import { skipToken } from '@reduxjs/toolkit/query'
 import {
   BaseSyntheticEvent,
   PropsWithChildren,
   createContext,
-  useContext,
   useEffect,
   useRef,
 } from 'react'
@@ -29,8 +27,6 @@ import { useNavigate } from 'react-router'
 import { CreateChannelModal } from '../../ui/create-channel-modal'
 import { useHandleChangeChannel } from './handle-change-channel-hook'
 import { useVoiceChannels } from './match-channel-hook'
-// eslint-disable-next-line @nx/enforce-module-boundaries
-import { ServerContext } from '@beep/pages/channels'
 
 interface ChannelContextInterface {
   streamingUsers: OccupiedChannelEntity[]
@@ -45,7 +41,6 @@ interface ChannelContextInterface {
   openCreateChannelModal: () => void
   openModal: React.Dispatch<React.SetStateAction<UseModalProps | undefined>>
   server?: ServerEntity
-  canSeeChannels: boolean
 }
 
 const defaultChannelContext: ChannelContextInterface = {
@@ -72,7 +67,6 @@ const defaultChannelContext: ChannelContextInterface = {
   openModal: () => {
     return
   },
-  canSeeChannels: true,
 }
 
 const ChannelContext = createContext<ChannelContextInterface>(
@@ -80,27 +74,16 @@ const ChannelContext = createContext<ChannelContextInterface>(
 )
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
-interface ChannelsProviderProps {}
+interface ChannelsProviderProps {
+  server?: ServerEntity
+}
 
 function ChannelsProvider({
   children,
+  server,
 }: PropsWithChildren<ChannelsProviderProps>) {
-  const { server, myMember } = useContext(ServerContext)
   useHandleChangeChannel({ server }) // if a user change voice channel it will be handled by this hook
-  let canSeeChannels = useRef(true)
 
-  useEffect(() => {
-    if (myMember && server) {
-      canSeeChannels.current =
-        false
-    }
-  }, [myMember, server])
-
-  useEffect(() => {
-    console.log(canSeeChannels)
-    console.log(myMember?.userId)
-    console.log(server?.ownerId)
-  }, [canSeeChannels, myMember, server])
   const openCreateChannelModal = () => {
     openModal({
       content: (
@@ -193,7 +176,6 @@ function ChannelsProvider({
         onLeaveVoiceChannel,
         openModal,
         server,
-        canSeeChannels,
       }}
     >
       {children}
