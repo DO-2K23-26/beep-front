@@ -14,9 +14,10 @@ import {
 
 export interface RoleServerProps {
   role: RoleEntity
+  onUpdateRole: (roleId: string) => void
 }
 
-export function RoleServer({ role }: RoleServerProps) {
+export function RoleServer({ role, onUpdateRole }: RoleServerProps) {
   return (
     <div className="flex justify-between items-center">
       <p className="font-bold text-base">{role.name}</p>
@@ -34,7 +35,7 @@ export function RoleServer({ role }: RoleServerProps) {
             <FullScreenDialogTrigger>
               <DropdownMenuItem
                 className="flex flex-row items-center hover:bg-black/10 gap-2 px-2 py-[6px] rounded-md cursor-pointer"
-                onClick={() => alert(`Modifier ${role.name}`)}
+                onClick={() => onUpdateRole(role.id)}
               >
                 <Icon name="lucide:settings" />
                 <p className="font-semibold">Modifier</p>

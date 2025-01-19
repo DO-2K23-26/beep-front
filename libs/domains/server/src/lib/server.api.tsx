@@ -22,6 +22,8 @@ import {
   SearchServerRequest,
   ServerEntity,
   UpdateChannelRequest,
+  UpdateRoleRequest,
+  UpdateRoleResponse,
 } from '@beep/contracts'
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 // eslint-disable-next-line @nx/enforce-module-boundaries
@@ -300,6 +302,19 @@ export const serverApi = createApi({
         { type: 'roles', id: `LIST-${req.serverId}` },
       ],
     }),
+    updateServerRole: builder.mutation<UpdateRoleResponse, UpdateRoleRequest>({
+      query: (request) => ({
+        url: `/servers/${request.serverId}/roles/${request.id}`,
+        method: 'PUT',
+        body: {
+          name: request.name,
+          permissions: request.permissions,
+        },
+      }),
+      invalidatesTags: (_result, _error, req) => [
+        { type: 'roles', id: `LIST-${req.serverId}` },
+      ],
+    }),
     updateServer: builder.mutation<
       ServerEntity,
       { serverId: string; updatedServer: Partial<ServerEntity> }
@@ -396,6 +411,7 @@ export const {
   useGetCurrentStreamingUsersQuery,
   useGetRolesQuery,
   useCreateServerRoleMutation,
+  useUpdateServerRoleMutation,
   useUpdateServerMutation,
   useUpdateBannerMutation,
   useUpdatePictureMutation,
