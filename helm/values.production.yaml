@@ -1,8 +1,0 @@
-image:
-  repository: 'milou666/beep-front'
-
-ingress:
-  hosts:
-    - host: 'beep.ovh'
-      paths:
-        - /
