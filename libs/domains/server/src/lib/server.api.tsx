@@ -9,6 +9,7 @@ import {
   CreateRoleRequest,
   CreateRoleResponse,
   DeleteChannelRequest,
+  DeleteRoleRequest,
   GetChannelRequest,
   GetChannelsResponse,
   GetMemberRequest,
@@ -315,6 +316,15 @@ export const serverApi = createApi({
         { type: 'roles', id: `LIST-${req.serverId}` },
       ],
     }),
+    deleteServerRole: builder.mutation<void, DeleteRoleRequest>({
+      query: (request) => ({
+        url: `/servers/${request.serverId}/roles/${request.id}`,
+        method: 'DELETE',
+      }),
+      invalidatesTags: (_result, _error, req) => [
+        { type: 'roles', id: `LIST-${req.serverId}` },
+      ],
+    }),
     updateServer: builder.mutation<
       ServerEntity,
       { serverId: string; updatedServer: Partial<ServerEntity> }
@@ -376,8 +386,10 @@ export const serverApi = createApi({
         url: `/v1/servers/${req.serverId}/members/@me`,
         method: 'GET',
       }),
-      providesTags: (res,error,req)=>[{ type: 'members', id: 'me' + req.serverId }],
-    }),    
+      providesTags: (res, error, req) => [
+        { type: 'members', id: 'me' + req.serverId },
+      ],
+    }),
     transmitPicture: builder.query<string, string>({
       query: (serverId) => ({
         url: `/servers/${serverId}/picture`,
@@ -412,6 +424,7 @@ export const {
   useGetRolesQuery,
   useCreateServerRoleMutation,
   useUpdateServerRoleMutation,
+  useDeleteServerRoleMutation,
   useUpdateServerMutation,
   useUpdateBannerMutation,
   useUpdatePictureMutation,

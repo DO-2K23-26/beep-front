@@ -2,13 +2,14 @@ import { ServerEntity, RoleEntity, serverRoles } from '@beep/contracts'
 import { useModal } from '@beep/ui'
 import {
   useCreateServerRoleMutation,
+  useDeleteServerRoleMutation,
   useGetRolesQuery,
   useUpdateServerRoleMutation,
 } from '@beep/server'
 import { FormProvider, useForm } from 'react-hook-form'
 import { RoleForm } from '../ui/role-settings/role-form'
 import { RolesSettingsServer } from '../ui/role-settings/roles-settings-server'
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import toast from 'react-hot-toast'
 
 interface RolesSettingsServerFeatureProps {
@@ -32,6 +33,7 @@ export default function RolesSettingsServerFeature({
 
   const [createRole, resultCreatedRole] = useCreateServerRoleMutation()
   const [updateRole, resultUpdatedRole] = useUpdateServerRoleMutation()
+  const [deleteRole, resultDeletedRole] = useDeleteServerRoleMutation()
 
   const onSubmitCreateRoleForm = methodsRoleForm.handleSubmit(async (data) => {
     createRole({
@@ -43,7 +45,6 @@ export default function RolesSettingsServerFeature({
     })
   })
 
-  // This function is why there is a roleId useState.
   const onSubmitUpdateRoleForm = methodsRoleForm.handleSubmit(async (data) => {
     if (!data.roleId) {
       toast.error('Role not found, please try again')
@@ -79,6 +80,15 @@ export default function RolesSettingsServerFeature({
       toast.error('Error updating role')
     }
   }, [resultUpdatedRole])
+
+  // catch the result of the delete role api mutation
+  useEffect(() => {
+    if (resultDeletedRole.isSuccess) {
+      toast.success('Role deleted')
+    } else if (resultDeletedRole.isError) {
+      toast.error('Error deleting role')
+    }
+  }, [resultDeletedRole])
 
   const onCreateRole = () => {
     methodsRoleForm.reset()
@@ -131,8 +141,11 @@ export default function RolesSettingsServerFeature({
     })
   }
 
-  const onDeleteRole = () => {
-    alert('delete role')
+  const onDeleteRole = (roleId: string) => {
+    deleteRole({
+      id: roleId,
+      serverId: server.id,
+    })
   }
 
   const onCloseModal = () => {
@@ -145,7 +158,7 @@ export default function RolesSettingsServerFeature({
       server={server}
       roles={roles ?? []}
       onCreateRole={onCreateRole}
-      onUpdateRole={(roleId: string) => onUpdateRole(roleId)}
+      onUpdateRole={onUpdateRole}
       onDeleteRole={onDeleteRole}
     />
   )

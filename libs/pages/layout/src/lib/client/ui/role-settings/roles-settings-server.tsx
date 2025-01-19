@@ -8,7 +8,7 @@ export interface RolesSettingsServerProps {
   roles: RoleEntity[]
   onCreateRole: () => void
   onUpdateRole: (roleId: string) => void
-  onDeleteRole: () => void
+  onDeleteRole: (roleId: string) => void
 }
 
 export function RolesSettingsServer({
@@ -45,6 +45,7 @@ export function RolesSettingsServer({
           key={role.id}
           role={role}
           onUpdateRole={onUpdateRole}
+          onDeleteRole={onDeleteRole}
         />
       ))}
     </div>
