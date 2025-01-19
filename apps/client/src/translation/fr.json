@@ -336,10 +336,33 @@
       "success_update_server": "Serveur mis à jour !",
       "error_update_server": "Une erreur est survenue lors de la mise à jour du serveur"
     },
+    "roles-settings-server-feature": {
+      "no_role_found": "Aucun rôle trouvé, veuillez réessayer",
+      "role_created": "Rôle créé avec succès",
+      "role_error_creating": "Une erreur est survenue lors de la création du rôle",
+      "role_updated": "Rôle mis à jour avec succès",
+      "role_error_updating": "Une erreur est survenue lors de la mise à jour du rôle",
+      "role_deleted": "Rôle supprimé avec succès",
+      "role_error_deleting": "Une erreur est survenue lors de la suppression du rôle"
+    },
     "role-settings-server": {
       "roles": "Rôles",
       "no_roles": "Aucun rôle trouvé",
       "create_role": "Créer un rôle"
+    },
+    "role-server": {
+      "update": "Modifier",
+      "delete": "Supprimer"
+    },
+    "role-form": {
+      "create_title": "Créer un rôle",
+      "update_title": "Modifier un rôle",
+      "choose_role_name": "Choisissez un nom pour le rôle",
+      "role_name_is_required": "Le nom du rôle est requis",
+      "role_name": "Nom du rôle",
+      "create": "Créer",
+      "update": "Modifier",
+      "cancel": "Annuler"
     },
     "server-dropdown-menu": {
       "server": "Serveur",

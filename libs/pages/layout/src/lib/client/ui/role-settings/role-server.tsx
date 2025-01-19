@@ -11,6 +11,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@radix-ui/react-dropdown-menu'
+import { useTranslation } from 'react-i18next'
 
 export interface RoleServerProps {
   role: RoleEntity
@@ -23,6 +24,8 @@ export function RoleServer({
   onUpdateRole,
   onDeleteRole,
 }: RoleServerProps) {
+  const { t } = useTranslation()
+
   return (
     <div className="flex justify-between items-center">
       <p className="font-bold text-base">{role.name}</p>
@@ -43,14 +46,18 @@ export function RoleServer({
                 onClick={() => onUpdateRole(role.id)}
               >
                 <Icon name="lucide:settings" />
-                <p className="font-semibold">Modifier</p>
+                <p className="font-semibold">
+                  {t('layout.role-server.update')}
+                </p>
               </DropdownMenuItem>
               <DropdownMenuItem
                 className="flex flex-row items-center hover:bg-red-500/10 gap-2 px-2 py-[6px] rounded-md cursor-pointer"
                 onClick={() => onDeleteRole(role.id)}
               >
                 <Icon name="lucide:trash-2" />
-                <p className="font-semibold text-red-500">Supprimer</p>
+                <p className="font-semibold text-red-500">
+                  {t('layout.role-server.delete')}
+                </p>
               </DropdownMenuItem>
             </FullScreenDialogTrigger>
           </DropdownMenuContent>

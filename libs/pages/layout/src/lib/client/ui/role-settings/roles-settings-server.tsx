@@ -4,7 +4,6 @@ import { useTranslation } from 'react-i18next'
 import RoleServerFeature from '../../feature/role-server-feature'
 
 export interface RolesSettingsServerProps {
-  server: ServerEntity
   roles: RoleEntity[]
   onCreateRole: () => void
   onUpdateRole: (roleId: string) => void
@@ -12,7 +11,6 @@ export interface RolesSettingsServerProps {
 }
 
 export function RolesSettingsServer({
-  server,
   roles,
   onCreateRole,
   onUpdateRole,
