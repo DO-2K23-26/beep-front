@@ -21,12 +21,10 @@ export default function RolesSettingsServerFeature({
   const { data: roles } = useGetRolesQuery(server.id)
   const { openModal, closeModal } = useModal()
 
-  // keep track of the role id being edited. If null, no role is being edited
-  const [roleIdEditing, setRoleIdEditing] = useState<string | null>(null)
-
   const methodsRoleForm = useForm({
     mode: 'onChange',
     defaultValues: {
+      roleId: null as string | null,
       name: '',
       permissions: [] as string[],
     },
@@ -47,14 +45,13 @@ export default function RolesSettingsServerFeature({
 
   // This function is why there is a roleId useState.
   const onSubmitUpdateRoleForm = methodsRoleForm.handleSubmit(async (data) => {
-    // If no role is being edited (means modal close), show an error message
-    if (!roleIdEditing) {
-      toast.error('Any role selected to update')
+    if (!data.roleId) {
+      toast.error('Role not found, please try again')
       return
     }
 
     updateRole({
-      id: roleIdEditing,
+      id: data.roleId,
       serverId: server.id,
       name: data.name,
       permissions: data.permissions
@@ -67,7 +64,6 @@ export default function RolesSettingsServerFeature({
   useEffect(() => {
     if (resultCreatedRole.isSuccess) {
       onCloseModal()
-      methodsRoleForm.reset()
       toast.success('Role created')
     } else if (resultCreatedRole.isError) {
       toast.error('Error creating role')
@@ -86,12 +82,12 @@ export default function RolesSettingsServerFeature({
 
   const onCreateRole = () => {
     methodsRoleForm.reset()
-    setRoleIdEditing(null)
     openModal({
       content: (
         <FormProvider {...methodsRoleForm}>
           <RoleForm
             formType="create"
+            loading={resultCreatedRole.isLoading}
             closeModal={onCloseModal}
             onSubmitForm={onSubmitCreateRoleForm}
             methodsRoleForm={methodsRoleForm}
@@ -110,8 +106,7 @@ export default function RolesSettingsServerFeature({
       return
     }
 
-    setRoleIdEditing(roleId)
-
+    methodsRoleForm.setValue('roleId', role.id)
     methodsRoleForm.setValue('name', role.name)
     methodsRoleForm.setValue(
       'permissions',
@@ -126,6 +121,7 @@ export default function RolesSettingsServerFeature({
         <FormProvider {...methodsRoleForm}>
           <RoleForm
             formType="update"
+            loading={resultUpdatedRole.isLoading}
             closeModal={onCloseModal}
             onSubmitForm={onSubmitUpdateRoleForm}
             methodsRoleForm={methodsRoleForm}
@@ -140,7 +136,6 @@ export default function RolesSettingsServerFeature({
   }
 
   const onCloseModal = () => {
-    setRoleIdEditing(null)
     methodsRoleForm.reset()
     closeModal()
   }

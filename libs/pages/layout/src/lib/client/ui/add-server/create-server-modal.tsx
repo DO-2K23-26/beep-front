@@ -99,7 +99,6 @@ export default function CreateServerModal({
         <div className="flex flex-row items-center justify-between">
           <div className="flex flex-col w-1/4">
             <Button
-              loading={loading}
               onClick={closeModal}
               className="!bg-violet-50 group hover:!bg-slate-900 w-full !rounded-lg min-h-[40px] !border-slate-300 hover:!border-slate-900 border-2"
             >

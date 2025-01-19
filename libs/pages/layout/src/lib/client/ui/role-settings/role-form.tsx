@@ -4,9 +4,11 @@ import { Controller, UseFormReturn } from 'react-hook-form'
 
 export interface RoleFormProps {
   formType: 'create' | 'update'
+  loading: boolean
   closeModal: () => void
   onSubmitForm: () => void
   methodsRoleForm: UseFormReturn<{
+    roleId: string | null
     name: string
     permissions: string[]
   }>
@@ -14,6 +16,7 @@ export interface RoleFormProps {
 
 export function RoleForm({
   formType,
+  loading,
   closeModal,
   onSubmitForm,
   methodsRoleForm,
@@ -75,6 +78,7 @@ export function RoleForm({
         </Button>
         <Button
           className="btn--no-min-w"
+          loading={loading}
           style={ButtonStyle.BASIC}
           onClick={() => onSubmitForm()}
         >
