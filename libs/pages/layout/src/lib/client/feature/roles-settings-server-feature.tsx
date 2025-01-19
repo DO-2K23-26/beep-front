@@ -157,7 +157,13 @@ export default function RolesSettingsServerFeature({
 
   return (
     <RolesSettingsServer
-      roles={roles ?? []}
+      roles={
+        roles
+          ? [...roles].sort(
+              (a, b) => Date.parse(a.createdAt) - Date.parse(b.createdAt)
+            )
+          : []
+      }
       onCreateRole={onCreateRole}
       onUpdateRole={onUpdateRole}
       onDeleteRole={onDeleteRole}
