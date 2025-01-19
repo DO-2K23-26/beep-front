@@ -42,3 +42,5 @@ export * from './member/get-member.request'
 export * from './member/get-my-member.request'
 
 export * from './friends/delete-friend.request'
+
+export * from './role/create-role.request'

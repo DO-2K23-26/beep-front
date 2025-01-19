@@ -6,6 +6,8 @@ import {
   CreateChannelResponse,
   CreateInvitationRequest,
   CreateInvitationResponse,
+  CreateRoleRequest,
+  CreateRoleResponse,
   DeleteChannelRequest,
   GetChannelRequest,
   GetChannelsResponse,
@@ -276,6 +278,28 @@ export const serverApi = createApi({
             ]
           : [{ type: 'roles', id: `LIST-${serverId}` }],
     }),
+    createServerRole: builder.mutation<CreateRoleResponse, CreateRoleRequest>({
+      queryFn: async (request, queryApi, _extraOptions, fetchWithBQ) => {
+        // Perform the API call
+        const response = await fetchWithBQ({
+          url: `/servers/${request.serverId}/roles`,
+          method: 'POST',
+          body: {
+            name: request.name,
+            permissions: request.permissions,
+          },
+        })
+
+        if (response.error) {
+          return { error: response.error }
+        }
+
+        return { data: response.data as CreateRoleResponse }
+      },
+      invalidatesTags: (_result, _error, req) => [
+        { type: 'roles', id: `LIST-${req.serverId}` },
+      ],
+    }),
     updateServer: builder.mutation<
       ServerEntity,
       { serverId: string; updatedServer: Partial<ServerEntity> }
@@ -371,6 +395,7 @@ export const {
   useLeaveVoiceChannelMutation,
   useGetCurrentStreamingUsersQuery,
   useGetRolesQuery,
+  useCreateServerRoleMutation,
   useUpdateServerMutation,
   useUpdateBannerMutation,
   useUpdatePictureMutation,

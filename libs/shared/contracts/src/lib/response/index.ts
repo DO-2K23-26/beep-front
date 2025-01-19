@@ -14,3 +14,5 @@ export * from './invitation/create-invitation.response'
 export * from './invitation/join-private-server.response'
 
 export * from './members/get-members.response'
+
+export * from './role/create-role.response'
