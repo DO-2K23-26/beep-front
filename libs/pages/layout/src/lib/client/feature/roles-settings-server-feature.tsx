@@ -45,6 +45,7 @@ export default function RolesSettingsServerFeature({
     })
   })
 
+  // This function is why there is a roleId useState.
   const onSubmitUpdateRoleForm = methodsRoleForm.handleSubmit(async (data) => {
     // If no role is being edited (means modal close), show an error message
     if (!roleIdEditing) {
@@ -109,6 +110,8 @@ export default function RolesSettingsServerFeature({
       return
     }
 
+    setRoleIdEditing(roleId)
+
     methodsRoleForm.setValue('name', role.name)
     methodsRoleForm.setValue(
       'permissions',
@@ -142,19 +145,12 @@ export default function RolesSettingsServerFeature({
     closeModal()
   }
 
-  // show the role form when a role is being edited
-  useEffect(() => {
-    if (roleIdEditing) {
-      onUpdateRole(roleIdEditing)
-    }
-  }, [roleIdEditing])
-
   return (
     <RolesSettingsServer
       server={server}
       roles={roles ?? []}
       onCreateRole={onCreateRole}
-      onUpdateRole={(roleId: string) => setRoleIdEditing(roleId)}
+      onUpdateRole={(roleId: string) => onUpdateRole(roleId)}
       onDeleteRole={onDeleteRole}
     />
   )
