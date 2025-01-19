@@ -6,6 +6,7 @@ export * from './lib/response'
 export * from './lib/request'
 export * from './lib/signaling-message'
 export * from './lib/error'
+export * from './lib/constants'
 
 const backendUrlRaw = import.meta.env.VITE_BACKEND_URL
 export const backendUrl =

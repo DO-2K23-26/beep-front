@@ -7,7 +7,7 @@ export interface RolesSettingsServerProps {
   server: ServerEntity
   roles: RoleEntity[]
   onCreateRole: () => void
-  onUpdateRole: () => void
+  onUpdateRole: (roleId: string) => void
   onDeleteRole: () => void
 }
 
@@ -41,7 +41,11 @@ export function RolesSettingsServer({
         </p>
       )}
       {roles.map((role) => (
-        <RoleServerFeature key={role.id} role={role} />
+        <RoleServerFeature
+          key={role.id}
+          role={role}
+          onUpdateRole={onUpdateRole}
+        />
       ))}
     </div>
   )

@@ -1,103 +1,23 @@
-import { PermissionEntity } from '@beep/contracts'
+import { serverRoles } from '@beep/contracts'
 import { Button, ButtonStyle, InputText } from '@beep/ui'
 import { Controller, UseFormReturn } from 'react-hook-form'
 
 export interface RoleFormProps {
+  formType: 'create' | 'update'
   closeModal: () => void
-  onCreateRole: () => void
-  methodsAddRole: UseFormReturn<{
+  onSubmitForm: () => void
+  methodsRoleForm: UseFormReturn<{
     name: string
     permissions: string[]
   }>
 }
 
 export function RoleForm({
+  formType,
   closeModal,
-  onCreateRole,
-  methodsAddRole,
+  onSubmitForm,
+  methodsRoleForm,
 }: RoleFormProps) {
-  const allRoles: PermissionEntity[] = [
-    {
-      id: 'ADMINISTRATOR',
-      name: 'Administrateur',
-      value: 0x1,
-      description:
-        "Le rôle d'administrateur permet de gérer le serveur de A à Z",
-    },
-    {
-      id: 'MANAGE_SERVER',
-      name: 'Gérer le server',
-      value: 0x2,
-      description: 'Permet de créer, modifier et supprimer le serveur',
-    },
-    {
-      id: 'MANAGE_ROLES',
-      name: 'Gérer les rôles',
-      value: 0x4,
-      description:
-        'Permet de gérer les rôles permet de créer, modifier et supprimer des rôles',
-    },
-    {
-      id: 'CREATE_INVITATION',
-      name: 'Créer des invitations',
-      value: 0x8,
-      description:
-        'Permet de créer des invitations permet de créer des invitations pour le serveur',
-    },
-    {
-      id: 'MANAGE_CHANNELS',
-      name: 'Gérer les salons de discussion',
-      value: 0x10,
-      description:
-        'Permet de créer, modifier et supprimer des salons de discussion',
-    },
-    {
-      id: 'MANAGE_WEBHOOKS',
-      name: 'Gérer les webhooks',
-      value: 0x20,
-      description: 'Permet de créer, modifier et supprimer des webhooks',
-    },
-    {
-      id: 'VIEW_CHANNELS',
-      name: 'Voir les salons de discussion',
-      value: 0x40,
-      description: 'Permet de voir les salons de discussion',
-    },
-    {
-      id: 'SEND_MESSAGES',
-      name: 'Envoyer des messages',
-      value: 0x80,
-      description:
-        "Permet d'envoyer des messages dans les salons de discussion",
-    },
-    {
-      id: 'MANAGE_NICKNAMES',
-      name: 'Gérer les surnoms',
-      value: 0x100,
-      description: 'Permet de gérer les surnoms des membres du serveur',
-    },
-    {
-      id: 'CHANGE_NICKNAME',
-      name: 'Changer son surnom',
-      value: 0x200,
-      description: 'Permet de changer son surnom sur le serveur',
-    },
-    {
-      id: 'MANAGE_MESSAGES',
-      name: 'Gérer les messages',
-      value: 0x400,
-      description:
-        'Permet de supprimer les messages des autres membres du serveur',
-    },
-    {
-      id: 'ATTACH_FILES',
-      name: 'Envoyer des pièces jointes',
-      value: 0x800,
-      description:
-        "Permet d'envoyer des pièces jointes dans les salons de discussion",
-    },
-  ]
-
   return (
     <div className="p-6">
       <h3 className="text-slate-700 font-bold mb-2 max-w-sm">Créer un rôle</h3>
@@ -113,7 +33,7 @@ export function RoleForm({
             message: 'Le nom du rôle est requis',
           },
         }}
-        control={methodsAddRole.control}
+        control={methodsRoleForm.control}
         render={({ field, fieldState: { error } }) => (
           <InputText
             className="w-full !rounded-lg min-h-[40px] mb-4"
@@ -127,7 +47,7 @@ export function RoleForm({
         )}
       />
       <div className="mb-4 flex flex-col gap-2">
-        {allRoles.map((role, index) => (
+        {serverRoles.map((role, index) => (
           <div
             key={index}
             className="flex flex-row items-center gap-3 px-2 py-[6px] rounded-md cursor-pointer hover:bg-black/10"
@@ -136,7 +56,7 @@ export function RoleForm({
               id={role.name}
               type="checkbox"
               value={role.value}
-              {...methodsAddRole.register('permissions')}
+              {...methodsRoleForm.register('permissions')}
             />
             <label htmlFor={role.name} className="cursor-pointer">
               <p className="font-semibold">{role.name}</p>
@@ -156,9 +76,9 @@ export function RoleForm({
         <Button
           className="btn--no-min-w"
           style={ButtonStyle.BASIC}
-          onClick={() => onCreateRole()}
+          onClick={() => onSubmitForm()}
         >
-          Créer
+          {formType === 'update' ? 'Mettre à jour' : 'Créer'}
         </Button>
       </div>
     </div>
