@@ -15,9 +15,14 @@ import {
 export interface RoleServerProps {
   role: RoleEntity
   onUpdateRole: (roleId: string) => void
+  onDeleteRole: (roleId: string) => void
 }
 
-export function RoleServer({ role, onUpdateRole }: RoleServerProps) {
+export function RoleServer({
+  role,
+  onUpdateRole,
+  onDeleteRole,
+}: RoleServerProps) {
   return (
     <div className="flex justify-between items-center">
       <p className="font-bold text-base">{role.name}</p>
@@ -42,7 +47,7 @@ export function RoleServer({ role, onUpdateRole }: RoleServerProps) {
               </DropdownMenuItem>
               <DropdownMenuItem
                 className="flex flex-row items-center hover:bg-red-500/10 gap-2 px-2 py-[6px] rounded-md cursor-pointer"
-                onClick={() => alert(`Supprimer ${role.name}`)}
+                onClick={() => onDeleteRole(role.id)}
               >
                 <Icon name="lucide:trash-2" />
                 <p className="font-semibold text-red-500">Supprimer</p>

@@ -45,3 +45,4 @@ export * from './friends/delete-friend.request'
 
 export * from './role/create-role.request'
 export * from './role/update-role.request'
+export * from './role/delete-role.request'
