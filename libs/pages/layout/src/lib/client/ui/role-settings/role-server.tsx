@@ -12,6 +12,7 @@ import {
   DropdownMenuTrigger,
 } from '@radix-ui/react-dropdown-menu'
 import { useTranslation } from 'react-i18next'
+import { CreateRoleDialog } from './create-role-dialog'
 
 export interface RoleServerProps {
   role: RoleEntity
@@ -32,12 +33,12 @@ export function RoleServer({
       <FullScreenDialog>
         <DropdownMenu>
           <DropdownMenuTrigger>
-            <ButtonIcon
-              icon={'lucide:ellipsis-vertical'}
-              className="bg-violet-400 p-2"
-              buttonProps={{ variant: 'hoverRounded' }}
-              textHiddenResponsive
-            />
+              <ButtonIcon
+                icon={'lucide:ellipsis-vertical'}
+                className="bg-violet-400 p-2"
+                buttonProps={{ variant: 'hoverRounded' }}
+                textHiddenResponsive
+              />
           </DropdownMenuTrigger>
           <DropdownMenuContent className="rounded-lg bg-violet-50 mt-4 mx-5 py-4 px-3">
             <FullScreenDialogTrigger>

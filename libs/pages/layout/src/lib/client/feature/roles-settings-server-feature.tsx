@@ -1,4 +1,4 @@
-import { ServerEntity, RoleEntity, serverRoles } from '@beep/contracts'
+import { ServerEntity, RoleEntity } from '@beep/contracts'
 import { useModal } from '@beep/ui'
 import {
   useCreateServerRoleMutation,
@@ -7,11 +7,12 @@ import {
   useUpdateServerRoleMutation,
 } from '@beep/server'
 import { FormProvider, useForm } from 'react-hook-form'
-import { RoleForm } from '../ui/role-settings/role-form'
+import { CreateRoleDialog } from '../ui/role-settings/create-role-dialog'
 import { RolesSettingsServer } from '../ui/role-settings/roles-settings-server'
 import { useEffect } from 'react'
 import toast from 'react-hot-toast'
 import { useTranslation } from 'react-i18next'
+import { Permissions } from '@beep/contracts'
 
 interface RolesSettingsServerFeatureProps {
   server: ServerEntity
@@ -24,12 +25,16 @@ export default function RolesSettingsServerFeature({
   const { openModal, closeModal } = useModal()
   const { t } = useTranslation()
 
-  const methodsRoleForm = useForm({
+  const methodsRoleForm = useForm<{
+    roleId: string | null
+    name: string
+    permissions: Permissions[]
+  }>({
     mode: 'onChange',
     defaultValues: {
-      roleId: null as string | null,
+      roleId: null,
       name: '',
-      permissions: [] as string[],
+      permissions: [],
     },
   })
 
@@ -97,7 +102,7 @@ export default function RolesSettingsServerFeature({
     openModal({
       content: (
         <FormProvider {...methodsRoleForm}>
-          <RoleForm
+          <CreateRoleDialog
             formType="create"
             loading={resultCreatedRole.isLoading}
             closeModal={onCloseModal}
@@ -120,18 +125,11 @@ export default function RolesSettingsServerFeature({
 
     methodsRoleForm.setValue('roleId', role.id)
     methodsRoleForm.setValue('name', role.name)
-    methodsRoleForm.setValue(
-      'permissions',
-      serverRoles
-        .map((role) => role.value)
-        .filter((p) => role.permissions & p)
-        .map((p) => p.toString())
-    )
 
     openModal({
       content: (
         <FormProvider {...methodsRoleForm}>
-          <RoleForm
+          <CreateRoleDialog
             formType="update"
             loading={resultUpdatedRole.isLoading}
             closeModal={onCloseModal}
@@ -157,13 +155,7 @@ export default function RolesSettingsServerFeature({
 
   return (
     <RolesSettingsServer
-      roles={
-        roles
-          ? [...roles].sort(
-              (a, b) => Date.parse(a.createdAt) - Date.parse(b.createdAt)
-            )
-          : []
-      }
+      roles={roles ?? []}
       onCreateRole={onCreateRole}
       onUpdateRole={onUpdateRole}
       onDeleteRole={onDeleteRole}

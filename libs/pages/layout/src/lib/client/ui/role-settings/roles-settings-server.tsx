@@ -1,7 +1,10 @@
-import { RoleEntity, ServerEntity } from '@beep/contracts'
+import { RoleEntity } from '@beep/contracts'
 import { ButtonIcon } from '@beep/ui'
 import { useTranslation } from 'react-i18next'
 import RoleServerFeature from '../../feature/role-server-feature'
+import { RoleCardSwitch } from './role-card-switch'
+import { Permissions } from '@beep/contracts'
+import { CreateRoleDialog } from './create-role-dialog'
 
 export interface RolesSettingsServerProps {
   roles: RoleEntity[]
@@ -24,14 +27,15 @@ export function RolesSettingsServer({
         <p className="text-slate-700 font-bold text-base sm:text-xl md:text-3xl">
           {t('layout.role-settings-server.roles')}
         </p>
-        <ButtonIcon
-          icon={'lucide:circle-plus'}
-          className="bg-violet-400 px-2 xl:px-3 py-2 font-semibold"
-          title={t('layout.role-settings-server.create_role')}
-          onClick={onCreateRole}
-          buttonProps={{ variant: 'hoverRounded' }}
-          textHiddenResponsive
-        />
+        <CreateRoleDialog>
+          <ButtonIcon
+            icon={'lucide:circle-plus'}
+            className="bg-violet-400 px-2 xl:px-3 py-2 font-semibold"
+            title={t('layout.role-settings-server.create_role')}
+            buttonProps={{ variant: 'hoverRounded' }}
+            textHiddenResponsive
+          />
+        </CreateRoleDialog>
       </div>
       {roles.length === 0 && (
         <p className="text-slate-700 text-base sm:text-lg md:text-xl text-center w-full">

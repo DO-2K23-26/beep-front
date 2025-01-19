@@ -538,5 +538,55 @@
     "mentions": {
       "mentioned": "vous a mentionné !"
     }
+  },
+  "permissions": {
+    "ADMINISTRATOR": {
+      "name": "Administrateur",
+      "description": "Le rôle d'administrateur vous permet de gérer le serveur de A à Z"
+    },
+    "MANAGE_SERVER": {
+      "name": "Gérer le serveur",
+      "description": "Vous permet de créer, modifier et supprimer le serveur"
+    },
+    "MANAGE_ROLES": {
+      "name": "Gérer les rôles",
+      "description": "Vous permet de gérer les rôles, de créer, modifier et supprimer des rôles"
+    },
+    "CREATE_INVITATION": {
+      "name": "Créer des invitations",
+      "description": "Vous permet de créer des invitations pour le serveur"
+    },
+    "MANAGE_CHANNELS": {
+      "name": "Gérer les salons",
+      "description": "Vous permet de créer, modifier et supprimer des salons de discussion"
+    },
+    "MANAGE_WEBHOOKS": {
+      "name": "Gérer les webhooks",
+      "description": "Vous permet de créer, modifier et supprimer des webhooks"
+    },
+    "VIEW_CHANNELS": {
+      "name": "Voir les salons de discussion",
+      "description": "Vous permet de voir les salons de discussion"
+    },
+    "SEND_MESSAGES": {
+      "name": "Envoyer des messages",
+      "description": "Vous permet d'envoyer des messages dans les salons de discussion"
+    },
+    "MANAGE_NICKNAMES": {
+      "name": "Gérer les pseudonymes",
+      "description": "Vous permet de gérer les pseudonymes des membres du serveur"
+    },
+    "CHANGE_NICKNAME": {
+      "name": "Changer de pseudonyme",
+      "description": "Vous permet de changer votre pseudonyme sur le serveur"
+    },
+    "MANAGE_MESSAGES": {
+      "name": "Gérer les messages",
+      "description": "Vous permet de supprimer les messages des autres membres du serveur"
+    },
+    "ATTACH_FILES": {
+      "name": "Envoyer des pièces jointes",
+      "description": "Vous permet d'envoyer des pièces jointes dans les salons de discussion"
+    }
   }
 }

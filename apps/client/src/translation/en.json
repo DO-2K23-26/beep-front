@@ -537,5 +537,55 @@
   "globals": {
     "activated": "activated",
     "not-activated": "not activated"
+  },
+  "permissions": {
+    "ADMINISTRATOR": {
+      "name": "Administrator",
+      "description": "The administrator role allows you to manage the server from A to Z"
+    },
+    "MANAGE_SERVER": {
+      "name": "Manage server",
+      "description": "Allows you to create, modify and delete the server"
+    },
+    "MANAGE_ROLES": {
+      "name": "Manage roles",
+      "description": "Allows you to manage roles allows you to create, modify and delete roles"
+    },
+    "CREATE_INVITATION": {
+      "name": "Create invitations",
+      "description": "Allows you to create invitations allows you to create invitations for the server"
+    },
+    "MANAGE_CHANNELS": {
+      "name": "Manage channels",
+      "description": "Allows you to create, modify and delete discussion channels"
+    },
+    "MANAGE_WEBHOOKS": {
+      "name": "Manage webhooks",
+      "description": "Allows you to create, modify and delete webhooks"
+    },
+    "VIEW_CHANNELS": {
+      "name": "View discussion channels",
+      "description": "Allows you to see the discussion channels"
+    },
+    "SEND_MESSAGES": {
+      "name": "Send messages",
+      "description": "Allows you to send messages in the discussion channels"
+    },
+    "MANAGE_NICKNAMES": {
+      "name": "Manage nicknames",
+      "description": "Allows you to manage the nicknames of the server members"
+    },
+    "CHANGE_NICKNAME": {
+      "name": "Change nickname",
+      "description": "Allows you to change your nickname on the server"
+    },
+    "MANAGE_MESSAGES": {
+      "name": "Manage messages",
+      "description": "Allows you to delete messages from other server members"
+    },
+    "ATTACH_FILES": {
+      "name": "Send attachments",
+      "description": "Allows you to send attachments in the discussion channels"
+    }
   }
 }
