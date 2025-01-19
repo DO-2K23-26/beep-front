@@ -1,6 +1,7 @@
 import { serverRoles } from '@beep/contracts'
 import { Button, ButtonStyle, InputText } from '@beep/ui'
 import { Controller, UseFormReturn } from 'react-hook-form'
+import { useTranslation } from 'react-i18next'
 
 export interface RoleFormProps {
   formType: 'create' | 'update'
@@ -21,26 +22,32 @@ export function RoleForm({
   onSubmitForm,
   methodsRoleForm,
 }: RoleFormProps) {
+  const { t, i18n } = useTranslation()
+
   return (
     <div className="p-6">
-      <h3 className="text-slate-700 font-bold mb-2 max-w-sm">Créer un rôle</h3>
-      <div className="text-slate-500 text-sm mb-4">
-        Choisissez un nom pour le rôle
-      </div>
+      <h3 className="text-slate-700 font-bold mb-2 max-w-sm">
+        {formType === 'create'
+          ? t('layout.role-form.create_title')
+          : t('layout.role-form.update_title')}
+      </h3>
+      <p className="text-slate-500 text-sm mb-4">
+        {t('layout.role-form.choose_role_name')}
+      </p>
       <Controller
         name="name"
         rules={{
-          required: 'Le nom du rôle est requis',
+          required: t('layout.role-form.role_name_is_required'),
           minLength: {
             value: 1,
-            message: 'Le nom du rôle est requis',
+            message: t('layout.role-form.role_name_is_required'),
           },
         }}
         control={methodsRoleForm.control}
         render={({ field, fieldState: { error } }) => (
           <InputText
             className="w-full !rounded-lg min-h-[40px] mb-4"
-            label={'Nom du rôle'}
+            label={t('layout.role-form.role_name')}
             name="name"
             type="text"
             onChange={field.onChange}
@@ -56,14 +63,19 @@ export function RoleForm({
             className="flex flex-row items-center gap-3 px-2 py-[6px] rounded-md cursor-pointer hover:bg-black/10"
           >
             <input
-              id={role.name}
+              id={role.name[i18n.language]}
               type="checkbox"
               value={role.value}
               {...methodsRoleForm.register('permissions')}
             />
-            <label htmlFor={role.name} className="cursor-pointer">
-              <p className="font-semibold">{role.name}</p>
-              <p className="text-slate-500 text-sm">{role.description}</p>
+            <label
+              htmlFor={role.name[i18n.language]}
+              className="cursor-pointer"
+            >
+              <p className="font-semibold">{role.name[i18n.language]}</p>
+              <p className="text-slate-500 text-sm">
+                {role.description[i18n.language]}
+              </p>
             </label>
           </div>
         ))}
@@ -74,7 +86,7 @@ export function RoleForm({
           style={ButtonStyle.STROKED}
           onClick={() => closeModal()}
         >
-          Annuler
+          {t('layout.role-form.cancel')}
         </Button>
         <Button
           className="btn--no-min-w"
@@ -82,7 +94,9 @@ export function RoleForm({
           style={ButtonStyle.BASIC}
           onClick={() => onSubmitForm()}
         >
-          {formType === 'update' ? 'Mettre à jour' : 'Créer'}
+          {formType === 'create'
+            ? t('layout.role-form.create')
+            : t('layout.role-form.update')}
         </Button>
       </div>
     </div>

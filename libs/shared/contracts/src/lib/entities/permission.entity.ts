@@ -1,6 +1,6 @@
 export interface PermissionEntity {
   id: string
-  name: string
+  name: { [langage: string]: string }
   value: number
-  description: string
+  description: { [langage: string]: string }
 }

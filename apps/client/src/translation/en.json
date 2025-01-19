@@ -336,10 +336,33 @@
       "no_roles": "Any roles found",
       "create_role": "Create a role"
     },
+    "roles-settings-server-feature": {
+      "no_role_found": "Role not found, please try again",
+      "role_created": "Role created",
+      "role_error_creating": "Error creating role",
+      "role_updated": "Role updated",
+      "role_error_updating": "Error updating role",
+      "role_deleted": "Role deleted",
+      "role_error_deleting": "Error deleting role"
+    },
     "server-dropdown-menu": {
       "server": "Server",
       "overview": "Overview",
       "settings": "Settings"
+    },
+    "role-server": {
+      "update": "Update",
+      "delete": "Delete"
+    },
+    "role-form": {
+      "create_title": "Create a role",
+      "update_title": "Update a role",
+      "choose_role_name": "Choose a role name",
+      "role_name_is_required": "The role name is required",
+      "role_name": "Role name",
+      "create": "Create",
+      "update": "Update",
+      "cancel": "Cancel"
     },
     "server-dropdown": {
       "settings": "Settings",
@@ -372,7 +395,7 @@
         "content_1": "We need to verify your old email address",
         "content_2": "in order to change it",
         "content_3": "Have you lost access to your email? Contact your email provider to regain access",
-        "action_content_button":"Send verification code"
+        "action_content_button": "Send verification code"
       },
       "modify-profile-picture-dialog": {
         "choose_picture": "Choose a new picture",
@@ -387,7 +410,7 @@
         "username": "Username",
         "confirm": "Confirm"
       },
-      "modify-lastname-dialog":{
+      "modify-lastname-dialog": {
         "title": "Choose a new Last name",
         "modify": "Modify",
         "content_required": "Last name is required",
@@ -395,7 +418,7 @@
         "render_label": "Lastname",
         "confirm": "Confirm"
       },
-      "modify-firstname-dialog":{
+      "modify-firstname-dialog": {
         "title": "Choose a new First name",
         "modify": "Modify",
         "content_required": "First name is required",
@@ -410,15 +433,15 @@
         "email": "Email"
       },
       "validate-otp-dialog": {
-        "title":"Enter Code",
+        "title": "Enter Code",
         "modify": "Modify",
-        "content":"Check your email: we've sent you a verification code. Enter it here to verify your identity",
-        "otp_rules_required":"Otp code is required",
-        "otp_rules_message":"OTP code must be exactly 6 digits",
-        "field_label":"OTP Code",
-        "resend_message":"Didn't receive a code or it expired?",
-        "resend_button":"Resend",
-        "action_button":"Confirm"
+        "content": "Check your email: we've sent you a verification code. Enter it here to verify your identity",
+        "otp_rules_required": "Otp code is required",
+        "otp_rules_message": "OTP code must be exactly 6 digits",
+        "field_label": "OTP Code",
+        "resend_message": "Didn't receive a code or it expired?",
+        "resend_button": "Resend",
+        "action_button": "Confirm"
       },
       "validate-email-dialog": {
         "title": "Choose a new email",

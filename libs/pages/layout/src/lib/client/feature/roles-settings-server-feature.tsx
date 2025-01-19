@@ -11,6 +11,7 @@ import { RoleForm } from '../ui/role-settings/role-form'
 import { RolesSettingsServer } from '../ui/role-settings/roles-settings-server'
 import { useEffect } from 'react'
 import toast from 'react-hot-toast'
+import { useTranslation } from 'react-i18next'
 
 interface RolesSettingsServerFeatureProps {
   server: ServerEntity
@@ -21,6 +22,7 @@ export default function RolesSettingsServerFeature({
 }: Readonly<RolesSettingsServerFeatureProps>) {
   const { data: roles } = useGetRolesQuery(server.id)
   const { openModal, closeModal } = useModal()
+  const { t } = useTranslation()
 
   const methodsRoleForm = useForm({
     mode: 'onChange',
@@ -47,7 +49,7 @@ export default function RolesSettingsServerFeature({
 
   const onSubmitUpdateRoleForm = methodsRoleForm.handleSubmit(async (data) => {
     if (!data.roleId) {
-      toast.error('Role not found, please try again')
+      toast.error(t('layout.roles-settings-server-feature.no_role_found'))
       return
     }
 
@@ -65,9 +67,9 @@ export default function RolesSettingsServerFeature({
   useEffect(() => {
     if (resultCreatedRole.isSuccess) {
       onCloseModal()
-      toast.success('Role created')
+      toast.success(t('layout.roles-settings-server-feature.role_created'))
     } else if (resultCreatedRole.isError) {
-      toast.error('Error creating role')
+      toast.error(t('layout.roles-settings-server-feature.role_error_creating'))
     }
   }, [resultCreatedRole])
 
@@ -75,18 +77,18 @@ export default function RolesSettingsServerFeature({
   useEffect(() => {
     if (resultUpdatedRole.isSuccess) {
       onCloseModal()
-      toast.success('Role updated')
+      toast.success(t('layout.roles-settings-server-feature.role_updated'))
     } else if (resultUpdatedRole.isError) {
-      toast.error('Error updating role')
+      toast.error(t('layout.roles-settings-server-feature.role_error_updating'))
     }
   }, [resultUpdatedRole])
 
   // catch the result of the delete role api mutation
   useEffect(() => {
     if (resultDeletedRole.isSuccess) {
-      toast.success('Role deleted')
+      toast.success(t('layout.roles-settings-server-feature.role_deleted'))
     } else if (resultDeletedRole.isError) {
-      toast.error('Error deleting role')
+      toast.error(t('layout.roles-settings-server-feature.role_error_deleting'))
     }
   }, [resultDeletedRole])
 
@@ -112,7 +114,7 @@ export default function RolesSettingsServerFeature({
       (role) => role.id === roleId
     )
     if (!role) {
-      toast.error('Role not found, please try again')
+      toast.error(t('layout.roles-settings-server-feature.no_role_found'))
       return
     }
 
@@ -155,7 +157,6 @@ export default function RolesSettingsServerFeature({
 
   return (
     <RolesSettingsServer
-      server={server}
       roles={roles ?? []}
       onCreateRole={onCreateRole}
       onUpdateRole={onUpdateRole}
