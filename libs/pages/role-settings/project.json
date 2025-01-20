@@ -1,0 +1,9 @@
+{
+  "name": "pages-role-settings",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/pages/role-settings/src",
+  "projectType": "library",
+  "tags": [],
+  "// targets": "to see all targets run: nx show project pages-role-settings --web",
+  "targets": {}
+}

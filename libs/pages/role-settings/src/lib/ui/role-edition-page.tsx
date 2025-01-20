@@ -1,17 +1,12 @@
 import { Permissions } from '@beep/contracts'
 import { InputText } from '@beep/ui'
-import { PropsWithChildren, useContext, useMemo } from 'react'
+import { useContext, useMemo } from 'react'
 import { Controller } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
-import { EditRoleContext } from '../../feature/edit-role-provider'
+import { EditRoleContext } from '../feature/edit-role-provider'
 import { RoleCardSwitch } from './role-card-switch'
 
-// eslint-disable-next-line @typescript-eslint/no-empty-interface
-export interface CreateRoleDialogProps {}
-
-export function CreateRoleDialog({
-  children,
-}: PropsWithChildren<CreateRoleDialogProps>) {
+export function RoleEditionPage() {
   const { t } = useTranslation()
   const { role, roleFormControl, onCheckRole, editRoleForm } =
     useContext(EditRoleContext)
@@ -32,7 +27,6 @@ export function CreateRoleDialog({
     }
     return elements
   }, [permissions, onCheckRole])
-
 
   return (
     <div>
@@ -66,21 +60,4 @@ export function CreateRoleDialog({
       </div>
     </div>
   )
-}
-
-// ;<DialogHeader>{t('layout.role-form.update_title')}</DialogHeader>
-
-{
-  /*
-
-        <DialogFooter>
-          <DialogClose>
-            <ButtonShadCn variant={'ghost'} className="bg-violet-50">
-              {t('layout.role-form.cancel')}
-            </ButtonShadCn>
-          </DialogClose>
-          <ButtonShadCn >
-            {t('layout.role-form.update')}{' '}
-          </ButtonShadCn>
-        </DialogFooter> */
 }

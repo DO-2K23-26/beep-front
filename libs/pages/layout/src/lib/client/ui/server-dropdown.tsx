@@ -19,7 +19,7 @@ import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router'
 import DestroyServerFeature from '../feature/destroy-server-feature'
 import { OverviewSettingsServer } from './overview-settings-server'
-import RolesSettingsServerFeature from '../feature/roles-settings-server-feature'
+import { RolesSettingsServerFeature } from '@beep/pages/role-settings'
 
 interface ServerDropdownProps {
   server: ServerEntity

@@ -1,7 +1,7 @@
 import { RoleEntity } from '@beep/contracts'
 import { ButtonIcon } from '@beep/ui'
 import { useTranslation } from 'react-i18next'
-import RoleServerFeature from '../../feature/role-server-feature'
+import RoleServerFeature from '../feature/role-server-feature'
 
 export interface RolesSettingsServerProps {
   roles: RoleEntity[]
@@ -30,20 +30,8 @@ export function RolesSettingsServer({ roles }: RolesSettingsServerProps) {
         </p>
       )}
       {roles.map((role) => (
-        <RoleServerFeature
-          key={role.id}
-          role={role}
-          onUpdateRole={() => {
-            /*test*/
-          }}
-          onDeleteRole={() => {
-            /*test*/
-          }}
-        />
+        <RoleServerFeature key={role.id} role={role} />
       ))}
-      {/* <EditRoleProvider role={roles[0]}>
-        <CreateRoleDialog />
-      </EditRoleProvider> */}
     </div>
   )
 }
