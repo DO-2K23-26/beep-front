@@ -5,7 +5,7 @@ import { useTranslation } from 'react-i18next'
 
 interface RoleCheckboxProps {
   permission: Permissions
-  onClick?: (permission: Permissions) => void
+  onClick?: (permission: Permissions, isChecked?: boolean) => void
   isChecked?: boolean
 }
 
@@ -19,7 +19,7 @@ export function RoleCardSwitch({
 
   return (
     <div
-      onClick={() => onClick && onClick(permission)}
+      onClick={() => onClick && onClick(permission, isChecked)}
       key={permissionSringified}
       className="flex flex-row justify-between items-center w-full gap-3 px-2 py-1 rounded-md cursor-pointer hover:bg-black/10"
     >
@@ -31,7 +31,10 @@ export function RoleCardSwitch({
           {t(`permissions.${permissionSringified}.description`)}
         </p>
       </div>
-      <Switch className={cn({'bg-violet-600':isChecked})} checked={isChecked} />
+      <Switch
+        className={cn({ 'bg-violet-600': isChecked })}
+        checked={isChecked}
+      />
     </div>
   )
 }

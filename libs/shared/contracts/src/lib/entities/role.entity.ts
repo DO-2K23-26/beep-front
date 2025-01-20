@@ -4,5 +4,5 @@ export interface RoleEntity {
   createdAt: string
   updatedAt: string
   name: string
-  permissions: number
+  permissions: Permissions[]
 }

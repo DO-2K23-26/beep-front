@@ -4,18 +4,23 @@ import {
   useUpdateServerRoleMutation,
 } from '@beep/server'
 import { PropsWithChildren, createContext } from 'react'
-import { useForm, Control, UseFormReset } from 'react-hook-form'
+import { useForm, Control, UseFormReset, UseFormReturn } from 'react-hook-form'
 import { z } from 'zod'
 
 interface IEditRoleContext {
+  role?: RoleEntity
   permissions: Permissions[]
   handleSubmit?: () => void
-  onCheckRole?: (isChecked: boolean, permission: Permissions) => void
+  onCheckRole?: (permission: Permissions, isChecked?: boolean) => void
   roleFormControl?: Control<{
     name: string
     permissions: Permissions[]
   }>
-  resetRoleFrom?: UseFormReset<{
+  resetRoleForm?: UseFormReset<{
+    name: string
+    permissions: Permissions[]
+  }>
+  editRoleForm?: UseFormReturn<{
     name: string
     permissions: Permissions[]
   }>
@@ -48,13 +53,13 @@ export function EditRoleProvider({
 
   const editRoleForm = useForm<z.infer<typeof roleFormSchema>>({
     defaultValues: {
-      name: role?.name || '',
-      permissions: permissions,
+      name: role?.name,
+      permissions: (role?.permissions ?? []) as unknown as Permissions[],
     },
   })
 
-  const onCheckRole = (isChecked: boolean, permission: Permissions) => {
-    if (isChecked) {
+  const onCheckRole = (permission: Permissions, isChecked?: boolean) => {
+    if (!isChecked) {
       editRoleForm.setValue('permissions', [
         ...editRoleForm.getValues('permissions'),
         permission,
@@ -90,11 +95,13 @@ export function EditRoleProvider({
   return (
     <EditRoleContext.Provider
       value={{
+        role: role,
         permissions,
         handleSubmit,
         onCheckRole,
         roleFormControl: editRoleForm.control,
-        resetRoleFrom: editRoleForm.reset,
+        resetRoleForm: editRoleForm.reset,
+        editRoleForm,
       }}
     >
       {children}
