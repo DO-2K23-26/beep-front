@@ -44,7 +44,7 @@ export function ButtonIcon({
         children
       ) : (
         <>
-          {icon && <Icon name={icon} className="w-4 h-4" />}
+          {icon && <Icon name={icon} className="size-4" />}
           {title && (
             <p
               className={cn('text-xs md:text-sm lg:text-base', textClassName, {

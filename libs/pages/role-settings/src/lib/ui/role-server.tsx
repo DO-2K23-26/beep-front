@@ -28,7 +28,7 @@ export function RoleServer({
 
   return (
     <div className="flex justify-between items-center">
-      <p className="font-bold text-base">{role.name}</p>
+      <p className="text-base">{role.name}</p>
       <FullScreenDialog>
         <DropdownMenu>
           <DropdownMenuTrigger>

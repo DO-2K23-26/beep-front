@@ -5,9 +5,10 @@ import RoleServerFeature from '../feature/role-server-feature'
 
 export interface RolesSettingsServerProps {
   roles: RoleEntity[]
+  onClickCreateRole?: () => void
 }
 
-export function RolesSettingsServer({ roles }: RolesSettingsServerProps) {
+export function RolesSettingsServer({ roles , onClickCreateRole }: RolesSettingsServerProps) {
   const { t } = useTranslation()
 
   return (
@@ -22,6 +23,7 @@ export function RolesSettingsServer({ roles }: RolesSettingsServerProps) {
           title={t('layout.role-settings-server.create_role')}
           buttonProps={{ variant: 'hoverRounded' }}
           textHiddenResponsive
+          onClick={onClickCreateRole}
         />
       </div>
       {roles.length === 0 && (

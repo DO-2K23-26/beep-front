@@ -19,11 +19,5 @@
     "**/*.spec.jsx",
     "**/*.test.jsx"
   ],
-  "include": [, "../role-settings/src/lib/ui/role-card-switch.tsx", "../role-settings/src/lib/ui/role-server.tsx", "../role-settings/src/lib/ui/roles-edition-page.tsx", "../role-settings/src/lib/ui/roles-settings-server.tsx"
-    "src/**/*.js",
-    "src/**/*.jsx",
-    "src/**/*.ts",
-    "src/**/*.tsx",
-    "../role-settings/src/lib/ui/create-role-dialog.tsx"
-, "../role-settings/src/lib/feature/edit-role-provider.tsx"  ]
+  "include": ["src/**/*.js", "src/**/*.jsx", "src/**/*.ts", "src/**/*.tsx"]
 }
