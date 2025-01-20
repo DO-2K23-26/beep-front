@@ -54,7 +54,7 @@ export function EditRoleProvider({
   const editRoleForm = useForm<z.infer<typeof roleFormSchema>>({
     defaultValues: {
       name: role?.name,
-      permissions: (role?.permissions ?? []) as unknown as Permissions[],
+      permissions: role?.permissions.map((p)=>p ?? undefined)
     },
   })
 

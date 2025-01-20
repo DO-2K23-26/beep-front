@@ -1,6 +1,6 @@
 import { Permissions } from '@beep/contracts'
 import { InputText } from '@beep/ui'
-import { useContext, useMemo } from 'react'
+import { ReactNode, useContext, useMemo } from 'react'
 import { Controller } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { EditRoleContext } from '../feature/edit-role-provider'
@@ -12,7 +12,7 @@ export function RoleEditionPage() {
     useContext(EditRoleContext)
   const permissions = editRoleForm?.watch('permissions')
   const permissionsCheckboxElement = useMemo(() => {
-    const elements: JSX.Element[] = []
+    const elements: ReactNode[] = []
     for (const permission of Object.values(Permissions).filter(
       (value) => typeof value === 'number'
     )) {
@@ -29,8 +29,8 @@ export function RoleEditionPage() {
   }, [permissions, onCheckRole])
 
   return (
-    <div>
-      <div>{role?.name}</div>
+    <div className="flex flex-col gap-4 px-2">
+      <div className="text-lg sm:text-xl md:text-2xl">{role?.name}</div>
       <Controller
         name="name"
         control={roleFormControl}

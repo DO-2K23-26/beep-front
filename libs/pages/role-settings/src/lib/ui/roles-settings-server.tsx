@@ -1,14 +1,18 @@
 import { RoleEntity } from '@beep/contracts'
 import { ButtonIcon } from '@beep/ui'
 import { useTranslation } from 'react-i18next'
-import RoleServerFeature from '../feature/role-server-feature'
+import { DropdownRole } from './dropdown-role'
+import { RoleServer } from './role-server'
 
 export interface RolesSettingsServerProps {
   roles: RoleEntity[]
   onClickCreateRole?: () => void
 }
 
-export function RolesSettingsServer({ roles , onClickCreateRole }: RolesSettingsServerProps) {
+export function RolesSettingsServer({
+  roles,
+  onClickCreateRole,
+}: RolesSettingsServerProps) {
   const { t } = useTranslation()
 
   return (
@@ -32,7 +36,9 @@ export function RolesSettingsServer({ roles , onClickCreateRole }: RolesSettings
         </p>
       )}
       {roles.map((role) => (
-        <RoleServerFeature key={role.id} role={role} />
+        <RoleServer key={role.id} role={role}>
+          <DropdownRole />
+        </RoleServer>
       ))}
     </div>
   )
