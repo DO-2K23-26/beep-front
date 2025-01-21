@@ -4,7 +4,6 @@ import { useMemo, useState } from 'react'
 import { EditRoleProvider } from '../feature/edit-role-provider'
 import { RoleEditionPage } from './role-edition-page'
 import { RoleServer } from './role-server'
-import { use } from 'i18next'
 
 interface RolesEditionPageProps {
   roles?: RoleEntity[]
@@ -50,6 +49,7 @@ export function RolesEditionPage({ roles, goBack }: RolesEditionPageProps) {
               key={role.id}
               role={role}
               onClick={() => selectRole(role)}
+              highlight={role.id === selectedRole}
             />
           ))}
         </div>

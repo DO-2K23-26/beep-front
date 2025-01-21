@@ -588,5 +588,11 @@
       "name": "Envoyer des pièces jointes",
       "description": "Vous permet d'envoyer des pièces jointes dans les salons de discussion"
     }
+  },
+  "role-settings": {
+    "role-edition-page": {
+      "members": "Membres",
+      "permissions": "Permissions"
+    }
   }
 }
