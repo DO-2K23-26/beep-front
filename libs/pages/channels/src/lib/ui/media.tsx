@@ -1,3 +1,4 @@
+import { cn } from '@beep/utils'
 import { useRef } from 'react'
 import Draggable from 'react-draggable'
 
@@ -13,10 +14,16 @@ export function Media({ stream, url, username }: MediaProps) {
   return (
     <Draggable nodeRef={videoRef}>
       <div
-        className="w-fit absolute bg-violet-800 rounded-lg z-[1]"
+        className={cn('w-fit absolute bg-violet-800 rounded-lg z-[1000] ', {
+          'hidden': stream.getVideoTracks().length == 0,
+        })}
         ref={videoRef}
       >
-        <h4 className="pl-1 text-base text-violet-50">
+        <h4
+          className={
+            'pl-1 text-base text-violet-50'
+          }
+        >
           {stream && stream.getVideoTracks().length > 0 && username}
         </h4>
         {stream && (

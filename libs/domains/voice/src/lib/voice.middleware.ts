@@ -187,6 +187,7 @@ const WebRTCMiddleware: Middleware = (store) => {
             store.dispatch(setVideoDevice(action.payload.videoDevice))
         }
 
+
         if (!action.payload.isVoiceMuted) {
           audio = await navigator.mediaDevices.getUserMedia({
             audio: {
@@ -287,7 +288,25 @@ const WebRTCMiddleware: Middleware = (store) => {
           })
           //window.location.reload();
         })
-
+        // currentChannel.on('device_event', (payload) => {
+        //   console.log('device_event', payload)
+        //   // store.dispatch(
+        //   //   setServerPresence({
+        //   //     channelId: action.payload.channel,
+        //   //     users: [
+        //   //       {
+        //   //         id: payload.user_id,
+        //   //         username: 'unknown',
+        //   //         expiresAt: 0,
+        //   //         userSn: 'not used',
+        //   //         voiceMuted: false,
+        //   //         muted: false,
+        //   //         camera: payload.camera_on,
+        //   //       },
+        //   //     ],
+        //   //   })
+        //   // )
+        // })
         currentChannel.on('sdp_offer', async (payload) => {
           const sdpOffer = payload.body
 
@@ -302,7 +321,7 @@ const WebRTCMiddleware: Middleware = (store) => {
             console.log('Adding local video tracks to peer connection')
             video.getTracks().forEach((track) => {
               if (!peerConnection.getSenders().some(sender => sender.track === track)) {
-              camSender = peerConnection.addTrack(track)
+                camSender = peerConnection.addTrack(track)
               }
             })
           }
@@ -315,12 +334,12 @@ const WebRTCMiddleware: Middleware = (store) => {
             })
           }
 
-          const sdpAnswer = await peerConnection.createAnswer()
-          await peerConnection.setLocalDescription(sdpAnswer)
+          const sdpAnswer = await peerConnection?.createAnswer()
+          await peerConnection?.setLocalDescription(sdpAnswer)
 
           console.log('SDP offer applied, forwarding SDP answer', sdpAnswer)
-          const answer = peerConnection.localDescription
-          currentChannel.push('sdp_answer', { body: answer?.sdp })
+          const answer = peerConnection?.localDescription
+          currentChannel?.push('sdp_answer', { body: answer?.sdp })
         })
 
         currentChannel.on('ice_candidate', (payload) => {
@@ -359,7 +378,11 @@ const WebRTCMiddleware: Middleware = (store) => {
             }
           })
           console.log('presence', presence)
-
+          // presence.map((user) => {
+          //   if (user.video == null) {
+          //     video = null
+          //   }
+          // })
           store.dispatch(setUserStreams(presence))
 
           const users = currentPresence
@@ -426,7 +449,13 @@ const WebRTCMiddleware: Middleware = (store) => {
               },
             })
             video.getTracks()[0].enabled = true
-            await camSender.replaceTrack(video.getTracks()[0])
+            currentChannel?.push('device_event', {
+              user_id: id,
+              device: 'video',
+              event: true,
+            })
+            console.log('Replacing local video tracks to peer connection: ', video)
+            camSender.replaceTrack(video.getTracks()[0])
           } else {
             video = await navigator.mediaDevices.getUserMedia({
               video: {
@@ -435,22 +464,33 @@ const WebRTCMiddleware: Middleware = (store) => {
                 deviceId: action.payload.deviceId,
               },
             })
+            console.log('Adding local video tracks to peer connection: ', video)
             camSender = peerConnection.addTrack(video.getTracks()[0])
+            peerConnection.getTransceivers().forEach((transceiver) => {
+              transceiver.direction = 'sendrecv'
+            })
           }
           store.dispatch(setLocalStream(video))
+          currentChannel?.push('sdp_offer', { body: null })
+
         } catch (error) {
           console.error('Error starting camera:', error)
         }
         break
 
       case 'STOP_CAM':
-        currentChannel.push('sdp_offer', { body: null })
+        console.log('SENDERS', peerConnection.getSenders())
         store.dispatch(setLocalStream(null))
         video?.getTracks().forEach((track) => {
           track.stop()
         })
+
+        peerConnection.removeTrack(camSender)
+        // camSender.track.stop()
         video = null
-        // peerConnection?.removeTrack(camSender)
+        currentChannel?.push('device_event', { user_id: id, device: 'video', event: false })
+        console.log("SENDERS",peerConnection.getSenders())
+        currentChannel?.push('sdp_offer', { body: null })
         // await camSender?.replaceTrack(null)
         // peerConnection?.getTransceivers().forEach((transceiver) => {
         //   if (transceiver.sender.track === null) {
@@ -469,25 +509,20 @@ const WebRTCMiddleware: Middleware = (store) => {
       case 'START_MIC':
         if (!peerConnection) break
         try {
-          if (micTransceiver) {
+          if (micSender) {
             audio = await navigator.mediaDevices.getUserMedia({
               audio: {
                 deviceId: action.payload.deviceId,
               },
             })
-            await micTransceiver?.sender.replaceTrack(audio.getTracks()[0])
+            await micSender?.replaceTrack(audio.getTracks()[0])
           } else {
             audio = await navigator.mediaDevices.getUserMedia({
               audio: {
                 deviceId: action.payload.deviceId,
               },
             })
-            micTransceiver = peerConnection?.addTransceiver(
-              audio.getTracks()[0],
-              {
-                direction: 'sendonly',
-              }
-            )
+            micSender = peerConnection.addTrack(audio.getTracks()[0])
           }
           // await negotiate()
         } catch (error) {

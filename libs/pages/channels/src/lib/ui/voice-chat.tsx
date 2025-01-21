@@ -7,7 +7,7 @@ export function VoiceChat() {
   return (
     <>
       {sortedMembers && sortedMembers.map((entity, index) => {
-        console.log("streaming those streams",entity.stream, entity.stream.getTracks())
+        console.log("streaming those streams",entity.stream, entity.stream.getTracks(), entity.stream.getVideoTracks().length)
         return <Media key={index} stream={entity.stream} url={null} username={entity.user.username} />
       })}
       {localStream && <Media stream={localStream} url={null} username={"me"} />}
