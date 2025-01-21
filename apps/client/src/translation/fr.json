@@ -424,6 +424,19 @@
         "enter_email_error": "Adresse email invalide",
         "enter_email_label": "Email",
         "action_button": "Confirmer"
+      },
+      "modify-password-setting": {
+        "title": "Mettre à jour le mot de passe",
+        "modify": "Modifier le mot de passe",
+        "current_password_rule": "Saisissez votre mot de passe actuel",
+        "current_password_label": "Mot de passe actuel",
+        "new_password_rule": "Le mot de passe est requis",
+        "new_password_message": "Le mot de passe doit comporter au moins 8 caractères, inclure au moins une lettre majuscule, un chiffre et un caractère spécial",
+        "new_password_label": "Nouveau mot de passe",
+        "verify_password_rule": "Vérifiez votre nouveau mot de passe",
+        "verify_password_validate": "Les mots de passe ne correspondent pas",
+        "verify_password_label": "Vérifiez le nouveau mot de passe",
+        "action_button": "Confirmer"
       }
     },
     "modify-profile-card": {
