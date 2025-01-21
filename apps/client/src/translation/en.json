@@ -435,6 +435,12 @@
     },
     "change-language": {
       "language": "Language"
+    },
+    "modify-password-feature": {
+      "title" : "Password & Authentification",
+      "success" : "Update successful !",
+      "error-mismatch" : "The current password is wrong",
+      "error" : "Something whent wrong, please try again"
     }
   },
   "friends": {

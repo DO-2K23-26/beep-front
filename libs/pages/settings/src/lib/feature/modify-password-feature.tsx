@@ -4,8 +4,10 @@ import { useForm } from 'react-hook-form'
 import { useEffect, useState } from 'react'
 import { ModifyPasswordDialog } from '../components/modify-password-setting'
 import toast from 'react-hot-toast'
+import { useTranslation } from 'react-i18next'
 
 export function ModifyPasswordFeature() {
+  const { t } = useTranslation()
   const [isPasswordModalOpen, setIsPasswordModalOpen] = useState(false)
   const [changePassword, result] = useChangePasswordMutation()
 
@@ -20,10 +22,10 @@ export function ModifyPasswordFeature() {
 
   useEffect(() => {
     if (result.isSuccess) {
-      toast.success('Update successful')
+      toast.success(t('settings.modify-password-feature.success'))
       setIsPasswordModalOpen(false)
     }
-  }, [result])
+  }, [result, t])
 
   const handlePasswordSubmit = passwordFormController.handleSubmit((data) => {
     const request: UpdatePassword = {
@@ -40,19 +42,19 @@ export function ModifyPasswordFeature() {
       const error = result.error.data as HttpError
       if (error.code === 'E_CURRENT_PASSWORD_MISMATCHING') {
         passwordFormController.setError('currentPassword', {
-          message: 'The current password is wrong',
+          message: t('settings.modify-password-feature.error-mismatch'),
           type: 'validate',
         })
       } else {
-        toast.error('Something whent wrong, please try again')
+        toast.error(t('settings.modify-password-feature.error'))
         setIsPasswordModalOpen(false)
       }
     }
-  }, [result, passwordFormController])
+  }, [result, passwordFormController, t])
 
   return (
     <div className="flex flex-col pt-6 space-y-1">
-      <p className="text-2xl">Password & Authentification</p>
+      <p className="text-2xl">{t('settings.modify-password-feature.title')}</p>
       <ModifyPasswordDialog
         action={handlePasswordSubmit}
         isModalOpen={isPasswordModalOpen}

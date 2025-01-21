@@ -440,6 +440,12 @@
     },
     "change-language": {
       "language": "Langue"
+    },
+    "modify-password-feature": {
+      "title": "Mot de passe et authentification",
+      "success": "Mise à jour réussie !",
+      "error-mismatch": "Le mot de passe actuel est incorrect",
+      "error": "Une erreur s'est produite, veuillez réessayer"
     }
   },
   "friends": {
