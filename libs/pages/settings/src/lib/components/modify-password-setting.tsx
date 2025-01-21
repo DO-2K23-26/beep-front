@@ -58,7 +58,9 @@ export function ModifyPasswordDialog({
               pattern: {
                 value:
                   /^(?=.*[A-Z])(?=.*[0-9])(?=.*[!?@#$%^&*[|/\]{}()])(?=.{8,})/,
-                message: t(''),
+                message: t(
+                  'settings.components.modify-password-setting.new_password_message'
+                ),
               },
             }}
             control={passwordFormController.control}
