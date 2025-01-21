@@ -32,7 +32,9 @@ export function RolesSettingsServerFeature({
     },
     {
       id: Page.RoleEdition,
-      content: <RolesEditionPage roles={roles} goBack={() => goTo(Page.DisplayRole)} />,
+      content: (
+        <RolesEditionPage roles={roles} goBack={() => goTo(Page.DisplayRole)} />
+      ),
     },
   ]
 

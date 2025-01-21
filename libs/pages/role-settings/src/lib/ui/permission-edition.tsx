@@ -1,10 +1,10 @@
-import { InputText } from '@beep/ui'
+import { Permissions } from '@beep/contracts'
+import { Alert, AlertDescription, AlertTitle, InputText } from '@beep/ui'
 import { ReactNode, useContext, useMemo } from 'react'
 import { Controller } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
-import { RoleCardSwitch } from './role-card-switch'
 import { EditRoleContext } from '../feature/edit-role-provider'
-import { Permissions } from '@beep/contracts'
+import { RoleCardSwitch } from './role-card-switch'
 
 export function PermissionEdition() {
   const { t } = useTranslation()
@@ -28,7 +28,10 @@ export function PermissionEdition() {
     return elements
   }, [permissions, onCheckRole])
   return (
-    <div>
+    <div className="h-dvh relative">
+      {/* <Alert className="fixed bottom-5 left-1/4 right-1/4  bg-green-600 w-1/2 z-50">
+        <AlertTitle className="text-white">Heads up!</AlertTitle>
+      </Alert> */}
       <Controller
         name="name"
         control={roleFormControl}
@@ -53,8 +56,9 @@ export function PermissionEdition() {
           )
         }}
       />
-      <div className="mb-4 flex flex-col gap-2">
+      <div className="flex flex-col gap-2 overflow-auto h-full">
         {permissionsCheckboxElement}
+
       </div>
     </div>
   )

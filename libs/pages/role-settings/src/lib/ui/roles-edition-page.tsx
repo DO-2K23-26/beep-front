@@ -35,7 +35,7 @@ export function RolesEditionPage({ roles, goBack }: RolesEditionPageProps) {
   }, [roleEditionPages, selectedRole])
 
   return (
-    <div className="flex flex-col items-start w-full ">
+    <div className="flex flex-col items-start w-full overflow-hidden">
       <ButtonIcon
         className="bg-transparent"
         icon="lucide:arrow-left-from-line"
@@ -53,7 +53,9 @@ export function RolesEditionPage({ roles, goBack }: RolesEditionPageProps) {
             />
           ))}
         </div>
-        <div className="flex w-5/6 overflow-auto h-dvh">{focusedRolePage}</div>
+        <div className="flex w-5/6  h-dvh">
+          {focusedRolePage}
+        </div>
       </div>
     </div>
   )

@@ -16,7 +16,7 @@ export function RolesSettingsServer({
   const { t } = useTranslation()
 
   return (
-    <div className="flex flex-col w-full bg-violet-200 p-4 overflow-y-auto gap-4">
+    <div className="flex flex-col w-full bg-violet-200 p-4 overflow-y-scroll gap-4">
       <div className="flex justify-between items-center">
         <p className="text-slate-700 font-bold text-base sm:text-xl md:text-3xl">
           {t('layout.role-settings-server.roles')}

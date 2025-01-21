@@ -32,7 +32,7 @@ export function RoleEditionPage() {
   ]
 
   return (
-    <div className="flex flex-col gap-4 px-2">
+    <div className="flex flex-col gap-4 px-2 w-full">
       <div className="text-lg sm:text-xl md:text-2xl">{role?.name}</div>
       <div className="flex flex-row gap-2">
         {pages.map((page) => (
@@ -41,15 +41,20 @@ export function RoleEditionPage() {
             variant={'ghost'}
             onClick={() => setFocusedPage(page.id)}
             size={'responsiveDefault'}
-            className={cn('hover:bg-violet-100 text-xs sm:text-sm md:text-base px-2 py-1', {
-              'bg-violet-500': focusedPage === page.id,
-            })}
+            className={cn(
+              'hover:bg-violet-100 text-xs sm:text-sm md:text-base px-2 py-1',
+              {
+                'bg-violet-500': focusedPage === page.id,
+              }
+            )}
           >
             {page.name}
           </ButtonShadCn>
         ))}
       </div>
+      <div className="w-full">
         {pages.find((page) => page.id === focusedPage)?.page}
+      </div>
     </div>
   )
 }
