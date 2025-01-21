@@ -19,8 +19,8 @@ export function RoleEditionPage() {
       elements.push(
         <RoleCardSwitch
           key={permission}
-          permission={permission as Permissions}
-          isChecked={permissions?.includes(permission) ?? false}
+          permission={permission}
+          isChecked={permissions?.includes(permission)}
           onClick={onCheckRole}
         />
       )

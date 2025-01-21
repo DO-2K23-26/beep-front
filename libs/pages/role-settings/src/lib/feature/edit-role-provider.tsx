@@ -4,29 +4,34 @@ import {
   useUpdateServerRoleMutation,
 } from '@beep/server'
 import { PropsWithChildren, createContext } from 'react'
-import { useForm, Control, UseFormReset, UseFormReturn } from 'react-hook-form'
+import {
+  useForm,
+  Control,
+  UseFormReset,
+  UseFormReturn,
+  FieldValues,
+} from 'react-hook-form'
 import { z } from 'zod'
 
-interface IEditRoleContext {
+const roleFormSchema = z.object({
+  name: z.string().min(1, {
+    message: "Role name can't be empty",
+  }),
+  permissions: z.array(z.nativeEnum(Permissions)),
+})
+interface IEditRoleContext<T extends FieldValues> {
   role?: RoleEntity
   permissions: Permissions[]
   handleSubmit?: () => void
   onCheckRole?: (permission: Permissions, isChecked?: boolean) => void
-  roleFormControl?: Control<{
-    name: string
-    permissions: Permissions[]
-  }>
-  resetRoleForm?: UseFormReset<{
-    name: string
-    permissions: Permissions[]
-  }>
-  editRoleForm?: UseFormReturn<{
-    name: string
-    permissions: Permissions[]
-  }>
+  roleFormControl?: Control<T>
+  resetRoleForm?: UseFormReset<T>
+  editRoleForm?: UseFormReturn<T>
 }
 
-export const EditRoleContext = createContext<IEditRoleContext>({
+export const EditRoleContext = createContext<
+  IEditRoleContext<z.infer<typeof roleFormSchema>>
+>({
   permissions: [],
 })
 
@@ -44,17 +49,10 @@ export function EditRoleProvider({
 
   const permissions: Permissions[] = []
 
-  const roleFormSchema = z.object({
-    name: z.string().min(1, {
-      message: "Role name can't be empty",
-    }),
-    permissions: z.array(z.nativeEnum(Permissions)),
-  })
-
   const editRoleForm = useForm<z.infer<typeof roleFormSchema>>({
     defaultValues: {
       name: role?.name,
-      permissions: role?.permissions.map((p)=>p ?? undefined)
+      permissions: (role?.permissions ?? []) as unknown as Permissions[],
     },
   })
 

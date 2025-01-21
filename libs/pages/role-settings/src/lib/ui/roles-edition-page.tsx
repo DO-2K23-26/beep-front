@@ -1,10 +1,10 @@
-import { DateTime } from 'luxon'
+import { RoleEntity } from '@beep/contracts'
+import { ButtonIcon } from '@beep/ui'
+import { useMemo, useState } from 'react'
 import { EditRoleProvider } from '../feature/edit-role-provider'
 import { RoleEditionPage } from './role-edition-page'
-import { ButtonIcon } from '@beep/ui'
-import { RoleEntity } from '@beep/contracts'
-import { useState } from 'react'
 import { RoleServer } from './role-server'
+import { use } from 'i18next'
 
 interface RolesEditionPageProps {
   roles?: RoleEntity[]
@@ -19,13 +19,21 @@ export function RolesEditionPage({ roles, goBack }: RolesEditionPageProps) {
   const selectRole = (role: RoleEntity) => {
     setSelectedRole(role.id)
   }
+
   const roleEditionPages = roles?.map((role) => {
-    return (
-      <EditRoleProvider key={role.id} role={role}>
-        <RoleEditionPage />
-      </EditRoleProvider>
-    )
+    return {
+      id: role.id,
+      page: (
+        <EditRoleProvider key={role.id} role={role}>
+          <RoleEditionPage />
+        </EditRoleProvider>
+      ),
+    }
   })
+
+  const focusedRolePage = useMemo(() => {
+    return roleEditionPages?.find((page) => page.id === selectedRole)?.page
+  }, [roleEditionPages, selectedRole])
 
   return (
     <div className="flex flex-col items-start w-full ">
@@ -36,14 +44,16 @@ export function RolesEditionPage({ roles, goBack }: RolesEditionPageProps) {
         buttonProps={{ variant: 'ghost' }}
       />
       <div className="flex flex-row items-start divide-x-2 gap-2 w-full">
-        <div className="flex w-1/6 overflow-hidden ">
+        <div className="flex flex-col w-1/6 overflow-hidden gap-2 ">
           {roles?.map((role) => (
-            <RoleServer key={role.id} role={role} />
+            <RoleServer
+              key={role.id}
+              role={role}
+              onClick={() => selectRole(role)}
+            />
           ))}
         </div>
-        <div className="flex w-5/6 overflow-auto h-dvh">
-          {roleEditionPages?.find((page) => page.key === selectedRole)}
-        </div>
+        <div className="flex w-5/6 overflow-auto h-dvh">{focusedRolePage}</div>
       </div>
     </div>
   )

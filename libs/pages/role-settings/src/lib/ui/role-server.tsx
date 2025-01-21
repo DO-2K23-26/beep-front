@@ -14,8 +14,9 @@ export function RoleServer({
 }: PropsWithChildren<RoleServerProps>) {
   return (
     <div
+      onClick={onClick}
       className={cn('flex justify-between items-center', {
-        'cursor-pointer hover:bg-black/10': !!onClick,
+        'cursor-pointer p-1  hover:bg-violet-400/20 rounded-md': !!onClick,
       })}
     >
       <p className="text-xs sm:text-sm md:text-base">{role.name}</p>

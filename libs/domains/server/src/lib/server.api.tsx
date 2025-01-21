@@ -19,6 +19,7 @@ import {
   MemberEntity,
   MoveChannelRequest,
   OccupiedChannelEntity,
+  RawRole,
   RoleEntity,
   SearchServerRequest,
   ServerEntity,
@@ -273,6 +274,14 @@ export const serverApi = createApi({
     }),
     getRoles: builder.query<RoleEntity[], string>({
       query: (serverId) => `servers/${serverId}/roles`,
+      transformResponse(response: RawRole[], meta, arg) {
+        return response.map((role) => ({
+          ...role,
+          permissions: Object.values(Permissions).filter(
+            (value) => role.permissions & value
+          ),
+        }))
+      },
       providesTags: (result, _error, serverId) =>
         result
           ? [
