@@ -6,6 +6,7 @@ import {
 import {
   PropsWithChildren,
   createContext,
+  useCallback,
   useEffect,
   useMemo,
   useState,
@@ -16,6 +17,7 @@ import {
   UseFormReset,
   UseFormReturn,
   FieldValues,
+  useFieldArray,
 } from 'react-hook-form'
 import { z } from 'zod'
 
@@ -34,6 +36,7 @@ interface IEditRoleContext<T extends FieldValues> {
   resetRoleForm?: UseFormReset<T>
   editRoleForm?: UseFormReturn<T>
   isFormTouched?: boolean
+  formPermissions?: Permissions[]
 }
 
 export const EditRoleContext = createContext<
@@ -51,34 +54,32 @@ export function EditRoleProvider({
   role,
 }: PropsWithChildren<EditRoleProviderProps>) {
   const serverId = ''
+  const permissionsDef: Permissions[] = []
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  const [defaultPermissions, setDefaultPermissions] = useState<
-    (Permissions | undefined)[]
-  >(role?.permissions ?? [])
+  // const defaultPermissions = role?.permissions ?? []
 
   const [updateRole, updateResult] = useUpdateServerRoleMutation()
   const [createRole, createResult] = useCreateServerRoleMutation()
 
   const permissions: Permissions[] = []
-
   const editRoleForm = useForm<z.infer<typeof roleFormSchema>>({
     defaultValues: {
       name: role?.name,
-      permissions: defaultPermissions,
     },
   })
 
   const onCheckRole = (permission: Permissions, isChecked?: boolean) => {
-    if (!isChecked) {
-      editRoleForm.setValue('permissions', [
-        ...editRoleForm.getValues('permissions'),
-        permission,
-      ])
-    } else {
-      editRoleForm.setValue(
-        'permissions',
-        editRoleForm.getValues('permissions').filter((p) => p !== permission)
-      )
+    const currentPermissions = editRoleForm.getValues('permissions') || []
+    const updatedPermissions = isChecked
+      ? currentPermissions.filter((p) => p !== permission)
+      : [...currentPermissions, permission]
+
+    if (
+      JSON.stringify(currentPermissions) !== JSON.stringify(updatedPermissions)
+    ) {
+      editRoleForm.setValue('permissions', updatedPermissions, {
+        shouldTouch: true,
+      })
     }
   }
 
@@ -102,34 +103,25 @@ export function EditRoleProvider({
     }
   )
 
-  useEffect(() => {
-    if (createResult.isSuccess || updateResult.isSuccess) {
-      setDefaultPermissions(role?.permissions ?? [])
-      editRoleForm.reset({
-        name: role?.name,
-        permissions: role?.permissions ?? [],
-      })
-      updateResult.reset()
-      createResult.reset()
-    }
-  }, [
-    createResult,
-    createResult.isSuccess,
-    editRoleForm,
-    handleSubmit,
-    role?.name,
-    role?.permissions,
-    updateResult,
-    updateResult.isSuccess,
-  ])
-
-  const formPermissions = editRoleForm.watch('permissions')
-  const isFormTouched = useMemo(() => {
-    return (
-      editRoleForm?.formState.isDirty ||
-      formPermissions?.toString() !== defaultPermissions.toString()
-    )
-  }, [defaultPermissions, editRoleForm.formState.isDirty, formPermissions])
+  // useEffect(() => {
+  //   if (createResult.isSuccess || updateResult.isSuccess) {
+  //     setDefaultPermissions(role?.permissions ?? [])
+  //     editRoleForm.reset(undefined, {
+  //       keepDirtyValues: true,
+  //     })
+  //     updateResult.reset()
+  //     createResult.reset()
+  //   }
+  // }, [
+  //   createResult,
+  //   createResult.isSuccess,
+  //   editRoleForm,
+  //   handleSubmit,
+  //   role?.name,
+  //   role?.permissions,
+  //   updateResult,
+  //   updateResult.isSuccess,
+  // ])
 
   return (
     <EditRoleContext.Provider
@@ -139,9 +131,8 @@ export function EditRoleProvider({
         handleSubmit,
         onCheckRole,
         roleFormControl: editRoleForm.control,
-        resetRoleForm: editRoleForm.reset,
         editRoleForm,
-        isFormTouched,
+        isFormTouched: editRoleForm.formState.isDirty,
       }}
     >
       {children}

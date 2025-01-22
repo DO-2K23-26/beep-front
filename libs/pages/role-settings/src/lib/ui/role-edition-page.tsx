@@ -4,6 +4,7 @@ import { useContext, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { EditRoleContext } from '../feature/edit-role-provider'
 import { PermissionEdition } from './permission-edition'
+import { MemberRoleManagement } from './member-role-management'
 
 enum EditionPage {
   PermissionEditionPage,
@@ -27,7 +28,7 @@ export function RoleEditionPage() {
     {
       id: EditionPage.MemberEditionPage,
       name: t('role-settings.role-edition-page.members'),
-      page: <></>,
+      page: <MemberRoleManagement />,
     },
   ]
 
@@ -53,7 +54,7 @@ export function RoleEditionPage() {
         ))}
       </div>
       <div className="flex w-full h-full overflow-scroll">
-        {pages.find((page) => page.id === focusedPage)?.page}
+        <PermissionEdition />
       </div>
     </div>
   )

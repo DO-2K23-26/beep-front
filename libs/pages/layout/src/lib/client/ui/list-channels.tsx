@@ -1,22 +1,18 @@
-import {
-  ChannelEntity,
-  ChannelType,
-} from '@beep/contracts'
+import { ChannelEntity, ChannelType } from '@beep/contracts'
 import DisplayChannelFeature from '../feature/display-channel-feature'
 import VoiceChannel from '../feature/voice-channel'
 import { createSwapy, Swapy } from 'swapy'
 import { useContext, useEffect, useRef } from 'react'
-import {Swappable} from '@beep/utils'
+import { Swappable } from '@beep/utils'
 import { ChannelContext } from '../feature/channels/channels-navigation-context'
 
 export interface ListTextChannelsProps {
   moveChannel: (channelId: string, newPosition: number) => void
 }
 
-export function ListChannels({
-  moveChannel,
-}: ListTextChannelsProps) {
-  const {streamingUsers: occupiedChannels, channels} = useContext(ChannelContext)
+export function ListChannels({ moveChannel }: ListTextChannelsProps) {
+  const { streamingUsers: occupiedChannels, channels } =
+    useContext(ChannelContext)
   const swapy = useRef<Swapy | null>(null)
   const container = useRef(null)
   const startingPosition = useRef<
@@ -59,18 +55,22 @@ export function ListChannels({
         switch (channel.type) {
           case ChannelType.text_server:
             return (
-              <Swappable slot={index.toString()} item={channel.id}>
-                <DisplayChannelFeature
-                  key={channel.id}
-                  channel={channel}
-                />
+              <Swappable
+                key={channel.id}
+                slot={index.toString()}
+                item={channel.id}
+              >
+                <DisplayChannelFeature channel={channel} />
               </Swappable>
             )
           default:
             return (
-              <Swappable slot={index.toString()} item={channel.id}>
+              <Swappable
+                key={channel.id}
+                slot={index.toString()}
+                item={channel.id}
+              >
                 <VoiceChannel
-                  key={channel.id}
                   channel={channel}
                   users={occupiedChannel ? occupiedChannel.users : []}
                 />
