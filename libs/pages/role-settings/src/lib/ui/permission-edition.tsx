@@ -1,5 +1,5 @@
 import { Permissions } from '@beep/contracts'
-import { Alert, AlertTitle, InputText } from '@beep/ui'
+import { Alert, AlertTitle, ButtonIcon, InputText } from '@beep/ui'
 import { cn } from '@beep/utils'
 import { ReactNode, useContext, useMemo } from 'react'
 import { Controller } from 'react-hook-form'
@@ -9,8 +9,14 @@ import { RoleCardSwitch } from './role-card-switch'
 
 export function PermissionEdition() {
   const { t } = useTranslation()
-  const { roleFormControl, onCheckRole, editRoleForm, isFormTouched } =
-    useContext(EditRoleContext)
+  const {
+    roleFormControl,
+    onCheckRole,
+    editRoleForm,
+    isFormTouched,
+    handleSubmit,
+    resetRoleForm,
+  } = useContext(EditRoleContext)
   const permissions = editRoleForm?.watch('permissions')
   const permissionsCheckboxElement = useMemo(() => {
     const elements: ReactNode[] = []
@@ -36,33 +42,43 @@ export function PermissionEdition() {
           { hidden: !isFormTouched }
         )}
       >
-        <AlertTitle className="text-white">Heads up!</AlertTitle>
+        <AlertTitle className="flex flex-row justify-between items-center h-7">
+          <p className="text-white ">You have on going modification !</p>
+          <div className="flex flex-row gap-2">
+            <ButtonIcon title="Reset" onClick={editRoleForm?.reset}></ButtonIcon>
+            <ButtonIcon
+              title="Save"
+              className="bg-green-500"
+              onClick={handleSubmit}
+            ></ButtonIcon>
+          </div>
+        </AlertTitle>
       </Alert>
 
-        <Controller
-          name="name"
-          control={roleFormControl}
-          rules={{
-            required: t('layout.role-form.role_name_is_required'),
-            minLength: {
-              value: 1,
-              message: t('layout.role-form.role_name_is_required'),
-            },
-          }}
-          render={({ field, fieldState: { error } }) => {
-            return (
-              <InputText
-                className="w-full sticky top-0 !rounded-lg !z-50"
-                label={t('layout.role-form.role_name')}
-                name="name"
-                type="text"
-                onChange={field.onChange}
-                value={field.value}
-                error={error?.message}
-              />
-            )
-          }}
-        />
+      <Controller
+        name="name"
+        control={roleFormControl}
+        rules={{
+          required: t('layout.role-form.role_name_is_required'),
+          minLength: {
+            value: 1,
+            message: t('layout.role-form.role_name_is_required'),
+          },
+        }}
+        render={({ field, fieldState: { error } }) => {
+          return (
+            <InputText
+              className="w-full sticky top-0 !rounded-lg !z-50"
+              label={t('layout.role-form.role_name')}
+              name="name"
+              type="text"
+              onChange={field.onChange}
+              value={field.value}
+              error={error?.message}
+            />
+          )
+        }}
+      />
       <div className="flex h-full w-full">
         <div className="flex flex-col gap-2 snap-y w-full ">
           {permissionsCheckboxElement}

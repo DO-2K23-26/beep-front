@@ -3,7 +3,13 @@ import {
   useCreateServerRoleMutation,
   useUpdateServerRoleMutation,
 } from '@beep/server'
-import { PropsWithChildren, createContext, useMemo } from 'react'
+import {
+  PropsWithChildren,
+  createContext,
+  useEffect,
+  useMemo,
+  useState,
+} from 'react'
 import {
   useForm,
   Control,
@@ -46,10 +52,12 @@ export function EditRoleProvider({
 }: PropsWithChildren<EditRoleProviderProps>) {
   const serverId = ''
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  const defaultPermissions = (role?.permissions ??
-    []) as unknown as Permissions[]
-  const [updateRole] = useUpdateServerRoleMutation()
-  const [createRole] = useCreateServerRoleMutation()
+  const [defaultPermissions, setDefaultPermissions] = useState<
+    (Permissions | undefined)[]
+  >(role?.permissions ?? [])
+
+  const [updateRole, updateResult] = useUpdateServerRoleMutation()
+  const [createRole, createResult] = useCreateServerRoleMutation()
 
   const permissions: Permissions[] = []
 
@@ -93,11 +101,33 @@ export function EditRoleProvider({
       }
     }
   )
+
+  useEffect(() => {
+    if (createResult.isSuccess || updateResult.isSuccess) {
+      setDefaultPermissions(role?.permissions ?? [])
+      editRoleForm.reset({
+        name: role?.name,
+        permissions: role?.permissions ?? [],
+      })
+      updateResult.reset()
+      createResult.reset()
+    }
+  }, [
+    createResult,
+    createResult.isSuccess,
+    editRoleForm,
+    handleSubmit,
+    role?.name,
+    role?.permissions,
+    updateResult,
+    updateResult.isSuccess,
+  ])
+
   const formPermissions = editRoleForm.watch('permissions')
   const isFormTouched = useMemo(() => {
     return (
-      editRoleForm.formState.isDirty ||
-      formPermissions.toString() !== defaultPermissions.toString()
+      editRoleForm?.formState.isDirty ||
+      formPermissions?.toString() !== defaultPermissions.toString()
     )
   }, [defaultPermissions, editRoleForm.formState.isDirty, formPermissions])
 
