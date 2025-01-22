@@ -35,15 +35,15 @@ export function RolesEditionPage({ roles, goBack }: RolesEditionPageProps) {
   }, [roleEditionPages, selectedRole])
 
   return (
-    <div className="flex flex-col items-start w-full overflow-hidden">
-      <ButtonIcon
-        className="bg-transparent"
-        icon="lucide:arrow-left-from-line"
-        onClick={goBack}
-        buttonProps={{ variant: 'ghost' }}
-      />
-      <div className="flex flex-row items-start divide-x-2 gap-2 w-full">
-        <div className="flex flex-col w-1/6 overflow-hidden gap-2 ">
+    <div className="flex flex-col items-start w-full h-full">
+      <div className="flex flex-row divide-x-2 gap-2 w-full h-full">
+        <div className="flex flex-col w-1/6 overflow-hidden gap-2">
+          <ButtonIcon
+            className="bg-transparent"
+            icon="lucide:arrow-left-from-line"
+            onClick={goBack}
+            buttonProps={{ variant: 'ghost' }}
+          />
           {roles?.map((role) => (
             <RoleServer
               key={role.id}
@@ -53,9 +53,7 @@ export function RolesEditionPage({ roles, goBack }: RolesEditionPageProps) {
             />
           ))}
         </div>
-        <div className="flex w-5/6  h-dvh">
-          {focusedRolePage}
-        </div>
+        <div className="flex w-5/6 h-full">{focusedRolePage}</div>
       </div>
     </div>
   )

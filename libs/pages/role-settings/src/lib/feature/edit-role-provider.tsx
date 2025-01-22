@@ -3,7 +3,7 @@ import {
   useCreateServerRoleMutation,
   useUpdateServerRoleMutation,
 } from '@beep/server'
-import { PropsWithChildren, createContext } from 'react'
+import { PropsWithChildren, createContext, useMemo } from 'react'
 import {
   useForm,
   Control,
@@ -27,6 +27,7 @@ interface IEditRoleContext<T extends FieldValues> {
   roleFormControl?: Control<T>
   resetRoleForm?: UseFormReset<T>
   editRoleForm?: UseFormReturn<T>
+  isFormTouched?: boolean
 }
 
 export const EditRoleContext = createContext<
@@ -44,6 +45,9 @@ export function EditRoleProvider({
   role,
 }: PropsWithChildren<EditRoleProviderProps>) {
   const serverId = ''
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const defaultPermissions = (role?.permissions ??
+    []) as unknown as Permissions[]
   const [updateRole] = useUpdateServerRoleMutation()
   const [createRole] = useCreateServerRoleMutation()
 
@@ -52,7 +56,7 @@ export function EditRoleProvider({
   const editRoleForm = useForm<z.infer<typeof roleFormSchema>>({
     defaultValues: {
       name: role?.name,
-      permissions: (role?.permissions ?? []) as unknown as Permissions[],
+      permissions: defaultPermissions,
     },
   })
 
@@ -89,6 +93,13 @@ export function EditRoleProvider({
       }
     }
   )
+  const formPermissions = editRoleForm.watch('permissions')
+  const isFormTouched = useMemo(() => {
+    return (
+      editRoleForm.formState.isDirty ||
+      formPermissions.toString() !== defaultPermissions.toString()
+    )
+  }, [defaultPermissions, editRoleForm.formState.isDirty, formPermissions])
 
   return (
     <EditRoleContext.Provider
@@ -100,6 +111,7 @@ export function EditRoleProvider({
         roleFormControl: editRoleForm.control,
         resetRoleForm: editRoleForm.reset,
         editRoleForm,
+        isFormTouched,
       }}
     >
       {children}

@@ -32,7 +32,7 @@ export function RoleEditionPage() {
   ]
 
   return (
-    <div className="flex flex-col gap-4 px-2 w-full">
+    <div className="flex flex-col gap-4 px-2 w-full h-full pb-16">
       <div className="text-lg sm:text-xl md:text-2xl">{role?.name}</div>
       <div className="flex flex-row gap-2">
         {pages.map((page) => (
@@ -52,7 +52,7 @@ export function RoleEditionPage() {
           </ButtonShadCn>
         ))}
       </div>
-      <div className="w-full">
+      <div className="flex w-full h-full overflow-scroll">
         {pages.find((page) => page.id === focusedPage)?.page}
       </div>
     </div>

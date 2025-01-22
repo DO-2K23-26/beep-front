@@ -21,7 +21,7 @@ export function RoleCardSwitch({
     <div
       onClick={() => onClick && onClick(permission, isChecked)}
       key={permissionSringified}
-      className="flex flex-row justify-between items-center w-full gap-3 px-2 py-1 rounded-md cursor-pointer hover:bg-black/10"
+      className="flex flex-row justify-between items-center w-full gap-3 px-2 py-1 rounded-md cursor-pointer hover:bg-black/10 snap-end"
     >
       <div>
         <p className="text-slate-950 sm:text-sm md:text-lg">

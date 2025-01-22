@@ -24,8 +24,8 @@ export function SettingsModal({ settings }: SettingsUserModalProps) {
     return null
   }
   return (
-    <div className="flex flex-row w-full h-dvh">
-      <div className=" bg-violet-300 flex flex-col h-dvh px-2 sm:px-4 md:px-12 py-6 min-w-fit items-end">
+    <div className="flex flex-row w-full h-svh">
+      <div className=" bg-violet-300 flex flex-col px-2 sm:px-4 md:px-12 py-6 min-w-fit items-end">
         {settings.map((subSetting) => {
           return (
             <ButtonNavigationList
@@ -37,9 +37,9 @@ export function SettingsModal({ settings }: SettingsUserModalProps) {
           )
         })}
       </div>
-      <div className="w-full px-2 bg-violet-200 flex flex-col items-center h-dvh">
+      <div className="w-full px-2 bg-violet-200 flex flex-col items-center h-full ">
         <div
-          className={`flex flex-col px-2 w-full md:w-10/12 xl:w-8/12 h-full`}
+          className={`flex flex-col px-2 w-full md:w-10/12 xl:w-8/12 h-full pt-12`}
         >
           {findSettingComponentById(settings, selectedSetting)}
         </div>
