@@ -26,7 +26,8 @@ import {
   ServerEntity,
   UnassignMemberToRoleRequest,
   UpdateChannelRequest,
-  UpdateRoleRequest
+  UpdateRoleRequest,
+  WebhookEntity,
 } from '@beep/contracts'
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 // eslint-disable-next-line @nx/enforce-module-boundaries
@@ -331,6 +332,23 @@ export const serverApi = createApi({
       invalidatesTags: ['servers'],
     }),
 
+    updateWebhookPicture: builder.mutation<
+      void,
+      {
+        serverId: string
+        channelId: string
+        webhookId: string
+        formData: FormData
+      }
+    >({
+      query: ({ serverId, channelId, webhookId, formData }) => ({
+        url: `/servers/${serverId}/channels/${channelId}/webhook/${webhookId}/webhookPicture`,
+        method: 'PUT',
+        body: formData,
+      }),
+      invalidatesTags: ['servers'],
+    }),
+
     transmitBanner: builder.query<string, string>({
       query: (serverId) => ({
         url: `/servers/${serverId}/banner`,
@@ -415,7 +433,22 @@ export const serverApi = createApi({
         },
       }),
       invalidatesTags: (_res, _error, req) => [
-        { type: 'roles', id: `LIST-${req.serverId}` },
+        { type: 'roles', id: `LIST-${req.serverId}` },]
+    }),
+
+    transmitWebhookPicture: builder.query<
+      string,
+      { webhookId: string; serverId: string; channelId: string }
+    >({
+      query: (request) => ({
+        url: `/servers/${request.serverId}/channels/${request.channelId}/webhook/${request.webhookId}/webhookPicture`,
+        responseHandler: async (response) => {
+          const blob = await response.blob()
+          return URL.createObjectURL(blob)
+        },
+      }),
+      providesTags: (_result, _error, id) => [
+        { type: 'transmitPicture', id: id.webhookId },
       ],
     }),
     createWebHook: builder.mutation<
@@ -436,9 +469,56 @@ export const serverApi = createApi({
         },
       }),
     }),
+
+    updateWebHook: builder.mutation<
+      WebhookEntity,
+      { updatedWebhook: Partial<WebhookEntity>; webhookId: string }
+    >({
+      query: (request) => ({
+        url: `/servers/${request.updatedWebhook.serverId}/channels/${request.updatedWebhook.channelId}/webhook/${request.webhookId}`,
+        method: 'PUT',
+        body: request.updatedWebhook,
+      }),
+    }),
+    updateProfilePicture: builder.mutation<
+      void,
+      { serverId: string; formData: FormData }
+    >({
+      query: ({ serverId, formData }) => ({
+        url: `/servers/${serverId}/picture`,
+        method: 'PUT',
+        body: formData,
+      }),
+      invalidatesTags: ['servers'],
+    }),
+    transmitProfilePicture: builder.query<string, string>({
+      query: (serverId) => ({
+        url: `/servers/${serverId}/picture`,
+        responseHandler: async (response) => {
+          const blob = await response.blob()
+          return URL.createObjectURL(blob)
+        },
+      }),
+      providesTags: (_result, _error, id) => [
+        { type: 'transmitPicture', id: id },
+      ],
+    }),
+
+    deleteWebHook: builder.mutation<
+      void,
+      { webhookId: string; serverId: string; channelId: string }
+    >({
+      query: (request) => ({
+        url: `/servers/${request.serverId}/channels/${request.channelId}/webhook/${request.webhookId}`,
+        method: 'DELETE',
+      }),
+    }),
+
+    getWebHooksServer: builder.query<WebhookEntity[], string>({
+      query: (serverId) => `/servers/${serverId}/webhooks`,
+    }),
   }),
 })
-
 export const {
   useGetMyServersQuery,
   useGetMembersQuery,
@@ -463,6 +543,7 @@ export const {
   useUpdatePictureMutation,
   useTransmitBannerQuery,
   useTransmitPictureQuery,
+  useTransmitWebhookPictureQuery,
   useDeleteServerMutation,
   useDiscoverServersQuery,
   usePatchChannelPositionMutation,
@@ -472,4 +553,8 @@ export const {
   useCreateRoleMutation,
   useGetMyMemberQuery,
   useCreateWebHookMutation,
+  useUpdateWebHookMutation,
+  useDeleteWebHookMutation,
+  useGetWebHooksServerQuery,
+  useUpdateWebhookPictureMutation,
 } = serverApi
