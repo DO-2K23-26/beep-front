@@ -19,11 +19,9 @@ import { Controller } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { CreateWebhookSettingsContext } from '../../feature/create-webhook-feature'
 
-interface CreateWebhookModalProps {}
-
 export default function CreateWebhookModal({
   children,
-}: PropsWithChildren<CreateWebhookModalProps>) {
+}: PropsWithChildren<never>) {
   const { t } = useTranslation()
   const { methodsAddWebhook, serverId, control, onCreateWebhook } = useContext(
     CreateWebhookSettingsContext

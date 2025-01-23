@@ -22,8 +22,11 @@ export const WebhookItemSettingsContext =
   createContext<IWebhookItemSettingsContext>({
     webhook: {} as WebhookEntity,
     methodsEditWebhook: {} as UseFormReturn<UpdateWebhookForm>,
+    // eslint-disable-next-line @typescript-eslint/no-empty-function
     onUpdateWebhook: () => {},
+    // eslint-disable-next-line @typescript-eslint/no-empty-function
     onDeleteWebhook: () => {},
+    // eslint-disable-next-line @typescript-eslint/no-empty-function
     onCopyToken: () => {},
     control: {} as Control<UpdateWebhookForm>,
   })
@@ -85,20 +88,20 @@ export default function WebhookItemFeature({
       toast.success(t('layout.webhook-item.success_delete'))
     })
   }
- const onCopyToken = () => {
-  if (webhook.token) {
-    navigator.clipboard
-      .writeText(webhook.token)
-      .then(() => {
-        toast.success(t('layout.webhook-item.copy_success')) 
-      })
-      .catch(() => {
-        toast.error(t('layout.webhook-item.copy_error'))
-      })
-  } else {
-    toast.error(t('layout.webhook-item.token_missing')) 
-  }}
- 
+  const onCopyToken = () => {
+    if (webhook.token) {
+      navigator.clipboard
+        .writeText(webhook.token)
+        .then(() => {
+          toast.success(t('layout.webhook-item.copy_success'))
+        })
+        .catch(() => {
+          toast.error(t('layout.webhook-item.copy_error'))
+        })
+    } else {
+      toast.error(t('layout.webhook-item.token_missing'))
+    }
+  }
 
   useEffect(() => {
     if (updateResult.isError) {
