@@ -1,7 +1,6 @@
 import { ServerEntity } from '@beep/contracts'
 import { useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
-import { CreateWebhook } from './webhook-page/create-webhook'
 import CreateWebhookFeature from '../feature/create-webhook-feature'
 import WebhookListFeature from '../feature/webhook-list-feature'
 
@@ -10,7 +9,7 @@ export interface WebhookSettingsServerProps {
 }
 
 export default function WebHookSettingsServer({
-  server
+  server,
 }: WebhookSettingsServerProps) {
   const { t } = useTranslation()
   const methodsAddWebhook = useForm()
@@ -22,7 +21,7 @@ export default function WebHookSettingsServer({
       </div>
 
       <CreateWebhookFeature serverId={server.id} />
-
+      <WebhookListFeature serverId={server.id} />
     </div>
   )
 }
