@@ -3,7 +3,6 @@ import { Control, useForm, UseFormReturn } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import toast from 'react-hot-toast'
 import { createContext, useEffect } from 'react'
-import { useParams } from 'react-router'
 import { CreateWebhook } from '../ui/webhook-page/create-webhook'
 
 export interface ICreateWebhookSettingsContext {
