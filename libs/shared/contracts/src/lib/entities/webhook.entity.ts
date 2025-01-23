@@ -7,4 +7,5 @@ export interface WebhookEntity {
   userId?: string
   createdAt?: string
   updatedAt?: string
+  token?: string
 }
