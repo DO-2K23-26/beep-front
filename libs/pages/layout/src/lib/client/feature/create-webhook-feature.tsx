@@ -50,14 +50,12 @@ export default function CreateWebhookFeature({
   })
 
   const onCreateWebhook = methodsAddWebhook.handleSubmit((data) => {
-    console.log('Data sent to backend:', data)
     if (!data.serverId) {
       toast.error(t('layout.new-webhook-modal.error_missing_server'))
       return
     }
     createWebhook(data).then(() => {
       toast.success(t('layout.new-webhook-modal.success_create'))
-      console.log('Webhook created')
     })
   })
 

@@ -29,8 +29,6 @@ export default function WebhookItem() {
     channelId: webhook.channelId,
   }).data?.name
 
-  console.log("channel name", channelName)
-
   const { data: icon } = useTransmitWebhookPictureQuery({
     webhookId: webhook.id,
     serverId: webhook.serverId,

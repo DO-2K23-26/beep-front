@@ -28,9 +28,7 @@ export default function CreateWebhookModal({
   const { methodsAddWebhook, serverId, control, onCreateWebhook } = useContext(
     CreateWebhookSettingsContext
   )
-  console.log('serverId', serverId)
   const { data: channelsResponse } = useGetServerChannelsQuery(serverId!)
-  console.log(channelsResponse)
 
   const textChannelOptions =
     channelsResponse?.textChannels.map((channel) => ({
