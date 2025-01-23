@@ -56,7 +56,6 @@ export function PermissionEdition() {
           </div>
         </AlertTitle>
       </Alert>
-
       <Controller
         name="name"
         control={roleFormControl}
