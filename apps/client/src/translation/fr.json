@@ -593,6 +593,9 @@
     "role-edition-page": {
       "members": "Membres",
       "permissions": "Permissions"
+    },
+    "permission-edition": {
+      "pending-modification": "Modification en attente"
     }
   }
 }

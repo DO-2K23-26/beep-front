@@ -15,8 +15,9 @@ export function PermissionEdition() {
     editRoleForm,
     isFormTouched,
     handleSubmit,
+    loadingEdit,
   } = useContext(EditRoleContext)
-  // const permissions = editRoleForm?.watch('permissions')
+  const permissions = editRoleForm?.watch('permissions')
   const permissionsCheckboxElement = useMemo(() => {
     const elements: ReactNode[] = []
     for (const permission of Object.values(Permissions).filter(
@@ -26,33 +27,32 @@ export function PermissionEdition() {
         <RoleCardSwitch
           key={permission}
           permission={permission}
-          isChecked={false}
+          isChecked={permissions?.includes(permission)}
           onClick={onCheckRole}
         />
       )
     }
     return elements
-  }, [])
+  }, [onCheckRole, permissions])
   return (
     <div className="flex flex-col h-full w-full">
       <Alert
-        className={cn(
-          'fixed bottom-5 left-1/4 right-1/4  bg-violet-900 w-1/2',
-          { hidden: !isFormTouched }
-        )}
+        className={cn('fixed bottom-5 left-1/4 right-1/4 bg-violet-900 w-1/2', {
+          hidden: !isFormTouched,
+        })}
       >
         <AlertTitle className="flex flex-row justify-between items-center h-7">
-          <p className="text-white ">You have on going modification !</p>
+          <p className="text-white ">
+            {t('role-settings.permission-edition.pending-modification')}
+          </p>
           <div className="flex flex-row gap-2">
-            <ButtonIcon
-              title="Reset"
-              onClick={() => editRoleForm?.reset()}
-            ></ButtonIcon>
+            <ButtonIcon title="Reset" onClick={() => editRoleForm?.reset()} />
             <ButtonIcon
               title="Save"
               className="bg-green-500"
               onClick={handleSubmit}
-            ></ButtonIcon>
+              loading={loadingEdit}
+            />
           </div>
         </AlertTitle>
       </Alert>

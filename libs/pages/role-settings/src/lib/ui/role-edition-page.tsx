@@ -54,7 +54,7 @@ export function RoleEditionPage() {
         ))}
       </div>
       <div className="flex w-full h-full overflow-scroll">
-        <PermissionEdition />
+        {pages.find((page) => page.id === focusedPage)?.page}
       </div>
     </div>
   )

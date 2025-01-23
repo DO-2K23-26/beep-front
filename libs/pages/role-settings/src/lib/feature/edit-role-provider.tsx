@@ -6,18 +6,14 @@ import {
 import {
   PropsWithChildren,
   createContext,
-  useCallback,
-  useEffect,
-  useMemo,
-  useState,
+  useEffect
 } from 'react'
 import {
-  useForm,
   Control,
+  FieldValues,
   UseFormReset,
   UseFormReturn,
-  FieldValues,
-  useFieldArray,
+  useForm
 } from 'react-hook-form'
 import { z } from 'zod'
 
@@ -37,6 +33,7 @@ interface IEditRoleContext<T extends FieldValues> {
   editRoleForm?: UseFormReturn<T>
   isFormTouched?: boolean
   formPermissions?: Permissions[]
+  loadingEdit?: boolean
 }
 
 export const EditRoleContext = createContext<
@@ -54,9 +51,6 @@ export function EditRoleProvider({
   role,
 }: PropsWithChildren<EditRoleProviderProps>) {
   const serverId = ''
-  const permissionsDef: Permissions[] = []
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  // const defaultPermissions = role?.permissions ?? []
 
   const [updateRole, updateResult] = useUpdateServerRoleMutation()
   const [createRole, createResult] = useCreateServerRoleMutation()
@@ -78,7 +72,7 @@ export function EditRoleProvider({
       JSON.stringify(currentPermissions) !== JSON.stringify(updatedPermissions)
     ) {
       editRoleForm.setValue('permissions', updatedPermissions, {
-        shouldTouch: true,
+        shouldDirty: true,
       })
     }
   }
@@ -103,25 +97,25 @@ export function EditRoleProvider({
     }
   )
 
-  // useEffect(() => {
-  //   if (createResult.isSuccess || updateResult.isSuccess) {
-  //     setDefaultPermissions(role?.permissions ?? [])
-  //     editRoleForm.reset(undefined, {
-  //       keepDirtyValues: true,
-  //     })
-  //     updateResult.reset()
-  //     createResult.reset()
-  //   }
-  // }, [
-  //   createResult,
-  //   createResult.isSuccess,
-  //   editRoleForm,
-  //   handleSubmit,
-  //   role?.name,
-  //   role?.permissions,
-  //   updateResult,
-  //   updateResult.isSuccess,
-  // ])
+  useEffect(() => {
+    if (createResult.isSuccess || updateResult.isSuccess) {
+      editRoleForm.reset({
+        name: updateResult?.data?.name ?? '',
+        permissions: [] as Permissions[],
+      })
+      updateResult.reset()
+      createResult.reset()
+    }
+  }, [
+    createResult,
+    createResult.isSuccess,
+    editRoleForm,
+    handleSubmit,
+    role?.name,
+    role?.permissions,
+    updateResult,
+    updateResult.isSuccess,
+  ])
 
   return (
     <EditRoleContext.Provider
@@ -133,6 +127,7 @@ export function EditRoleProvider({
         roleFormControl: editRoleForm.control,
         editRoleForm,
         isFormTouched: editRoleForm.formState.isDirty,
+        loadingEdit: updateResult.isLoading || createResult.isLoading,
       }}
     >
       {children}
