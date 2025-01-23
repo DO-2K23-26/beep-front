@@ -44,9 +44,6 @@ export function InputImageSettings({
 
     if (type === 'webhookpicture') {
       if (!channelId || !webhookId) {
-        console.error(
-          'Missing channelId or webhooksId for webhook picture update'
-        )
         return
       }
       await updateWebhookPicture({

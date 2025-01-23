@@ -17,6 +17,7 @@ export const CreateWebhookSettingsContext =
   createContext<ICreateWebhookSettingsContext>({
     serverId: undefined,
     methodsAddWebhook: {} as UseFormReturn<CreateWebhookForm>,
+    // eslint-disable-next-line @typescript-eslint/no-empty-function
     onCreateWebhook: () => {},
     control: {} as Control<CreateWebhookForm>,
   })
