@@ -46,7 +46,7 @@ export function PermissionEdition() {
           <div className="flex flex-row gap-2">
             <ButtonIcon
               title="Reset"
-              onClick={editRoleForm?.reset}
+              onClick={() => editRoleForm?.reset()}
             ></ButtonIcon>
             <ButtonIcon
               title="Save"
