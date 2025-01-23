@@ -394,7 +394,7 @@
       "permission_to_use": "Ask for input device permission",
       "access_blocked": "Permission denied. Access to video and audio input devices is blocked."
     },
-    "webhooks-settings-server":{
+    "webhooks-settings-server": {
       "webhooks": "WEBHOOKS",
       "new_webhook": "New webhook"
     },
@@ -412,8 +412,31 @@
         "channel_required": "Please select a channel.",
         "cancel": "Cancel",
         "create": "Create"
+      }
+    },
+    "webhook-list": {
+      "no_webhooks": "No webhooks found.",
+      "loading": "Loading webhooks...",
+      "error": "Error"
+    },
+    "webhook-item": {
+      "upload_picture": "Upload picture",
+      "name_required": "Name is required",
+      "name_label": "Webhook Name",
+      "channel_label": "Channel",
+      "copy_webhook": "Copy Webhook URL",
+      "delete_webhook": "Delete Webhook",
+      "error_delete": "Failed to delete webhook",
+      "save": "Save",
+      "error_missing_webhook": "Webhook not found",
+      "success_update": "Webhook updated successfully",
+      "error_update": "Failed to update webhook",
+      "webhook_missing": "Webhook not found",
+      "success_delete": "Webhook deleted successfully",
+      "copy_success": "Webhook URL copied to clipboard",
+      "copy_error": "Failed to copy webhook URL",
+      "token_missing": "Webhook token not found"
     }
-  }
   },
   "settings": {
     "components": {
