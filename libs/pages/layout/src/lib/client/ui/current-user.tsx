@@ -85,7 +85,7 @@ export default function CurrentUser() {
             className="cursor-pointer"
           >
             <Icon
-              name={isScreenShared ? 'lucide:screen-share' : 'lucide:screen-share-off'}
+              name={isScreenShared ? 'lucide:screen-share-off' : 'lucide:screen-share'}
               className={iconSize}
             />
           </Button>

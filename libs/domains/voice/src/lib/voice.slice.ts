@@ -12,7 +12,6 @@ export const initializeDevices = createAsyncThunk(
   'webRTC/initializeDevices',
   async (_, { dispatch, rejectWithValue, getState }) => {
     try {
-      console.log('IIIIIIIIININININNININIIIIIIIIIIIIIIIIITIALIZEDEVICESSSSSSSSSSSSSSSSSSSS')
       const devicesIn = await navigator.mediaDevices.enumerateDevices()
       const audioInput =
         devicesIn.find((device) => device.kind === 'audioinput') || null
@@ -134,7 +133,6 @@ const webrtcSlice = createSlice({
       >
     ) {
       state.sortedMembers = action.payload
-      console.log('update sortedMembers', state.sortedMembers)
     },
     setUserStreams(
       state,

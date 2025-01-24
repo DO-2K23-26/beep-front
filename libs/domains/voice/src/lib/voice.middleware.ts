@@ -1,18 +1,14 @@
 import { Middleware } from '@reduxjs/toolkit'
 import {
   addRemoteStream,
-  setAudioInputDevice,
   setConnectionState,
-  setDevices,
   setLocalStream,
   setRemoteStreams,
   setServerPresence,
   setUserStreams,
-  setVideoDevice,
 } from './voice.slice'
 import { webrtcUrl } from '@beep/contracts'
 import { Socket, Presence, Channel } from 'phoenix'
-import { channel } from 'diagnostics_channel'
 
 const WebRTCMiddleware: Middleware = (store) => {
   const pcConfig: RTCConfiguration = {}
@@ -25,32 +21,15 @@ const WebRTCMiddleware: Middleware = (store) => {
   let id: string | undefined
   let camTransceiver: RTCRtpTransceiver | undefined = undefined
   let micTransceiver: RTCRtpTransceiver | undefined = undefined
-  let callback: ((value: string | PromiseLike<string>) => void) | null
-  let path: string
-  let offer
-  let response
-  let server_answer
-  let remoteAnswer
+  let remoteAnswer: RTCLocalSessionDescriptionInit
   let audio: MediaStream | null
   let video: MediaStream | null
   const endpoint = webrtcUrl
-  // async function negotiate() {
-  //   if (!peerConnection) return;
-  //   const negotiate_offer = await peerConnection.createOffer()
-  //   await peerConnection.setLocalDescription(negotiate_offer);
-  //   offerChannel?.send(JSON.stringify(negotiate_offer));
-  //   const json = (await new Promise((resolve) => {
-  //     callback = resolve;
-  //   })) as string;
-  //   const negotiate_answer = JSON.parse(json);
-  //   await peerConnection.setRemoteDescription(negotiate_answer);
-  // }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   return (next) => async (action: any) => {
     switch (action.type) {
       case 'INITIALIZE_PRESENCE':
-        console.log('action', action)
         socket = new Socket(
           'ws://' + endpoint + '/socket/' + action.payload.server
         )
@@ -62,7 +41,6 @@ const WebRTCMiddleware: Middleware = (store) => {
           })
           const presence = new Presence(socketChannel)
           presence.onSync(() => {
-            console.log('presence update ', presence.list())
             const users = presence
               .list()
               .map((user) => {
@@ -88,13 +66,8 @@ const WebRTCMiddleware: Middleware = (store) => {
           })
           socketChannel
             .join()
-            .receive('ok', (_) =>
-              console.log('Joined currentChannel peer:signalling')
-            )
             .receive('error', (resp) => {
-              console.error('Unable to join the room:', resp)
               socket.disconnect()
-              //TODO handle deconnection
 
               let innerText = 'Unable to join the room'
               if (resp === 'peer_limit_reached') {
@@ -110,7 +83,6 @@ const WebRTCMiddleware: Middleware = (store) => {
 
       case 'INITIALIZE_WEBRTC':
         if (currentChannel) {
-          console.log('Leaving to reconnect')
           currentChannel.leave()
           store.dispatch(setRemoteStreams([]))
           const socketChannel = socket.channel(
@@ -122,7 +94,6 @@ const WebRTCMiddleware: Middleware = (store) => {
           )
           const presence = new Presence(socketChannel)
           presence.onSync(() => {
-            console.log('presence update ', presence.list())
             const users = presence
               .list()
               .map((user) => {
@@ -148,13 +119,8 @@ const WebRTCMiddleware: Middleware = (store) => {
           })
           socketChannel
             .join()
-            .receive('ok', (_) =>
-              console.log('Joined currentChannel peer:signalling')
-            )
             .receive('error', (resp) => {
-              console.error('Unable to join the room:', resp)
               socket.disconnect()
-              //TODO handle deconnection
 
               let innerText = 'Unable to join the room'
               if (resp === 'peer_limit_reached') {
@@ -168,30 +134,6 @@ const WebRTCMiddleware: Middleware = (store) => {
           peerConnection?.close()
           peerConnection = null
         }
-
-        // if (action.payload.videoDevice == null) {
-        //   const result = await store.dispatch(initializeDevices())
-        //   unwrapResult(result)
-        // }
-        //
-        // console.log('action.payload.videoDevice', action.payload.videoDevice)
-        // if (action.payload.videoDevice == null) {
-        //   await navigator.mediaDevices.getUserMedia({
-        //     audio: true,
-        //     video: true,
-        //   })
-        //   const devicesIn = await navigator.mediaDevices.enumerateDevices()
-        //   action.payload.audioInputDevice =
-        //     devicesIn.find((device) => device.kind === 'audioinput') || null
-        //   action.payload.videoDevice =
-        //     devicesIn.find((device) => device.kind === 'videoinput') || null
-        //   store.dispatch(setDevices(devicesIn))
-        //   if (action.payload.audioInputDevice)
-        //     store.dispatch(setAudioInputDevice(action.payload.audioInputDevice))
-        //   if (action.payload.videoDevice)
-        //     store.dispatch(setVideoDevice(action.payload.videoDevice))
-        // }
-
 
         if (!action.payload.isVoiceMuted) {
           audio = await navigator.mediaDevices.getUserMedia({
@@ -211,11 +153,9 @@ const WebRTCMiddleware: Middleware = (store) => {
           })
           store.dispatch(setLocalStream(video))
         }
-        console.log('audio', audio)
         peerConnection = new RTCPeerConnection(pcConfig)
 
         peerConnection.onconnectionstatechange = () => {
-          console.log('CONNECTION STATE CHANGE', peerConnection.connectionState)
           store.dispatch(
             setConnectionState(peerConnection?.connectionState || 'failed')
           )
@@ -224,32 +164,16 @@ const WebRTCMiddleware: Middleware = (store) => {
           }
         }
 
-        peerConnection.onicecandidateerror = (ev) => {
-          console.log(ev)
-        }
-
-        peerConnection.onicegatheringstatechange = (e) => {
-          console.log(e)
-        }
-
-        peerConnection.onsignalingstatechange = (e) => {
-          console.log(e)
-        }
-
         peerConnection.onicecandidate = (event: RTCPeerConnectionIceEvent) => {
-          console.log('icecandidate', event)
           if (event.candidate == null) {
-            console.log('Gathering candidates complete')
             return
           }
 
           const candidate = JSON.stringify(event.candidate)
-          console.log('Sending ICE candidate: ' + candidate)
           currentChannel.push('ice_candidate', { body: candidate })
         }
 
         peerConnection.ontrack = (event: RTCTrackEvent) => {
-          console.log('ontrack', event)
           const stream = event.transceiver
           store.dispatch(addRemoteStream(stream))
         }
@@ -261,7 +185,6 @@ const WebRTCMiddleware: Middleware = (store) => {
           }
           return true
         })
-        console.log('username', action.payload)
         currentChannel = socket.channel(
           `peer:signalling-${action.payload.channel}`,
           {
@@ -277,7 +200,6 @@ const WebRTCMiddleware: Middleware = (store) => {
         id = action.payload.token
         currentChannelId = action.payload.channel
         currentChannel.onError(() => {
-          console.error('Error in currentChannel peer:signalling')
           store.dispatch({
             type: 'INITIALIZE_WEBRTC',
             payload: {
@@ -292,29 +214,8 @@ const WebRTCMiddleware: Middleware = (store) => {
             },
           })
         })
-        // currentChannel.on('device_event', (payload) => {
-        //   console.log('device_event', payload)
-        //   // store.dispatch(
-        //   //   setServerPresence({
-        //   //     channelId: action.payload.channel,
-        //   //     users: [
-        //   //       {
-        //   //         id: payload.user_id,
-        //   //         username: 'unknown',
-        //   //         expiresAt: 0,
-        //   //         userSn: 'not used',
-        //   //         voiceMuted: false,
-        //   //         muted: false,
-        //   //         camera: payload.camera_on,
-        //   //       },
-        //   //     ],
-        //   //   })
-        //   // )
-        // })
         currentChannel.on('sdp_offer', async (payload) => {
           const sdpOffer = payload.body
-
-          console.log('SDP offer received', payload)
 
           await peerConnection.setRemoteDescription({
             type: 'offer',
@@ -324,7 +225,6 @@ const WebRTCMiddleware: Middleware = (store) => {
           if (camTransceiver == undefined && micTransceiver == undefined) {
             camTransceiver = peerConnection.getTransceivers()[0]
             micTransceiver = peerConnection.getTransceivers()[1]
-            console.log('Creating transceivers', camTransceiver, micTransceiver, peerConnection.getTransceivers())
           }
 
           if (video !== null) {
@@ -342,15 +242,12 @@ const WebRTCMiddleware: Middleware = (store) => {
 
           const sdpAnswer = await peerConnection?.createAnswer()
           await peerConnection?.setLocalDescription(sdpAnswer)
-
-          console.log('SDP offer applied, forwarding SDP answer', sdpAnswer)
           const answer = peerConnection?.localDescription
           currentChannel?.push('sdp_answer', { body: answer?.sdp })
         })
 
         currentChannel.on('ice_candidate', (payload) => {
           const candidate = JSON.parse(payload.body)
-          console.log('Received ICE candidate: ' + payload.body)
           peerConnection.addIceCandidate(candidate)
         })
 
@@ -363,7 +260,6 @@ const WebRTCMiddleware: Middleware = (store) => {
           const presence = []
           currentPresence.list().map((user) => {
             if (!user.metas[0].user.watcher) {
-              console.log('user meta', user.metas)
               if (user.metas[0].user.id === action.payload.token) {
                 const outbounds = user.metas[0].user.outbounds
                 if (outbounds) {
@@ -382,12 +278,6 @@ const WebRTCMiddleware: Middleware = (store) => {
               }
             }
           })
-          console.log('presence', presence)
-          // presence.map((user) => {
-          //   if (user.video == null) {
-          //     video = null
-          //   }
-          // })
           store.dispatch(setUserStreams(presence))
 
           const users = currentPresence
@@ -416,11 +306,7 @@ const WebRTCMiddleware: Middleware = (store) => {
 
         currentChannel
           .join()
-          .receive('ok', (_) =>
-            console.log('Joined currentChannel peer:signalling')
-          )
           .receive('error', (resp) => {
-            console.error('Unable to join the room:', resp)
             socket.disconnect()
 
             let innerText = 'Unable to join the room'
@@ -433,16 +319,15 @@ const WebRTCMiddleware: Middleware = (store) => {
 
         break
 
-      case 'HANDLE_REMOTE_OFFER':
-        if (!peerConnection) break
-        await peerConnection.setRemoteDescription(action.payload)
-        remoteAnswer = await peerConnection.createAnswer()
-        await peerConnection.setLocalDescription(remoteAnswer)
-        // offerChannel?.send(JSON.stringify(remoteAnswer));
-        break
-
       case 'START_SCREEN':
         if (!peerConnection) break
+        if (video === null) {
+          currentChannel?.push('device_event', {
+            device: 'video',
+            event: true,
+            user_id: id,
+          })
+        }
         video = await navigator.mediaDevices.getDisplayMedia({
           video: {
             width: 320,
@@ -455,6 +340,13 @@ const WebRTCMiddleware: Middleware = (store) => {
 
       case 'STOP_SCREEN':
         if (!peerConnection) break
+        if (video !== null) {
+          currentChannel?.push('device_event', {
+            device: 'video',
+            event: false,
+            user_id: id,
+          })
+        }
         await camTransceiver.sender.replaceTrack(null)
         video.getTracks().forEach((track) => track.stop())
         video = null
@@ -463,6 +355,13 @@ const WebRTCMiddleware: Middleware = (store) => {
 
       case 'START_CAM':
         if (!peerConnection) break
+        if (video === null) {
+          currentChannel?.push('device_event', {
+            device: 'video',
+            event: true,
+            user_id: id,
+          })
+        }
         video = await navigator.mediaDevices.getUserMedia({
               video: {
                 width: 320,
@@ -472,37 +371,6 @@ const WebRTCMiddleware: Middleware = (store) => {
             })
         await camTransceiver.sender.replaceTrack(video.getTracks()[0])
         store.dispatch(setLocalStream(video))
-        currentChannel?.push('device_event', {
-          user_id: id,
-          device: 'video',
-          event: true,
-        })
-        // try {
-        //   if (camTransceiver) {
-        //     // video = await navigator.mediaDevices.getUserMedia({
-        //     //   video: {
-        //     //     width: 320,
-        //     //     height: 240,
-        //     //     deviceId: action.payload.deviceId,
-        //     //   },
-        //     // })
-        //     // video.getTracks()[0].enabled = true
-        //     currentChannel?.push('device_event', {
-        //       user_id: id,
-        //       device: 'video',
-        //       event: true,
-        //     })
-        //     console.log('Replacing local video tracks to peer connection: ', video)
-        //   } else {
-        //     console.log('PA POSSIBLE', video)
-        //
-        //   }
-        //   store.dispatch(setLocalStream(video))
-        //   currentChannel?.push('sdp_offer', { body: null })
-        //
-        // } catch (error) {
-        //   console.error('Error starting camera:', error)
-        // }
         break
 
       case 'STOP_CAM':
@@ -514,34 +382,8 @@ const WebRTCMiddleware: Middleware = (store) => {
         currentChannel?.push('device_event', {
           device: 'video',
           event: false,
-          user_id: id
+          user_id: id,
         })
-        // await camTransceiver.sender.replaceTrack(video.getTracks()[0])
-        // console.log('SENDERS', peerConnection.getSenders())
-        // store.dispatch(setLocalStream(null))
-        // // video?.getTracks().forEach((track) => {
-        // //   track.stop()
-        // // })
-        //
-        // // peerConnection.removeTrack(camSender)
-        // // camSender.track.stop()
-        // // camTransceiver.sender.track.stop()
-        // peerConnection.getTransceivers()[0].sender.replaceTrack(null)
-        // peerConnection.getTransceivers()[0].direction = 'recvonly'
-        // peerConnection.getTransceivers()[0].stop()
-        // // await camTransceiver?.sender.replaceTrack(null)
-        // // camTransceiver.direction = 'recvonly'
-        // // video = null
-        // currentChannel?.push('device_event', { user_id: id, device: 'video', event: false })
-        // console.log("SENDERS",peerConnection.getSenders())
-        // currentChannel?.push('sdp_offer', { body: null })
-        // await camSender?.replaceTrack(null)
-        // peerConnection?.getTransceivers().forEach((transceiver) => {
-        //   if (transceiver.sender.track === null) {
-        //     peerConnection.removeTrack(transceiver.sender)
-        //     transceiver.stop()
-        //   }
-        // })
         break
 
       case 'STOP_MIC':
@@ -550,11 +392,10 @@ const WebRTCMiddleware: Middleware = (store) => {
         audio.getTracks().forEach((track) => track.stop())
         audio = null
         currentChannel?.push('device_event', {
-          user_id: id,
           device: 'audio',
           event: false,
+          user_id: id,
         })
-        console.log('VIDEO IS MUTED ?', video)
         break
 
       case 'START_MIC':
@@ -565,9 +406,9 @@ const WebRTCMiddleware: Middleware = (store) => {
           },
         })
         currentChannel?.push('device_event', {
-          user_id: id,
           device: 'audio',
           event: true,
+          user_id: id,
         })
         await micTransceiver.sender.replaceTrack(audio.getTracks()[0])
         break
@@ -584,6 +425,7 @@ const WebRTCMiddleware: Middleware = (store) => {
         currentChannel.leave()
         store.dispatch(setRemoteStreams([]))
         store.dispatch(setLocalStream(null))
+        // eslint-disable-next-line no-case-declarations
         const socketChannel = socket.channel(
           `peer:signalling-${currentChannelId}`,
           {
@@ -593,7 +435,6 @@ const WebRTCMiddleware: Middleware = (store) => {
         )
         const presence = new Presence(socketChannel)
         presence.onSync(() => {
-          console.log('presence update ', presence.list())
           const users = presence
             .list()
             .map((user) => {
@@ -619,13 +460,8 @@ const WebRTCMiddleware: Middleware = (store) => {
         })
         socketChannel
           .join()
-          .receive('ok', (_) =>
-            console.log('Joined currentChannel peer:signalling')
-          )
           .receive('error', (resp) => {
-            console.error('Unable to join the room:', resp)
             socket.disconnect()
-            //TODO handle deconnection
 
             let innerText = 'Unable to join the room'
             if (resp === 'peer_limit_reached') {

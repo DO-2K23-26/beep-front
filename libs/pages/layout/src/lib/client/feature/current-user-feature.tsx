@@ -38,13 +38,13 @@ export function CurrentUserFeature() {
     }
   }
 
-  const onPhone = () => {
+  const onScreenShare = () => {
     if (server) {
       dispatch(userActions.toggleIsScreenShared(server.id))
       if (!isScreenShared) {
         if (isCamera) {
           dispatch(userActions.toggleIsCamera(server.id))
-          dispatch({ type: 'STOP_CAM' })
+          // dispatch({ type: 'STOP_CAM' })
         }
         dispatch({ type: 'START_SCREEN' })
       } else {
@@ -58,7 +58,7 @@ export function CurrentUserFeature() {
       if (!isCamera) {
         if (isScreenShared) {
           dispatch(userActions.toggleIsScreenShared(server.id))
-          dispatch({ type: 'STOP_SCREEN' })
+          // dispatch({ type: 'STOP_SCREEN' })
         }
         dispatch({ type: 'START_CAM', payload: videoDevice })
       } else {
@@ -113,7 +113,7 @@ export function CurrentUserFeature() {
       isVoiceMuted={isVoiceMuted}
       isCamera={isCamera}
       onMicrophone={onMicrophone}
-      onScreenShare={onPhone}
+      onScreenShare={onScreenShare}
       onCamera={onCamera}
       methods={methods}
     />

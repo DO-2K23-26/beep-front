@@ -13,7 +13,7 @@ export function ListConnectedUsers({ users }:ListConnectedUsersProps) {
   return (
     <>
       {users.map((user) => (
-        <ConnectedUserRow key={user.id} userId={user.id} name={user.username} muted={user.muted} voiceMuted={user.voiceMuted} camera={user.camera} />
+        <ConnectedUserRow key={user.id} userId={user.id} name={user.username} screenSharing={user.screenSharing} voiceMuted={user.voiceMuted} camera={user.camera} />
       ))}
     </>
   )
