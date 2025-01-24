@@ -133,7 +133,6 @@ const webrtcSlice = createSlice({
       >
     ) {
       state.sortedMembers = action.payload
-      console.log("updated sorted members", state.sortedMembers)
     },
     setUserStreams(
       state,
