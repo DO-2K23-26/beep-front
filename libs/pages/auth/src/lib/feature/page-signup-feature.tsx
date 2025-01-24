@@ -16,8 +16,8 @@ export function PageSignupFeature() {
       email: '',
       password: '',
       username: '',
-      firstName: '',
-      lastName: '',
+      firstname: '',
+      lastname: '',
       profilePicture: new File([], ''),
     },
   })
@@ -50,8 +50,8 @@ export function PageSignupFeature() {
     const formData = new FormData()
     formData.append('email', data.email)
     formData.append('username', data.username)
-    formData.append('firstName', data.firstName)
-    formData.append('lastName', data.lastName)
+    formData.append('firstname', data.firstname)
+    formData.append('lastname', data.lastname)
     formData.append('password', data.password)
     formData.append('profilePicture', data.profilePicture)
     register(formData)

@@ -27,7 +27,7 @@ export function PageSignup({
       <h1 className="font-extrabold text-5xl">Beep</h1>
       <h5>{t('auth.page-signup.welcome_back')}</h5>
       <Controller
-        name="firstName"
+        name="firstname"
         rules={{
           required: t('auth.page-signup.required_firstname'),
           pattern: {
@@ -40,7 +40,7 @@ export function PageSignup({
           <InputText
             label={t('auth.page-signup.firstname')}
             type="text"
-            name="firstName"
+            name="firstname"
             className="w-full !rounded-lg min-h-[40px]"
             value={field.value}
             onChange={field.onChange}
@@ -49,7 +49,7 @@ export function PageSignup({
         )}
       />
       <Controller
-        name="lastName"
+        name="lastname"
         rules={{
           required: t('auth.page-signup.required_lastname'),
           pattern: {
@@ -62,7 +62,7 @@ export function PageSignup({
           <InputText
             label={t('auth.page-signup.lastname')}
             type="text"
-            name="lastName"
+            name="lastname"
             className="w-full !rounded-lg min-h-[40px]"
             value={field.value}
             onChange={field.onChange}
