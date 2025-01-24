@@ -23,8 +23,8 @@ const WebRTCMiddleware: Middleware = (store) => {
   let currentPresence: Presence | undefined = undefined
   let currentChannelId: string | undefined
   let id: string | undefined
-  let camSender: RTCRtpSender | undefined = undefined
-  let micSender: RTCRtpSender | undefined = undefined
+  let camTransceiver: RTCRtpTransceiver | undefined = undefined
+  let micTransceiver: RTCRtpTransceiver | undefined = undefined
   let callback: ((value: string | PromiseLike<string>) => void) | null
   let path: string
   let offer
@@ -73,7 +73,7 @@ const WebRTCMiddleware: Middleware = (store) => {
                     expiresAt: 0,
                     userSn: 'not used',
                     voiceMuted: user.metas[0].user.audio !== undefined,
-                    muted: false,
+                    screenSharing: false,
                     camera: user.metas[0].user.video !== null,
                   }
                 }
@@ -133,7 +133,7 @@ const WebRTCMiddleware: Middleware = (store) => {
                     expiresAt: 0,
                     userSn: 'not used',
                     voiceMuted: user.metas[0].user.audio !== undefined,
-                    muted: false,
+                    screenSharing: false,
                     camera: user.metas[0].user.video !== null,
                   }
                 }
@@ -169,23 +169,28 @@ const WebRTCMiddleware: Middleware = (store) => {
           peerConnection = null
         }
 
-        console.log('action.payload.videoDevice', action.payload.videoDevice)
-        if (action.payload.videoDevice == null) {
-          await navigator.mediaDevices.getUserMedia({
-            audio: true,
-            video: true,
-          })
-          const devicesIn = await navigator.mediaDevices.enumerateDevices()
-          action.payload.audioInputDevice =
-            devicesIn.find((device) => device.kind === 'audioinput') || null
-          action.payload.videoDevice =
-            devicesIn.find((device) => device.kind === 'videoinput') || null
-          store.dispatch(setDevices(devicesIn))
-          if (action.payload.audioInputDevice)
-            store.dispatch(setAudioInputDevice(action.payload.audioInputDevice))
-          if (action.payload.videoDevice)
-            store.dispatch(setVideoDevice(action.payload.videoDevice))
-        }
+        // if (action.payload.videoDevice == null) {
+        //   const result = await store.dispatch(initializeDevices())
+        //   unwrapResult(result)
+        // }
+        //
+        // console.log('action.payload.videoDevice', action.payload.videoDevice)
+        // if (action.payload.videoDevice == null) {
+        //   await navigator.mediaDevices.getUserMedia({
+        //     audio: true,
+        //     video: true,
+        //   })
+        //   const devicesIn = await navigator.mediaDevices.enumerateDevices()
+        //   action.payload.audioInputDevice =
+        //     devicesIn.find((device) => device.kind === 'audioinput') || null
+        //   action.payload.videoDevice =
+        //     devicesIn.find((device) => device.kind === 'videoinput') || null
+        //   store.dispatch(setDevices(devicesIn))
+        //   if (action.payload.audioInputDevice)
+        //     store.dispatch(setAudioInputDevice(action.payload.audioInputDevice))
+        //   if (action.payload.videoDevice)
+        //     store.dispatch(setVideoDevice(action.payload.videoDevice))
+        // }
 
 
         if (!action.payload.isVoiceMuted) {
@@ -286,7 +291,6 @@ const WebRTCMiddleware: Middleware = (store) => {
               username: action.payload.username,
             },
           })
-          //window.location.reload();
         })
         // currentChannel.on('device_event', (payload) => {
         //   console.log('device_event', payload)
@@ -317,20 +321,22 @@ const WebRTCMiddleware: Middleware = (store) => {
             sdp: sdpOffer,
           })
 
+          if (camTransceiver == undefined && micTransceiver == undefined) {
+            camTransceiver = peerConnection.getTransceivers()[0]
+            micTransceiver = peerConnection.getTransceivers()[1]
+            console.log('Creating transceivers', camTransceiver, micTransceiver, peerConnection.getTransceivers())
+          }
+
           if (video !== null) {
-            console.log('Adding local video tracks to peer connection')
             video.getTracks().forEach((track) => {
-              if (!peerConnection.getSenders().some(sender => sender.track === track)) {
-                camSender = peerConnection.addTrack(track)
-              }
+              camTransceiver.sender.replaceTrack(track)
+              camTransceiver.direction = 'sendrecv'
             })
           }
           if (audio !== null) {
-            console.log('Adding local audio tracks to peer connection')
             audio.getTracks().forEach((track) => {
-              if (!peerConnection.getSenders().some(sender => sender.track === track)) {
-                micSender = peerConnection.addTrack(track)
-              }
+              micTransceiver.sender.replaceTrack(track)
+              micTransceiver.direction = 'sendrecv'
             })
           }
 
@@ -348,7 +354,6 @@ const WebRTCMiddleware: Middleware = (store) => {
           peerConnection.addIceCandidate(candidate)
         })
 
-        //TODO know why
         store.dispatch(
           setServerPresence({ channelId: action.payload.channel, users: [] })
         )
@@ -395,7 +400,7 @@ const WebRTCMiddleware: Middleware = (store) => {
                   expiresAt: 0,
                   userSn: 'not used',
                   voiceMuted: user.metas[0].user.audio !== undefined,
-                  muted: false,
+                  screenSharing: false,
                   camera: user.metas[0].user.video !== null,
                 }
               }
@@ -417,7 +422,6 @@ const WebRTCMiddleware: Middleware = (store) => {
           .receive('error', (resp) => {
             console.error('Unable to join the room:', resp)
             socket.disconnect()
-            //TODO handle deconnection
 
             let innerText = 'Unable to join the room'
             if (resp === 'peer_limit_reached') {
@@ -430,70 +434,106 @@ const WebRTCMiddleware: Middleware = (store) => {
         break
 
       case 'HANDLE_REMOTE_OFFER':
-        if (!peerConnection) return
+        if (!peerConnection) break
         await peerConnection.setRemoteDescription(action.payload)
         remoteAnswer = await peerConnection.createAnswer()
         await peerConnection.setLocalDescription(remoteAnswer)
         // offerChannel?.send(JSON.stringify(remoteAnswer));
         break
 
+      case 'START_SCREEN':
+        if (!peerConnection) break
+        video = await navigator.mediaDevices.getDisplayMedia({
+          video: {
+            width: 320,
+            height: 240,
+          },
+        })
+        await camTransceiver.sender.replaceTrack(video.getTracks()[0])
+        store.dispatch(setLocalStream(video))
+        break
+
+      case 'STOP_SCREEN':
+        if (!peerConnection) break
+        await camTransceiver.sender.replaceTrack(null)
+        video.getTracks().forEach((track) => track.stop())
+        video = null
+        store.dispatch(setLocalStream(null))
+        break
+
       case 'START_CAM':
         if (!peerConnection) break
-        try {
-          if (camSender) {
-            video = await navigator.mediaDevices.getUserMedia({
+        video = await navigator.mediaDevices.getUserMedia({
               video: {
                 width: 320,
                 height: 240,
                 deviceId: action.payload.deviceId,
               },
             })
-            video.getTracks()[0].enabled = true
-            currentChannel?.push('device_event', {
-              user_id: id,
-              device: 'video',
-              event: true,
-            })
-            console.log('Replacing local video tracks to peer connection: ', video)
-            camSender.replaceTrack(video.getTracks()[0])
-          } else {
-            video = await navigator.mediaDevices.getUserMedia({
-              video: {
-                width: 320,
-                height: 240,
-                deviceId: action.payload.deviceId,
-              },
-            })
-            console.log('Adding local video tracks to peer connection: ', video)
-            camSender = peerConnection.addTrack(video.getTracks()[0])
-            peerConnection.getTransceivers().forEach((transceiver) => {
-              transceiver.direction = 'sendrecv'
-            })
-          }
-          store.dispatch(setLocalStream(video))
-          // currentChannel?.push('sdp_offer', { body: null })
-
-        } catch (error) {
-          console.error('Error starting camera:', error)
-        }
+        await camTransceiver.sender.replaceTrack(video.getTracks()[0])
+        store.dispatch(setLocalStream(video))
+        currentChannel?.push('device_event', {
+          user_id: id,
+          device: 'video',
+          event: true,
+        })
+        // try {
+        //   if (camTransceiver) {
+        //     // video = await navigator.mediaDevices.getUserMedia({
+        //     //   video: {
+        //     //     width: 320,
+        //     //     height: 240,
+        //     //     deviceId: action.payload.deviceId,
+        //     //   },
+        //     // })
+        //     // video.getTracks()[0].enabled = true
+        //     currentChannel?.push('device_event', {
+        //       user_id: id,
+        //       device: 'video',
+        //       event: true,
+        //     })
+        //     console.log('Replacing local video tracks to peer connection: ', video)
+        //   } else {
+        //     console.log('PA POSSIBLE', video)
+        //
+        //   }
+        //   store.dispatch(setLocalStream(video))
+        //   currentChannel?.push('sdp_offer', { body: null })
+        //
+        // } catch (error) {
+        //   console.error('Error starting camera:', error)
+        // }
         break
 
       case 'STOP_CAM':
-        console.log('SENDERS', peerConnection.getSenders())
-        store.dispatch(setLocalStream(null))
-        video?.getTracks().forEach((track) => {
-          track.stop()
-        })
-
-        peerConnection.removeTrack(camSender)
-        // camSender.track.stop()
+        if (!peerConnection) break
+        await camTransceiver.sender.replaceTrack(null)
+        video.getTracks().forEach((track) => track.stop())
         video = null
+        store.dispatch(setLocalStream(null))
         currentChannel?.push('device_event', {
           device: 'video',
           event: false,
           user_id: id
         })
-        console.log("SENDERS",peerConnection.getSenders())
+        // await camTransceiver.sender.replaceTrack(video.getTracks()[0])
+        // console.log('SENDERS', peerConnection.getSenders())
+        // store.dispatch(setLocalStream(null))
+        // // video?.getTracks().forEach((track) => {
+        // //   track.stop()
+        // // })
+        //
+        // // peerConnection.removeTrack(camSender)
+        // // camSender.track.stop()
+        // // camTransceiver.sender.track.stop()
+        // peerConnection.getTransceivers()[0].sender.replaceTrack(null)
+        // peerConnection.getTransceivers()[0].direction = 'recvonly'
+        // peerConnection.getTransceivers()[0].stop()
+        // // await camTransceiver?.sender.replaceTrack(null)
+        // // camTransceiver.direction = 'recvonly'
+        // // video = null
+        // currentChannel?.push('device_event', { user_id: id, device: 'video', event: false })
+        // console.log("SENDERS",peerConnection.getSenders())
         // currentChannel?.push('sdp_offer', { body: null })
         // await camSender?.replaceTrack(null)
         // peerConnection?.getTransceivers().forEach((transceiver) => {
@@ -505,46 +545,42 @@ const WebRTCMiddleware: Middleware = (store) => {
         break
 
       case 'STOP_MIC':
-        await micSender?.replaceTrack(null)
-        audio?.getTracks().forEach((track) => track.stop())
+        if (!peerConnection) break
+        await micTransceiver.sender.replaceTrack(null)
+        audio.getTracks().forEach((track) => track.stop())
         audio = null
+        currentChannel?.push('device_event', {
+          user_id: id,
+          device: 'audio',
+          event: false,
+        })
+        console.log('VIDEO IS MUTED ?', video)
         break
 
       case 'START_MIC':
         if (!peerConnection) break
-        try {
-          if (micSender) {
-            audio = await navigator.mediaDevices.getUserMedia({
-              audio: {
-                deviceId: action.payload.deviceId,
-              },
-            })
-            await micSender?.replaceTrack(audio.getTracks()[0])
-          } else {
-            audio = await navigator.mediaDevices.getUserMedia({
-              audio: {
-                deviceId: action.payload.deviceId,
-              },
-            })
-            micSender = peerConnection.addTrack(audio.getTracks()[0])
-          }
-          // await negotiate()
-        } catch (error) {
-          /* empty */
-        }
+        audio = await navigator.mediaDevices.getUserMedia({
+          audio: {
+            deviceId: action.payload.deviceId,
+          },
+        })
+        currentChannel?.push('device_event', {
+          user_id: id,
+          device: 'audio',
+          event: true,
+        })
+        await micTransceiver.sender.replaceTrack(audio.getTracks()[0])
         break
 
       case 'CLOSE_WEBRTC':
-        // await camTransceiver?.sender?.replaceTrack(null);
-        // camTransceiver?.stop()
-        // camTransceiver = undefined
-        // video?.getTracks().forEach((track) => { track.stop() });
-        // video = null
-        // await micTransceiver?.sender?.replaceTrack(null);
-        // micTransceiver?.stop()
-        // micTransceiver = undefined
-        // audio?.getTracks().forEach((track) => track.stop())
-        // audio = null
+        camTransceiver?.stop()
+        camTransceiver = undefined
+        micTransceiver?.stop()
+        micTransceiver = undefined
+        video?.getTracks().forEach((track) => { track.stop() });
+        video = null
+        audio?.getTracks().forEach((track) => track.stop())
+        audio = null
         currentChannel.leave()
         store.dispatch(setRemoteStreams([]))
         store.dispatch(setLocalStream(null))
@@ -568,7 +604,7 @@ const WebRTCMiddleware: Middleware = (store) => {
                   expiresAt: 0,
                   userSn: 'not used',
                   voiceMuted: user.metas[0].user.audio !== undefined,
-                  muted: false,
+                  screenSharing: false,
                   camera: user.metas[0].user.video !== null,
                 }
               }

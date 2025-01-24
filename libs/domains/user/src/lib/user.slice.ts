@@ -12,7 +12,7 @@ export const initialUserState: UserState = {
   isAuthenticated: false,
   isLoading: true,
   tokens: {},
-  isMuted: false,
+  isScreenShared: false,
   isVoiceMuted: false,
   isCamera: true,
 }
@@ -47,8 +47,8 @@ export const userSlice = createSlice({
     updateIsLoading(state, payload: PayloadAction<boolean>) {
       state.isLoading = payload.payload
     },
-    toggleIsMuted(state: UserState, payload: PayloadAction<string>) {
-      state.isMuted = !state.isMuted
+    toggleIsScreenShared(state: UserState, payload: PayloadAction<string>) {
+      state.isScreenShared = !state.isScreenShared
     },
     toggleIsVoiceMuted(state: UserState, payload: PayloadAction<string>) {
       state.isVoiceMuted = !state.isVoiceMuted
@@ -63,6 +63,6 @@ export const { currentUser } = userSlice.selectors
 export const getUserState = (root: RootState) => root[USER_KEY]
 export const userReducer = userSlice.reducer
 export const userActions = userSlice.actions
-export const { toggleIsMuted } = userActions
+export const { toggleIsScreenShared } = userActions
 export const { toggleIsVoiceMuted } = userActions
 export const { toggleIsCamera } = userActions

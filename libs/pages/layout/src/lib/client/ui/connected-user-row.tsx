@@ -4,7 +4,7 @@ import { useFetchProfilePictureQuery } from '@beep/user'
 interface ConnectedUserRowProps {
   userId: string
   name: string
-  muted?: boolean
+  screenSharing?: boolean
   voiceMuted?: boolean
   camera?: boolean
 }
@@ -12,7 +12,7 @@ interface ConnectedUserRowProps {
 export default function ConnectedUserRow({
   userId,
   name,
-  muted,
+  screenSharing,
   voiceMuted,
   camera,
 }: ConnectedUserRowProps) {
@@ -37,7 +37,7 @@ export default function ConnectedUserRow({
           className="h-4 w-4"
         />
         <Icon
-          name={muted ? 'lucide:volume-x' : 'lucide:volume-2'}
+          name={screenSharing ? 'lucide:screen-share' : 'lucide:screen-share-off'}
           className="h-4 w-4"
         />
         {camera && <Icon name="lucide:video" className="h-4 w-4" />}

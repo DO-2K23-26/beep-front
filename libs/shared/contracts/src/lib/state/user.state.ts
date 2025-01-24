@@ -21,7 +21,7 @@ export interface UserState {
     lastName: string
     email: string
   }
-  isMuted: boolean
+  isScreenShared: boolean
   isVoiceMuted: boolean
   isCamera: boolean
 }

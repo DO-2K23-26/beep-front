@@ -81,11 +81,11 @@ export default function CurrentUser() {
           </Button>
           <Button
             style={ButtonStyle.NONE}
-            onClick={onPhone}
+            onClick={onScreenShare}
             className="cursor-pointer"
           >
             <Icon
-              name={isMuted ? 'lucide:volume-x' : 'lucide:volume-2'}
+              name={isScreenShared ? 'lucide:screen-share' : 'lucide:screen-share-off'}
               className={iconSize}
             />
           </Button>

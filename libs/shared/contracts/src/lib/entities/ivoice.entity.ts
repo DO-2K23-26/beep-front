@@ -14,5 +14,6 @@ export interface IVoice {
   devices: MediaDeviceInfo[];
   connectionState: string;
   channelStatus: string;
+  needConnection: boolean;
   sortedMembers: {user: UserConnectedEntity, stream: MediaStream}[]
 }

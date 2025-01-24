@@ -210,7 +210,7 @@ export const serverApi = createApi({
       {
         serverId: string
         channelId: string
-        userState: { muted: boolean; voiceMuted: boolean; camera: boolean }
+        userState: { screenSharing: boolean; voiceMuted: boolean; camera: boolean }
       }
     >({
       query: ({ serverId, channelId, userState }) => ({
