@@ -1,11 +1,19 @@
 import { voiceChannelActions } from "@beep/channel"
 import { getUserState, useGetMeQuery } from "@beep/user"
 import { ChannelEntity, OccupiedChannelEntity, ServerEntity } from "@beep/contracts"
-import { useJoinVoiceChannelMutation, useLeaveVoiceChannelMutation } from "@beep/server"
+import { useGetServerChannelsQuery } from '@beep/server'
 import { AppDispatch } from "@beep/store"
-import { associateUsersToStreams, getVoiceState, setCurrentChannelId, setSortedMembers } from "@beep/voice"
-import { useCallback, useEffect } from "react"
+import {
+  associateUsersToStreams,
+  getVoiceState, initializeDevices,
+  setCurrentChannelId,
+  setNeedConnection,
+  setSortedMembers
+} from '@beep/voice'
+import { useEffect } from "react"
 import { useDispatch, useSelector } from "react-redux"
+import { unwrapResult } from '@reduxjs/toolkit'
+import { skipToken } from '@reduxjs/toolkit/query'
 
 interface VoiceChannelsReturn {
   onJoinVoiceChannel: (channel: ChannelEntity) => void
@@ -22,22 +30,49 @@ export function useVoiceChannels({
 
   const dispatch = useDispatch<AppDispatch>()
   const { data: me } = useGetMeQuery()
-  const { remoteStreams, currentChannelId, videoDevice, audioInputDevice } =
+  const { remoteStreams, currentChannelId, videoDevice, audioInputDevice, userStreams, serverPresence, needConnection } =
     useSelector(getVoiceState)
 
-  const { isMuted, isVoiceMuted, isCamera } = useSelector(getUserState)
-  const [joinServer] = useJoinVoiceChannelMutation()
+  const { isScreenShared, isVoiceMuted, isCamera } = useSelector(getUserState)
 
+  const { data: channels } = useGetServerChannelsQuery(
+    server ? server.id : skipToken
+  )
 
-  const [leaveServer] = useLeaveVoiceChannelMutation()
+  useEffect(() => {
+    if (server && channels?.voiceChannels && me?.id) {
+      dispatch({
+        type: 'INITIALIZE_PRESENCE',
+        payload: {
+          channels: channels?.voiceChannels.map((channel) => channel.id),
+          server: server?.id,
+          id: me?.id,
+        },
+      })
+    }
+  }, [server, channels?.voiceChannels, dispatch, me?.id])
 
-
-  const handleReload = useCallback(() => {
-    leaveServer()
-  }, [leaveServer])
+  useEffect(() => {
+    if (server && me && currentChannelId && needConnection && (videoDevice || audioInputDevice)) {
+      dispatch(setNeedConnection(false))
+      dispatch({
+        type: 'INITIALIZE_WEBRTC',
+        payload: {
+          server: server.id,
+          channel: currentChannelId,
+          token: me.id,
+          videoDevice: videoDevice,
+          audioInputDevice: audioInputDevice,
+          isVoiceMuted: isVoiceMuted,
+          isCamera: isCamera,
+          username: me.username,
+        },
+      })    }
+  }, [needConnection, dispatch, audioInputDevice, videoDevice, currentChannelId, server?.id, me?.id, me?.username, isVoiceMuted, isCamera])
 
   const onJoinVoiceChannel = async (channel: ChannelEntity) => {
     if (server?.id) {
+      const resultAction = await dispatch(initializeDevices())
       dispatch(
         voiceChannelActions.setFocusedVoiceChannel({
           channel: channel,
@@ -45,46 +80,16 @@ export function useVoiceChannels({
           serverName: server.name,
         })
       )
-      const token = await joinServer({
-        serverId: server.id,
-        channelId: channel.id,
-        userState: {
-          muted: isMuted,
-          voiceMuted: isVoiceMuted,
-          camera: isCamera,
-        },
-      })
+      unwrapResult(resultAction)
       dispatch(setCurrentChannelId(channel.id))
-      dispatch({
-        type: 'INITIALIZE_WEBRTC',
-        payload: {
-          token: token,
-          videoDevice: videoDevice,
-          audioInputDevice: audioInputDevice,
-          isVoiceMuted: isVoiceMuted,
-          isCamera: isCamera,
-        },
-      })
+      dispatch(setNeedConnection(true))
     }
   }
+
   const onLeaveVoiceChannel = () => {
     dispatch(voiceChannelActions.unsetFocusedVoiceChannel())
-    leaveServer()
     dispatch({ type: 'CLOSE_WEBRTC' })
   }
-
-
-  useEffect(() => {
-    window.addEventListener('beforeunload', handleReload)
-    window.addEventListener('unload', handleReload)
-
-    // Clean up the event listeners on component unmount
-    return () => {
-      window.removeEventListener('beforeunload', handleReload)
-      window.removeEventListener('unload', handleReload)
-    }
-  }, [handleReload]) // Make sure to include any dependencies if your leaveServer function depends on props or state
-
 
   useEffect(() => {
     //match the received streams with the users connected in the channel and filte
@@ -101,19 +106,13 @@ export function useVoiceChannels({
         currentUser: me,
         streamingUsers,
         remoteStreams,
+        userStreams,
+        serverPresence,
         currentChannelId,
-        isMuted,
+        isScreenShared,
       }
     )))
-  }, [
-    streamingUsers,
-    remoteStreams,
-    isCamera,
-    currentChannelId,
-    me,
-    isMuted,
-    dispatch,
-  ])
+  }, [streamingUsers, remoteStreams, isCamera, currentChannelId, me, isScreenShared, dispatch, userStreams, serverPresence])
 
   return {
     onJoinVoiceChannel,

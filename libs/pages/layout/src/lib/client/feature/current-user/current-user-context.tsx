@@ -21,11 +21,11 @@ interface CurrentUserContextType {
   isLoadingProfilePicture: boolean
   isErrorProfilePicture: boolean
   isSuccessProfilePicture: boolean
-  isMuted: boolean
+  isScreenShared: boolean
   isVoiceMuted: boolean
   isCamera: boolean
   onMicrophone: () => void
-  onPhone: () => void
+  onScreenShare: () => void
   onCamera: () => void
 }
 
@@ -38,7 +38,7 @@ export const CurrentUserProvider: React.FC<{ children: React.ReactNode }> = ({
 }) => {
   const { data: userMe, isLoading: isLoadingUser } = useGetMeQuery()
   const server = useSelector((state: RootState) => state.servers.server)
-  const { isMuted, isVoiceMuted, isCamera } = useSelector(getUserState)
+  const { isScreenShared, isVoiceMuted, isCamera } = useSelector(getUserState)
   const dispatch = useDispatch()
   const {
     currentData: userProfilePicture,
@@ -54,22 +54,34 @@ export const CurrentUserProvider: React.FC<{ children: React.ReactNode }> = ({
   const { refetch } = useGetCurrentStreamingUsersQuery(server?.id ?? '')
 
   const onMicrophone = () => {
-    if (server) dispatch(userActions.toggleIsVoiceMuted(server.id))
     if (isVoiceMuted) {
       dispatch({ type: 'START_MIC', payload: audioInputDevice })
     } else {
       dispatch({ type: 'STOP_MIC' })
     }
+    dispatch(userActions.toggleIsVoiceMuted())
   }
 
-  const onPhone = () => {
-    if (server) dispatch(userActions.toggleIsMuted(server.id))
+  const onScreenShare = () => {
+    if (!isScreenShared) {
+      if (isCamera) {
+        dispatch(userActions.toggleIsCamera())
+        // dispatch({ type: 'STOP_CAM' })
+      }
+      dispatch({ type: 'START_SCREEN' })
+    } else {
+      dispatch({ type: 'STOP_SCREEN' })
+    }
+    dispatch(userActions.toggleIsScreenShared())
   }
-
   const onCamera = () => {
     if (server) {
-      dispatch(userActions.toggleIsCamera(server.id))
+      dispatch(userActions.toggleIsCamera())
       if (!isCamera) {
+        if (isScreenShared) {
+          dispatch(userActions.toggleIsScreenShared())
+          // dispatch({ type: 'STOP_SCREEN' })
+        }
         dispatch({ type: 'START_CAM', payload: videoDevice })
       } else {
         dispatch({ type: 'STOP_CAM' })
@@ -93,11 +105,11 @@ export const CurrentUserProvider: React.FC<{ children: React.ReactNode }> = ({
         isLoadingProfilePicture,
         isSuccessProfilePicture,
         isErrorProfilePicture,
-        isMuted,
+        isScreenShared,
         isVoiceMuted,
         isCamera,
         onMicrophone,
-        onPhone,
+        onScreenShare,
         onCamera,
       }}
     >

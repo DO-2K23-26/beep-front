@@ -8,60 +8,61 @@ interface UserConnectedWithStream {
 interface AssociateUsersParameters{
   remoteStreams: RTCRtpTransceiver[];
   streamingUsers: OccupiedChannelEntity[];
+  userStreams: {id: string, audio: string, video: string, channel: string}[];
+  serverPresence: OccupiedChannelEntity[];
   currentChannelId: string;
   currentUser: UserEntity;
-  isMuted: boolean;
+  isScreenShared: boolean;
 }
 
 
 export function associateUsersToStreams({
   remoteStreams,
-  streamingUsers,
+  userStreams,
+  serverPresence,
   currentChannelId,
   currentUser,
-  isMuted
+  isScreenShared,
 }: AssociateUsersParameters): UserConnectedWithStream[] {
   const filteredUserStreamsAssociation: {
     user: UserConnectedEntity
     stream: MediaStream
   }[] = []
-  remoteStreams.map((stream) => {
-    const usersChannel = streamingUsers?.find(
-      (value) => value.channelId === currentChannelId
+  const usersChannel = serverPresence?.find(
+    (value) => value.channelId === currentChannelId
+  )
+  userStreams.map((userStream) => {
+    const userchan = usersChannel?.users?.find(
+      (userchan) =>
+        userchan.id === userStream.id && currentUser.id !== userStream.id
     )
-    return usersChannel?.users?.map((currentUser) => {
-      //the mid is composed like this userSerialNumber + '-' + id of track (incremental number)
-      if (
-        stream.mid?.substring(0, stream.mid?.length - 2) ===
-        currentUser.userSn
-      ) {
-        const toEdit = filteredUserStreamsAssociation.find(
-          (entity) => entity.user.id === currentUser.id
+    if (userchan) {
+      const userbis = { ...userchan }
+      const stream = new MediaStream()
+      if (userStream.audio !== null) {
+        userbis.screenSharing = false
+        userbis.voiceMuted = false
+        const audioTranceiver = remoteStreams.find(
+          (stream) => stream.receiver.track.id === userStream.audio
         )
-        if (toEdit === undefined) {
-          filteredUserStreamsAssociation.push({
-            user: currentUser,
-            stream: new MediaStream([stream.receiver.track]),
-          })
-        } else {
-          toEdit.stream.addTrack(stream.receiver.track)
+        if (audioTranceiver) {
+          stream.addTrack(audioTranceiver.receiver.track)
         }
       }
-      return stream
-    })
-  })
-  filteredUserStreamsAssociation.filter((entity) => {
-    if (!entity.user.camera && entity.user.id !== currentUser?.id) {
-      entity.stream
-        .getVideoTracks()
-        .map((video) => entity.stream.removeTrack(video))
+      if (userStream.video !== null) {
+        userbis.camera = true
+        const videoTrack = remoteStreams.find(
+          (stream) => stream.receiver.track.id === userStream.video
+        )
+        if (videoTrack) {
+          stream.addTrack(videoTrack.receiver.track)
+        }
+      }
+      filteredUserStreamsAssociation.push({
+        user: userbis,
+        stream: stream,
+      })
     }
-    if (entity.user.voiceMuted || isMuted) {
-      entity.stream
-        .getAudioTracks()
-        .map((audio) => entity.stream.removeTrack(audio))
-    }
-    return entity
   })
   return filteredUserStreamsAssociation
 }

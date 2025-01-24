@@ -21,7 +21,6 @@ const WebRTCMiddleware: Middleware = (store) => {
   let id: string | undefined
   let camTransceiver: RTCRtpTransceiver | undefined = undefined
   let micTransceiver: RTCRtpTransceiver | undefined = undefined
-  let remoteAnswer: RTCLocalSessionDescriptionInit
   let audio: MediaStream | null
   let video: MediaStream | null
   const endpoint = webrtcUrl
@@ -257,6 +256,7 @@ const WebRTCMiddleware: Middleware = (store) => {
         currentPresence = new Presence(currentChannel)
 
         currentPresence.onSync(() => {
+          console.log("presence Updated")
           const presence = []
           currentPresence.list().map((user) => {
             if (!user.metas[0].user.watcher) {
@@ -279,6 +279,7 @@ const WebRTCMiddleware: Middleware = (store) => {
             }
           })
           store.dispatch(setUserStreams(presence))
+          console.log("presence Updated", presence)
 
           const users = currentPresence
             .list()

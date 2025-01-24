@@ -47,13 +47,13 @@ export const userSlice = createSlice({
     updateIsLoading(state, payload: PayloadAction<boolean>) {
       state.isLoading = payload.payload
     },
-    toggleIsScreenShared(state: UserState, payload: PayloadAction<string>) {
+    toggleIsScreenShared(state: UserState) {
       state.isScreenShared = !state.isScreenShared
     },
-    toggleIsVoiceMuted(state: UserState, payload: PayloadAction<string>) {
+    toggleIsVoiceMuted(state: UserState) {
       state.isVoiceMuted = !state.isVoiceMuted
     },
-    toggleIsCamera(state: UserState, payload: PayloadAction<string>) {
+    toggleIsCamera(state: UserState) {
       state.isCamera = !state.isCamera
     },
   },
