@@ -75,17 +75,15 @@ export const CurrentUserProvider: React.FC<{ children: React.ReactNode }> = ({
     dispatch(userActions.toggleIsScreenShared())
   }
   const onCamera = () => {
-    if (server) {
-      dispatch(userActions.toggleIsCamera())
-      if (!isCamera) {
-        if (isScreenShared) {
-          dispatch(userActions.toggleIsScreenShared())
-          // dispatch({ type: 'STOP_SCREEN' })
-        }
-        dispatch({ type: 'START_CAM', payload: videoDevice })
-      } else {
-        dispatch({ type: 'STOP_CAM' })
+    dispatch(userActions.toggleIsCamera())
+    if (!isCamera) {
+      if (isScreenShared) {
+        dispatch(userActions.toggleIsScreenShared())
+        // dispatch({ type: 'STOP_SCREEN' })
       }
+      dispatch({ type: 'START_CAM', payload: videoDevice })
+    } else {
+      dispatch({ type: 'STOP_CAM' })
     }
   }
 
