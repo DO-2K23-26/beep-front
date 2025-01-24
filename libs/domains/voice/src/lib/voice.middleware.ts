@@ -471,7 +471,7 @@ const WebRTCMiddleware: Middleware = (store) => {
             })
           }
           store.dispatch(setLocalStream(video))
-          currentChannel?.push('sdp_offer', { body: null })
+          // currentChannel?.push('sdp_offer', { body: null })
 
         } catch (error) {
           console.error('Error starting camera:', error)
@@ -488,9 +488,13 @@ const WebRTCMiddleware: Middleware = (store) => {
         peerConnection.removeTrack(camSender)
         // camSender.track.stop()
         video = null
-        currentChannel?.push('device_event', { user_id: id, device: 'video', event: false })
+        currentChannel?.push('device_event', {
+          device: 'video',
+          event: false,
+          user_id: id
+        })
         console.log("SENDERS",peerConnection.getSenders())
-        currentChannel?.push('sdp_offer', { body: null })
+        // currentChannel?.push('sdp_offer', { body: null })
         // await camSender?.replaceTrack(null)
         // peerConnection?.getTransceivers().forEach((transceiver) => {
         //   if (transceiver.sender.track === null) {
