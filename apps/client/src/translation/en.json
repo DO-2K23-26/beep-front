@@ -533,6 +533,9 @@
     "friend-request": {
       "request": " sent you a friend request !"
     },
+    "friend-message": {
+      "message": " sent you a message !"
+    },
     "mentions": {
       "mentioned": "mentioned you !"
     }

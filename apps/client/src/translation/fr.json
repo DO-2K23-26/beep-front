@@ -538,6 +538,9 @@
     "friend-request": {
       "request": " vous a demandé en ami !"
     },
+    "friend-message": {
+      "message": " vous a envoyé un message !"
+    },
     "mentions": {
       "mentioned": "vous a mentionné !"
     }
