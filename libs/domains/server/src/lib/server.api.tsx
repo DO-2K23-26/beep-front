@@ -1,4 +1,5 @@
 import {
+  AssignMemberToRoleRequest,
   backendUrl,
   ChannelEntity,
   ChannelType,
@@ -15,6 +16,7 @@ import {
   GetMemberRequest,
   GetMembersResponse,
   GetMyMemberRequest,
+  GetRoleMembersRequest,
   JoinInvitationResponse,
   MemberEntity,
   MoveChannelRequest,
@@ -411,6 +413,26 @@ export const serverApi = createApi({
         { type: 'transmitPicture', id: id },
       ],
     }),
+    getRoleMembers: builder.query<MemberEntity[], GetRoleMembersRequest>({
+      query: (req) => `/v1/server/${req.serverId}/roles/${req.roleId}/members`,
+      providesTags: (result, _error, roleId) =>
+        result
+          ? [
+              ...result.map(({ id }) => ({ type: 'members' as const, id })),
+              { type: 'members', id: `LIST-${roleId}` },
+            ]
+          : [{ type: 'members', id: `LIST-${roleId}` }],
+    }),
+    assignMembersToRole: builder.mutation<void, AssignMemberToRoleRequest>({
+      query: ({ serverId, roleId, memberIds }) => ({
+        url: `/v1/servers/${serverId}/roles/${roleId}/assignation`,
+        method: 'POST',
+        body: { memberIds },
+      }),
+      invalidatesTags: (_res, _error, req) => [
+        { type: 'members', id: `LIST-${req.roleId}` },
+      ],
+    }),
   }),
 })
 
@@ -442,4 +464,6 @@ export const {
   useDeleteServerMutation,
   useDiscoverServersQuery,
   usePatchChannelPositionMutation,
+  useGetRoleMembersQuery,
+  useAssignMembersToRoleMutation,
 } = serverApi

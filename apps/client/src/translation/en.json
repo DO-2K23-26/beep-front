@@ -589,6 +589,7 @@
     }
   },
   "role-settings": {
+    "assign-members": "Assign members",
     "role-edition-page": {
       "members": "Members",
       "permissions": "Permissions"
@@ -596,5 +597,7 @@
     "permission-edition": {
       "pending-modification": "Pending modification"
     }
-  }
+  },
+  "cancel": "Cancel",
+  "add": "Add"
 }

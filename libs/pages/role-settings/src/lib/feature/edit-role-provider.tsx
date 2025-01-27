@@ -1,19 +1,18 @@
-import { Permissions, RoleEntity } from '@beep/contracts'
+import { MemberEntity, Permissions, RoleEntity } from '@beep/contracts'
 import {
+  useAssignMembersToRoleMutation,
   useCreateServerRoleMutation,
+  useGetMembersQuery,
+  useGetRoleMembersQuery,
   useUpdateServerRoleMutation,
 } from '@beep/server'
-import {
-  PropsWithChildren,
-  createContext,
-  useEffect
-} from 'react'
+import { PropsWithChildren, createContext, useEffect } from 'react'
 import {
   Control,
   FieldValues,
   UseFormReset,
   UseFormReturn,
-  useForm
+  useForm,
 } from 'react-hook-form'
 import { z } from 'zod'
 
@@ -28,12 +27,18 @@ interface IEditRoleContext<T extends FieldValues> {
   permissions: Permissions[]
   handleSubmit?: () => void
   onCheckRole?: (permission: Permissions, isChecked?: boolean) => void
+  assignMembers?: (members: MemberEntity[]) => void
   roleFormControl?: Control<T>
   resetRoleForm?: UseFormReset<T>
   editRoleForm?: UseFormReturn<T>
   isFormTouched?: boolean
   formPermissions?: Permissions[]
   loadingEdit?: boolean
+  roleMembers?: MemberEntity[]
+  serverMembers?: MemberEntity[]
+  isLoadingMembers?: boolean
+  isLoadingAssignMembers?: boolean
+  isFinishAssignMembers?: boolean
 }
 
 export const EditRoleContext = createContext<
@@ -54,6 +59,24 @@ export function EditRoleProvider({
 
   const [updateRole, updateResult] = useUpdateServerRoleMutation()
   const [createRole, createResult] = useCreateServerRoleMutation()
+  const { data: roleMembers, isLoading: isLoadingMembers } =
+    useGetRoleMembersQuery({
+      serverId: serverId,
+      roleId: role?.id ?? '',
+    })
+
+  const { data: serverMembers } = useGetMembersQuery(serverId)
+
+  const [assignMembersReq, assignMembersResult] =
+    useAssignMembersToRoleMutation()
+
+  const assignMembers = (members: MemberEntity[]) => {
+    assignMembersReq({
+      serverId,
+      roleId: role?.id ?? '',
+      memberIds: members.map((m) => m.id),
+    })
+  }
 
   const permissions: Permissions[] = []
   const editRoleForm = useForm<z.infer<typeof roleFormSchema>>({
@@ -128,6 +151,13 @@ export function EditRoleProvider({
         editRoleForm,
         isFormTouched: editRoleForm.formState.isDirty,
         loadingEdit: updateResult.isLoading || createResult.isLoading,
+        roleMembers,
+        isLoadingMembers,
+        assignMembers,
+        serverMembers,
+        isLoadingAssignMembers: assignMembersResult.isLoading,
+        isFinishAssignMembers:
+          assignMembersResult.isSuccess || assignMembersResult.isError,
       }}
     >
       {children}
