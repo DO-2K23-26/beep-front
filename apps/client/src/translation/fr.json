@@ -597,8 +597,13 @@
     },
     "permission-edition": {
       "pending-modification": "Modification en attente"
+    },
+    "unassign-member-dialog": {
+      "title": "Désassigner un membre",
+      "description": "Êtes-vous sûr de vouloir supprimer ce membre du rôle ?"
     }
   },
   "cancel": "Annuler",
-  "add": "Ajouter"
+  "add": "Ajouter",
+  "remove": "Supprimer"
 }

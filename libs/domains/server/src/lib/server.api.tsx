@@ -25,6 +25,7 @@ import {
   RoleEntity,
   SearchServerRequest,
   ServerEntity,
+  UnassignMemberToRoleRequest,
   UpdateChannelRequest,
   UpdateRoleRequest,
   UpdateRoleResponse,
@@ -433,6 +434,18 @@ export const serverApi = createApi({
         { type: 'members', id: `LIST-${req.roleId}` },
       ],
     }),
+    unassignMemberFromRole: builder.mutation<
+      void,
+      UnassignMemberToRoleRequest
+    >({
+      query: ({ serverId, roleId, memberId }) => ({
+        url: `/v1/servers/${serverId}/members/${memberId}/roles/${roleId}`,
+        method: 'DELETE',
+      }),
+      invalidatesTags: (_res, _error, req) => [
+        { type: 'members', id: `LIST-${req.roleId}` },
+      ],
+    }),
   }),
 })
 
@@ -466,4 +479,5 @@ export const {
   usePatchChannelPositionMutation,
   useGetRoleMembersQuery,
   useAssignMembersToRoleMutation,
+  useUnassignMemberFromRoleMutation
 } = serverApi

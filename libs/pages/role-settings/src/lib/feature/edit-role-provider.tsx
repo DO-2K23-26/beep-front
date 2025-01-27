@@ -4,6 +4,7 @@ import {
   useCreateServerRoleMutation,
   useGetMembersQuery,
   useGetRoleMembersQuery,
+  useUnassignMemberFromRoleMutation,
   useUpdateServerRoleMutation,
 } from '@beep/server'
 import { PropsWithChildren, createContext, useEffect } from 'react'
@@ -28,6 +29,7 @@ interface IEditRoleContext<T extends FieldValues> {
   handleSubmit?: () => void
   onCheckRole?: (permission: Permissions, isChecked?: boolean) => void
   assignMembers?: (members: MemberEntity[]) => void
+  unassignMember?: (member: MemberEntity) => void
   roleFormControl?: Control<T>
   resetRoleForm?: UseFormReset<T>
   editRoleForm?: UseFormReturn<T>
@@ -39,6 +41,8 @@ interface IEditRoleContext<T extends FieldValues> {
   isLoadingMembers?: boolean
   isLoadingAssignMembers?: boolean
   isFinishAssignMembers?: boolean
+  isFinishUnassignMembers?: boolean
+  isLoadingUnassignMembers?: boolean
 }
 
 export const EditRoleContext = createContext<
@@ -69,6 +73,16 @@ export function EditRoleProvider({
 
   const [assignMembersReq, assignMembersResult] =
     useAssignMembersToRoleMutation()
+  const [unassignMembersReq, unassignMemberResult] =
+    useUnassignMemberFromRoleMutation()
+
+  const unassignMember = (member: MemberEntity) => {
+    unassignMembersReq({
+      serverId,
+      roleId: role?.id ?? '',
+      memberId: member.id,
+    })
+  }
 
   const assignMembers = (members: MemberEntity[]) => {
     assignMembersReq({
@@ -140,6 +154,11 @@ export function EditRoleProvider({
     updateResult.isSuccess,
   ])
 
+  useEffect(() => {
+    if (unassignMemberResult.isError || unassignMemberResult.isSuccess)
+      unassignMemberResult.reset()
+  }, [unassignMemberResult])
+
   return (
     <EditRoleContext.Provider
       value={{
@@ -154,10 +173,14 @@ export function EditRoleProvider({
         roleMembers,
         isLoadingMembers,
         assignMembers,
+        unassignMember,
         serverMembers,
         isLoadingAssignMembers: assignMembersResult.isLoading,
+        isLoadingUnassignMembers: unassignMemberResult.isLoading,
         isFinishAssignMembers:
           assignMembersResult.isSuccess || assignMembersResult.isError,
+        isFinishUnassignMembers:
+          unassignMemberResult.isSuccess || unassignMemberResult.isError,
       }}
     >
       {children}

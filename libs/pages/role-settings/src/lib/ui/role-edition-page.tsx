@@ -53,7 +53,7 @@ export function RoleEditionPage() {
           </ButtonShadCn>
         ))}
       </div>
-      <div className="flex w-full h-full overflow-scroll">
+      <div className="flex w-full h-full overflow-scroll snap-y">
         {pages.find((page) => page.id === focusedPage)?.page}
       </div>
     </div>

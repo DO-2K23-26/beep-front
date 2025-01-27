@@ -48,6 +48,8 @@ export function AssignMemberDialog({
   useEffect(() => {
     if (isFinishAssignMembers) setOpen(false)
   }, [isFinishAssignMembers])
+
+
   const { t } = useTranslation()
   return (
     <Dialog open={open} onOpenChange={setOpen}>

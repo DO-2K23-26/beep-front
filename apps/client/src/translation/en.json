@@ -596,8 +596,13 @@
     },
     "permission-edition": {
       "pending-modification": "Pending modification"
+    },
+    "unassign-member-dialog": {
+      "title": "Unassign Member",
+      "description": "Are you sure you want to unassign this member from the role?"
     }
   },
   "cancel": "Cancel",
-  "add": "Add"
+  "add": "Add",
+  "remove": "Remove"
 }
