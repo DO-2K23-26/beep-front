@@ -1,5 +1,6 @@
 import {
   ModifyProfileCardFeature,
+  ModifyPasswordFeature,
   ChangeLanguageFeature,
   SettingsModal,
   SubSettings,
@@ -32,7 +33,7 @@ export default function CurrentUser() {
       {
         title: t('layout.current-user.profile'),
         id: 'profile',
-        settingComponent: <ModifyProfileCardFeature />,
+        settingComponent: <> <ModifyProfileCardFeature />  <ModifyPasswordFeature/> </>,
       },
       {
         title: t('layout.current-user.voice_video'),
@@ -115,11 +116,16 @@ export default function CurrentUser() {
 const subSetting: SubSettings = {
   subGroupSettingTitle: 'User settings',
   settings: [
-    { title: 'Account', settingComponent: <ModifyProfileCardFeature /> },
+    {
+      title: 'Account - test',
+      settingComponent: <ModifyProfileCardFeature />,
+      id: 'account'
+    },
     // { title: 'Profile', settingComponent: "test" },
     {
       title: 'Voice & Video',
       settingComponent: <UserMediaFeature />,
+      id: 'voice-and-video'
     },
   ],
 }

@@ -11,6 +11,7 @@ export * from './user/update-email.request'
 export * from './user/login-qr-code.request'
 export * from './user/ask-totp-uri.request'
 export * from './user/complete-2fa-registration.request'
+export * from './user/change-password.request'
 
 export * from './channel/create-channel.request'
 export * from './channel/update-channel.request'

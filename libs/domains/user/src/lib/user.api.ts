@@ -22,6 +22,7 @@ import {
   ResetPasswordRequest,
   UpdateEmailRequest,
   UpdateMicRequest,
+  UpdatePassword,
   UpdateUserResponse,
   UserConnectedEntity,
   UserDisplayedEntity,
@@ -94,6 +95,13 @@ export const userApi = createApi({
         body,
         credentials: 'include',
       }),
+    }),
+    changePassword: builder.mutation<void, UpdatePassword>({
+      query: (data) => ({
+        url: '/authentication/password',
+        method: 'PATCH',
+        body: data,
+      })
     }),
     updateMe: builder.mutation<UpdateUserResponse, FormData>({
       query: (data) => ({
@@ -276,4 +284,5 @@ export const {
   useAskTOTPURIMutation,
   useComplete2FARegistrationMutation,
   useDisable2FAMutation,
+  useChangePasswordMutation,
 } = userApi

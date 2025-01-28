@@ -208,19 +208,8 @@ export function ModifyProfileCardFeature() {
           ),
           type: 'validate',
         })
-      }
-      // else if (error.code === 'E_EMAILALREADYEXISTS') {
-      //   updateEmailFormController.setError('email', {
-      //     message: t(
-      //       'settings.modify-profile-card.error_message_email_already_exist'
-      //     ),
-      //     type: 'validate',
-      //   })
-      // }
-      else {
-        toast.error(
-          t('settings.modify-profile-card.error_profile_update')
-        )
+      } else {
+        toast.error(t('settings.modify-profile-card.error_profile_update'))
         setIsUsernameModalOpen(false)
         setIsEmailValidateModalOpen(false)
       }
@@ -229,7 +218,8 @@ export function ModifyProfileCardFeature() {
     errorUpdateMe,
     isErrorUpdateMe,
     usernameFormController,
-    updateEmailFormController, t
+    updateEmailFormController,
+    t,
   ])
 
   useEffect(() => {
@@ -259,7 +249,13 @@ export function ModifyProfileCardFeature() {
     if (isErrorOtpVerify || errorOtpVerify) {
       toast.error(t('settings.modify-profile-card.error_otp_code'))
     }
-  }, [isSuccessOtpVerify, isErrorOtpVerify, errorOtpVerify, otpFormController, t])
+  }, [
+    isSuccessOtpVerify,
+    isErrorOtpVerify,
+    errorOtpVerify,
+    otpFormController,
+    t,
+  ])
 
   // use effect when we update the email
   useEffect(() => {
@@ -290,7 +286,8 @@ export function ModifyProfileCardFeature() {
     errorUpdateEmail,
     isErrorUpdateEmail,
     isSuccessUpdateEmail,
-    updateEmailFormController, t
+    updateEmailFormController,
+    t,
   ])
 
   //Dialog button
