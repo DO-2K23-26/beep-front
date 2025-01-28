@@ -42,10 +42,10 @@ export function PermissionEdition() {
         })}
       >
         <AlertTitle className="flex flex-row justify-between items-center h-7">
-          <p className="text-white ">
+          <p className="text-white hidden sm:block">
             {t('role-settings.permission-edition.pending-modification')}
           </p>
-          <div className="flex flex-row gap-2">
+          <div className="flex flex-row gap-2 w-full sm:w-fit justify-center">
             <ButtonIcon title="Reset" onClick={() => editRoleForm?.reset()} />
             <ButtonIcon
               title="Save"

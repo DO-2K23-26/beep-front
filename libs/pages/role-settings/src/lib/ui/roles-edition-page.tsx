@@ -1,13 +1,13 @@
 import { ButtonIcon } from '@beep/ui'
-import { useContext, useMemo } from 'react'
+import { useContext } from 'react'
 import { EditRoleProvider } from '../feature/edit-role-provider'
 import { RolesSettingsContext } from '../feature/roles-settings-provider'
+import { Page } from '../utils/roles-pages'
 import { RoleEditionPage } from './role-edition-page'
 import { RoleServer } from './role-server'
-import { Page } from '../utils/roles-pages'
 
 export function RolesEditionPage() {
-  const { roles, selectedRole, goTo, selectRole } =
+  const { roles, selectedRole, goTo, selectRole, createRole } =
     useContext(RolesSettingsContext)
   const roleEditionPages = roles?.map((role) => {
     return {
@@ -23,20 +23,25 @@ export function RolesEditionPage() {
   const goBack = () => {
     goTo && goTo(Page.DisplayRole)
   }
-  const focusedRolePage = useMemo(() => {
-    return roleEditionPages?.find((page) => page.id === selectedRole)?.page
-  }, [roleEditionPages, selectedRole])
 
   return (
     <div className="flex flex-col items-start w-full h-full">
       <div className="flex flex-row divide-x-2 gap-2 w-full h-full">
         <div className="flex flex-col w-1/6 overflow-hidden gap-2">
-          <ButtonIcon
-            className="bg-transparent"
-            icon="lucide:arrow-left-from-line"
-            onClick={goBack}
-            buttonProps={{ variant: 'ghost' }}
-          />
+          <div className="flex justify-between items-center w-full">
+            <ButtonIcon
+              className="bg-transparent"
+              icon="lucide:arrow-left-from-line"
+              onClick={goBack}
+              buttonProps={{ variant: 'ghost' }}
+            />
+            <ButtonIcon
+              className="bg-transparent"
+              icon="lucide:plus"
+              onClick={createRole}
+              buttonProps={{ variant: 'ghost' }}
+            />
+          </div>
           {roles?.map((role) => (
             <RoleServer
               key={role.id}
@@ -46,7 +51,9 @@ export function RolesEditionPage() {
             />
           ))}
         </div>
-        <div className="flex w-5/6 h-full">{focusedRolePage}</div>
+        <div className="flex w-5/6 h-full">
+          {roleEditionPages?.find((page) => page.id === selectedRole)?.page}
+        </div>
       </div>
     </div>
   )

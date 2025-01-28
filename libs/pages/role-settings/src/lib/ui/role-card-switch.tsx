@@ -24,7 +24,7 @@ export function RoleCardSwitch({
       className="flex flex-row justify-between items-center w-full gap-3 px-2 py-1 rounded-md cursor-pointer hover:bg-black/10 snap-end"
     >
       <div>
-        <p className="text-slate-950 sm:text-sm md:text-lg">
+        <p className="text-slate-950  text-xs sm:text-md md:text-lg">
           {t(`permissions.${permissionSringified}.name`)}
         </p>
         <p className="text-slate-700 hidden sm:flex sm:text-xs md:text-sm">

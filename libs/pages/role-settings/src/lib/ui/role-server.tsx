@@ -20,12 +20,12 @@ export function RoleServer({
       className={cn(
         'flex justify-between items-center',
         {
-          'cursor-pointer p-1  hover:bg-violet-400/50 rounded-md': !!onClick,
+          'cursor-pointer p-1  hover:bg-violet-400/50 rounded-md px-2': !!onClick,
         },
         { 'bg-violet-400': highlight }
       )}
     >
-      <p className={cn('text-xs sm:text-sm md:text-base text-center')}>
+      <p className={cn('text-xs sm:text-sm md:text-base text-center truncate')}>
         {role.name}
       </p>
       {children}
