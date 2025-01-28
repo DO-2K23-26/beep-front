@@ -1,24 +1,14 @@
-import { RoleEntity } from '@beep/contracts'
 import { ButtonIcon } from '@beep/ui'
-import { useMemo, useState } from 'react'
+import { useContext, useMemo } from 'react'
 import { EditRoleProvider } from '../feature/edit-role-provider'
+import { RolesSettingsContext } from '../feature/roles-settings-provider'
 import { RoleEditionPage } from './role-edition-page'
 import { RoleServer } from './role-server'
+import { Page } from '../utils/roles-pages'
 
-interface RolesEditionPageProps {
-  roles?: RoleEntity[]
-  goBack?: () => void
-}
-
-export function RolesEditionPage({ roles, goBack }: RolesEditionPageProps) {
-  const [selectedRole, setSelectedRole] = useState<string | undefined>(
-    roles?.[0].id
-  )
-
-  const selectRole = (role: RoleEntity) => {
-    setSelectedRole(role.id)
-  }
-
+export function RolesEditionPage() {
+  const { roles, selectedRole, goTo, selectRole } =
+    useContext(RolesSettingsContext)
   const roleEditionPages = roles?.map((role) => {
     return {
       id: role.id,
@@ -30,6 +20,9 @@ export function RolesEditionPage({ roles, goBack }: RolesEditionPageProps) {
     }
   })
 
+  const goBack = () => {
+    goTo && goTo(Page.DisplayRole)
+  }
   const focusedRolePage = useMemo(() => {
     return roleEditionPages?.find((page) => page.id === selectedRole)?.page
   }, [roleEditionPages, selectedRole])
@@ -48,7 +41,7 @@ export function RolesEditionPage({ roles, goBack }: RolesEditionPageProps) {
             <RoleServer
               key={role.id}
               role={role}
-              onClick={() => selectRole(role)}
+              onClick={() => selectRole && selectRole(role.id)}
               highlight={role.id === selectedRole}
             />
           ))}

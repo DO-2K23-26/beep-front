@@ -1,7 +1,7 @@
 import { MemberEntity, Permissions, RoleEntity } from '@beep/contracts'
 import {
   useAssignMembersToRoleMutation,
-  useCreateServerRoleMutation,
+  useCreateRoleMutation,
   useGetMembersQuery,
   useGetRoleMembersQuery,
   useUnassignMemberFromRoleMutation,
@@ -62,7 +62,7 @@ export function EditRoleProvider({
   const serverId = ''
 
   const [updateRole, updateResult] = useUpdateServerRoleMutation()
-  const [createRole, createResult] = useCreateServerRoleMutation()
+  const [createRole, createResult] = useCreateRoleMutation()
   const { data: roleMembers, isLoading: isLoadingMembers } =
     useGetRoleMembersQuery({
       serverId: serverId,

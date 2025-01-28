@@ -1,20 +1,14 @@
-import { RoleEntity } from '@beep/contracts'
 import { ButtonIcon } from '@beep/ui'
+import { useContext } from 'react'
 import { useTranslation } from 'react-i18next'
+import { RolesSettingsContext } from '../feature/roles-settings-provider'
 import { DropdownRole } from './dropdown-role'
 import { RoleServer } from './role-server'
 
-export interface RolesSettingsServerProps {
-  roles: RoleEntity[]
-  onClickCreateRole?: () => void
-}
-
-export function RolesSettingsServer({
-  roles,
-  onClickCreateRole,
-}: RolesSettingsServerProps) {
+export function RolesSettingsServer() {
   const { t } = useTranslation()
-
+  const { roles, createRole, isLoadingCreateRole } =
+    useContext(RolesSettingsContext)
   return (
     <div className="flex flex-col w-full bg-violet-200 p-4 overflow-y-scroll gap-4">
       <div className="flex justify-between items-center">
@@ -27,19 +21,21 @@ export function RolesSettingsServer({
           title={t('layout.role-settings-server.create_role')}
           buttonProps={{ variant: 'hoverRounded' }}
           textHiddenResponsive
-          onClick={onClickCreateRole}
+          onClick={createRole}
+          loading={isLoadingCreateRole}
         />
       </div>
-      {roles.length === 0 && (
+      {roles && roles.length === 0 && (
         <p className="text-slate-700 text-base sm:text-lg md:text-xl text-center w-full">
           {t('layout.role-settings-server.no_roles')}
         </p>
       )}
-      {roles.map((role) => (
-        <RoleServer key={role.id} role={role}>
-          <DropdownRole />
-        </RoleServer>
-      ))}
+      {roles &&
+        roles.map((role) => (
+          <RoleServer key={role.id} role={role}>
+            <DropdownRole roleId={role.id} />
+          </RoleServer>
+        ))}
     </div>
   )
 }

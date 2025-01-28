@@ -589,6 +589,23 @@
     }
   },
   "role-settings": {
+    "roles-settings-provider": {
+      "new-role": "New Role",
+      "edit-role": "Edit Role",
+      "delete-role": "Delete Role",
+      "role-name": "Role Name",
+      "role-description": "Role Description",
+      "create-role": "Create Role",
+      "update-role": "Update Role",
+      "cancel": "Cancel",
+      "save": "Save",
+      "success-create-role": "Role created successfully",
+      "error-create-role": "An error occurred while creating the role",
+      "success-update-role": "Role updated successfully",
+      "error-update-role": "An error occurred while updating the role",
+      "success-delete-role": "Role deleted successfully",
+      "error-delete-role": "An error occurred while deleting the role"
+    },
     "assign-members": "Assign members",
     "role-edition-page": {
       "members": "Members",

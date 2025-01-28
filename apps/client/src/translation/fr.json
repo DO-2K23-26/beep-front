@@ -591,6 +591,23 @@
   },
   "role-settings": {
     "assign-members": "Assigner des membres",
+    "roles-settings-provider": {
+      "new-role": "Nouveau rôle",
+      "edit-role": "Modifier le rôle",
+      "delete-role": "Supprimer le rôle",
+      "role-name": "Nom du rôle",
+      "role-description": "Description du rôle",
+      "create-role": "Créer un rôle",
+      "update-role": "Mettre à jour le rôle",
+      "cancel": "Annuler",
+      "save": "Sauvegarder",
+      "success-create-role": "Rôle créé avec succès",
+      "error-create-role": "Une erreur est survenue lors de la création du rôle",
+      "success-update-role": "Rôle mis à jour avec succès",
+      "error-update-role": "Une erreur est survenue lors de la mise à jour du rôle",
+      "success-delete-role": "Rôle supprimé avec succès",
+      "error-delete-role": "Une erreur est survenue lors de la suppression du rôle"
+    },
     "role-edition-page": {
       "members": "Membres",
       "permissions": "Permissions"

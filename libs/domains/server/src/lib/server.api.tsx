@@ -293,28 +293,6 @@ export const serverApi = createApi({
             ]
           : [{ type: 'roles', id: `LIST-${serverId}` }],
     }),
-    createServerRole: builder.mutation<CreateRoleResponse, CreateRoleRequest>({
-      queryFn: async (request, queryApi, _extraOptions, fetchWithBQ) => {
-        // Perform the API call
-        const response = await fetchWithBQ({
-          url: `/servers/${request.serverId}/roles`,
-          method: 'POST',
-          body: {
-            name: request.name,
-            permissions: request.permissions,
-          },
-        })
-
-        if (response.error) {
-          return { error: response.error }
-        }
-
-        return { data: response.data as CreateRoleResponse }
-      },
-      invalidatesTags: (_result, _error, req) => [
-        { type: 'roles', id: `LIST-${req.serverId}` },
-      ],
-    }),
     updateServerRole: builder.mutation<UpdateRoleResponse, UpdateRoleRequest>({
       query: (request) => ({
         url: `/servers/${request.serverId}/roles/${request.id}`,
@@ -328,7 +306,7 @@ export const serverApi = createApi({
         { type: 'roles', id: `LIST-${req.serverId}` },
       ],
     }),
-    deleteServerRole: builder.mutation<void, DeleteRoleRequest>({
+    deleteRole: builder.mutation<void, DeleteRoleRequest>({
       query: (request) => ({
         url: `/servers/${request.serverId}/roles/${request.id}`,
         method: 'DELETE',
@@ -434,17 +412,26 @@ export const serverApi = createApi({
         { type: 'members', id: `LIST-${req.roleId}` },
       ],
     }),
-    unassignMemberFromRole: builder.mutation<
-      void,
-      UnassignMemberToRoleRequest
-    >({
-      query: ({ serverId, roleId, memberId }) => ({
-        url: `/v1/servers/${serverId}/members/${memberId}/roles/${roleId}`,
-        method: 'DELETE',
+    unassignMemberFromRole: builder.mutation<void, UnassignMemberToRoleRequest>(
+      {
+        query: ({ serverId, roleId, memberId }) => ({
+          url: `/v1/servers/${serverId}/members/${memberId}/roles/${roleId}`,
+          method: 'DELETE',
+        }),
+        invalidatesTags: (_res, _error, req) => [
+          { type: 'members', id: `LIST-${req.roleId}` },
+        ],
+      }
+    ),
+    createRole: builder.mutation<RoleEntity, CreateRoleRequest>({
+      query: ({ name, serverId, permissions }) => ({
+        url: `/servers/${serverId}/roles`,
+        method: 'POST',
+        body: {
+          name,
+          permissions,
+        },
       }),
-      invalidatesTags: (_res, _error, req) => [
-        { type: 'members', id: `LIST-${req.roleId}` },
-      ],
     }),
   }),
 })
@@ -466,9 +453,8 @@ export const {
   useLeaveVoiceChannelMutation,
   useGetCurrentStreamingUsersQuery,
   useGetRolesQuery,
-  useCreateServerRoleMutation,
   useUpdateServerRoleMutation,
-  useDeleteServerRoleMutation,
+  useDeleteRoleMutation,
   useUpdateServerMutation,
   useUpdateBannerMutation,
   useUpdatePictureMutation,
@@ -479,5 +465,6 @@ export const {
   usePatchChannelPositionMutation,
   useGetRoleMembersQuery,
   useAssignMembersToRoleMutation,
-  useUnassignMemberFromRoleMutation
+  useUnassignMemberFromRoleMutation,
+  useCreateRoleMutation
 } = serverApi
