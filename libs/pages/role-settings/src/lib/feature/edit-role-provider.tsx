@@ -7,7 +7,8 @@ import {
   useUnassignMemberFromRoleMutation,
   useUpdateServerRoleMutation,
 } from '@beep/server'
-import { PropsWithChildren, createContext, useEffect } from 'react'
+import { skipToken } from '@reduxjs/toolkit/query'
+import { PropsWithChildren, createContext, useEffect, useMemo } from 'react'
 import {
   Control,
   FieldValues,
@@ -37,7 +38,7 @@ interface IEditRoleContext<T extends FieldValues> {
   formPermissions?: Permissions[]
   loadingEdit?: boolean
   roleMembers?: MemberEntity[]
-  serverMembers?: MemberEntity[]
+  notAssignedServerMembers?: MemberEntity[]
   isLoadingMembers?: boolean
   isLoadingAssignMembers?: boolean
   isFinishAssignMembers?: boolean
@@ -59,17 +60,17 @@ export function EditRoleProvider({
   children,
   role,
 }: PropsWithChildren<EditRoleProviderProps>) {
-  const serverId = ''
-
   const [updateRole, updateResult] = useUpdateServerRoleMutation()
   const [createRole, createResult] = useCreateRoleMutation()
   const { data: roleMembers, isLoading: isLoadingMembers } =
     useGetRoleMembersQuery({
-      serverId: serverId,
+      serverId: role?.serverId ?? '',
       roleId: role?.id ?? '',
     })
 
-  const { data: serverMembers } = useGetMembersQuery(serverId)
+  const { data: serverMembers } = useGetMembersQuery(
+    role?.serverId ?? skipToken
+  )
 
   const [assignMembersReq, assignMembersResult] =
     useAssignMembersToRoleMutation()
@@ -78,7 +79,7 @@ export function EditRoleProvider({
 
   const unassignMember = (member: MemberEntity) => {
     unassignMembersReq({
-      serverId,
+      serverId: role?.serverId ?? '',
       roleId: role?.id ?? '',
       memberId: member.id,
     })
@@ -86,7 +87,7 @@ export function EditRoleProvider({
 
   const assignMembers = (members: MemberEntity[]) => {
     assignMembersReq({
-      serverId,
+      serverId: role?.serverId ?? '',
       roleId: role?.id ?? '',
       memberIds: members.map((m) => m.id),
     })
@@ -126,7 +127,7 @@ export function EditRoleProvider({
         })
       } else {
         createRole({
-          serverId: serverId,
+          serverId: role?.serverId ?? '',
           name: name,
           permissions: tranformedPermissions,
         })
@@ -159,6 +160,13 @@ export function EditRoleProvider({
       unassignMemberResult.reset()
   }, [unassignMemberResult])
 
+  const notAssignedServerMembers = useMemo(() => {
+    const member = serverMembers?.filter(
+      (m) => !roleMembers?.find((rm) => rm.id === m.id)
+    )
+    return member
+  }, [roleMembers, serverMembers])
+
   return (
     <EditRoleContext.Provider
       value={{
@@ -174,7 +182,7 @@ export function EditRoleProvider({
         isLoadingMembers,
         assignMembers,
         unassignMember,
-        serverMembers,
+        notAssignedServerMembers,
         isLoadingAssignMembers: assignMembersResult.isLoading,
         isLoadingUnassignMembers: unassignMemberResult.isLoading,
         isFinishAssignMembers:

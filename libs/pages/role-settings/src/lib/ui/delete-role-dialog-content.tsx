@@ -5,6 +5,7 @@ import {
   DialogDescription,
   DialogFooter,
   DialogHeader,
+  DialogTitle,
 } from '@beep/ui'
 import { useTranslation } from 'react-i18next'
 
@@ -14,7 +15,10 @@ interface DeleteRoleDialogProps {
 export function DeleteRoleDialogContent({ onDelete }: DeleteRoleDialogProps) {
   const { t } = useTranslation()
   return (
-    <DialogContent className="bg-violet-50">
+    <DialogContent className="bg-violet-50" title="Delete Role">
+      <DialogTitle hidden>
+        {t('role-settings.delete-role-dialog.title')}
+      </DialogTitle>
       <DialogHeader>{t('role-settings.delete-role-dialog.title')}</DialogHeader>
       <DialogDescription>
         {t('role-settings.delete-role-dialog.description')}

@@ -7,6 +7,7 @@ import {
   DialogContent,
   DialogFooter,
   DialogHeader,
+  DialogTitle,
   DialogTrigger,
 } from '@beep/ui'
 import {
@@ -32,7 +33,7 @@ export function AssignMemberDialog({
   children,
 }: PropsWithChildren<AssignMemberDialogProps>) {
   const {
-    serverMembers,
+    notAssignedServerMembers,
     isLoadingAssignMembers,
     assignMembers,
     isFinishAssignMembers,
@@ -49,16 +50,16 @@ export function AssignMemberDialog({
     if (isFinishAssignMembers) setOpen(false)
   }, [isFinishAssignMembers])
 
-
   const { t } = useTranslation()
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger>{children}</DialogTrigger>
       <DialogContent className="flex flex-col bg-violet-50 h-4/5 justify-between">
+        <DialogTitle hidden>{t('role-settings.assign-members')}</DialogTitle>
         <DialogHeader>{t('role-settings.assign-members')}</DialogHeader>
         <div className="h-full overflow-scroll snap-y">
-          {serverMembers &&
-            serverMembers.map((member) => (
+          {notAssignedServerMembers &&
+            notAssignedServerMembers.map((member) => (
               <MemberRow
                 key={member.id}
                 member={member}
@@ -72,7 +73,6 @@ export function AssignMemberDialog({
               </MemberRow>
             ))}
         </div>
-
         <DialogFooter className="h-fit">
           <DialogClose>
             <ButtonIcon

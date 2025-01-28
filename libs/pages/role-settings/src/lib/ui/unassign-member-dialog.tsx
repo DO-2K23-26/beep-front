@@ -6,6 +6,7 @@ import {
   DialogDescription,
   DialogFooter,
   DialogHeader,
+  DialogTitle,
   DialogTrigger,
 } from '@beep/ui'
 import { PropsWithChildren, useContext, useEffect, useState } from 'react'
@@ -34,10 +35,13 @@ export function UnassignMemberDialog({
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger>{children}</DialogTrigger>
-      <DialogContent className='bg-violet-50'>
+      <DialogContent className="bg-violet-50">
         <DialogHeader>
           {t('role-settings.unassign-member-dialog.title')}
         </DialogHeader>
+        <DialogTitle hidden>
+          {t('role-settings.unassign-member-dialog.title')}
+        </DialogTitle>
         <DialogDescription>
           {t('role-settings.unassign-member-dialog.description')}
         </DialogDescription>

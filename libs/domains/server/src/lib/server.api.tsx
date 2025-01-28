@@ -8,13 +8,11 @@ import {
   CreateInvitationRequest,
   CreateInvitationResponse,
   CreateRoleRequest,
-  CreateRoleResponse,
   DeleteChannelRequest,
   DeleteRoleRequest,
   GetChannelRequest,
   GetChannelsResponse,
   GetMemberRequest,
-  GetMembersResponse,
   GetMyMemberRequest,
   GetRoleMembersRequest,
   JoinInvitationResponse,
@@ -28,7 +26,7 @@ import {
   UnassignMemberToRoleRequest,
   UpdateChannelRequest,
   UpdateRoleRequest,
-  UpdateRoleResponse,
+  UpdateRoleResponse
 } from '@beep/contracts'
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 // eslint-disable-next-line @nx/enforce-module-boundaries
@@ -36,10 +34,6 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 const baseQuery = fetchBaseQuery({
   baseUrl: backendUrl,
   credentials: 'include',
-  prepareHeaders: (headers, { getState }) => {
-    // const { user } = getState() as RootState
-    // headers.set('Authorization', `Bearer ${user.tokens.accessToken}`)
-  },
 })
 
 export const serverApi = createApi({
@@ -125,12 +119,6 @@ export const serverApi = createApi({
       CreateChannelRequest
     >({
       queryFn: async (request, queryApi, _extraOptions, fetchWithBQ) => {
-        const { getState } = queryApi
-        const state = getState()
-
-        // Access your slice's state here
-
-        // Perform the API call
         const response = await fetchWithBQ({
           url: `/servers/${request.serverId}/channels`,
           method: 'POST',
@@ -264,9 +252,6 @@ export const serverApi = createApi({
 
     getMembers: builder.query<MemberEntity[], string>({
       query: (serverId) => `v1/servers/${serverId}/members`,
-      transformResponse: (response: GetMembersResponse) => {
-        return response.data
-      },
       providesTags: (result, _error, serverId) =>
         result
           ? [
@@ -393,14 +378,14 @@ export const serverApi = createApi({
       ],
     }),
     getRoleMembers: builder.query<MemberEntity[], GetRoleMembersRequest>({
-      query: (req) => `/v1/server/${req.serverId}/roles/${req.roleId}/members`,
-      providesTags: (result, _error, roleId) =>
+      query: (req) => `/v1/servers/${req.serverId}/roles/${req.roleId}/members`,
+      providesTags: (result, _error, req) =>
         result
           ? [
               ...result.map(({ id }) => ({ type: 'members' as const, id })),
-              { type: 'members', id: `LIST-${roleId}` },
+              { type: 'members', id: `role-${req.roleId}` },
             ]
-          : [{ type: 'members', id: `LIST-${roleId}` }],
+          : [{ type: 'members', id: `role-${req.roleId}` }],
     }),
     assignMembersToRole: builder.mutation<void, AssignMemberToRoleRequest>({
       query: ({ serverId, roleId, memberIds }) => ({
@@ -409,7 +394,7 @@ export const serverApi = createApi({
         body: { memberIds },
       }),
       invalidatesTags: (_res, _error, req) => [
-        { type: 'members', id: `LIST-${req.roleId}` },
+        { type: 'members', id: `role-${req.roleId}` },
       ],
     }),
     unassignMemberFromRole: builder.mutation<void, UnassignMemberToRoleRequest>(
@@ -419,7 +404,7 @@ export const serverApi = createApi({
           method: 'DELETE',
         }),
         invalidatesTags: (_res, _error, req) => [
-          { type: 'members', id: `LIST-${req.roleId}` },
+          { type: 'members', id: `role-${req.roleId}` },
         ],
       }
     ),
