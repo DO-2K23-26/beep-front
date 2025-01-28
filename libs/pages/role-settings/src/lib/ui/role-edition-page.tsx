@@ -16,7 +16,7 @@ enum EditionPage {
 export function RoleEditionPage() {
   const { t } = useTranslation()
   const { deleteRole } = useContext(RolesSettingsContext)
-  const { role } = useContext(EditRoleContext)
+  const { role, isDefaultRole } = useContext(EditRoleContext)
 
   const [focusedPage, setFocusedPage] = useState(
     EditionPage.PermissionEditionPage
@@ -28,26 +28,31 @@ export function RoleEditionPage() {
       name: t('role-settings.role-edition-page.permissions'),
       page: <PermissionEdition />,
     },
-    {
+  ]
+
+  if (!isDefaultRole) {
+    pages.push({
       id: EditionPage.MemberEditionPage,
       name: t('role-settings.role-edition-page.members'),
       page: <MemberRoleManagement />,
-    },
-  ]
+    })
+  }
 
   return (
     <div className="flex flex-col gap-4 px-2 w-full h-full pb-16">
       <div className="flex flex-row justify-between items-center">
         <div className="text-lg sm:text-xl md:text-2xl">{role?.name}</div>
-        <DeleteRoleDialog
-          onDelete={() => deleteRole && deleteRole(role?.id ?? '')}
-        >
-          <ButtonIcon
-            buttonProps={{ variant: 'ghost' }}
-            className="bg-transparent"
-            icon="lucide:trash-2"
-          />
-        </DeleteRoleDialog>
+        {!isDefaultRole && (
+          <DeleteRoleDialog
+            onDelete={() => deleteRole && deleteRole(role?.id ?? '')}
+          >
+            <ButtonIcon
+              buttonProps={{ variant: 'ghost' }}
+              className="bg-transparent"
+              icon="lucide:trash-2"
+            />
+          </DeleteRoleDialog>
+        )}
       </div>
       <div className="flex flex-row gap-2">
         {pages.map((page) => (

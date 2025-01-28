@@ -44,6 +44,7 @@ interface IEditRoleContext<T extends FieldValues> {
   isFinishAssignMembers?: boolean
   isFinishUnassignMembers?: boolean
   isLoadingUnassignMembers?: boolean
+  isDefaultRole?: boolean
 }
 
 export const EditRoleContext = createContext<
@@ -189,6 +190,7 @@ export function EditRoleProvider({
           assignMembersResult.isSuccess || assignMembersResult.isError,
         isFinishUnassignMembers:
           unassignMemberResult.isSuccess || unassignMemberResult.isError,
+        isDefaultRole: role?.id === role?.serverId,
       }}
     >
       {children}
