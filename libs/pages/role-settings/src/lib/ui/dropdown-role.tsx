@@ -1,15 +1,17 @@
 import {
   ButtonIcon,
   Dialog,
+  DialogTrigger,
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-  Icon,
+  Icon
 } from '@beep/ui'
 import { useContext } from 'react'
 import { useTranslation } from 'react-i18next'
 import { RolesSettingsContext } from '../feature/roles-settings-provider'
+import { DeleteRoleDialog } from './delete-role-dialog'
 
 interface DropdownRoleProps {
   roleId: string
@@ -17,7 +19,7 @@ interface DropdownRoleProps {
 
 export function DropdownRole({ roleId }: DropdownRoleProps) {
   const { t } = useTranslation()
-  const { goToRoleEdition } = useContext(RolesSettingsContext)
+  const { goToRoleEdition, deleteRole } = useContext(RolesSettingsContext)
   return (
     <Dialog>
       <DropdownMenu>
@@ -37,14 +39,19 @@ export function DropdownRole({ roleId }: DropdownRoleProps) {
             <Icon name="lucide:settings" />
             <p className="font-semibold">{t('layout.role-server.update')}</p>
           </DropdownMenuItem>
-          <DropdownMenuItem className="flex flex-row items-center hover:bg-red-500/10 gap-2 px-2 py-[6px] rounded-md cursor-pointer">
-            <Icon name="lucide:trash-2" />
-            <p className="font-semibold text-red-500">
-              {t('layout.role-server.delete')}
-            </p>
-          </DropdownMenuItem>
+
+          <DialogTrigger>
+            <DropdownMenuItem className="flex flex-row items-center hover:bg-red-500/10 gap-2 px-2 py-[6px] rounded-md cursor-pointer">
+              <Icon name="lucide:trash-2" />
+              <p className="font-semibold text-red-500">
+                {t('layout.role-server.delete')}
+              </p>
+            </DropdownMenuItem>
+          </DialogTrigger>
         </DropdownMenuContent>
       </DropdownMenu>
+
+      <DeleteRoleDialog onDelete={() => deleteRole && deleteRole(roleId)} />
     </Dialog>
   )
 }

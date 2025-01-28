@@ -432,6 +432,9 @@ export const serverApi = createApi({
           permissions,
         },
       }),
+      invalidatesTags: (_res, _error, req) => [
+        { type: 'roles', id: `LIST-${req.serverId}` },
+      ],
     }),
   }),
 })
@@ -466,5 +469,5 @@ export const {
   useGetRoleMembersQuery,
   useAssignMembersToRoleMutation,
   useUnassignMemberFromRoleMutation,
-  useCreateRoleMutation
+  useCreateRoleMutation,
 } = serverApi

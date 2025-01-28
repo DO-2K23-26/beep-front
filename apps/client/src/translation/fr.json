@@ -618,9 +618,14 @@
     "unassign-member-dialog": {
       "title": "Désassigner un membre",
       "description": "Êtes-vous sûr de vouloir supprimer ce membre du rôle ?"
+    },
+    "delete-role-dialog": {
+      "title": "Supprimer le rôle",
+      "description": "Êtes-vous sûr de vouloir supprimer ce rôle ? Cette action est irréversible."
     }
   },
   "cancel": "Annuler",
   "add": "Ajouter",
-  "remove": "Supprimer"
+  "remove": "Supprimer",
+  "delete": "Supprimer"
 }
