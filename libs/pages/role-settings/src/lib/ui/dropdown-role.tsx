@@ -6,12 +6,12 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-  Icon
+  Icon,
 } from '@beep/ui'
 import { useContext } from 'react'
 import { useTranslation } from 'react-i18next'
 import { RolesSettingsContext } from '../feature/roles-settings-provider'
-import { DeleteRoleDialog } from './delete-role-dialog'
+import { DeleteRoleDialogContent } from './delete-role-dialog-content'
 
 interface DropdownRoleProps {
   roleId: string
@@ -51,7 +51,9 @@ export function DropdownRole({ roleId }: DropdownRoleProps) {
         </DropdownMenuContent>
       </DropdownMenu>
 
-      <DeleteRoleDialog onDelete={() => deleteRole && deleteRole(roleId)} />
+      <DeleteRoleDialogContent
+        onDelete={() => deleteRole && deleteRole(roleId)}
+      />
     </Dialog>
   )
 }

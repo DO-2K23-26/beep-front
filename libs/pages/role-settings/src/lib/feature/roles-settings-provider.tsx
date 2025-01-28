@@ -41,7 +41,7 @@ export function RolesSettingsProvider({
   )
 
   const [createRoleReq, createRoleResult] = useCreateRoleMutation()
-  const [deleteRoleReq] = useDeleteRoleMutation()
+  const [deleteRoleReq, deleteRoleResult] = useDeleteRoleMutation()
 
   const goToRoleEdition = (roleId: string) => {
     setFocusedPage(Page.RoleEdition)
@@ -65,6 +65,13 @@ export function RolesSettingsProvider({
       goToRoleEdition(createRoleResult.data.id)
     }
   }, [createRoleResult])
+
+  useEffect(() => {
+    if (deleteRoleResult.isSuccess) {
+      setSelectedRole(roles?.[0].id)
+      deleteRoleResult.reset()
+    }
+  }, [deleteRoleResult, roles])
 
   return (
     <RolesSettingsContext.Provider

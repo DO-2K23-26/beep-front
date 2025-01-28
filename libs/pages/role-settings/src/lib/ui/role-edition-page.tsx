@@ -1,10 +1,12 @@
-import { ButtonShadCn } from '@beep/ui'
+import { ButtonIcon, ButtonShadCn } from '@beep/ui'
 import { cn } from '@beep/utils'
 import { useContext, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { EditRoleContext } from '../feature/edit-role-provider'
 import { PermissionEdition } from './permission-edition'
 import { MemberRoleManagement } from './member-role-management'
+import { DeleteRoleDialog } from './delete-role-dialog'
+import { RolesSettingsContext } from '../feature/roles-settings-provider'
 
 enum EditionPage {
   PermissionEditionPage,
@@ -13,6 +15,7 @@ enum EditionPage {
 
 export function RoleEditionPage() {
   const { t } = useTranslation()
+  const { deleteRole } = useContext(RolesSettingsContext)
   const { role } = useContext(EditRoleContext)
 
   const [focusedPage, setFocusedPage] = useState(
@@ -34,7 +37,18 @@ export function RoleEditionPage() {
 
   return (
     <div className="flex flex-col gap-4 px-2 w-full h-full pb-16">
-      <div className="text-lg sm:text-xl md:text-2xl">{role?.name}</div>
+      <div className="flex flex-row justify-between items-center">
+        <div className="text-lg sm:text-xl md:text-2xl">{role?.name}</div>
+        <DeleteRoleDialog
+          onDelete={() => deleteRole && deleteRole(role?.id ?? '')}
+        >
+          <ButtonIcon
+            buttonProps={{ variant: 'ghost' }}
+            className="bg-transparent"
+            icon="lucide:trash-2"
+          />
+        </DeleteRoleDialog>
+      </div>
       <div className="flex flex-row gap-2">
         {pages.map((page) => (
           <ButtonShadCn
