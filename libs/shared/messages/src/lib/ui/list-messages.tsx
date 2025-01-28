@@ -21,7 +21,7 @@ export default function ListMessages({
 }: ListMessagesProps) {
   return (
     <div className="relative h-full w-full">
-      <div className="absolute top-0 left-0 w-full h-8 bg-gradient-to-b from-violet-200 to-transparent pointer-events-none z-10"></div>
+      {/* <div className="absolute top-0 left-0 w-full h-8 bg-gradient-to-b from-violet-200 to-transparent pointer-events-none z-10"></div> */}
       <div
         onScroll={onScroll}
         ref={messageListRef}

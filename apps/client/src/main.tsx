@@ -8,6 +8,7 @@ import { Provider } from 'react-redux'
 import i18n from './i18n'
 import { RouterProvider } from 'react-router'
 import { router } from './app/router.main'
+import { Toaster } from 'sonner'
 
 const container =
   document.getElementById('root') || document.createElement('div')
@@ -20,6 +21,7 @@ root.render(
     <Provider store={store}>
       <I18nextProvider i18n={i18n}>
         <TooltipProvider>
+          <Toaster />
           <ModalProvider>
             <RouterProvider router={router} />
           </ModalProvider>

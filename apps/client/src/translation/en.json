@@ -327,16 +327,49 @@
       "upload_banner": "Upload banner",
       "server_name": "Server name",
       "server_description": "Server description",
-      "save": "SAVE"
+      "save": "SAVE",
+      "success_update_server": "Server updated !",
+      "error_update_server": "An error occured while updating the server !"
+    },
+    "role-settings-server": {
+      "roles": "Roles",
+      "no_roles": "Any roles found",
+      "create_role": "Create a role"
+    },
+    "roles-settings-server-feature": {
+      "no_role_found": "Role not found, please try again",
+      "role_created": "Role created",
+      "role_error_creating": "Error creating role",
+      "role_updated": "Role updated",
+      "role_error_updating": "Error updating role",
+      "role_deleted": "Role deleted",
+      "role_error_deleting": "Error deleting role"
     },
     "server-dropdown-menu": {
       "server": "Server",
       "overview": "Overview",
       "settings": "Settings"
     },
+    "role-server": {
+      "update": "Update",
+      "delete": "Delete"
+    },
+    "role-form": {
+      "create_title": "Create a role",
+      "update_title": "Update a role",
+      "choose_role_name": "Choose a role name",
+      "role_name_is_required": "The role name is required",
+      "role_name": "Role name",
+      "create": "Create",
+      "update": "Update",
+      "cancel": "Cancel"
+    },
     "server-dropdown": {
       "settings": "Settings",
-      "destroy": "Destroy server"
+      "destroy": "Destroy server",
+      "server": "Server",
+      "overview": "Overview",
+      "roles": "Roles"
     },
     "servers-navigation": {
       "logout": "Successfully logged out !"
@@ -362,7 +395,7 @@
         "content_1": "We need to verify your old email address",
         "content_2": "in order to change it",
         "content_3": "Have you lost access to your email? Contact your email provider to regain access",
-        "action_content_button":"Send verification code"
+        "action_content_button": "Send verification code"
       },
       "modify-profile-picture-dialog": {
         "choose_picture": "Choose a new picture",
@@ -377,7 +410,7 @@
         "username": "Username",
         "confirm": "Confirm"
       },
-      "modify-lastname-dialog":{
+      "modify-lastname-dialog": {
         "title": "Choose a new Last name",
         "modify": "Modify",
         "content_required": "Last name is required",
@@ -385,7 +418,7 @@
         "render_label": "Lastname",
         "confirm": "Confirm"
       },
-      "modify-firstname-dialog":{
+      "modify-firstname-dialog": {
         "title": "Choose a new First name",
         "modify": "Modify",
         "content_required": "First name is required",
@@ -400,15 +433,15 @@
         "email": "Email"
       },
       "validate-otp-dialog": {
-        "title":"Enter Code",
+        "title": "Enter Code",
         "modify": "Modify",
-        "content":"Check your email: we've sent you a verification code. Enter it here to verify your identity",
-        "otp_rules_required":"Otp code is required",
-        "otp_rules_message":"OTP code must be exactly 6 digits",
-        "field_label":"OTP Code",
-        "resend_message":"Didn't receive a code or it expired?",
-        "resend_button":"Resend",
-        "action_button":"Confirm"
+        "content": "Check your email: we've sent you a verification code. Enter it here to verify your identity",
+        "otp_rules_required": "Otp code is required",
+        "otp_rules_message": "OTP code must be exactly 6 digits",
+        "field_label": "OTP Code",
+        "resend_message": "Didn't receive a code or it expired?",
+        "resend_button": "Resend",
+        "action_button": "Confirm"
       },
       "validate-email-dialog": {
         "title": "Choose a new email",
@@ -504,5 +537,94 @@
   "globals": {
     "activated": "activated",
     "not-activated": "not activated"
-  }
+  },
+  "permissions": {
+    "ADMINISTRATOR": {
+      "name": "Administrator",
+      "description": "The administrator role allows you to manage the server from A to Z"
+    },
+    "MANAGE_SERVER": {
+      "name": "Manage server",
+      "description": "Allows you to create, modify and delete the server"
+    },
+    "MANAGE_ROLES": {
+      "name": "Manage roles",
+      "description": "Allows you to manage roles allows you to create, modify and delete roles"
+    },
+    "CREATE_INVITATION": {
+      "name": "Create invitations",
+      "description": "Allows you to create invitations allows you to create invitations for the server"
+    },
+    "MANAGE_CHANNELS": {
+      "name": "Manage channels",
+      "description": "Allows you to create, modify and delete discussion channels"
+    },
+    "MANAGE_WEBHOOKS": {
+      "name": "Manage webhooks",
+      "description": "Allows you to create, modify and delete webhooks"
+    },
+    "VIEW_CHANNELS": {
+      "name": "View discussion channels",
+      "description": "Allows you to see the discussion channels"
+    },
+    "SEND_MESSAGES": {
+      "name": "Send messages",
+      "description": "Allows you to send messages in the discussion channels"
+    },
+    "MANAGE_NICKNAMES": {
+      "name": "Manage nicknames",
+      "description": "Allows you to manage the nicknames of the server members"
+    },
+    "CHANGE_NICKNAME": {
+      "name": "Change nickname",
+      "description": "Allows you to change your nickname on the server"
+    },
+    "MANAGE_MESSAGES": {
+      "name": "Manage messages",
+      "description": "Allows you to delete messages from other server members"
+    },
+    "ATTACH_FILES": {
+      "name": "Send attachments",
+      "description": "Allows you to send attachments in the discussion channels"
+    }
+  },
+  "role-settings": {
+    "roles-settings-provider": {
+      "new-role": "New Role",
+      "edit-role": "Edit Role",
+      "delete-role": "Delete Role",
+      "role-name": "Role Name",
+      "role-description": "Role Description",
+      "create-role": "Create Role",
+      "update-role": "Update Role",
+      "cancel": "Cancel",
+      "save": "Save",
+      "success-create-role": "Role created successfully",
+      "error-create-role": "An error occurred while creating the role",
+      "success-update-role": "Role updated successfully",
+      "error-update-role": "An error occurred while updating the role",
+      "success-delete-role": "Role deleted successfully",
+      "error-delete-role": "An error occurred while deleting the role"
+    },
+    "assign-members": "Assign members",
+    "role-edition-page": {
+      "members": "Members",
+      "permissions": "Permissions"
+    },
+    "permission-edition": {
+      "pending-modification": "Pending modification"
+    },
+    "unassign-member-dialog": {
+      "title": "Unassign Member",
+      "description": "Are you sure you want to unassign this member from the role?"
+    },
+    "delete-role-dialog": {
+      "title": "Delete Role",
+      "description": "Are you sure you want to delete this role? This action cannot be undone."
+    }
+  },
+  "cancel": "Cancel",
+  "add": "Add",
+  "remove": "Remove",
+  "delete": "Delete"
 }

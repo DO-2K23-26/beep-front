@@ -42,3 +42,10 @@ export * from './member/get-member.request'
 export * from './member/get-my-member.request'
 
 export * from './friends/delete-friend.request'
+
+export * from './role/create-role.request'
+export * from './role/update-role.request'
+export * from './role/delete-role.request'
+export * from './role/get-role-members.request'
+export * from './role/assign-member-to-role.request'
+export * from './role/unassign-member-from-role.request'

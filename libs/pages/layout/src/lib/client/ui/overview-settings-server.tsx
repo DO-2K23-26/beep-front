@@ -6,12 +6,12 @@ import {
 } from '@beep/server'
 import { Button, ButtonStyle, InputText, InputImageSettings } from '@beep/ui'
 import { skipToken } from '@reduxjs/toolkit/query'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import toast from 'react-hot-toast'
 import { useTranslation } from 'react-i18next'
 
 export interface OverviewSettingsServerProps {
-  server: ServerEntity
+  server: ServerEntity | undefined
   isAdmin: boolean
 }
 
@@ -21,46 +21,49 @@ export function OverviewSettingsServer({
 }: OverviewSettingsServerProps) {
   const { t } = useTranslation()
 
-  const [serverName, setServerName] = useState(server.name)
-  const [serverDescription, setServerDescription] = useState(server.description)
-  const [updateServer] = useUpdateServerMutation()
+  const [serverName, setServerName] = useState(server?.name)
+  const [serverDescription, setServerDescription] = useState(server?.description)
+  const [updateServer,result] = useUpdateServerMutation()
 
   const { currentData: banner } = useTransmitBannerQuery(
     server?.id ?? skipToken
   )
-  const { data: icon } = useTransmitPictureQuery(server.id)
+  const { data: icon } = useTransmitPictureQuery(server?.id ?? skipToken)
 
   const handleSave = async () => {
-    try {
       const updatedServer = {
-        id: server.id,
+        id: server?.id ?? '',
         name: serverName,
         description: serverDescription,
       }
 
-      await updateServer({
-        serverId: server.id,
+       updateServer({
+        serverId: server?.id ?? '',
         updatedServer,
       })
 
-      toast.success('Server updated !')
-    } catch (error) {
-      toast.error('An error occured while updating the server !')
-    }
   }
-
+  
+  useEffect(()=>{
+    if (result.isSuccess) {
+      toast.success(t('layout.overview-settings-server.success_update_server'))
+    } else if (result.isError) {
+      toast.error(t('layout.overview-settings-server.error_update_server'))
+    }
+  },[result.isError, result.isSuccess, t])
+  
   return (
     <div className="flex flex-col w-full bg-violet-200 p-4 overflow-y-auto gap-4">
-      <div className=" text-slate-700 font-bold max-w-sm text-base sm:text-xl md:text-3xl">
+      <p className="text-slate-700 font-bold max-w-sm text-base sm:text-xl md:text-3xl">
         {t('layout.overview-settings-server.server_overview')}
-      </div>
+      </p>
       <div className="flex flex-row gap-2 sm:gap-8 md:gap-10 items-start w-full ">
         <div className="w-1/3">
           <InputImageSettings
             type="picture"
             label={t('layout.overview-settings-server.upload_picture')}
             name="profile"
-            serverId={server.id}
+            serverId={server?.id}
             initialImage={icon}
           />
         </div>
@@ -69,7 +72,7 @@ export function OverviewSettingsServer({
             type="banner"
             label={t('layout.overview-settings-server.upload_banner')}
             name="banner"
-            serverId={server.id}
+            serverId={server?.id}
             initialImage={banner}
           />
         </div>

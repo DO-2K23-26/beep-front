@@ -1,4 +1,5 @@
 import {
+  AssignMemberToRoleRequest,
   backendUrl,
   ChannelEntity,
   ChannelType,
@@ -6,30 +7,33 @@ import {
   CreateChannelResponse,
   CreateInvitationRequest,
   CreateInvitationResponse,
+  CreateRoleRequest,
   DeleteChannelRequest,
+  DeleteRoleRequest,
   GetChannelRequest,
   GetChannelsResponse,
   GetMemberRequest,
-  GetMembersResponse,
   GetMyMemberRequest,
+  GetRoleMembersRequest,
   JoinInvitationResponse,
   MemberEntity,
   MoveChannelRequest,
   OccupiedChannelEntity,
+  RawRole,
+  RoleEntity,
   SearchServerRequest,
   ServerEntity,
+  UnassignMemberToRoleRequest,
   UpdateChannelRequest,
+  UpdateRoleRequest,
+  UpdateRoleResponse
 } from '@beep/contracts'
-import { createApi, fetchBaseQuery} from '@reduxjs/toolkit/query/react'
+import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 // eslint-disable-next-line @nx/enforce-module-boundaries
 
 const baseQuery = fetchBaseQuery({
   baseUrl: backendUrl,
   credentials: 'include',
-  prepareHeaders: (headers, { getState }) => {
-    // const { user } = getState() as RootState
-    // headers.set('Authorization', `Bearer ${user.tokens.accessToken}`)
-  },
 })
 
 export const serverApi = createApi({
@@ -37,6 +41,7 @@ export const serverApi = createApi({
   baseQuery,
   tagTypes: [
     'servers',
+    'roles',
     'channel',
     'textChannel',
     'voiceChannel',
@@ -114,12 +119,6 @@ export const serverApi = createApi({
       CreateChannelRequest
     >({
       queryFn: async (request, queryApi, _extraOptions, fetchWithBQ) => {
-        const { getState } = queryApi;
-        const state = getState();
-
-        // Access your slice's state here
-
-        // Perform the API call
         const response = await fetchWithBQ({
           url: `/servers/${request.serverId}/channels`,
           method: 'POST',
@@ -127,13 +126,13 @@ export const serverApi = createApi({
             name: request.name,
             type: +request.type,
           },
-        });
+        })
 
         if (response.error) {
-          return { error: response.error };
+          return { error: response.error }
         }
 
-        return { data: response.data as CreateChannelResponse };
+        return { data: response.data as CreateChannelResponse }
       },
 
       invalidatesTags: (_result, _error, req) => [
@@ -194,16 +193,16 @@ export const serverApi = createApi({
       providesTags: (result, _error, serverId) =>
         result
           ? [
-            ...result.voiceChannels.map(({ id }) => ({
-              type: 'voiceChannel' as const,
-              id,
-            })),
-            ...result.textChannels.map(({ id }) => ({
-              type: 'textChannel' as const,
-              id,
-            })),
-            { type: 'channel', id: `LIST-${serverId}` },
-          ]
+              ...result.voiceChannels.map(({ id }) => ({
+                type: 'voiceChannel' as const,
+                id,
+              })),
+              ...result.textChannels.map(({ id }) => ({
+                type: 'textChannel' as const,
+                id,
+              })),
+              { type: 'channel', id: `LIST-${serverId}` },
+            ]
           : [{ type: 'channel', id: `LIST-${serverId}` }],
     }),
     joinVoiceChannel: builder.mutation<
@@ -235,12 +234,12 @@ export const serverApi = createApi({
       providesTags: (result, _error, _arg) =>
         result
           ? [
-            ...result.map(({ channelId }) => ({
-              type: 'streamingUsers' as const,
-              channelId,
-            })),
-            'streamingUsers',
-          ]
+              ...result.map(({ channelId }) => ({
+                type: 'streamingUsers' as const,
+                channelId,
+              })),
+              'streamingUsers',
+            ]
           : ['streamingUsers'],
     }),
     getMember: builder.query<MemberEntity, GetMemberRequest>({
@@ -253,18 +252,54 @@ export const serverApi = createApi({
 
     getMembers: builder.query<MemberEntity[], string>({
       query: (serverId) => `v1/servers/${serverId}/members`,
-      transformResponse: (response: GetMembersResponse) => {
-        return response.data
+      providesTags: (result, _error, serverId) =>
+        result
+          ? [
+              ...result.map(({ id }) => ({ type: 'members' as const, id })),
+              { type: 'members', id: `LIST-${serverId}` },
+            ]
+          : [{ type: 'members', id: `LIST-${serverId}` }],
+    }),
+    getRoles: builder.query<RoleEntity[], string>({
+      query: (serverId) => `servers/${serverId}/roles`,
+      transformResponse(response: RawRole[], meta, arg) {
+        return response.map((role) => ({
+          ...role,
+          permissions: Object.values(Permissions).filter(
+            (value) => role.permissions & value
+          ),
+        }))
       },
       providesTags: (result, _error, serverId) =>
         result
           ? [
-            ...result.map(({ id }) => ({ type: 'members' as const, id })),
-            { type: 'members', id: `LIST-${serverId}` },
-          ]
-          : [{ type: 'members', id: `LIST-${serverId}` }],
+              ...result.map(({ id }) => ({ type: 'roles' as const, id })),
+              { type: 'roles', id: `LIST-${serverId}` },
+            ]
+          : [{ type: 'roles', id: `LIST-${serverId}` }],
     }),
-
+    updateServerRole: builder.mutation<UpdateRoleResponse, UpdateRoleRequest>({
+      query: (request) => ({
+        url: `/servers/${request.serverId}/roles/${request.id}`,
+        method: 'PUT',
+        body: {
+          name: request.name,
+          permissions: request.permissions,
+        },
+      }),
+      invalidatesTags: (_result, _error, req) => [
+        { type: 'roles', id: `LIST-${req.serverId}` },
+      ],
+    }),
+    deleteRole: builder.mutation<void, DeleteRoleRequest>({
+      query: (request) => ({
+        url: `/servers/${request.serverId}/roles/${request.id}`,
+        method: 'DELETE',
+      }),
+      invalidatesTags: (_result, _error, req) => [
+        { type: 'roles', id: `LIST-${req.serverId}` },
+      ],
+    }),
     updateServer: builder.mutation<
       ServerEntity,
       { serverId: string; updatedServer: Partial<ServerEntity> }
@@ -312,25 +347,24 @@ export const serverApi = createApi({
         { type: 'transmitBanner', id: id },
       ],
     }),
-    patchChannelPosition: builder.mutation<
-      ChannelEntity,
-      MoveChannelRequest
-    >({
+    patchChannelPosition: builder.mutation<ChannelEntity, MoveChannelRequest>({
       query: (request) => ({
         url: `/servers/${request.serverId}/channels/${request.channelId}`,
         method: 'PUT',
         body: {
-          position: request.position
+          position: request.position,
         },
-      })
+      }),
     }),
     getMyMember: builder.query<MemberEntity, GetMyMemberRequest>({
       query: (req) => ({
         url: `/v1/servers/${req.serverId}/members/@me`,
         method: 'GET',
       }),
-      providesTags: (res,error,req)=>[{ type: 'members', id: 'me' + req.serverId }],
-    }),    
+      providesTags: (res, error, req) => [
+        { type: 'members', id: 'me' + req.serverId },
+      ],
+    }),
     transmitPicture: builder.query<string, string>({
       query: (serverId) => ({
         url: `/servers/${serverId}/picture`,
@@ -341,6 +375,50 @@ export const serverApi = createApi({
       }),
       providesTags: (_result, _error, id) => [
         { type: 'transmitPicture', id: id },
+      ],
+    }),
+    getRoleMembers: builder.query<MemberEntity[], GetRoleMembersRequest>({
+      query: (req) => `/v1/servers/${req.serverId}/roles/${req.roleId}/members`,
+      providesTags: (result, _error, req) =>
+        result
+          ? [
+              ...result.map(({ id }) => ({ type: 'members' as const, id })),
+              { type: 'members', id: `role-${req.roleId}` },
+            ]
+          : [{ type: 'members', id: `role-${req.roleId}` }],
+    }),
+    assignMembersToRole: builder.mutation<void, AssignMemberToRoleRequest>({
+      query: ({ serverId, roleId, memberIds }) => ({
+        url: `/v1/servers/${serverId}/roles/${roleId}/assignation`,
+        method: 'POST',
+        body: { memberIds },
+      }),
+      invalidatesTags: (_res, _error, req) => [
+        { type: 'members', id: `role-${req.roleId}` },
+      ],
+    }),
+    unassignMemberFromRole: builder.mutation<void, UnassignMemberToRoleRequest>(
+      {
+        query: ({ serverId, roleId, memberId }) => ({
+          url: `/v1/servers/${serverId}/members/${memberId}/roles/${roleId}`,
+          method: 'DELETE',
+        }),
+        invalidatesTags: (_res, _error, req) => [
+          { type: 'members', id: `role-${req.roleId}` },
+        ],
+      }
+    ),
+    createRole: builder.mutation<RoleEntity, CreateRoleRequest>({
+      query: ({ name, serverId, permissions }) => ({
+        url: `/servers/${serverId}/roles`,
+        method: 'POST',
+        body: {
+          name,
+          permissions,
+        },
+      }),
+      invalidatesTags: (_res, _error, req) => [
+        { type: 'roles', id: `LIST-${req.serverId}` },
       ],
     }),
   }),
@@ -362,6 +440,9 @@ export const {
   useJoinVoiceChannelMutation,
   useLeaveVoiceChannelMutation,
   useGetCurrentStreamingUsersQuery,
+  useGetRolesQuery,
+  useUpdateServerRoleMutation,
+  useDeleteRoleMutation,
   useUpdateServerMutation,
   useUpdateBannerMutation,
   useUpdatePictureMutation,
@@ -369,5 +450,9 @@ export const {
   useTransmitPictureQuery,
   useDeleteServerMutation,
   useDiscoverServersQuery,
-  usePatchChannelPositionMutation
+  usePatchChannelPositionMutation,
+  useGetRoleMembersQuery,
+  useAssignMembersToRoleMutation,
+  useUnassignMemberFromRoleMutation,
+  useCreateRoleMutation,
 } = serverApi

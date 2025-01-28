@@ -332,7 +332,37 @@
       "upload_banner": "Télécharger la bannière",
       "server_name": "Nom du serveur",
       "server_description": "Description du serveur",
-      "save": "SAUVEGARDER"
+      "save": "SAUVEGARDER",
+      "success_update_server": "Serveur mis à jour !",
+      "error_update_server": "Une erreur est survenue lors de la mise à jour du serveur"
+    },
+    "roles-settings-server-feature": {
+      "no_role_found": "Aucun rôle trouvé, veuillez réessayer",
+      "role_created": "Rôle créé avec succès",
+      "role_error_creating": "Une erreur est survenue lors de la création du rôle",
+      "role_updated": "Rôle mis à jour avec succès",
+      "role_error_updating": "Une erreur est survenue lors de la mise à jour du rôle",
+      "role_deleted": "Rôle supprimé avec succès",
+      "role_error_deleting": "Une erreur est survenue lors de la suppression du rôle"
+    },
+    "role-settings-server": {
+      "roles": "Rôles",
+      "no_roles": "Aucun rôle trouvé",
+      "create_role": "Créer un rôle"
+    },
+    "role-server": {
+      "update": "Modifier",
+      "delete": "Supprimer"
+    },
+    "role-form": {
+      "create_title": "Créer un rôle",
+      "update_title": "Modifier un rôle",
+      "choose_role_name": "Choisissez un nom pour le rôle",
+      "role_name_is_required": "Le nom du rôle est requis",
+      "role_name": "Nom du rôle",
+      "create": "Créer",
+      "update": "Modifier",
+      "cancel": "Annuler"
     },
     "server-dropdown-menu": {
       "server": "Serveur",
@@ -341,7 +371,10 @@
     },
     "server-dropdown": {
       "settings": "Paramètres",
-      "destroy": "Supprimer le serveur"
+      "destroy": "Supprimer le serveur",
+      "server": "Serveur",
+      "overview": "Aperçu",
+      "roles": "Rôles"
     },
     "servers-navigation": {
       "logout": "Déconnexion réussie"
@@ -505,5 +538,94 @@
     "mentions": {
       "mentioned": "vous a mentionné !"
     }
-  }
+  },
+  "permissions": {
+    "ADMINISTRATOR": {
+      "name": "Administrateur",
+      "description": "Le rôle d'administrateur vous permet de gérer le serveur de A à Z"
+    },
+    "MANAGE_SERVER": {
+      "name": "Gérer le serveur",
+      "description": "Vous permet de créer, modifier et supprimer le serveur"
+    },
+    "MANAGE_ROLES": {
+      "name": "Gérer les rôles",
+      "description": "Vous permet de gérer les rôles, de créer, modifier et supprimer des rôles"
+    },
+    "CREATE_INVITATION": {
+      "name": "Créer des invitations",
+      "description": "Vous permet de créer des invitations pour le serveur"
+    },
+    "MANAGE_CHANNELS": {
+      "name": "Gérer les salons",
+      "description": "Vous permet de créer, modifier et supprimer des salons de discussion"
+    },
+    "MANAGE_WEBHOOKS": {
+      "name": "Gérer les webhooks",
+      "description": "Vous permet de créer, modifier et supprimer des webhooks"
+    },
+    "VIEW_CHANNELS": {
+      "name": "Voir les salons de discussion",
+      "description": "Vous permet de voir les salons de discussion"
+    },
+    "SEND_MESSAGES": {
+      "name": "Envoyer des messages",
+      "description": "Vous permet d'envoyer des messages dans les salons de discussion"
+    },
+    "MANAGE_NICKNAMES": {
+      "name": "Gérer les pseudonymes",
+      "description": "Vous permet de gérer les pseudonymes des membres du serveur"
+    },
+    "CHANGE_NICKNAME": {
+      "name": "Changer de pseudonyme",
+      "description": "Vous permet de changer votre pseudonyme sur le serveur"
+    },
+    "MANAGE_MESSAGES": {
+      "name": "Gérer les messages",
+      "description": "Vous permet de supprimer les messages des autres membres du serveur"
+    },
+    "ATTACH_FILES": {
+      "name": "Envoyer des pièces jointes",
+      "description": "Vous permet d'envoyer des pièces jointes dans les salons de discussion"
+    }
+  },
+  "role-settings": {
+    "assign-members": "Assigner des membres",
+    "roles-settings-provider": {
+      "new-role": "Nouveau rôle",
+      "edit-role": "Modifier le rôle",
+      "delete-role": "Supprimer le rôle",
+      "role-name": "Nom du rôle",
+      "role-description": "Description du rôle",
+      "create-role": "Créer un rôle",
+      "update-role": "Mettre à jour le rôle",
+      "cancel": "Annuler",
+      "save": "Sauvegarder",
+      "success-create-role": "Rôle créé avec succès",
+      "error-create-role": "Une erreur est survenue lors de la création du rôle",
+      "success-update-role": "Rôle mis à jour avec succès",
+      "error-update-role": "Une erreur est survenue lors de la mise à jour du rôle",
+      "success-delete-role": "Rôle supprimé avec succès",
+      "error-delete-role": "Une erreur est survenue lors de la suppression du rôle"
+    },
+    "role-edition-page": {
+      "members": "Membres",
+      "permissions": "Permissions"
+    },
+    "permission-edition": {
+      "pending-modification": "Modification en attente"
+    },
+    "unassign-member-dialog": {
+      "title": "Désassigner un membre",
+      "description": "Êtes-vous sûr de vouloir supprimer ce membre du rôle ?"
+    },
+    "delete-role-dialog": {
+      "title": "Supprimer le rôle",
+      "description": "Êtes-vous sûr de vouloir supprimer ce rôle ? Cette action est irréversible."
+    }
+  },
+  "cancel": "Annuler",
+  "add": "Ajouter",
+  "remove": "Supprimer",
+  "delete": "Supprimer"
 }

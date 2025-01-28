@@ -87,7 +87,6 @@ export function UserPopover({
       }
     },
   })
-
   const { data: profilePicture } = useFetchProfilePictureQuery(
     userId ?? skipToken,
     {

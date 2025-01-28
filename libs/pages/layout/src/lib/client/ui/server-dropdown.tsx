@@ -41,16 +41,24 @@ export function ServerDropdown({
   const navigateAfterDelete = () => navigate('/servers')
   // List of setting in the user setting modal
   const subSetting: SubSettings = {
-    subGroupSettingTitle: 'Server',
+    subGroupSettingTitle: t('layout.server-dropdown.server'),
     settings: [
       {
-        title: 'Overview',
+        title: t('layout.server-dropdown.overview'),
         settingComponent: server && (
           <OverviewSettingsServer server={server} isAdmin={isAdmin} />
         ),
         id: 'overview',
         settingBodySize: SettingBodyWidth.L,
       },
+      // {
+      //   title: t('layout.server-dropdown.roles'),
+      //   settingComponent: server && (
+      //     <RolesSettingsServerFeature server={server} />
+      //   ),
+      //   id: 'roles',
+      //   settingBodySize: SettingBodyWidth.L,
+      // },
     ],
   }
   return (
@@ -92,7 +100,7 @@ export function ServerDropdown({
         <DialogDescription hidden>SettingsPage</DialogDescription>
       </DialogHeader>
 
-      <FullScreenDialogContent className="flex flex-row w-full h-full">
+      <FullScreenDialogContent className="flex flex-row w-full h-full z-40">
         <SettingsModal settings={[subSetting]} />
       </FullScreenDialogContent>
     </FullScreenDialog>

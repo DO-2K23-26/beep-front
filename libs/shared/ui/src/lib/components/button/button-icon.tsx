@@ -15,6 +15,7 @@ export interface ButtonIconProps {
   loading?: boolean
   type?: 'button' | 'submit' | 'reset'
   onClick?: () => void
+  iconClassName?: string
 }
 export function ButtonIcon({
   children,
@@ -26,6 +27,7 @@ export function ButtonIcon({
   textHiddenResponsive,
   asChild,
   loading,
+  iconClassName = 'size-4',
   type = 'button',
   onClick,
 }: PropsWithChildren<ButtonIconProps>) {
@@ -44,7 +46,7 @@ export function ButtonIcon({
         children
       ) : (
         <>
-          {icon && <Icon name={icon} className="w-4 h-4" />}
+          {icon && <Icon name={icon} className={iconClassName} />}
           {title && (
             <p
               className={cn('text-xs md:text-sm lg:text-base', textClassName, {
