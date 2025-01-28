@@ -19,7 +19,6 @@ import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router'
 import DestroyServerFeature from '../feature/destroy-server-feature'
 import { OverviewSettingsServer } from './overview-settings-server'
-import { RolesSettingsServerFeature } from '@beep/pages/role-settings'
 
 interface ServerDropdownProps {
   server: ServerEntity
@@ -52,14 +51,14 @@ export function ServerDropdown({
         id: 'overview',
         settingBodySize: SettingBodyWidth.L,
       },
-      {
-        title: t('layout.server-dropdown.roles'),
-        settingComponent: server && (
-          <RolesSettingsServerFeature server={server} />
-        ),
-        id: 'roles',
-        settingBodySize: SettingBodyWidth.L,
-      },
+      // {
+      //   title: t('layout.server-dropdown.roles'),
+      //   settingComponent: server && (
+      //     <RolesSettingsServerFeature server={server} />
+      //   ),
+      //   id: 'roles',
+      //   settingBodySize: SettingBodyWidth.L,
+      // },
     ],
   }
   return (
