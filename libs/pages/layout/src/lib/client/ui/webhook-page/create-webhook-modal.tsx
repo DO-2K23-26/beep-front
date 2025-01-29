@@ -35,9 +35,9 @@ export default function CreateWebhookModal({
     })) || []
 
   return (
-    <Dialog >
+    <Dialog>
       <DialogTrigger>{children}</DialogTrigger>
-      <DialogContent>
+      <DialogContent className="bg-white">
         <DialogHeader>
           <DialogTitle>
             {t('layout.new-webhook-modal.create_modal.title')}
@@ -105,19 +105,28 @@ export default function CreateWebhookModal({
           />
         </form>
         <DialogFooter>
-          <DialogClose asChild>
-            <Button className="btn--no-min-w" style={ButtonStyle.STROKED}>
-              {t('layout.new-webhook-modal.create_modal.cancel')}
-            </Button>
-          </DialogClose>
+          {' '}
+          <div className="flex gap-3 justify-between w-full">
+            <DialogClose asChild>
+              <div>
+                <Button className="btn--no-min-w" style={ButtonStyle.STROKED}>
+                  {t('layout.new-webhook-modal.create_modal.cancel')}
+                </Button>
+              </div>
+            </DialogClose>
 
-          <Button
-            className="btn--no-min-w"
-            style={ButtonStyle.BASIC}
-            onClick={onCreateWebhook}
-          >
-            {t('layout.new-webhook-modal.create_modal.create')}
-          </Button>
+            <DialogClose>
+              <Button
+                className="btn--no-min-w"
+                style={ButtonStyle.BASIC}
+                onClick={() => {
+                  onCreateWebhook()
+                }}
+              >
+                {t('layout.new-webhook-modal.create_modal.create')}
+              </Button>
+            </DialogClose>
+          </div>
         </DialogFooter>
       </DialogContent>
     </Dialog>
