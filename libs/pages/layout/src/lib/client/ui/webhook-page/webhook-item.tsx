@@ -2,11 +2,7 @@ import {
   useGetChannelQuery,
   useTransmitWebhookPictureQuery,
 } from '@beep/server'
-import {
-  ButtonIcon,
-  InputImageSettings,
-  InputText,
-} from '@beep/ui'
+import { ButtonIcon, InputImageSettings, InputText } from '@beep/ui'
 import { useContext, useState } from 'react'
 import { Controller } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
@@ -36,7 +32,7 @@ export default function WebhookItem() {
   })
 
   return (
-    <div className="flex items-center gap-4 p-4 rounded-md m-4 bg-violet-50 w-full">
+    <div className="flex items-center gap-4 p-4 rounded-md my-4 bg-violet-50 w-full">
       <div className=" rounded-md flex items-center justify-center">
         <InputImageSettings
           type="webhookpicture"
