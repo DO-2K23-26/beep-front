@@ -10,6 +10,7 @@ export interface FriendRequestNotification {
 
 export interface FriendMessageNotification {
   senderName: string
+  channelId: string
 }
 
 export interface UserMentionedInMessageNotification {
