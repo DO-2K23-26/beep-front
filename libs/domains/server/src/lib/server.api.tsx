@@ -28,6 +28,8 @@ import {
   UpdateChannelRequest,
   UpdateRoleRequest,
   WebhookEntity,
+  CreateWebhookRequest,
+  UpdateWebhookPictureRequest,
 } from '@beep/contracts'
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 // eslint-disable-next-line @nx/enforce-module-boundaries
@@ -332,15 +334,7 @@ export const serverApi = createApi({
       invalidatesTags: ['servers'],
     }),
 
-    updateWebhookPicture: builder.mutation<
-      void,
-      {
-        serverId: string
-        channelId: string
-        webhookId: string
-        formData: FormData
-      }
-    >({
+    updateWebhookPicture: builder.mutation<void, UpdateWebhookPictureRequest>({
       query: ({ serverId, channelId, webhookId, formData }) => ({
         url: `/servers/${serverId}/channels/${channelId}/webhook/${webhookId}/webhookPicture`,
         method: 'PUT',
@@ -451,15 +445,7 @@ export const serverApi = createApi({
         { type: 'transmitPicture', id: id.webhookId },
       ],
     }),
-    createWebHook: builder.mutation<
-      void,
-      {
-        serverId: string
-        channelId: string
-        name: string
-        profilePicture: File
-      }
-    >({
+    createWebHook: builder.mutation<void, CreateWebhookRequest>({
       query: (request) => ({
         url: `/servers/${request.serverId}/channels/${request.channelId}/webhook`,
         method: 'POST',
