@@ -15,7 +15,7 @@ export default function WebHookSettingsServer({
   const methodsAddWebhook = useForm()
 
   return (
-    <div className="flex flex-col w-full bg-violet-200 p-4 overflow-y-auto gap-4">
+    <div className="flex flex-col w-full bg-violet-200 p-4 overflow-y-auto gap-4 items-start">
       <div className=" text-slate-700 font-bold max-w-sm text-base sm:text-xl md:text-3xl">
         {t('layout.webhooks-settings-server.webhooks')}
       </div>
