@@ -1,5 +1,6 @@
+// eslint-disable-next-line @nx/enforce-module-boundaries
+import { Role } from '@beep/contracts'
 export interface CreateRoleRequest {
-  name: string
   serverId: string
-  permissions: number
+  role: Role
 }

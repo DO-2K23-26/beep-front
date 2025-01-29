@@ -16,17 +16,17 @@ import {
   GetMyMemberRequest,
   GetRoleMembersRequest,
   JoinInvitationResponse,
+  Member,
   MemberEntity,
   MoveChannelRequest,
   OccupiedChannelEntity,
   RawRole,
-  RoleEntity,
+  Role,
   SearchServerRequest,
   ServerEntity,
   UnassignMemberToRoleRequest,
   UpdateChannelRequest,
-  UpdateRoleRequest,
-  UpdateRoleResponse
+  UpdateRoleRequest
 } from '@beep/contracts'
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 // eslint-disable-next-line @nx/enforce-module-boundaries
@@ -250,8 +250,9 @@ export const serverApi = createApi({
       ],
     }),
 
-    getMembers: builder.query<MemberEntity[], string>({
+    getMembers: builder.query<Member[], string>({
       query: (serverId) => `v1/servers/${serverId}/members`,
+      // transformResponse: (response: MemberEntity[]) =>
       providesTags: (result, _error, serverId) =>
         result
           ? [
@@ -260,16 +261,10 @@ export const serverApi = createApi({
             ]
           : [{ type: 'members', id: `LIST-${serverId}` }],
     }),
-    getRoles: builder.query<RoleEntity[], string>({
+    getRoles: builder.query<Role[], string>({
       query: (serverId) => `servers/${serverId}/roles`,
-      transformResponse(response: RawRole[], meta, arg) {
-        return response.map((role) => ({
-          ...role,
-          permissions: Object.values(Permissions).filter(
-            (value) => role.permissions & value
-          ),
-        }))
-      },
+      transformResponse: (response: RawRole[]) =>
+        response.map((role) => new Role(role)),
       providesTags: (result, _error, serverId) =>
         result
           ? [
@@ -278,15 +273,16 @@ export const serverApi = createApi({
             ]
           : [{ type: 'roles', id: `LIST-${serverId}` }],
     }),
-    updateServerRole: builder.mutation<UpdateRoleResponse, UpdateRoleRequest>({
-      query: (request) => ({
-        url: `/servers/${request.serverId}/roles/${request.id}`,
+    updateServerRole: builder.mutation<Role, UpdateRoleRequest>({
+      query: ({ serverId, role }) => ({
+        url: `/servers/${serverId}/roles/${role.id}`,
         method: 'PUT',
         body: {
-          name: request.name,
-          permissions: request.permissions,
+          name: role.name,
+          permissions: role.getRawPermissions(),
         },
       }),
+      transformResponse: (response: RawRole) => new Role(response),
       invalidatesTags: (_result, _error, req) => [
         { type: 'roles', id: `LIST-${req.serverId}` },
       ],
@@ -361,6 +357,7 @@ export const serverApi = createApi({
         url: `/v1/servers/${req.serverId}/members/@me`,
         method: 'GET',
       }),
+      transformResponse: (response: MemberEntity) => new Member(response),
       providesTags: (res, error, req) => [
         { type: 'members', id: 'me' + req.serverId },
       ],
@@ -408,13 +405,13 @@ export const serverApi = createApi({
         ],
       }
     ),
-    createRole: builder.mutation<RoleEntity, CreateRoleRequest>({
-      query: ({ name, serverId, permissions }) => ({
+    createRole: builder.mutation<Role, CreateRoleRequest>({
+      query: ({ serverId, role }) => ({
         url: `/servers/${serverId}/roles`,
         method: 'POST',
         body: {
-          name,
-          permissions,
+          name: role.name,
+          permissions: role.getRawPermissions(),
         },
       }),
       invalidatesTags: (_res, _error, req) => [

@@ -1,14 +1,21 @@
-import { MemberEntity, Permissions, RoleEntity } from '@beep/contracts'
+import { MemberEntity, Permissions, Role } from '@beep/contracts'
+// eslint-disable-next-line @nx/enforce-module-boundaries
+import { ServerContext } from '@beep/pages/channels'
 import {
   useAssignMembersToRoleMutation,
-  useCreateRoleMutation,
   useGetMembersQuery,
   useGetRoleMembersQuery,
   useUnassignMemberFromRoleMutation,
   useUpdateServerRoleMutation,
 } from '@beep/server'
 import { skipToken } from '@reduxjs/toolkit/query'
-import { PropsWithChildren, createContext, useEffect, useMemo } from 'react'
+import {
+  PropsWithChildren,
+  createContext,
+  useContext,
+  useEffect,
+  useMemo,
+} from 'react'
 import {
   Control,
   FieldValues,
@@ -25,8 +32,7 @@ const roleFormSchema = z.object({
   permissions: z.array(z.nativeEnum(Permissions)),
 })
 interface IEditRoleContext<T extends FieldValues> {
-  role?: RoleEntity
-  permissions: Permissions[]
+  role?: Role
   handleSubmit?: () => void
   onCheckRole?: (permission: Permissions, isChecked?: boolean) => void
   assignMembers?: (members: MemberEntity[]) => void
@@ -49,20 +55,18 @@ interface IEditRoleContext<T extends FieldValues> {
 
 export const EditRoleContext = createContext<
   IEditRoleContext<z.infer<typeof roleFormSchema>>
->({
-  permissions: [],
-})
+>({})
 
 interface EditRoleProviderProps {
-  role?: RoleEntity
+  role?: Role
 }
 
 export function EditRoleProvider({
   children,
   role,
 }: PropsWithChildren<EditRoleProviderProps>) {
+  const { server } = useContext(ServerContext)
   const [updateRole, updateResult] = useUpdateServerRoleMutation()
-  const [createRole, createResult] = useCreateRoleMutation()
   const { data: roleMembers, isLoading: isLoadingMembers } =
     useGetRoleMembersQuery({
       serverId: role?.serverId ?? '',
@@ -94,10 +98,10 @@ export function EditRoleProvider({
     })
   }
 
-  const permissions: Permissions[] = []
   const editRoleForm = useForm<z.infer<typeof roleFormSchema>>({
     defaultValues: {
       name: role?.name,
+      permissions: role?.getPermissions() ?? [],
     },
   })
 
@@ -118,43 +122,28 @@ export function EditRoleProvider({
 
   const handleSubmit = editRoleForm.handleSubmit(
     ({ name, permissions }: z.infer<typeof roleFormSchema>) => {
-      const tranformedPermissions = 0
-      if (role?.id) {
-        updateRole({
-          id: role.id,
-          serverId: role.serverId,
-          name: name,
-          permissions: tranformedPermissions,
-        })
-      } else {
-        createRole({
-          serverId: role?.serverId ?? '',
-          name: name,
-          permissions: tranformedPermissions,
-        })
-      }
+      const editedRole = Role.fromRoleEntity({
+        id: role?.id,
+        name: name,
+        permissions: permissions,
+        serverId: server?.id ?? '',
+      })
+      updateRole({
+        serverId: server?.id ?? '',
+        role: editedRole,
+      })
     }
   )
 
   useEffect(() => {
-    if (createResult.isSuccess || updateResult.isSuccess) {
+    if (updateResult.isSuccess) {
       editRoleForm.reset({
         name: updateResult?.data?.name ?? '',
-        permissions: [] as Permissions[],
+        permissions: updateResult?.data?.getPermissions() ?? [],
       })
       updateResult.reset()
-      createResult.reset()
     }
-  }, [
-    createResult,
-    createResult.isSuccess,
-    editRoleForm,
-    handleSubmit,
-    role?.name,
-    role?.permissions,
-    updateResult,
-    updateResult.isSuccess,
-  ])
+  }, [editRoleForm, handleSubmit, updateResult, updateResult.isSuccess])
 
   useEffect(() => {
     if (unassignMemberResult.isError || unassignMemberResult.isSuccess)
@@ -167,18 +156,17 @@ export function EditRoleProvider({
     )
     return member
   }, [roleMembers, serverMembers])
-
+  // const permissions = useMemo(() => {}, [editRoleForm.watch('permissions')])
   return (
     <EditRoleContext.Provider
       value={{
         role: role,
-        permissions,
         handleSubmit,
         onCheckRole,
         roleFormControl: editRoleForm.control,
         editRoleForm,
         isFormTouched: editRoleForm.formState.isDirty,
-        loadingEdit: updateResult.isLoading || createResult.isLoading,
+        loadingEdit: updateResult.isLoading,
         roleMembers,
         isLoadingMembers,
         assignMembers,

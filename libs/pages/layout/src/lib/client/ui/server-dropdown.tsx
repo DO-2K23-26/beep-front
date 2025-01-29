@@ -21,6 +21,7 @@ import DestroyServerFeature from '../feature/destroy-server-feature'
 import { OverviewSettingsServer } from './overview-settings-server'
 // eslint-disable-next-line @nx/enforce-module-boundaries
 import { ServerContext } from '@beep/pages/channels'
+import { RolesSettingsServerFeature } from '@beep/pages/role-settings'
 
 interface ServerDropdownProps {
   server: ServerEntity
@@ -50,14 +51,14 @@ export function ServerDropdown({
         id: 'overview',
         settingBodySize: SettingBodyWidth.L,
       },
-      // {
-      //   title: t('layout.server-dropdown.roles'),
-      //   settingComponent: server && (
-      //     <RolesSettingsServerFeature server={server} />
-      //   ),
-      //   id: 'roles',
-      //   settingBodySize: SettingBodyWidth.L,
-      // },
+      {
+        title: t('layout.server-dropdown.roles'),
+        settingComponent: server && (
+          <RolesSettingsServerFeature server={server} />
+        ),
+        id: 'roles',
+        settingBodySize: SettingBodyWidth.L,
+      },
     ],
   }
   return (

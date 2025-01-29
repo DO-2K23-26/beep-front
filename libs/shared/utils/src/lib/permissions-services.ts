@@ -1,12 +1,29 @@
-import { MemberEntity, Permissions, Role } from '@beep/contracts'
+// eslint-disable-next-line @nx/enforce-module-boundaries
+import { MemberEntity, Permissions, RawRole } from '@beep/contracts'
 
 class PermissionsService {
   declare permissionSet: Permissions
 
-  aggregate_roles_permissions(roles: Role[]): number {
+  rawToPermissions(raw: number): Permissions[] {
+    const permissions: Permissions[] = []
+
+    for (const permission of Object.values(Permissions)) {
+      if (typeof permission === 'number' && (raw & permission) === permission) {
+        permissions.push(permission)
+      }
+    }
+
+    return permissions
+  }
+
+  permissionsToRaw(permissions: Permissions[]): number {
+    return permissions.reduce((acc, permission) => acc | permission, 0)
+  }
+
+  aggregate_roles_permissions(roles: RawRole[]): number {
     return roles.reduce((acc, role) => acc | role.permissions , 0)
   }
-  
+
   isValidMask(mask: number): boolean {
     const maxPermissionValue = this.calculateMaxPermissionValue()
     const maxPermissionLength = this.calculateMaxPermissionLength()
@@ -63,7 +80,7 @@ class PermissionsService {
       this.hasPermission(member, permission)
     )
   }
-  
+
   hasOne(member: MemberEntity, permissions: Permissions[]): boolean {
       const mask = this.aggregate_roles_permissions(member.roles)
       // Check if mask is valid
@@ -89,4 +106,5 @@ class PermissionsService {
 
 const permissionsService = new PermissionsService()
 
-export  {permissionsService} 
+export { permissionsService }
+

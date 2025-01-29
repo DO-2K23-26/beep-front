@@ -1,5 +1,5 @@
-import { Role } from './role.entity'
 import { Permissions } from '../enums/permissions-server'
+import { RawRole, Role } from './role.entity'
 // eslint-disable-next-line @nx/enforce-module-boundaries
 import { permissionsService } from '@beep/utils'
 
@@ -16,7 +16,7 @@ export interface MemberEntity {
   updatedAt: string
   id: string
   userId: string
-  roles: Role[]
+  roles: RawRole[]
 }
 
 export class Member implements MemberEntity {
@@ -32,9 +32,11 @@ export class Member implements MemberEntity {
   updatedAt: string
   id: string
   userId: string
+  isAdmin: boolean
   roles: Role[]
 
-  constructor(member: MemberEntity) {
+
+  constructor(member: MemberEntity, isAdmin = false, defaultRole?: Role) {
     this.nickname = member.nickname
     this.avatar = member.avatar
     this.deaf = member.deaf
@@ -47,7 +49,11 @@ export class Member implements MemberEntity {
     this.updatedAt = member.updatedAt
     this.id = member.id
     this.userId = member.userId
-    this.roles = member.roles
+    this.roles = member.roles.map((role) => new Role(role))
+    this.isAdmin = isAdmin
+    if (defaultRole) {
+      this.roles.push(defaultRole)
+    }
   }
 
   hasPermissions(permissions: Permissions[]): boolean {

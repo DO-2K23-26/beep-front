@@ -1,8 +1,13 @@
-import { createContext } from 'react'
-import { PageServer } from '../ui/page-server'
 import { Member, ServerEntity } from '@beep/contracts'
+import {
+  useGetMyMemberQuery,
+  useGetMyServersQuery,
+  useGetRolesQuery,
+} from '@beep/server'
+import { skipToken } from '@reduxjs/toolkit/query'
+import { createContext, useMemo } from 'react'
 import { useParams } from 'react-router'
-import { useGetMyMemberQuery, useGetMyServersQuery } from '@beep/server'
+import { PageServer } from '../ui/page-server'
 
 interface IServerContext {
   server?: ServerEntity
@@ -19,17 +24,28 @@ export function PageServerFeature() {
       return { server, ...query }
     },
   })
-  const {  myMember } = useGetMyMemberQuery(
+  const { data: memberData } = useGetMyMemberQuery(
     { serverId: serverId ?? '' },
     {
       skip: serverId === undefined,
-      selectFromResult: (query) => {
-        if (!query.data) return { myMember: undefined, ...query }
-        const member = new Member(query.data)
-        return { myMember: member, ...query }
-      },
     }
   )
+
+  const { defaultRole } = useGetRolesQuery(serverId ?? skipToken, {
+    selectFromResult: (query) => {
+      if (!query.data) return { defaultRole: undefined, ...query }
+      const defaultRole = query.data.find((role) => role.id === serverId)
+      return { defaultRole, ...query }
+    },
+  })
+  const myMember = useMemo(() => {
+    if (!memberData) return undefined
+    return new Member(
+      memberData,
+      server?.ownerId === memberData.userId,
+      defaultRole
+    )
+  }, [defaultRole, memberData, server?.ownerId])
 
   return (
     <ServerContext.Provider

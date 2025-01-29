@@ -1,4 +1,4 @@
-import { RoleEntity, ServerEntity } from '@beep/contracts'
+import { Role, ServerEntity } from '@beep/contracts'
 import {
   useCreateRoleMutation,
   useDeleteRoleMutation,
@@ -9,7 +9,7 @@ import { useTranslation } from 'react-i18next'
 import { Page } from '../utils/roles-pages'
 
 interface IRolesSettingsContext {
-  roles?: RoleEntity[]
+  roles?: Role[]
   focusedPage?: Page
   goTo?: (page: Page) => void
   goToRoleEdition?: (roleId: string) => void
@@ -49,10 +49,14 @@ export function RolesSettingsProvider({
   }
 
   const createRole = () => {
+    const createdRole = new Role({
+      name: t('role-settings.roles-settings-provider.new-role'),
+      serverId: server.id,
+      permissions: 0,
+    })
     createRoleReq({
       serverId: server.id,
-      name: t('role-settings.roles-settings-provider.new-role'),
-      permissions: 0,
+      role: createdRole,
     })
   }
 
@@ -62,7 +66,7 @@ export function RolesSettingsProvider({
 
   useEffect(() => {
     if (createRoleResult.isSuccess && createRoleResult.data) {
-      goToRoleEdition(createRoleResult.data.id)
+      goToRoleEdition(createRoleResult.data.id ?? '')
     }
   }, [createRoleResult])
 
