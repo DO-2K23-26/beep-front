@@ -49,9 +49,9 @@ const WebRTCMiddleware: Middleware = (store) => {
                     username: user.metas[0].user.username,
                     expiresAt: 0,
                     userSn: 'not used',
-                    voiceMuted: user.metas[0].user.audio !== undefined,
+                    voiceMuted: user.metas[0].user.audio < 0,
                     screenSharing: false,
-                    camera: user.metas[0].user.video !== null,
+                    camera: user.metas[0].user.video > 0,
                   }
                 }
               })
@@ -226,17 +226,23 @@ const WebRTCMiddleware: Middleware = (store) => {
             micTransceiver = peerConnection.getTransceivers()[1]
           }
 
-          if (video !== null) {
-            video.getTracks().forEach((track) => {
-              camTransceiver.sender.replaceTrack(track)
+          if (video) {
+            for (const track of video.getTracks()) {
+              await camTransceiver.sender.replaceTrack(track)
               camTransceiver.direction = 'sendrecv'
-            })
+            }
+          } else {
+            await camTransceiver.sender.replaceTrack(null)
+            camTransceiver.direction = 'sendrecv'
           }
-          if (audio !== null) {
-            audio.getTracks().forEach((track) => {
-              micTransceiver.sender.replaceTrack(track)
+          if (audio) {
+            for (const track of audio.getTracks()) {
+              await micTransceiver.sender.replaceTrack(track)
               micTransceiver.direction = 'sendrecv'
-            })
+            }
+          } else {
+            await micTransceiver.sender.replaceTrack(null)
+            micTransceiver.direction = 'sendrecv'
           }
 
           const sdpAnswer = await peerConnection?.createAnswer()
@@ -288,9 +294,9 @@ const WebRTCMiddleware: Middleware = (store) => {
                   username: user.metas[0].user.username,
                   expiresAt: 0,
                   userSn: 'not used',
-                  voiceMuted: user.metas[0].user.audio !== undefined,
+                  voiceMuted: user.metas[0].user.audio < 0 ,
                   screenSharing: false,
-                  camera: user.metas[0].user.video !== null,
+                  camera: user.metas[0].user.video > 0,
                 }
               }
             })
@@ -304,7 +310,24 @@ const WebRTCMiddleware: Middleware = (store) => {
         })
 
         currentChannel
-          .join()
+          .join().receive('ok', () => {
+            setTimeout(() => {
+              if (!video){
+                currentChannel?.push('device_event', {
+                  device: 'video',
+                  event: !!video,
+                  user_id: id,
+                })
+              }
+              if (!audio){
+                currentChannel?.push('device_event', {
+                  device: 'audio',
+                  event: !!audio,
+                  user_id: id,
+                })
+              }
+            }, 100)
+        })
           .receive('error', (resp) => {
             socket.disconnect()
 
