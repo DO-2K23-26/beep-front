@@ -32,7 +32,7 @@ export default function WebhookListFeature({
   }
 
 
-  if (webhooks.length == 0) {
+  if (webhooks.length === 0) {
     return <div>{t('layout.webhook-list.no_webhooks')}</div>
   } else {
     return (
