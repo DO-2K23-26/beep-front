@@ -57,6 +57,7 @@ export default function CreateWebhookFeature({
     }
     createWebhook(data).then(() => {
       toast.success(t('layout.new-webhook-modal.success_create'))
+      methodsAddWebhook.reset(undefined, { keepErrors: false })
     })
   })
 
