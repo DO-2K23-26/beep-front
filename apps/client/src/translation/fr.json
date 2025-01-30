@@ -413,8 +413,8 @@
         "name_label": "Nom du Webhook",
         "name_placeholder": "Entrer le nom du webhook",
         "name_required": "Le nom du webhook est requis.",
-        "channel_label": "Channel",
-        "channel_required": "Sélectionner le channel.",
+        "channel_label": "Salon de discussion",
+        "channel_required": "Sélectionner le salon de discussion.",
         "cancel": "Annuler",
         "create": "Créer"
       }
@@ -428,7 +428,7 @@
       "upload_picture": "Télécharger la photo de profil",
       "name_required": "Le nom du webhook est requis.",
       "name_label": "Nom du Webhook",
-      "channel_label": "Channel",
+      "channel_label": "Salon de discussion",
       "copy_webhook": "Copier l'URL du webhook ",
       "delete_webhook": "Supprimer le webhook",
       "error_delete": "Erreur dans la suppression du webhook.",
@@ -692,6 +692,11 @@
       "add-friend": "Ajouter en ami",
       "private-conv": "Message privé",
       "invitation-sent": "Invitation envoyée"
+    }
+  },
+  "shared": {
+    "input-select": {
+      "no_options": "Aucun résultat pour cette recherche"
     }
   }
 }
