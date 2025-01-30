@@ -15,7 +15,7 @@ import {
   Icon,
   UseModalProps,
 } from '@beep/ui'
-import { ReactNode, useContext } from 'react'
+import { PropsWithChildren, ReactNode, useContext } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router'
 import DestroyServerFeature from '../feature/destroy-server-feature'
@@ -28,15 +28,14 @@ interface ServerDropdownProps {
   onClickId: (id: string) => void
   openModal: React.Dispatch<React.SetStateAction<UseModalProps | undefined>>
   closeModal: () => void
-  children: ReactNode
 }
 
 export function ServerDropdown({
+  children,
   server,
   openModal,
   closeModal,
-  children,
-}: ServerDropdownProps) {
+}: PropsWithChildren<ServerDropdownProps>) {
   const { t } = useTranslation()
   const navigate = useNavigate()
   const navigateAfterDelete = () => navigate('/servers')

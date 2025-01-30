@@ -50,7 +50,6 @@ export default function ChannelsNavigation({
 
   const { myMember } = useContext(ServerContext)
 
-
   return (
     <div
       className={cn('h-full w-full', {
@@ -61,22 +60,24 @@ export default function ChannelsNavigation({
       <div className=" bg-violet-300 p-3 flex flex-col h-full w-full justify-between">
         {/* Top bar: Server information */}
 
-        <div className="flex flex-col gap-3 sm:gap-4 md:gap-6 h-full">
+        <div className="flex flex-col gap-3 sm:gap-4 md:gap-6 w-fit h-full">
           <div
             className="flex flex-col md:flex-row gap-2 sm:gap-3 md:gap-4 bg-white bg-opacity-10 rounded-xl p-2 md:p-4 w-full items-center h-fit object-scale-down bg-cover bg-center"
             style={{ backgroundImage: `url(${banner})` }}
           >
             {server && (
-              <ServerDropdown
-                server={server}
-                onClickId={onClickId}
-                openModal={openModal}
-                closeModal={closeModal}
-              >
-                <ServerPictureButton server={server} />
-              </ServerDropdown>
+              <div className='size-fit'>
+                <ServerDropdown
+                  server={server}
+                  onClickId={onClickId}
+                  openModal={openModal}
+                  closeModal={closeModal}
+                >
+                  <ServerPictureButton server={server} />
+                </ServerDropdown>
+              </div>
             )}
-            <div className="flex flex-row md:flex-col items-start gap-4 md:justify-between w-fit">
+            <div className="flex flex-row md:flex-col items-start gap-4 md:justify-between ">
               <p className="font-semibold max-w-10 md:max-w-32 text-xs md:text-sm lg:text-base truncate">
                 {server?.name}
               </p>
@@ -96,7 +97,8 @@ export default function ChannelsNavigation({
             </div>
           </div>
           {/* Create channel modal */}
-          {(!myMember || myMember?.hasPermission(Permissions.MANAGE_CHANNELS)) && (
+          {(!myMember ||
+            myMember?.hasPermission(Permissions.MANAGE_CHANNELS)) && (
             <ButtonIcon
               icon={'lucide:circle-plus'}
               className="bg-violet-400 px-2 xl:px-3 py-2 font-semibold"

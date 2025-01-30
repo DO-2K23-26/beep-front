@@ -14,14 +14,14 @@ export function ServerPictureButton({ server }: ServerPictureButton) {
   return (
     <ButtonIcon
       buttonProps={{ size: 'responsiveSquare', variant: 'hoverRounded' }}
-      className="bg-violet-300"
+      className="bg-violet-300 size-fit"
       asChild
     >
       {server && icon ? (
         <img
           src={icon}
           alt="Server"
-          className="aspect-square rounded-lg hover:rounded-xl transition-all object-cover"
+          className="aspect-square rounded-lg hover:rounded-xl transition-all object-cover size-full"
         />
       ) : (
         <p>{server && server.name[0]}</p>
