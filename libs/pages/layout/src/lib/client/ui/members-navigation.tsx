@@ -1,13 +1,15 @@
-import { MemberEntity, UserConnectedEntity } from '@beep/contracts'
+import { MemberEntity, Permissions, UserConnectedEntity } from '@beep/contracts'
 import { getResponsiveState } from '@beep/responsive'
 import { Icon, UseModalProps } from '@beep/ui'
+import { cn } from '@beep/utils'
+import { useContext } from 'react'
+import { useTranslation } from 'react-i18next'
 import { useSelector } from 'react-redux'
 import InviteMemberModalFeature from '../feature/invite-member-modal-feature'
 import { ListMemberSkeleton } from './list-member-skeleton'
 import { ListMembers } from './list-members'
-import { useTranslation } from 'react-i18next'
-import { cn } from '@beep/utils'
-import { useParams } from 'react-router'
+// eslint-disable-next-line @nx/enforce-module-boundaries
+import { ServerContext } from '@beep/pages/channels'
 
 interface MembersNavigationProps {
   usersConnected?: UserConnectedEntity[]
@@ -25,8 +27,8 @@ export default function MembersNavigation({
   isLoadingUsers,
 }: MembersNavigationProps) {
   const { t } = useTranslation()
-  const { serverId } = useParams<{ serverId: string }>()
   const { showRightPane } = useSelector(getResponsiveState)
+  const { myMember, server } = useContext(ServerContext)
 
   return (
     <div
@@ -38,20 +40,25 @@ export default function MembersNavigation({
         }
       )}
     >
-      <div className="flex items-center justify-between space-x-6">
+      <div className="flex items-start justify-between space-x-6">
         <h5 className="text-slate-900 font-semibold pl-3">
           {t('layout.members-navigation.members')}
         </h5>
-        <button
-          className="p-2 bg-violet-400 rounded-lg hover:rounded-xl transition-all"
-          onClick={() => {
-            openModal({
-              content: <InviteMemberModalFeature serverId={serverId} />,
-            })
-          }}
-        >
-          <Icon name="lucide:plus" className="w-4 h-4" />
-        </button>
+        {(!myMember ||
+          myMember?.hasPermission(Permissions.CREATE_INVITATION)) && (
+          <button
+            className="p-2 bg-violet-400 rounded-lg hover:rounded-xl transition-all"
+            onClick={() => {
+              openModal({
+                content: (
+                  <InviteMemberModalFeature serverId={server?.id ?? ''} />
+                ),
+              })
+            }}
+          >
+            <Icon name="lucide:plus" className="w-4 h-4" />
+          </button>
+        )}
       </div>
       {/* Members list */}
       <div className="flex flex-col gap-1 overflow-y-scroll no-scrollbar scroll-smooth">

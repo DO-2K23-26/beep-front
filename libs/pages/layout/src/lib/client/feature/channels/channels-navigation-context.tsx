@@ -1,28 +1,46 @@
-import { ChannelEntity, ChannelType, CreateChannelRequest, OccupiedChannelEntity, ServerEntity } from "@beep/contracts"
+import {
+  ChannelEntity,
+  ChannelType,
+  CreateChannelRequest,
+  OccupiedChannelEntity,
+  ServerEntity,
+} from '@beep/contracts'
+import {
+  useCreateChannelInServerMutation,
+  useGetCurrentStreamingUsersQuery,
+  useGetServerChannelsQuery,
+} from '@beep/server'
 import { sortChannels } from '@beep/transmit'
-import { useCreateChannelInServerMutation, useGetCurrentStreamingUsersQuery, useGetServerChannelsQuery } from "@beep/server"
-import { useModal, UseModalProps } from "@beep/ui"
-import { skipToken } from "@reduxjs/toolkit/query"
-import { BaseSyntheticEvent, createContext, ReactNode, useEffect } from "react"
-import { FormProvider, useForm } from "react-hook-form"
-import toast from "react-hot-toast"
-import { useTranslation } from "react-i18next"
-import { useNavigate } from "react-router"
-import { useHandleChangeChannel } from "./handle-change-channel-hook"
-import { useVoiceChannels } from "./match-channel-hook"
-import { CreateChannelModal } from "../../ui/create-channel-modal"
+import { UseModalProps, useModal } from '@beep/ui'
+import { skipToken } from '@reduxjs/toolkit/query'
+import {
+  BaseSyntheticEvent,
+  PropsWithChildren,
+  createContext,
+  useEffect,
+  useRef,
+} from 'react'
+import { FormProvider, useForm } from 'react-hook-form'
+import toast from 'react-hot-toast'
+import { useTranslation } from 'react-i18next'
+import { useNavigate } from 'react-router'
+import { CreateChannelModal } from '../../ui/create-channel-modal'
+import { useHandleChangeChannel } from './handle-change-channel-hook'
+import { useVoiceChannels } from './match-channel-hook'
 
 interface ChannelContextInterface {
   streamingUsers: OccupiedChannelEntity[]
   channels: ChannelEntity[]
-  createChannel: (e?: BaseSyntheticEvent<object, any, any>) => void
+  createChannel: (
+    e?: BaseSyntheticEvent<object, EventTarget, EventTarget>
+  ) => void
   onClickId: (text: string) => void
   onJoinChannel: (channel: ChannelEntity) => void
   onLeaveVoiceChannel: () => void
   closeModal: () => void
   openCreateChannelModal: () => void
   openModal: React.Dispatch<React.SetStateAction<UseModalProps | undefined>>
-  server: ServerEntity
+  server?: ServerEntity
 }
 
 const defaultChannelContext: ChannelContextInterface = {
@@ -49,29 +67,22 @@ const defaultChannelContext: ChannelContextInterface = {
   openModal: () => {
     return
   },
-  server: {
-    id: "",
-    name: "",
-    ownerId: "",
-    visibility: "private",
-  }
 }
 
+const ChannelContext = createContext<ChannelContextInterface>(
+  defaultChannelContext
+)
 
-const ChannelContext = createContext<ChannelContextInterface>(defaultChannelContext)
-
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface ChannelsProviderProps {
-  server: ServerEntity,
-  children: ReactNode
+  server?: ServerEntity
 }
-
 
 function ChannelsProvider({
+  children,
   server,
-  children
-}: ChannelsProviderProps) {
+}: PropsWithChildren<ChannelsProviderProps>) {
   useHandleChangeChannel({ server }) // if a user change voice channel it will be handled by this hook
-
 
   const openCreateChannelModal = () => {
     openModal({
@@ -87,9 +98,9 @@ function ChannelsProvider({
     })
   }
   const { openModal, closeModal } = useModal() //channel creation modal
-  const { t } = useTranslation();
+  const { t } = useTranslation()
   const { data: streamingUsers } = useGetCurrentStreamingUsersQuery(
-    server.id
+    server?.id ?? skipToken
   )
   const [createChannel, resultCreatedChannel] =
     useCreateChannelInServerMutation()
@@ -102,7 +113,7 @@ function ChannelsProvider({
   })
   const { onJoinVoiceChannel, onLeaveVoiceChannel } = useVoiceChannels({
     streamingUsers,
-    server
+    server,
   })
 
   const onClickId = async (text: string) => {
@@ -111,12 +122,11 @@ function ChannelsProvider({
   }
 
   const { data: channelsResponse } = useGetServerChannelsQuery(
-    server ? server.id : skipToken
+    server?.id ?? skipToken
   )
 
   const channels: ChannelEntity[] = sortChannels(channelsResponse)
   const navigate = useNavigate()
-
 
   useEffect(() => {
     if (
@@ -129,7 +139,6 @@ function ChannelsProvider({
     }
   }, [resultCreatedChannel, t])
 
-
   const onCreateChannel = methodsAddChannel.handleSubmit((data) => {
     const createChannelRequest: CreateChannelRequest = {
       serverId: server?.id ?? '',
@@ -141,38 +150,37 @@ function ChannelsProvider({
   })
 
   const onJoinTextChannel = (channel: ChannelEntity) => {
-    navigate(`/servers/${server.id}/channels/${channel.id}`)
+    navigate(`/servers/${server?.id}/channels/${channel.id}`)
   }
 
   const onJoinChannel = async (channel: ChannelEntity) => {
     switch (channel.type) {
       case ChannelType.voice_server:
-        onJoinVoiceChannel(channel);
-        break;
+        onJoinVoiceChannel(channel)
+        break
       default:
         onJoinTextChannel(channel)
     }
   }
 
   return (
-    <ChannelContext.Provider value={{
-      streamingUsers: streamingUsers ?? [],
-      channels,
-      onClickId,
-      closeModal,
-      openCreateChannelModal,
-      onJoinChannel,
-      createChannel: onCreateChannel,
-      onLeaveVoiceChannel,
-      openModal,
-      server
-    }}>
-      {
-        children
-      }
+    <ChannelContext.Provider
+      value={{
+        streamingUsers: streamingUsers ?? [],
+        channels,
+        onClickId,
+        closeModal,
+        openCreateChannelModal,
+        onJoinChannel,
+        createChannel: onCreateChannel,
+        onLeaveVoiceChannel,
+        openModal,
+        server,
+      }}
+    >
+      {children}
     </ChannelContext.Provider>
   )
 }
 
-export { ChannelContext, ChannelsProvider };
-
+export { ChannelContext, ChannelsProvider }

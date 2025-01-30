@@ -13,6 +13,7 @@ export interface ButtonIconProps {
   textHiddenResponsive?: boolean
   asChild?: boolean
   loading?: boolean
+  disabled?: boolean
   type?: 'button' | 'submit' | 'reset'
   onClick?: () => void
   iconClassName?: string
@@ -28,6 +29,7 @@ export function ButtonIcon({
   asChild,
   loading,
   iconClassName = 'size-4',
+  disabled,
   type = 'button',
   onClick,
 }: PropsWithChildren<ButtonIconProps>) {
@@ -36,7 +38,8 @@ export function ButtonIcon({
       type={type}
       variant={buttonProps?.variant}
       size={buttonProps?.size}
-      className={cn('bg-violet-300 gap-2', className)}
+      disabled={disabled}
+      className={cn('bg-violet-300 gap-2 ', className)}
       onClick={onClick}
       asChild={asChild}
     >

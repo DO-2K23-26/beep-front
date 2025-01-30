@@ -1,4 +1,4 @@
-import { ChannelEntity, ChannelType } from '@beep/contracts'
+import { ChannelEntity, ChannelType, Permissions } from '@beep/contracts'
 import { SettingBodyWidth, SettingsModal, SubSettings } from '@beep/settings'
 import { DialogCloseButton, Icon } from '@beep/ui'
 import DeleteChannelFeature from '../feature/delete-channel-feature'
@@ -7,6 +7,8 @@ import { useTranslation } from 'react-i18next'
 import { cn } from '@beep/utils'
 import { ChannelContext } from '../feature/channels/channels-navigation-context'
 import { useContext } from 'react'
+// eslint-disable-next-line @nx/enforce-module-boundaries
+import { ServerContext } from '@beep/pages/channels'
 
 interface DisplayChannelProps {
   channel: ChannelEntity
@@ -18,8 +20,8 @@ export default function DisplayChannel({
   isSelected,
 }: DisplayChannelProps) {
   const { t } = useTranslation()
-  const { onJoinChannel } = useContext(ChannelContext);
-
+  const { onJoinChannel } = useContext(ChannelContext)
+  const { myMember } = useContext(ServerContext)
   // List of setting in the user setting modal
   const subSetting: SubSettings = {
     subGroupSettingTitle: t('layout.display-channel.channel'),
@@ -37,13 +39,12 @@ export default function DisplayChannel({
       },
     ],
   }
-
+  const canManageChannel =
+    !myMember || !myMember.hasPermission(Permissions.MANAGE_CHANNELS)
   return (
     <div
       className="flex flex-col group w-full"
-      onClick={() =>
-        onJoinChannel ? onJoinChannel(channel) : {}
-      }
+      onClick={() => onJoinChannel && onJoinChannel(channel)}
     >
       <div
         className={cn(
@@ -61,7 +62,12 @@ export default function DisplayChannel({
             {channel.name}
           </p>
         </div>
-        <div className="flex justify-center items-center invisible group-hover:visible">
+        <div
+          className={cn(
+            'flex justify-center items-center invisible group-hover:visible',
+            { hidden: canManageChannel }
+          )}
+        >
           <DialogCloseButton
             content={<SettingsModal settings={[subSetting]} />}
           >

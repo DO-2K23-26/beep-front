@@ -135,6 +135,8 @@
     "page-channel": {
       "reply_to": "Répondre à",
       "message_placeholder": "Saisissez un message",
+      "cannot_see_channel": "Vous n'êtes pas autorisé à voir les salons de discussion",
+      "no_permission_sending_message": "Vous n'avez pas la permission d'envoyer un message",
       "user_selector": {
         "title": "Utilisateur",
         "empty_result": "Aucun utilisateur."
@@ -245,7 +247,8 @@
       "create_channel": "Créer un salon de discussion",
       "success_create_channel": "Salon de discussion créé !",
       "error_create_channel": "Une erreur est survenue lors de la création du salon de discussion !",
-      "copy_server_id": "Identifiant du serveur copié dans le press papier"
+      "copy_server_id": "Identifiant du serveur copié dans le press papier",
+      "cannot_see_channel": "Vous n'êtes pas autorisé à voir les salons de discussion"
     },
     "create-channel-modal": {
       "create_channel": "Créer un salon de discussion",

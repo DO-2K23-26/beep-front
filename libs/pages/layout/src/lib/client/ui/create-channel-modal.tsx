@@ -15,7 +15,6 @@ export function CreateChannelModal({
   methodsAddChannel,
 }: CreateChannelModalProps) {
   const { t } = useTranslation()
-
   const { control } = useFormContext()
 
   return (

@@ -28,11 +28,6 @@ export function ChannelsNavigationFeature() {
     }
   )
 
-
-  if (!server) {
-    return (<></>) // add error boundary
-  }
-
   return (
     <ChannelsProvider server={server}>
       <ChannelsNavigation

@@ -1,11 +1,10 @@
-import {
-  MessageEntity
-} from '@beep/contracts'
+import { Member, MessageEntity } from '@beep/contracts'
 import { DynamicSelector, DynamicSelectorProps, Icon } from '@beep/ui'
 import { UseFormReturn } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { InputChannelArea } from './input-channel-area'
 import { ListMessagesFeature } from '@beep/messages'
+import { Permissions } from '@beep/contracts'
 
 export interface PageChannelProps {
   messageForm: UseFormReturn<{
@@ -22,6 +21,7 @@ export interface PageChannelProps {
   onCursorChange?: () => void
   dynamicSelector?: DynamicSelectorProps
   onFocusChannel: () => void
+  myMember?: Member
 }
 
 export const PageChannel = ({
@@ -36,6 +36,7 @@ export const PageChannel = ({
   onFocusChannel,
   onCursorChange,
   dynamicSelector,
+  myMember,
 }: PageChannelProps) => {
   const { t } = useTranslation()
   const replyTo = messageForm.watch('replyTo')
@@ -47,10 +48,17 @@ export const PageChannel = ({
     }
   }
 
-
   return (
     <>
-      <ListMessagesFeature setReplyTo={setReplyTo} />
+      {!myMember || myMember?.hasOnePermissions([Permissions.VIEW_CHANNELS]) ? (
+        <ListMessagesFeature setReplyTo={setReplyTo} />
+      ) : (
+        <div className=" flex flex-col justify-end h-full w-fit">
+          <p className="text-violet-800">
+            {t('channels.page-channel.cannot_see_channel')}
+          </p>
+        </div>
+      )}
       <div onClick={onFocusChannel}>
         {/* Message input + bouttons + files */}
         <div className="flex flex-col w-full gap-3 ">
@@ -65,7 +73,7 @@ export const PageChannel = ({
             >
               <span>
                 {t('channels.page-channel.reply_to')}
-                <strong>{" " + replyTo.owner?.username}</strong> :{' '}
+                <strong>{' ' + replyTo.owner?.username}</strong> :{' '}
                 <em>
                   {replyTo.content.length > 15
                     ? `${replyTo.content.substring(0, 15)} ...`

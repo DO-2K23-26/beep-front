@@ -1,8 +1,10 @@
 import { MessageEntity } from '@beep/contracts'
 import { ButtonIcon, ButtonShadCnProps, InputMessageArea } from '@beep/ui'
-import { useCallback, useRef } from 'react'
+import { useCallback, useContext, useRef } from 'react'
 import { Controller, UseFormReturn } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
+import { ServerContext } from '../feature/page-server-feature'
+import { Permissions } from '@beep/contracts'
 
 interface InputChannelAreaProps {
   onChange?: (value: string, onChange: (value: string) => void) => void
@@ -41,6 +43,17 @@ export function InputChannelArea({
     },
     [sendMessage]
   )
+  const { myMember } = useContext(ServerContext)
+  const canSendMessage =
+    !myMember ||
+    myMember?.hasAllPermissions([
+      Permissions.SEND_MESSAGES,
+      Permissions.VIEW_CHANNELS,
+    ])
+
+  const placeholder = canSendMessage
+    ? 'channels.page-channel.message_placeholder'
+    : 'channels.page-channel.no_permission_sending_message'
 
   const handleButtonClick = () => {
     // Trigger click on the hidden input
@@ -56,11 +69,12 @@ export function InputChannelArea({
           name="message"
           render={({ field }) => (
             <InputMessageArea
+              disabled={!canSendMessage}
               type="text"
               name={'message'}
               value={field.value}
               className="rounded-xl bg-violet-50 w-full flex-grow h-10 sm:h-12 md:h-14"
-              placeholder={t('channels.page-channel.message_placeholder')}
+              placeholder={t(placeholder)}
               ref={inputRef}
               onChange={
                 onChange
@@ -78,6 +92,7 @@ export function InputChannelArea({
       {/* buttons */}
       <div className="flex flex-row gap-2 md:gap-4">
         <ButtonIcon
+          disabled={!canSendMessage}
           buttonProps={inputButtonProps}
           onClick={sendMessage}
           className="bg-violet-50"
@@ -86,6 +101,7 @@ export function InputChannelArea({
         <div>
           <label htmlFor="file" className="cursor-pointer">
             <ButtonIcon
+              disabled={!canSendMessage}
               buttonProps={inputButtonProps}
               className="bg-violet-50"
               icon="lucide:plus"

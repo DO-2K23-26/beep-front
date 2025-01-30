@@ -130,6 +130,8 @@
     "page-channel": {
       "reply_to": "Reply to",
       "message_placeholder": "Type a message",
+      "cannot_see_channel": "You are not allowed to see this channel",
+      "no_permission_sending_message": "You don't have permission to send messages",
       "user_selector": {
         "title": "User",
         "empty_result": "Any user."
@@ -214,7 +216,8 @@
       "create_channel": "Create channel",
       "success_create_channel": "Channel created !",
       "error_create_channel": "An error occured while creating the channel !",
-      "copy_server_id": "Server ID copied to clipboard"
+      "copy_server_id": "Server ID copied to clipboard",
+      "cannot_see_channel": "You are not allowed to see channels"
     },
     "create-channel-modal": {
       "create_channel": "Create channel",
