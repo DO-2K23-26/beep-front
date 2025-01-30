@@ -1,4 +1,5 @@
 import { Subscription, Transmit } from '@adonisjs/transmit-client';
+// eslint-disable-next-line @nx/enforce-module-boundaries
 import { backendUrl } from '@beep/contracts';
 
 export class TransmitSingleton {
