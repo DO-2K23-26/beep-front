@@ -15,6 +15,7 @@ import { Value } from '@beep/contracts'
 import { Tooltip } from '../tooltip/tooltip'
 import { Icon } from '../icons/icon'
 import IconFa from '../icons/icon-fa/icon-fa'
+import { useTranslation } from 'react-i18next'
 
 
 export interface InputSelectProps {
@@ -60,6 +61,7 @@ export function InputSelect({
   menuListButton,
   menuPlacement = 'auto',
 }: InputSelectProps) {
+  const { t } = useTranslation()
   const [focused, setFocused] = useState(false)
   const [selectedItems, setSelectedItems] = useState<
     MultiValue<Value> | SingleValue<Value>
@@ -180,7 +182,7 @@ export function InputSelect({
         <div className="text-center px-3 py-6">
           <Icon name={'icon-solid-wave-pulse'} className="text-neutral-350" />
           <p className="text-neutral-350 font-medium text-xs mt-1">
-            No result for this search
+            {t('shared.input-select.no_options')}
           </p>
         </div>{' '}
       </components.NoOptionsMessage>
