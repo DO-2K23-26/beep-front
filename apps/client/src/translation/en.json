@@ -692,5 +692,10 @@
       "private-conv": "Private message",
       "invitation-sent": "Invitation sent"
     }
+  },
+  "shared": {
+    "input-select": {
+      "no_options": "No result for this search"
+    }
   }
 }
