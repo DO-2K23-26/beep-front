@@ -53,6 +53,7 @@ export const serverApi = createApi({
     'publicServers',
     'transmitPicture',
     'transmitBanner',
+    'webhooks',
   ],
   endpoints: (builder) => ({
     getMyServers: builder.query<ServerEntity[], void>({
@@ -454,6 +455,7 @@ export const serverApi = createApi({
           profilePicture: request.profilePicture,
         },
       }),
+      invalidatesTags: ['webhooks'],
     }),
 
     updateWebHook: builder.mutation<
@@ -498,10 +500,14 @@ export const serverApi = createApi({
         url: `/servers/${request.serverId}/channels/${request.channelId}/webhook/${request.webhookId}`,
         method: 'DELETE',
       }),
+      invalidatesTags: ['webhooks'],
     }),
 
     getWebHooksServer: builder.query<WebhookEntity[], string>({
       query: (serverId) => `/servers/${serverId}/webhooks`,
+      providesTags: (result, _error, serverId) => [
+        { type: 'webhooks', id: serverId },
+      ],
     }),
   }),
 })
