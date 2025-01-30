@@ -34,7 +34,7 @@ export function OverviewSettingsServer({
   const { data: icon } = useTransmitPictureQuery(server?.id ?? skipToken)
 
   const canEditServer =
-    !myMember || myMember?.hasPermissions([Permissions.MANAGE_SERVER])
+    !myMember || myMember?.hasOnePermissions([Permissions.MANAGE_SERVER])
   const handleSave = async () => {
     const updatedServer = {
       id: server?.id ?? '',

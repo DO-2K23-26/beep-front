@@ -50,7 +50,7 @@ export const PageChannel = ({
 
   return (
     <>
-      {!myMember || myMember?.hasPermissions([Permissions.VIEW_CHANNELS]) ? (
+      {!myMember || myMember?.hasOnePermissions([Permissions.VIEW_CHANNELS]) ? (
         <ListMessagesFeature setReplyTo={setReplyTo} />
       ) : (
         <div className=" flex flex-col justify-end h-full w-fit">

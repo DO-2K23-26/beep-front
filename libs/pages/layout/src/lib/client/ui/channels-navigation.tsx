@@ -8,23 +8,22 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from '@beep/ui'
-import { getUserState } from '@beep/user'
-import { useContext, useEffect, useState } from 'react'
+import { useContext } from 'react'
 import { useSelector } from 'react-redux'
 import { ConnectedChannelRow } from './connect-channel-row'
 import { ListChannels } from './list-channels'
 
+import { usePatchChannelPositionMutation } from '@beep/server'
 import { cn } from '@beep/utils'
 import { getVoiceState } from '@beep/voice'
 import { useTranslation } from 'react-i18next'
+import { ChannelContext } from '../feature/channels/channels-navigation-context'
 import { CurrentUserFeature } from '../feature/current-user/current-user-feature'
 import { ServerDropdown } from './server-dropdown'
 import { ServerPictureButton } from './server-picture-button'
-import { usePatchChannelPositionMutation } from '@beep/server'
-import { ChannelContext } from '../feature/channels/channels-navigation-context'
+import { Permissions } from '@beep/contracts'
 // eslint-disable-next-line @nx/enforce-module-boundaries
 import { ServerContext } from '@beep/pages/channels'
-import { Permissions } from '@beep/contracts'
 
 export interface ChannelsNavigationProps {
   banner?: string

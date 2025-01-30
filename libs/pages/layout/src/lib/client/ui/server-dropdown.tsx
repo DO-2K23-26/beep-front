@@ -1,3 +1,4 @@
+/* eslint-disable @nx/enforce-module-boundaries */
 import { Permissions, ServerEntity } from '@beep/contracts'
 import { SettingBodyWidth, SettingsModal, SubSettings } from '@beep/settings'
 import {
@@ -19,7 +20,6 @@ import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router'
 import DestroyServerFeature from '../feature/destroy-server-feature'
 import { OverviewSettingsServer } from './overview-settings-server'
-// eslint-disable-next-line @nx/enforce-module-boundaries
 import { ServerContext } from '@beep/pages/channels'
 import { RolesSettingsServerFeature } from '@beep/pages/role-settings'
 
@@ -41,7 +41,6 @@ export function ServerDropdown({
   const navigate = useNavigate()
   const navigateAfterDelete = () => navigate('/servers')
   const { myMember } = useContext(ServerContext)
-  // List of setting in the user setting modal
   const subSetting: SubSettings = {
     subGroupSettingTitle: t('layout.server-dropdown.server'),
     settings: [
@@ -51,15 +50,17 @@ export function ServerDropdown({
         id: 'overview',
         settingBodySize: SettingBodyWidth.L,
       },
-      {
-        title: t('layout.server-dropdown.roles'),
-        settingComponent: server && (
-          <RolesSettingsServerFeature server={server} />
-        ),
-        id: 'roles',
-        settingBodySize: SettingBodyWidth.L,
-      },
     ],
+  }
+  if (myMember?.hasPermission(Permissions.MANAGE_ROLES)) {
+    subSetting.settings.push({
+      title: t('layout.server-dropdown.roles'),
+      settingComponent: server && (
+        <RolesSettingsServerFeature server={server} />
+      ),
+      id: 'roles',
+      settingBodySize: SettingBodyWidth.L,
+    })
   }
   return (
     <FullScreenDialog>

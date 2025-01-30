@@ -43,10 +43,18 @@ export function InputChannelArea({
     },
     [sendMessage]
   )
-  const { myMember }  = useContext(ServerContext)
-  const channelPermissions = !myMember || myMember?.hasPermissions([Permissions.SEND_MESSAGES, Permissions.VIEW_CHANNELS])
-  const placeholder = channelPermissions ? 'channels.page-channel.message_placeholder' : 'channels.page-channel.no_permission_sending_message'
-  
+  const { myMember } = useContext(ServerContext)
+  const canSendMessage =
+    !myMember ||
+    myMember?.hasAllPermissions([
+      Permissions.SEND_MESSAGES,
+      Permissions.VIEW_CHANNELS,
+    ])
+
+  const placeholder = canSendMessage
+    ? 'channels.page-channel.message_placeholder'
+    : 'channels.page-channel.no_permission_sending_message'
+
   const handleButtonClick = () => {
     // Trigger click on the hidden input
     if (fileInputRef.current) fileInputRef.current.click()
@@ -61,7 +69,7 @@ export function InputChannelArea({
           name="message"
           render={({ field }) => (
             <InputMessageArea
-              disabled={!channelPermissions}
+              disabled={!canSendMessage}
               type="text"
               name={'message'}
               value={field.value}
@@ -84,7 +92,7 @@ export function InputChannelArea({
       {/* buttons */}
       <div className="flex flex-row gap-2 md:gap-4">
         <ButtonIcon
-        disabled={!channelPermissions}
+          disabled={!canSendMessage}
           buttonProps={inputButtonProps}
           onClick={sendMessage}
           className="bg-violet-50"
@@ -93,7 +101,7 @@ export function InputChannelArea({
         <div>
           <label htmlFor="file" className="cursor-pointer">
             <ButtonIcon
-            disabled={!channelPermissions}
+              disabled={!canSendMessage}
               buttonProps={inputButtonProps}
               className="bg-violet-50"
               icon="lucide:plus"

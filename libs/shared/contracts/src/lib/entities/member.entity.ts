@@ -56,14 +56,22 @@ export class Member implements MemberEntity {
     }
   }
 
-  hasPermissions(permissions: Permissions[]): boolean {
+  hasAllPermissions(permissions: Permissions[]): boolean {
+    return (
+      permissionsService.validatePermissions(this, permissions) ||
+      this.isAdmin
+    )
+  }
+
+
+  hasOnePermissions(permissions: Permissions[]): boolean {
     return (
       permissionsService.hasOne(this, permissions) ||
-      permissionsService.hasPermission(this, Permissions.ADMINISTRATOR)
+      this.isAdmin
     )
   }
 
   hasPermission(permission: Permissions): boolean {
-    return permissionsService.hasPermission(this, permission)
+    return permissionsService.hasPermission(this, permission) || this.isAdmin
   }
 }

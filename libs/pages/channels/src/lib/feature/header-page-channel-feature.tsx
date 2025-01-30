@@ -25,7 +25,9 @@ export function HeaderPageFeature() {
     dispatch(responsiveActions.toggleRightPane())
   }
 
-  const canViewChannels = myMember?.hasPermissions([Permissions.VIEW_CHANNELS])
+  const canViewChannels = myMember?.hasOnePermissions([
+    Permissions.VIEW_CHANNELS,
+  ])
 
   return (
     <HeaderPageChannel

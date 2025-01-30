@@ -32,21 +32,19 @@ export default function DisplayChannel({
         settingComponent: <OverviewSettingsChannelFeature channel={channel} />,
         settingBodySize: SettingBodyWidth.S,
       },
+      {
+        title: t('layout.display-channel.delete'),
+        id: 'delete',
+        settingComponent: <DeleteChannelFeature channel={channel} />,
+      },
     ],
   }
-
-  if (!myMember || !myMember.hasPermission(Permissions.MANAGE_CHANNELS)) {
-    subSetting.settings.push({
-      title: t('layout.display-channel.delete'),
-      id: 'delete',
-      settingComponent: <DeleteChannelFeature channel={channel} />,
-    })
-  }
-
+  const canManageChannel =
+    !myMember || !myMember.hasPermission(Permissions.MANAGE_CHANNELS)
   return (
     <div
       className="flex flex-col group w-full"
-      onClick={() => (onJoinChannel ? onJoinChannel(channel) : {})}
+      onClick={() => onJoinChannel && onJoinChannel(channel)}
     >
       <div
         className={cn(
@@ -64,7 +62,12 @@ export default function DisplayChannel({
             {channel.name}
           </p>
         </div>
-        <div className="flex justify-center items-center invisible group-hover:visible">
+        <div
+          className={cn(
+            'flex justify-center items-center invisible group-hover:visible',
+            { hidden: canManageChannel }
+          )}
+        >
           <DialogCloseButton
             content={<SettingsModal settings={[subSetting]} />}
           >
