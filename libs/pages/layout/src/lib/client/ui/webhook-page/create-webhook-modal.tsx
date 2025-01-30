@@ -109,7 +109,13 @@ export default function CreateWebhookModal({
           <div className="flex gap-3 justify-between w-full">
             <DialogClose asChild>
               <div>
-                <Button className="btn--no-min-w" style={ButtonStyle.STROKED}>
+                <Button
+                  className="btn--no-min-w"
+                  style={ButtonStyle.STROKED}
+                  onClick={() => {
+                    methodsAddWebhook.reset(undefined, { keepErrors: false })
+                  }}
+                >
                   {t('layout.new-webhook-modal.create_modal.cancel')}
                 </Button>
               </div>
@@ -120,7 +126,8 @@ export default function CreateWebhookModal({
                 className="btn--no-min-w"
                 style={ButtonStyle.BASIC}
                 onClick={() => {
-                  onCreateWebhook()
+                    onCreateWebhook()
+                  
                 }}
               >
                 {t('layout.new-webhook-modal.create_modal.create')}
