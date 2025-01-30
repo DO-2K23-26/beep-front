@@ -1,5 +1,4 @@
 import { ServerEntity } from '@beep/contracts'
-import { useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import CreateWebhookFeature from '../feature/create-webhook-feature'
 import WebhookListFeature from '../feature/webhook-list-feature'
@@ -12,7 +11,6 @@ export default function WebHookSettingsServer({
   server,
 }: WebhookSettingsServerProps) {
   const { t } = useTranslation()
-  const methodsAddWebhook = useForm()
 
   return (
     <div className="flex flex-col w-full bg-violet-200 p-4 overflow-y-auto gap-4 items-start">
