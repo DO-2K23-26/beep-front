@@ -53,6 +53,7 @@ export const serverApi = createApi({
     'publicServers',
     'transmitPicture',
     'transmitBanner',
+    'webhooks',
   ],
   endpoints: (builder) => ({
     getMyServers: builder.query<ServerEntity[], void>({
@@ -430,7 +431,8 @@ export const serverApi = createApi({
         },
       }),
       invalidatesTags: (_res, _error, req) => [
-        { type: 'roles', id: `LIST-${req.serverId}` },]
+        { type: 'roles', id: `LIST-${req.serverId}` },
+      ],
     }),
 
     transmitWebhookPicture: builder.query<
@@ -460,25 +462,25 @@ export const serverApi = createApi({
         { type: 'members', id: `LIST-${req.serverId}` },
         { type: 'members', id: `${req.serverId}:${req.memberId}` },
       ],
-
-      createWebHook: builder.mutation<
-        void,
-        {
-          serverId: string
-          channelId: string
-          name: string
-          profilePicture: File
-        }
-      >({
-        query: (request) => ({
-          url: `/servers/${request.serverId}/channels/${request.channelId}/webhook`,
-          method: 'POST',
-          body: {
-            name: request.name,
-            profilePicture: request.profilePicture,
-          },
-        }),
+    }),
+    createWebHook: builder.mutation<
+      void,
+      {
+        serverId: string
+        channelId: string
+        name: string
+        profilePicture: File
+      }
+    >({
+      query: (request) => ({
+        url: `/servers/${request.serverId}/channels/${request.channelId}/webhook`,
+        method: 'POST',
+        body: {
+          name: request.name,
+          profilePicture: request.profilePicture,
+        },
       }),
+      invalidatesTags: ['webhooks'],
     }),
 
     updateWebHook: builder.mutation<
@@ -523,10 +525,14 @@ export const serverApi = createApi({
         url: `/servers/${request.serverId}/channels/${request.channelId}/webhook/${request.webhookId}`,
         method: 'DELETE',
       }),
+      invalidatesTags: ['webhooks'],
     }),
 
     getWebHooksServer: builder.query<WebhookEntity[], string>({
       query: (serverId) => `/servers/${serverId}/webhooks`,
+      providesTags: (result, _error, serverId) => [
+        { type: 'webhooks', id: serverId },
+      ],
     }),
   }),
 })
