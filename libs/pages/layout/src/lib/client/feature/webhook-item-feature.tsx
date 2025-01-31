@@ -88,10 +88,24 @@ export default function WebhookItemFeature({
       toast.success(t('layout.webhook-item.success_delete'))
     })
   }
+  function getWebhookTriggerUrl(
+    serverId: string,
+    channelId: string,
+    webhookId: string
+  ): string {
+    return `http://servers/${serverId}/channels/${channelId}/webhook/${webhookId}/trigger`
+  }
+
+  const webhookUrl = getWebhookTriggerUrl(
+    webhook.serverId,
+    webhook.channelId,
+    webhook.id
+  )
+
   const onCopyToken = () => {
     if (webhook.token) {
       navigator.clipboard
-        .writeText(webhook.token)
+        .writeText(webhookUrl)
         .then(() => {
           toast.success(t('layout.webhook-item.copy_success'))
         })
