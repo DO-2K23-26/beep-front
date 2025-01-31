@@ -22,9 +22,6 @@ export const initializeDevices = createAsyncThunk(
       if (videoInput) dispatch(setVideoDevice(videoInput))
       return { success: true }
     } catch (error) {
-      console.error(
-        "Error when initializing input devices, permission may have been denied"
-      )
       return rejectWithValue('Refused permission or error')
     }
   }
