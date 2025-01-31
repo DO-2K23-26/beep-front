@@ -31,7 +31,7 @@ const WebRTCMiddleware: Middleware = (store) => {
     switch (action.type) {
       case 'INITIALIZE_PRESENCE':
         sockets.set(action.payload.server, new Socket(
-          'ws://' + endpoint + '/socket/' + action.payload.server
+          endpoint + '/socket/' + action.payload.server
         ))
         socket = sockets.get(action.payload.server)
         socket.connect()
