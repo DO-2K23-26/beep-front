@@ -16,7 +16,6 @@ export function Media({ stream, url, username, userId, expand, fullScreen}: Medi
   )
 
   const onExpand = () => {
-    console.log('Expend')
     expand(userId ?? '')
   }
 

@@ -10,7 +10,7 @@ import {
 import { webrtcUrl } from '@beep/contracts'
 import { Socket, Presence, Channel } from 'phoenix'
 
-const WebRTCMiddleware: Middleware = (store) => {
+export const WebRTCMiddleware: Middleware = (store) => {
   const pcConfig: RTCConfiguration = {}
   let peerConnection: RTCPeerConnection | null = null
   const sockets: Map<string, Socket> = new Map<string, Socket>()
@@ -25,6 +25,7 @@ const WebRTCMiddleware: Middleware = (store) => {
   let video: MediaStream | null
   const endpoint = webrtcUrl
   let socket = null
+  let presence = null
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   return (next) => async (action: any) => {
@@ -438,9 +439,7 @@ const WebRTCMiddleware: Middleware = (store) => {
           video = null
           audio?.getTracks().forEach((track) => track.stop())
           audio = null
-        } catch (e) {
-          console.log(e)
-        }
+        } catch (e) { /* empty */ }
         currentChannel.leave()
         store.dispatch(setRemoteStreams([]))
         store.dispatch(setLocalStream(null))
@@ -452,7 +451,7 @@ const WebRTCMiddleware: Middleware = (store) => {
             in: false,
           }
         )
-        const presence = new Presence(socketChannel)
+        presence = new Presence(socketChannel)
         presence.onSync(() => {
           const users = presence
             .list()

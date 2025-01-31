@@ -13,7 +13,6 @@ export function VoiceChat() {
   const [fullScreen, setFullScreen] = useState<string | null>(null);
 
   const expand = (userId: string) => {
-    console.log("changing to full screen", userId);
     setFullScreen((prev) => (prev === userId ? null : userId));
   };
 
