@@ -21,7 +21,6 @@ export function PageServer() {
       <div className={cn({ 'w-1/3 sm:w-fit': leftDivState })}>
         <ChannelsNavigationFeature key={'members_navigation' + serverId} />
       </div>
-      <VoiceChat/>
       <div
         className={cn('h-full w-full bg-violet-200 ', {
           'rounded-none md:rounded-r-3xl xl:rounded-none': !rightDivState,

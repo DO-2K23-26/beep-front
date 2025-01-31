@@ -5,6 +5,7 @@ import { FullPageChannelFeature } from './feature/full-page-channel-feature'
 import { PageChannelFeature } from './feature/page-channel-feature'
 import { PageServerFeature } from './feature/page-server-feature'
 import { PageInvitation } from './ui/page-invitation'
+import { PageVoiceChannelFeature } from './feature/page-voice-channel-feature'
 
 export const serverRoutes: RouteObject[] = [
   {
@@ -42,6 +43,10 @@ export const serverRoutes: RouteObject[] = [
               {
                 path: ':channelId',
                 Component: PageChannelFeature,
+              },
+              {
+                path: 'voice',
+                Component: PageVoiceChannelFeature,
               },
               {
                 path: '*',

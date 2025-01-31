@@ -14,6 +14,7 @@ import { useEffect } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { unwrapResult } from '@reduxjs/toolkit'
 import { skipToken } from '@reduxjs/toolkit/query'
+import { useNavigate } from 'react-router'
 
 interface VoiceChannelsReturn {
   onJoinVoiceChannel: (channel: ChannelEntity) => void
@@ -32,6 +33,7 @@ export function useVoiceChannels({
   const { data: me } = useGetMeQuery()
   const { remoteStreams, currentChannelId, videoDevice, audioInputDevice, userStreams, serverPresence, needConnection } =
     useSelector(getVoiceState)
+  const navigate = useNavigate()
 
   const { isScreenShared, isVoiceMuted, isCamera } = useSelector(getUserState)
 
@@ -83,6 +85,7 @@ export function useVoiceChannels({
       unwrapResult(resultAction)
       dispatch(setCurrentChannelId(channel.id))
       dispatch(setNeedConnection(true))
+      navigate(`/servers/${server.id}/channels/voice`)
     }
   }
 

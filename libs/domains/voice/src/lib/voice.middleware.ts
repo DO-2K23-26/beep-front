@@ -13,7 +13,7 @@ import { Socket, Presence, Channel } from 'phoenix'
 const WebRTCMiddleware: Middleware = (store) => {
   const pcConfig: RTCConfiguration = {}
   let peerConnection: RTCPeerConnection | null = null
-  let socket: Socket = null
+  const sockets: Map<string, Socket> = new Map<string, Socket>()
   let watchedChannels: { id: string; channel: Channel }[] = []
   let currentChannel: Channel | undefined = undefined
   let currentPresence: Presence | undefined = undefined
@@ -24,16 +24,21 @@ const WebRTCMiddleware: Middleware = (store) => {
   let audio: MediaStream | null
   let video: MediaStream | null
   const endpoint = webrtcUrl
+  let socket = null
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   return (next) => async (action: any) => {
     switch (action.type) {
       case 'INITIALIZE_PRESENCE':
-        socket = new Socket(
+        sockets.set(action.payload.server, new Socket(
           'ws://' + endpoint + '/socket/' + action.payload.server
-        )
+        ))
+        socket = sockets.get(action.payload.server)
         socket.connect()
         for (const channelId of action.payload.channels) {
+          if (channelId === currentChannelId) {
+            break
+          }
           const socketChannel = socket.channel(`peer:signalling-${channelId}`, {
             id: action.payload.id,
             in: false,
@@ -81,6 +86,9 @@ const WebRTCMiddleware: Middleware = (store) => {
         break
 
       case 'INITIALIZE_WEBRTC':
+        if (currentChannelId === action.payload.channel) {
+          break
+        }
         if (currentChannel) {
           currentChannel.leave()
           store.dispatch(setRemoteStreams([]))
@@ -145,8 +153,6 @@ const WebRTCMiddleware: Middleware = (store) => {
         if (action.payload.isCamera) {
           video = await navigator.mediaDevices.getUserMedia({
             video: {
-              width: 320,
-              height: 240,
               deviceId: action.payload.videoDevice.deviceId,
             },
           })
@@ -199,19 +205,9 @@ const WebRTCMiddleware: Middleware = (store) => {
         id = action.payload.token
         currentChannelId = action.payload.channel
         currentChannel.onError(() => {
-          store.dispatch({
-            type: 'INITIALIZE_WEBRTC',
-            payload: {
-              server: action.payload.server,
-              channel: currentChannelId,
-              token: action.payload.token,
-              videoDevice: action.payload.videoDevice,
-              audioInputDevice: action.payload.audioInputDevice,
-              isVoiceMuted: action.payload.isVoiceMuted,
-              isCamera: action.payload.isCamera,
-              username: action.payload.username,
-            },
-          })
+          store.dispatch(setConnectionState('failed'))
+          store.dispatch({ type: 'CLOSE_WEBRTC' })
+          window.location.reload()
         })
         currentChannel.on('sdp_offer', async (payload) => {
           const sdpOffer = payload.body
@@ -352,8 +348,6 @@ const WebRTCMiddleware: Middleware = (store) => {
         }
         video = await navigator.mediaDevices.getDisplayMedia({
           video: {
-            width: 320,
-            height: 240,
           },
         })
         await camTransceiver.sender.replaceTrack(video.getTracks()[0])
@@ -386,8 +380,6 @@ const WebRTCMiddleware: Middleware = (store) => {
         }
         video = await navigator.mediaDevices.getUserMedia({
               video: {
-                width: 320,
-                height: 240,
                 deviceId: action.payload.deviceId,
               },
             })
@@ -400,7 +392,7 @@ const WebRTCMiddleware: Middleware = (store) => {
         await camTransceiver.sender.replaceTrack(null)
         video.getTracks().forEach((track) => track.stop())
         video = null
-        store.dispatch(setLocalStream(null))
+        // store.dispatch(setLocalStream(null))
         currentChannel?.push('device_event', {
           device: 'video',
           event: false,
@@ -436,14 +428,19 @@ const WebRTCMiddleware: Middleware = (store) => {
         break
 
       case 'CLOSE_WEBRTC':
-        camTransceiver?.stop()
-        camTransceiver = undefined
-        micTransceiver?.stop()
-        micTransceiver = undefined
-        video?.getTracks().forEach((track) => { track.stop() });
-        video = null
-        audio?.getTracks().forEach((track) => track.stop())
-        audio = null
+        currentChannelId = undefined
+        try {
+          camTransceiver?.stop()
+          camTransceiver = undefined
+          micTransceiver?.stop()
+          micTransceiver = undefined
+          video?.getTracks().forEach((track) => { track.stop() });
+          video = null
+          audio?.getTracks().forEach((track) => track.stop())
+          audio = null
+        } catch (e) {
+          console.log(e)
+        }
         currentChannel.leave()
         store.dispatch(setRemoteStreams([]))
         store.dispatch(setLocalStream(null))
