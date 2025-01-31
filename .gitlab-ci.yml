@@ -13,7 +13,7 @@ workflow:
       variables:
         VERSION: ${CI_COMMIT_SHORT_SHA}-development
         ENVIRONMENT: development
-        WEBRTC_URL_ENDPOINT: wss://voice-staging.beep.ovh
+        WEBRTC_URL_ENDPOINT: wss://voice-development.beep.ovh
         API_URL_ENDPOINT: https://api-development.beep.ovh/
     - if: $CI_COMMIT_REF_NAME  == $CI_DEFAULT_BRANCH
       variables:
