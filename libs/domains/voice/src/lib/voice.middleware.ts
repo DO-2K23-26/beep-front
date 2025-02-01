@@ -447,7 +447,7 @@ export const WebRTCMiddleware: Middleware = (store) => {
         store.dispatch(setRemoteStreams([]))
         store.dispatch(setLocalStream(null))
         // eslint-disable-next-line no-case-declarations
-        const socketChannel = socket.channel(
+        const socketChannel = sockets.get(currentChannelId).channel(
           `peer:signalling-${currentChannelId}`,
           {
             id: id,

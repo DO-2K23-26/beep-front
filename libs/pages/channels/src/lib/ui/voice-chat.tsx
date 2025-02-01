@@ -5,7 +5,7 @@ import { Media } from './media';
 import { getVoiceState } from '@beep/voice'
 import { useGetMeQuery } from '@beep/user' // Adjust the import path as needed
 
-const MAX_VIDEOS_PER_PAGE = 1;
+const MAX_VIDEOS_PER_PAGE = 6;
 
 export function VoiceChat() {
   const { sortedMembers, localStream } = useSelector(getVoiceState);
@@ -28,7 +28,7 @@ export function VoiceChat() {
       : []),
     ...(sortedMembers || []).map((entity) => ({
       id: entity.user.id,
-      stream: entity.stream,
+      stream: new MediaStream(entity.stream.getVideoTracks()),
       username: entity.user.username,
     })),
   ];
