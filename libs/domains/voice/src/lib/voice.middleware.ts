@@ -29,6 +29,8 @@ export const WebRTCMiddleware: Middleware = (store) => {
   const endpoint = webrtcUrl
   let socket = null
   let presence = null
+  let currentPresenceServerId = null
+  let currentServerId = null
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   return (next) => async (action: any) => {
@@ -37,6 +39,7 @@ export const WebRTCMiddleware: Middleware = (store) => {
         sockets.set(action.payload.server, new Socket(
           endpoint + '/socket/' + action.payload.server
         ))
+        currentPresenceServerId = action.payload.server
         socket = sockets.get(action.payload.server)
         socket.connect()
         for (const channelId of action.payload.channels) {
@@ -93,6 +96,7 @@ export const WebRTCMiddleware: Middleware = (store) => {
         if (currentChannelId === action.payload.channel) {
           break
         }
+        currentServerId = currentPresenceServerId
         if (currentChannel) {
           currentChannel.leave()
           store.dispatch(setRemoteStreams([]))
@@ -445,8 +449,9 @@ export const WebRTCMiddleware: Middleware = (store) => {
         currentChannel.leave()
         store.dispatch(setRemoteStreams([]))
         store.dispatch(setLocalStream(null))
+        socket = sockets.get(currentServerId)
         // eslint-disable-next-line no-case-declarations
-        const socketChannel = sockets.get(currentChannelId).channel(
+        const socketChannel = socket.channel(
           `peer:signalling-${currentChannelId}`,
           {
             id: id,
@@ -495,6 +500,7 @@ export const WebRTCMiddleware: Middleware = (store) => {
         peerConnection?.close()
         peerConnection = null
         currentChannelId = undefined
+        currentChannel = undefined
         break
 
       default:
