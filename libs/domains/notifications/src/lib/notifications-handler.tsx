@@ -35,17 +35,15 @@ export function NotificationsHandler({ userInfo }: NotificationsHandlerProps) {
       'notifications/users/' + userInfo.sub,
       (data) => {
         const notification: Notification = JSON.parse((data as any).event)
-        if (notification.type == NOTIFICATION_TYPE.FRIEND_MESSAGE) {
-          if (
-            (notification.payload as FriendMessageNotification).channelId ===
+        // don't show a toast if the user is already on the channel
+        if (
+          notification.type !== NOTIFICATION_TYPE.FRIEND_MESSAGE ||
+          (notification.payload as FriendMessageNotification).channelId !==
             channelId
-          ) {
-            // don't show a toast if the user is already on the channel
-          } else {
-            toast(<NotificationsGeneric notification={notification} />, {
-              icon: '🔔',
-            })
-          }
+        ) {
+          toast(<NotificationsGeneric notification={notification} />, {
+            icon: '🔔',
+          })
         }
       }
     )
