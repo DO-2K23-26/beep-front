@@ -7,7 +7,7 @@ import { useTranslation } from 'react-i18next'
 import toast from 'react-hot-toast'
 import { createContext, useEffect } from 'react'
 import WebhookItem from '../ui/webhook-page/webhook-item'
-import { WebhookEntity } from '@beep/contracts'
+import { backendUrl, WebhookEntity } from '@beep/contracts'
 
 export interface IWebhookItemSettingsContext {
   webhook: WebhookEntity
@@ -91,15 +91,17 @@ export default function WebhookItemFeature({
   function getWebhookTriggerUrl(
     serverId: string,
     channelId: string,
-    webhookId: string
+    webhookId: string,
+    api_url: string
   ): string {
-    return `http://servers/${serverId}/channels/${channelId}/webhook/${webhookId}/trigger`
+    return `${api_url}/servers/${serverId}/channels/${channelId}/webhook/${webhookId}/trigger`
   }
 
   const webhookUrl = getWebhookTriggerUrl(
     webhook.serverId,
     webhook.channelId,
-    webhook.id
+    webhook.id,
+    backendUrl
   )
 
   const onCopyToken = () => {
