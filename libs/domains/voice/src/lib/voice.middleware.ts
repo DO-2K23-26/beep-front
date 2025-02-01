@@ -11,10 +11,6 @@ import { webrtcUrl } from '@beep/contracts'
 import { Socket, Presence, Channel } from 'phoenix'
 
 export const WebRTCMiddleware: Middleware = (store) => {
-  const pcConfig: RTCConfiguration = {
-    iceServers: [{ urls: 'turn:162.38.112.211:33436?transport=udp', username: 'user-1', credential: 'pass-1'}],
-    iceTransportPolicy: "relay",
-  };
   let peerConnection: RTCPeerConnection | null = null
   const sockets: Map<string, Socket> = new Map<string, Socket>()
   let watchedChannels: { id: string; channel: Channel }[] = []
@@ -28,9 +24,13 @@ export const WebRTCMiddleware: Middleware = (store) => {
   let video: MediaStream | null
   const endpoint = webrtcUrl
   let socket = null
-  let presence = null
   let currentPresenceServerId = null
   let currentServerId = null
+  const pcConfig: RTCConfiguration = endpoint.startsWith("wss") ? {
+    iceServers: [{ urls: 'turn:162.38.112.211:33436?transport=udp', username: 'user-1', credential: 'pass-1'}],
+    iceTransportPolicy: "relay",
+  } : {};
+  let channels = []
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   return (next) => async (action: any) => {
@@ -42,6 +42,7 @@ export const WebRTCMiddleware: Middleware = (store) => {
         currentPresenceServerId = action.payload.server
         socket = sockets.get(action.payload.server)
         socket.connect()
+        channels = action.payload.channels
         for (const channelId of action.payload.channels) {
           if (channelId === currentChannelId) {
             break
@@ -118,9 +119,9 @@ export const WebRTCMiddleware: Middleware = (store) => {
                     username: user.metas[0].user.username,
                     expiresAt: 0,
                     userSn: 'not used',
-                    voiceMuted: user.metas[0].user.audio !== undefined,
+                    voiceMuted: user.metas[0].user.audio < 0,
                     screenSharing: false,
-                    camera: user.metas[0].user.video !== null,
+                    camera: user.metas[0].user.video > 0,
                   }
                 }
               })
@@ -450,56 +451,60 @@ export const WebRTCMiddleware: Middleware = (store) => {
         store.dispatch(setRemoteStreams([]))
         store.dispatch(setLocalStream(null))
         socket = sockets.get(currentServerId)
-        // eslint-disable-next-line no-case-declarations
-        const socketChannel = socket.channel(
-          `peer:signalling-${currentChannelId}`,
-          {
-            id: id,
-            in: false,
-          }
-        )
-        presence = new Presence(socketChannel)
-        presence.onSync(() => {
-          const users = presence
-            .list()
-            .map((user) => {
-              if (!user.metas[0].user.watcher) {
-                return {
-                  id: user.metas[0].user.id,
-                  username: user.metas[0].user.username,
-                  expiresAt: 0,
-                  userSn: 'not used',
-                  voiceMuted: user.metas[0].user.audio !== undefined,
-                  screenSharing: false,
-                  camera: user.metas[0].user.video !== null,
-                }
+        for (const channel of channels) {
+          if (channel === currentChannelId) {
+            const socketChannel = socket.channel(
+              `peer:signalling-${channel}`,
+              {
+                id: id,
+                in: false,
               }
+            )
+            const presence = new Presence(socketChannel)
+            presence.onSync(() => {
+              console.log('presence sync')
+              const users = presence
+                .list()
+                .map((user) => {
+                  if (!user.metas[0].user.watcher) {
+                    return {
+                      id: user.metas[0].user.id,
+                      username: user.metas[0].user.username,
+                      expiresAt: 0,
+                      userSn: 'not used',
+                      voiceMuted: user.metas[0].user.audio < 0,
+                      screenSharing: false,
+                      camera: user.metas[0].user.video > 0,
+                    }
+                  }
+                })
+                .filter((user) => user !== undefined)
+              store.dispatch(
+                setServerPresence({
+                  channelId: channel,
+                  users: users,
+                })
+              )
             })
-            .filter((user) => user !== undefined)
-          store.dispatch(
-            setServerPresence({
-              channelId: currentChannelId,
-              users: users,
-            })
-          )
-        })
-        socketChannel
-          .join()
-          .receive('error', (resp) => {
-            socket.disconnect()
+            socketChannel
+              .join()
+              .receive('error', (resp) => {
+                socket.disconnect()
 
-            let innerText = 'Unable to join the room'
-            if (resp === 'peer_limit_reached') {
-              innerText += ': Peer limit reached. Try again in a few minutes'
-            }
+                let innerText = 'Unable to join the room'
+                if (resp === 'peer_limit_reached') {
+                  innerText += ': Peer limit reached. Try again in a few minutes'
+                }
 
-            store.dispatch(setConnectionState(innerText))
-          })
+                store.dispatch(setConnectionState(innerText))
+              })
 
-        watchedChannels.push({ id: currentChannelId, channel: socketChannel })
+            watchedChannels.push({ id: currentChannelId, channel: socketChannel })
+          }
+        }
+
         peerConnection?.close()
         peerConnection = null
-        currentChannelId = undefined
         currentChannel = undefined
         break
 
