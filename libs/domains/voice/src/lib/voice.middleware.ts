@@ -462,7 +462,6 @@ export const WebRTCMiddleware: Middleware = (store) => {
             )
             const presence = new Presence(socketChannel)
             presence.onSync(() => {
-              console.log('presence sync')
               const users = presence
                 .list()
                 .map((user) => {
