@@ -11,7 +11,10 @@ import { webrtcUrl } from '@beep/contracts'
 import { Socket, Presence, Channel } from 'phoenix'
 
 export const WebRTCMiddleware: Middleware = (store) => {
-  const pcConfig: RTCConfiguration = {}
+  const pcConfig: RTCConfiguration = {
+    iceServers: [{ urls: 'turn:162.38.112.211:33436?transport=udp', username: 'user-1', credential: 'pass-1'}],
+    iceTransportPolicy: "relay",
+  };
   let peerConnection: RTCPeerConnection | null = null
   const sockets: Map<string, Socket> = new Map<string, Socket>()
   let watchedChannels: { id: string; channel: Channel }[] = []
