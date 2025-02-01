@@ -1,6 +1,7 @@
+import { NotificationsFriendMessage } from "./notifications-friend-message"
 import { NotificationsFriendRequest } from "./notifications-friend-request"
 import { NotificationsMentions } from "./notifications-mentions"
-import { Notification, NOTIFICATION_TYPE, UserMentionedInMessageNotification, FriendRequestNotification } from "./types"
+import { Notification, NOTIFICATION_TYPE, UserMentionedInMessageNotification, FriendRequestNotification, FriendMessageNotification } from "./types"
 
 export interface NotificationsGenericProps {
   notification: Notification
@@ -20,6 +21,13 @@ export function NotificationsGeneric({ notification }: NotificationsGenericProps
         <NotificationsFriendRequest
           friendRequestNotification={
             notification.payload as FriendRequestNotification
+          }
+        />
+      )}
+      {notification.type === NOTIFICATION_TYPE.FRIEND_MESSAGE && (
+        <NotificationsFriendMessage
+          friendMessageNotification={
+            notification.payload as FriendMessageNotification
           }
         />
       )}

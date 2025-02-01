@@ -1,12 +1,14 @@
 import toast from 'react-hot-toast'
 import {
+  FriendMessageNotification,
+  NOTIFICATION_TYPE,
   Notification,
 } from './types'
 import { useEffect } from 'react'
 // eslint-disable-next-line @nx/enforce-module-boundaries
 import { TransmitSingleton } from '@beep/transmit'
 import { NotificationsGeneric } from './notifications-generic'
-
+import { useParams } from 'react-router'
 export interface NotificationsHandlerProps {
   userInfo:
     | {
@@ -25,21 +27,29 @@ export interface NotificationsHandlerProps {
 }
 
 export function NotificationsHandler({ userInfo }: NotificationsHandlerProps) {
+  const { channelId } = useParams()
+
   useEffect(() => {
     if (!userInfo) return
     TransmitSingleton.subscribe(
       'notifications/users/' + userInfo.sub,
       (data) => {
         const notification: Notification = JSON.parse((data as any).event)
-        toast(
-          <NotificationsGeneric notification={notification} />,
-          {
-            icon: '🔔',
+        if (notification.type == NOTIFICATION_TYPE.FRIEND_MESSAGE) {
+          if (
+            (notification.payload as FriendMessageNotification).channelId ===
+            channelId
+          ) {
+            // don't show a toast if the user is already on the channel
+          } else {
+            toast(<NotificationsGeneric notification={notification} />, {
+              icon: '🔔',
+            })
           }
-        )
+        }
       }
     )
-  }, [userInfo])
+  }, [userInfo, channelId])
 
   return null // this component doesn't render anything
 }
