@@ -432,7 +432,6 @@ export const WebRTCMiddleware: Middleware = (store) => {
         break
 
       case 'CLOSE_WEBRTC':
-        currentChannelId = undefined
         try {
           camTransceiver?.stop()
           camTransceiver = undefined
@@ -495,6 +494,7 @@ export const WebRTCMiddleware: Middleware = (store) => {
         watchedChannels.push({ id: currentChannelId, channel: socketChannel })
         peerConnection?.close()
         peerConnection = null
+        currentChannelId = undefined
         break
 
       default:
