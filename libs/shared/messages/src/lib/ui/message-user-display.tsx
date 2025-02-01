@@ -1,5 +1,6 @@
 import { leftPaneState } from '@beep/responsive'
 import { useGetMemberQuery } from '@beep/server'
+import { UserPopoverFeature } from '@beep/ui'
 import { useFetchProfilePictureQuery, useGetMeQuery } from '@beep/user'
 import { cn } from '@beep/utils'
 import { skipToken } from '@reduxjs/toolkit/query'
@@ -7,9 +8,9 @@ import { DateTime } from 'luxon'
 import { useContext } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useSelector } from 'react-redux'
-import { useParams } from 'react-router'
 import { MessageContext } from '../feature/message-feature'
-import { UserPopover } from '@beep/ui'
+// eslint-disable-next-line @nx/enforce-module-boundaries
+import { ServerContext } from '@beep/pages/channels'
 
 /**
  * Component to display a message user information.
@@ -24,11 +25,11 @@ export function MessageUserDisplay() {
   const leftDivState = useSelector(leftPaneState)
 
   const { t } = useTranslation()
-  const { serverId } = useParams<{ serverId: string }>()
+  const { server } = useContext(ServerContext)
   const { data: userMe } = useGetMeQuery()
   const { data: member } = useGetMemberQuery(
-    { serverId: serverId ?? '', userId: message.ownerId },
-    { skip: serverId === undefined }
+    { serverId: server?.id ?? '', userId: message.ownerId },
+    { skip: server?.id === undefined }
   )
   const userDisplayedUsername = member?.nickname ?? message.owner?.username
   const userDisplayedId = member?.userId ?? message.owner?.id
@@ -69,7 +70,7 @@ export function MessageUserDisplay() {
           alt={userDisplayedUsername}
         />
         <div className="sm:flex gap-3 sm:flex-row">
-          <UserPopover userId={message.ownerId}>
+          <UserPopoverFeature userId={message.ownerId} serverId={server?.id}>
             <p
               className={cn(
                 'font-semibold text-xs max-w-20 sm:max-w-30 md:max-w-40 lg:max-w-60 hover:underline truncate'
@@ -77,7 +78,7 @@ export function MessageUserDisplay() {
             >
               {message.request ? userMe?.username : userDisplayedUsername}
             </p>
-          </UserPopover>
+          </UserPopoverFeature>
           <p className={cn('font-normal text-[10px] sm:text-xs truncate')}>
             {formatDate(message.createdAt ?? '')}
           </p>
