@@ -11,3 +11,9 @@ export interface MoveChannelRequest {
     channelId: string
     position: number
 }
+
+export interface ChangeParentChannelRequest {
+    serverId: string
+    channelId: string
+    parentId: string | null
+}

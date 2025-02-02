@@ -46,6 +46,7 @@ export default function ChannelsNavigation({
     onLeaveVoiceChannel,
     server,
     onClickId,
+    channels,
   } = useContext(ChannelContext)
 
   const { myMember } = useContext(ServerContext)
@@ -112,15 +113,9 @@ export default function ChannelsNavigation({
 
           <div className="flex flex-col gap-2 overflow-y-scroll scroll-smooth scroll-bar h-full">
             {myMember?.hasPermission(Permissions.VIEW_CHANNELS) || !myMember ? (
-              <ListChannels
-                moveChannel={(channelId: string, newPosition: number) => {
-                  moveChannel({
-                    position: newPosition,
-                    channelId,
-                    serverId: server?.id ?? '',
-                  })
-                }}
-              />
+            <ListChannels
+              channels={channels}
+            />
             ) : (
               <div className="flex justify-center w-full">
                 <p className="text-xs md:text-sm  text-center text-violet-900 ">
