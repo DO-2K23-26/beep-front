@@ -51,14 +51,14 @@ interface IUserPopoverContext<NicknameFormType extends FieldValues> {
   isLoadingUpdateNickname?: boolean
 }
 
-const nicknmeFormSchema = z.object({
+const nicknameFormSchema = z.object({
   nickname: z.string().min(1, {
     message: "Nickname can't be empty",
   }),
 })
 
 export const UserPopoverContext = createContext<
-  IUserPopoverContext<z.infer<typeof nicknmeFormSchema>>
+  IUserPopoverContext<z.infer<typeof nicknameFormSchema>>
 >({})
 
 export function UserPopoverProvider({
@@ -75,11 +75,11 @@ export function UserPopoverProvider({
   const { member } = useGetMembersQuery(serverId ?? skipToken, {
     skip: serverId === undefined || userId === undefined,
     selectFromResult(state) {
-      return { member: state?.data?.find((m) => m.id === userId) }
+      return { member: state?.data?.find((m) => m.userId === userId) }
     },
   })
 
-  const editRoleForm = useForm<z.infer<typeof nicknmeFormSchema>>({
+  const editRoleForm = useForm<z.infer<typeof nicknameFormSchema>>({
     defaultValues: { nickname: member?.nickname ?? '' },
   })
 
@@ -94,6 +94,7 @@ export function UserPopoverProvider({
       isSuccess: isSuccessUpdateNickname,
       data: updateMemberNicknameData,
       isLoading: isLoadingUpdateNickname,
+      reset: resetNicknameReq,
     },
   ] = useUpdateMemberNicknameMutation()
   const { invitation } = useGetMyFriendInvitationsQuery(undefined, {
@@ -159,16 +160,23 @@ export function UserPopoverProvider({
   })
 
   useEffect(() => {
-    if (isSuccessUpdateNickname && updateMemberNicknameData)
+    if (isSuccessUpdateNickname && updateMemberNicknameData) {
       editRoleForm.reset({ nickname: updateMemberNicknameData.nickname })
-  }, [editRoleForm, isSuccessUpdateNickname, updateMemberNicknameData])
-
+      resetNicknameReq()
+    }
+  }, [
+    editRoleForm,
+    isSuccessUpdateNickname,
+    resetNicknameReq,
+    updateMemberNicknameData,
+  ])
   return (
     <UserPopoverContext.Provider
       value={{
         goToPrivateConv,
         askFriend,
         submitUpdateNickname,
+        nicknameFormControl: editRoleForm.control,
         displayedUser: user,
         myUser,
         invitation,

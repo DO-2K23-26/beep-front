@@ -156,7 +156,6 @@ export function EditRoleProvider({
     )
     return member
   }, [roleMembers, serverMembers])
-  // const permissions = useMemo(() => {}, [editRoleForm.watch('permissions')])
   return (
     <EditRoleContext.Provider
       value={{

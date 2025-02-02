@@ -5,6 +5,7 @@ import { Popover, PopoverContent, PopoverTrigger } from '../popover'
 import { UserPopoverActionButton } from './user-popover-action-button'
 import { UserPopoverContext } from './user-popover-provider'
 import toast from 'react-hot-toast'
+import { UserPopoverUpdatableDisplay } from './user-popover-updatable-display'
 
 interface UserPopoverProps {
   userId?: string
@@ -42,18 +43,18 @@ export function UserPopover({
       <PopoverContent
         align="start"
         className={cn(
-          'flex flex-row bg-violet-50 justify-between items-center',
+          'flex flex-row bg-violet-50 justify-between items-center min-w-96',
           className
         )}
       >
-        <div className="flex flex-row gap-4">
+        <div className="flex flex-row gap-4 w-10/12">
           <img
             src={profilePicture ?? '/picture.svg'}
             alt={displayedUser?.username ?? "User's profile picture"}
             className="aspect-square size-10 sm:size-12 md:size-16 rounded-lg hover:rounded-xl transition-all object-cover"
           />
           {member ? (
-            <div className="flex flex-col">{member?.nickname}</div>
+            <UserPopoverUpdatableDisplay />
           ) : (
             <div className="flex flex-col">{displayedUser?.username}</div>
           )}

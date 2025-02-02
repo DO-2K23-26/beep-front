@@ -18,14 +18,14 @@ export default function DisplayMember({
   const { t } = useTranslation()
 
   return (
-    <div className="flex flex-row justify-between items-center p-2 hover:bg-violet-400 rounded-xl transition-all cursor-pointer w-full group gap-2">
-      <div className="flex flex-row gap-3 items-center">
+    <div className="flex flex-row justify-between items-center p-2 hover:bg-violet-400 rounded-xl transition-all cursor-pointer w-full group gap-2 ">
+      <div className="flex flex-row gap-3 items-center w-6/12">
         <img
           className="w-9 min-w-[36px] h-9 min-h-[36px] object-cover bg-violet-50 rounded-xl"
           src={profilePicture ?? '/picture.svg'}
           alt={member.nickname + '-img'}
         />
-        <h5 className="font-semibold text-xs truncate md:max-w-[125px] max-w-[70px]">
+        <h5 className="font-semibold text-xs truncate w-2/3">
           {member.nickname}
         </h5>
       </div>

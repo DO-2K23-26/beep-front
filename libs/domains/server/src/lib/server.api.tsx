@@ -248,6 +248,7 @@ export const serverApi = createApi({
         `v1/servers/${serverId}/members/${userId}`,
       providesTags: (result, _error, { serverId, userId }) => [
         { type: 'members', id: `${serverId}:${userId}` },
+        { type: 'members', id: `${serverId}:${result?.id}` },
       ],
     }),
 
@@ -427,6 +428,10 @@ export const serverApi = createApi({
           nickname: nickname,
         },
       }),
+      invalidatesTags: (_result, _error, req) => [
+        { type: 'members', id: `LIST-${req.serverId}` },
+        { type: 'members', id: `${req.serverId}:${req.memberId}` },
+      ],
     }),
   }),
 })
