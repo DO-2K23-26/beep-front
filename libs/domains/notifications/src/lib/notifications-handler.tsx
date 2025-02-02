@@ -31,6 +31,7 @@ export function NotificationsHandler({ userInfo }: NotificationsHandlerProps) {
 
   useEffect(() => {
     if (!userInfo) return
+    // test if the user is already subscribed to the channel
     TransmitSingleton.subscribe(
       'notifications/users/' + userInfo.sub,
       (data) => {
