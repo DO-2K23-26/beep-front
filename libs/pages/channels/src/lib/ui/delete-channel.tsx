@@ -50,6 +50,7 @@ export function DeleteChannel({
         <ButtonShadCn
           variant={'hoverRounded'}
           className="bg-red-600 text-white text-xs sm:text-sm md:text-base"
+          onClick={onSubmit}
         >
           <p className="text-violet-50">{t('layout.delete-channel.delete')}</p>
         </ButtonShadCn>
