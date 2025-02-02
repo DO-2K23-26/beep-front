@@ -241,9 +241,19 @@ export const WebRTCMiddleware: Middleware = (store) => {
         id = action.payload.token
         currentChannelId = action.payload.channel
         currentChannel.onError(() => {
-          store.dispatch(setConnectionState('failed'))
-          store.dispatch({ type: 'CLOSE_WEBRTC' })
-          window.location.reload()
+          store.dispatch({
+            type: 'INITIALIZE_WEBRTC',
+            payload: {
+              server: action.payload.server,
+              channel: currentChannelId,
+              token: action.payload.token,
+              videoDevice: action.payload.videoDevice,
+              audioInputDevice: action.payload.audioInputDevice,
+              isVoiceMuted: action.payload.isVoiceMuted,
+              isCamera: action.payload.isCamera,
+              username: action.payload.username,
+            },
+          })
         })
         currentChannel.on('sdp_offer', async (payload) => {
           const sdpOffer = payload.body
@@ -358,10 +368,9 @@ export const WebRTCMiddleware: Middleware = (store) => {
                   user_id: id,
                 })
               }
-            }, 100)
+            }, 1000)
         })
           .receive('error', (resp) => {
-            socket.disconnect()
 
             let innerText = 'Unable to join the room'
             if (resp === 'peer_limit_reached') {
