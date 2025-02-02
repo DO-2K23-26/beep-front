@@ -4,13 +4,13 @@ import {
   UserConnectedEntity,
 } from '@beep/contracts'
 import { memo, useContext, useRef } from 'react'
-import { ChannelContext } from '../feature/channels/channels-navigation-context'
-import DisplayChannelFeature from '../feature/display-channel-feature'
-import VoiceChannel from '../feature/voice-channel'
-import FolderChannel from './channels/folder-channel'
-import { FolderProvider } from '../feature/folder-context'
+import { ChannelContext } from './channels-navigation-context'
+import FolderChannel from '../ui/channels/folder-channel'
+import { FolderProvider } from './folder-context'
 import { SwapProvider, SwappableItem, SwappableTrigger } from '@beep/transmit'
 import { usePatchChannelPositionMutation } from '@beep/server'
+import VoiceChannel from '../ui/voice-channel'
+import DisplayChannelFeature from './display-channel-feature'
 
 interface ListChannelsProps {
   channels: ChannelEntity[]

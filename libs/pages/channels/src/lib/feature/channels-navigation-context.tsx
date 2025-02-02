@@ -7,21 +7,23 @@ import {
 } from '@beep/contracts'
 import {
   useCreateChannelInServerMutation,
+  useDeleteChannelInServerMutation,
   useGetCurrentStreamingUsersQuery,
   useGetServerChannelsQuery,
+  useMoveChannelToFolderMutation,
 } from '@beep/server'
-import { sortChannels } from '@beep/transmit'
+import { sortEntity } from '@beep/transmit'
 import { useModal, UseModalProps } from "@beep/ui"
 import { skipToken } from "@reduxjs/toolkit/query"
-import { BaseSyntheticEvent, createContext, ReactNode, useEffect } from "react"
+import { BaseSyntheticEvent, createContext, PropsWithChildren, ReactNode, useEffect } from "react"
 import { FormProvider, useForm } from "react-hook-form"
 import toast from "react-hot-toast"
 import { useTranslation } from "react-i18next"
 import { useNavigate } from "react-router"
 import { useHandleChangeChannel } from "./handle-change-channel-hook"
 import { useVoiceChannels } from "./match-channel-hook"
-import { CreateChannelModal } from "../../ui/create-channel-modal"
-import { DeleteChannelModal } from "../../ui/channels/delete-channel-modal"
+import { CreateChannelModal } from '../ui/create-channel-modal'
+import { DeleteChannelModal } from '../ui/channels/delete-channel-modal'
 
 interface ChannelContextInterface {
   streamingUsers: OccupiedChannelEntity[]
@@ -164,7 +166,7 @@ function ChannelsProvider({
     server?.id ?? skipToken
   )
 
-  const channels: ChannelEntity[] = channelsResponse ? sortChannels(channelsResponse) : []
+  const channels: ChannelEntity[] = channelsResponse ? sortEntity<ChannelEntity>(channelsResponse) : []
   const navigate = useNavigate()
 
   useEffect(() => {
@@ -233,3 +235,4 @@ function ChannelsProvider({
 }
 
 export { ChannelContext, ChannelsProvider }
+

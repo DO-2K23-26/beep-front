@@ -1,15 +1,15 @@
 import { ChannelEntity, ChannelType, Permissions } from '@beep/contracts'
 import { SettingBodyWidth, SettingsModal, SubSettings } from '@beep/settings'
 import { DialogCloseButton, Icon } from '@beep/ui'
-import DeleteChannelFeature from '../feature/delete-channel-feature'
-import OverviewSettingsChannelFeature from '../feature/overview-settings-channel-feature'
 import { useTranslation } from 'react-i18next'
 import { cn } from '@beep/utils'
-import { ChannelContext } from '../feature/channels/channels-navigation-context'
 import { useContext } from 'react'
 // eslint-disable-next-line @nx/enforce-module-boundaries
-import { ServerContext } from '@beep/pages/channels'
+import { ChannelContext } from '../feature/channels-navigation-context'
+import OverviewSettingsChannelFeature from '../feature/overview-settings-channel-feature'
+import DeleteChannelFeature from '../feature/delete-channel-feature'
 import { ContextMenuChannelSettings } from './channels/settings-channel'
+import { ServerContext } from '../feature/page-server-feature'
 
 interface DisplayChannelProps {
   channel: ChannelEntity
@@ -54,8 +54,7 @@ export default function DisplayChannel({
           className={cn(
             'flex flex-row justify-between items-center w-full px-3 py-2 opacity-60 hover:opacity-100 hover:bg-violet-400/60 cursor-pointer rounded-xl',
             { 'bg-violet-400/60 opacity-95': isSelected }
-          )}
-        >
+          )}>
           <div className="flex flex-row justify-center items-center gap-2">
             {channel.type === ChannelType.voice_server ? (
               <Icon name="lucide:volume-2" className="w-4 h-4" />
@@ -66,7 +65,9 @@ export default function DisplayChannel({
               {channel.name}
             </p>
           </div>
-          <div className="flex justify-center items-center invisible group-hover:visible">
+          <div className={cn("flex justify-center items-center invisible group-hover:visible",
+            { hidden: canManageChannel }
+          )}>
             <DialogCloseButton
               content={<SettingsModal settings={[subSetting]} />}
             >

@@ -22,7 +22,7 @@ function FolderProvider({
   channel,
   children,
 }: {
-  server: ServerEntity
+  server: ServerEntity | undefined
   channel: ChannelEntity
   children: React.ReactNode
 }) {

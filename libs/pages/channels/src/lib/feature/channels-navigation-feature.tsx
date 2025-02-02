@@ -4,8 +4,8 @@ import {
 } from '@beep/server'
 import { skipToken } from '@reduxjs/toolkit/query'
 import { useParams } from 'react-router'
-import ChannelsNavigation from '../../ui/channels-navigation'
 import { ChannelsProvider } from './channels-navigation-context'
+import ChannelsNavigation from '../ui/channels-navigation'
 
 export function ChannelsNavigationFeature() {
   const { serverId } = useParams<{ serverId: string }>()
