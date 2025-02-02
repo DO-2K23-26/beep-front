@@ -384,7 +384,9 @@
       "video_inputs": "Video inputs",
       "no_audio_outputs": "No audio output device found",
       "no_audio_inputs": "No audio input device found",
-      "no_video_inputs": "No video input device found"
+      "no_video_inputs": "No video input device found",
+      "permission_to_use": "Ask for input device permission",
+      "access_blocked": "Permission denied. Access to video and audio input devices is blocked."
     }
   },
   "settings": {

@@ -389,7 +389,9 @@
       "video_inputs": "Entrées vidéo",
       "no_audio_outputs": "Aucune sortie audio trouvée",
       "no_audio_inputs": "Aucune entrée audio trouvée",
-      "no_video_inputs": "Aucune entrée vidéo trouvée"
+      "no_video_inputs": "Aucune entrée vidéo trouvée",
+      "permission_to_use": "Demander l'autorisation d'utiliser les médias",
+      "access_blocked": "Permission d'accès aux médias bloquée"
     }
   },
   "settings": {

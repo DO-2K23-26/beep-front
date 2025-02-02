@@ -1,208 +1,554 @@
-import { Middleware } from '@reduxjs/toolkit';
-import { addRemoteStream, setConnectionState, setLocalStream, setRemoteStreams } from './voice.slice';
-import { webrtcUrl } from '@beep/contracts';
+import { Middleware } from '@reduxjs/toolkit'
+import {
+  addRemoteStream,
+  setConnectionState,
+  setLocalStream,
+  setRemoteStreams,
+  setServerPresence,
+  setUserStreams,
+} from './voice.slice'
+import { webrtcUrl } from '@beep/contracts'
+import { Socket, Presence, Channel } from 'phoenix'
 
-const WebRTCMiddleware: Middleware = (store) => {
-  let peerConnection: RTCPeerConnection | null = null;
-  let offerChannel: RTCDataChannel | null = null;
-  let camTransceiver: RTCRtpTransceiver | undefined = undefined;
-  let micTransceiver: RTCRtpTransceiver | undefined = undefined;
-  let callback: ((value: string | PromiseLike<string>) => void) | null;
-  let path: string;
-  let offer
-  let response
-  let server_answer
-  let remoteAnswer
-  let audio: MediaStream | null;
-  let video: MediaStream | null;
+export const WebRTCMiddleware: Middleware = (store) => {
+  let peerConnection: RTCPeerConnection | null = null
+  const sockets: Map<string, Socket> = new Map<string, Socket>()
+  let watchedChannels: { id: string; channel: Channel }[] = []
+  let currentChannel: Channel | undefined = undefined
+  let currentPresence: Presence | undefined = undefined
+  let currentChannelId: string | undefined
+  let id: string | undefined
+  let camTransceiver: RTCRtpTransceiver | undefined = undefined
+  let micTransceiver: RTCRtpTransceiver | undefined = undefined
+  let audio: MediaStream | null
+  let video: MediaStream | null
   const endpoint = webrtcUrl
-  async function negotiate() {
-    if (!peerConnection) return;
-    const negotiate_offer = await peerConnection.createOffer()
-    await peerConnection.setLocalDescription(negotiate_offer);
-    offerChannel?.send(JSON.stringify(negotiate_offer));
-    const json = (await new Promise((resolve) => {
-      callback = resolve;
-    })) as string;
-    const negotiate_answer = JSON.parse(json);
-    await peerConnection.setRemoteDescription(negotiate_answer);
-  }
+  let socket = null
+  let currentPresenceServerId = null
+  let currentServerId = null
+  const pcConfig: RTCConfiguration = endpoint.startsWith("wss") ? {
+    iceServers: [{ urls: 'turn:162.38.112.211:33436?transport=udp', username: 'user-1', credential: 'pass-1'}],
+    iceTransportPolicy: "relay",
+  } : {};
+  let channels = []
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   return (next) => async (action: any) => {
     switch (action.type) {
+      case 'INITIALIZE_PRESENCE':
+        sockets.set(action.payload.server, new Socket(
+          endpoint + '/socket/' + action.payload.server
+        ))
+        currentPresenceServerId = action.payload.server
+        socket = sockets.get(action.payload.server)
+        socket.connect()
+        channels = action.payload.channels
+        for (const channelId of action.payload.channels) {
+          if (channelId === currentChannelId) {
+            break
+          }
+          const socketChannel = socket.channel(`peer:signalling-${channelId}`, {
+            id: action.payload.id,
+            in: false,
+          })
+          const presence = new Presence(socketChannel)
+          presence.onSync(() => {
+            const users = presence
+              .list()
+              .map((user) => {
+                if (!user.metas[0].user.watcher) {
+                  return {
+                    id: user.metas[0].user.id,
+                    username: user.metas[0].user.username,
+                    expiresAt: 0,
+                    userSn: 'not used',
+                    voiceMuted: user.metas[0].user.audio < 0,
+                    screenSharing: false,
+                    camera: user.metas[0].user.video > 0,
+                  }
+                }
+              })
+              .filter((user) => user !== undefined)
+            store.dispatch(
+              setServerPresence({
+                channelId: channelId,
+                users: users,
+              })
+            )
+          })
+          socketChannel
+            .join()
+            .receive('error', (resp) => {
+              socket.disconnect()
+
+              let innerText = 'Unable to join the room'
+              if (resp === 'peer_limit_reached') {
+                innerText += ': Peer limit reached. Try again in a few minutes'
+              }
+
+              store.dispatch(setConnectionState(innerText))
+            })
+
+          watchedChannels.push({ id: channelId, channel: socketChannel })
+        }
+        break
+
       case 'INITIALIZE_WEBRTC':
-        path = endpoint + "/offer/" + action.payload.token.data.token;
-        peerConnection = new RTCPeerConnection();
+        if (currentChannelId === action.payload.channel) {
+          break
+        }
+        currentServerId = currentPresenceServerId
+        if (currentChannel) {
+          try {
+            camTransceiver?.stop()
+            camTransceiver = undefined
+            micTransceiver?.stop()
+            micTransceiver = undefined
+            video?.getTracks().forEach((track) => { track.stop() });
+            video = null
+            audio?.getTracks().forEach((track) => track.stop())
+            audio = null
+          } catch (e) { /* empty */ }
+          currentChannel.leave()
+          store.dispatch(setRemoteStreams([]))
+          store.dispatch(setLocalStream(null))
+          socket = sockets.get(currentServerId)
+          for (const channel of channels) {
+            if (channel === currentChannelId) {
+              const socketChannel = socket.channel(
+                `peer:signalling-${channel}`,
+                {
+                  id: id,
+                  in: false,
+                }
+              )
+              const presence = new Presence(socketChannel)
+              presence.onSync(() => {
+                const users = presence
+                  .list()
+                  .map((user) => {
+                    if (!user.metas[0].user.watcher) {
+                      return {
+                        id: user.metas[0].user.id,
+                        username: user.metas[0].user.username,
+                        expiresAt: 0,
+                        userSn: 'not used',
+                        voiceMuted: user.metas[0].user.audio < 0,
+                        screenSharing: false,
+                        camera: user.metas[0].user.video > 0,
+                      }
+                    }
+                  })
+                  .filter((user) => user !== undefined)
+                store.dispatch(
+                  setServerPresence({
+                    channelId: channel,
+                    users: users,
+                  })
+                )
+              })
+              socketChannel
+                .join()
+                .receive('error', (resp) => {
+                  socket.disconnect()
+
+                  let innerText = 'Unable to join the room'
+                  if (resp === 'peer_limit_reached') {
+                    innerText += ': Peer limit reached. Try again in a few minutes'
+                  }
+
+                  store.dispatch(setConnectionState(innerText))
+                })
+
+              watchedChannels.push({ id: currentChannelId, channel: socketChannel })
+            }
+          }
+
+          peerConnection?.close()
+          peerConnection = null
+          currentChannel = undefined
+        }
+
+        if (!action.payload.isVoiceMuted) {
+          try {
+            audio = await navigator.mediaDevices.getUserMedia({
+              audio: {
+                deviceId: action.payload.audioInputDevice.deviceId,
+              },
+            })
+          } catch (e) {
+            audio = null
+          }
+        }
+
+        if (action.payload.isCamera) {
+          try{
+            video = await navigator.mediaDevices.getUserMedia({
+              video: {
+                deviceId: action.payload.videoDevice.deviceId,
+              },
+            })
+            store.dispatch(setLocalStream(video))
+          } catch (e) {
+            video = null
+          }
+        }
+
+        peerConnection = new RTCPeerConnection(pcConfig)
 
         peerConnection.onconnectionstatechange = () => {
-          store.dispatch(setConnectionState(peerConnection?.connectionState || 'failed'))
+          store.dispatch(
+            setConnectionState(peerConnection?.connectionState || 'failed')
+          )
+          if (peerConnection.connectionState === 'failed') {
+            peerConnection.restartIce()
+          }
+        }
+
+        peerConnection.onicecandidate = (event: RTCPeerConnectionIceEvent) => {
+          if (event.candidate == null) {
+            return
+          }
+
+          const candidate = JSON.stringify(event.candidate)
+          currentChannel.push('ice_candidate', { body: candidate })
         }
 
         peerConnection.ontrack = (event: RTCTrackEvent) => {
           const stream = event.transceiver
-          store.dispatch(addRemoteStream(stream));
-        };
+          store.dispatch(addRemoteStream(stream))
+        }
 
-        offerChannel = peerConnection.createDataChannel('offer/answer');
-        offerChannel.onopen = async () => {
-          setTimeout(async () => {
-            if (!action.payload.isVoiceMuted) {
-              audio = await navigator.mediaDevices.getUserMedia({
-                audio: {
-                  deviceId: action.payload.audioInputDevice.deviceId,
-                }
-              })
-              micTransceiver = peerConnection?.addTransceiver(audio.getTracks()[0], {
-                direction: 'sendonly',
-              });
+        watchedChannels = watchedChannels.filter((channel) => {
+          if (channel.id === action.payload.channel) {
+            channel.channel.leave()
+            return false
+          }
+          return true
+        })
+        currentChannel = socket.channel(
+          `peer:signalling-${action.payload.channel}`,
+          {
+            id: action.payload.token,
+            isVoiceMuted: action.payload.isVoiceMuted,
+            isCamera: action.payload.isCamera,
+            video: null,
+            audio: null,
+            in: true,
+            username: action.payload.username,
+          }
+        )
+        id = action.payload.token
+        currentChannelId = action.payload.channel
+        currentChannel.onError(() => {
+          store.dispatch({
+            type: 'INITIALIZE_WEBRTC',
+            payload: {
+              server: action.payload.server,
+              channel: currentChannelId,
+              token: action.payload.token,
+              videoDevice: action.payload.videoDevice,
+              audioInputDevice: action.payload.audioInputDevice,
+              isVoiceMuted: action.payload.isVoiceMuted,
+              isCamera: action.payload.isCamera,
+              username: action.payload.username,
+            },
+          })
+        })
+        currentChannel.on('sdp_offer', async (payload) => {
+          const sdpOffer = payload.body
+
+          await peerConnection.setRemoteDescription({
+            type: 'offer',
+            sdp: sdpOffer,
+          })
+
+          if (camTransceiver == undefined && micTransceiver == undefined) {
+            camTransceiver = peerConnection.getTransceivers()[0]
+            micTransceiver = peerConnection.getTransceivers()[1]
+          }
+
+          if (video) {
+            for (const track of video.getTracks()) {
+              await camTransceiver.sender.replaceTrack(track)
+              camTransceiver.direction = 'sendrecv'
             }
-            if (action.payload.isCamera) {
-              video = await navigator.mediaDevices.getUserMedia({
-                video: {
-                  width: 320,
-                  height: 240,
-                  deviceId: action.payload.videoDevice.deviceId,
+          } else {
+            await camTransceiver.sender.replaceTrack(null)
+            camTransceiver.direction = 'sendrecv'
+          }
+          if (audio) {
+            for (const track of audio.getTracks()) {
+              await micTransceiver.sender.replaceTrack(track)
+              micTransceiver.direction = 'sendrecv'
+            }
+          } else {
+            await micTransceiver.sender.replaceTrack(null)
+            micTransceiver.direction = 'sendrecv'
+          }
+
+          const sdpAnswer = await peerConnection?.createAnswer()
+          await peerConnection?.setLocalDescription(sdpAnswer)
+          const answer = peerConnection?.localDescription
+          currentChannel?.push('sdp_answer', { body: answer?.sdp })
+        })
+
+        currentChannel.on('ice_candidate', (payload) => {
+          const candidate = JSON.parse(payload.body)
+          peerConnection.addIceCandidate(candidate)
+        })
+
+        store.dispatch(
+          setServerPresence({ channelId: action.payload.channel, users: [] })
+        )
+        currentPresence = new Presence(currentChannel)
+
+        currentPresence.onSync(() => {
+          const presence = []
+          currentPresence.list().map((user) => {
+            if (!user.metas[0].user.watcher) {
+              if (user.metas[0].user.id === action.payload.token) {
+                const outbounds = user.metas[0].user.outbounds
+                if (outbounds) {
+                  Object.keys(outbounds).map((inbound) => {
+                    const inbounds = outbounds[inbound]
+                    if (inbounds.stream !== action.payload.token) {
+                      presence.push({
+                        id: inbounds.stream,
+                        channel: action.payload.channel,
+                        video: inbounds.video,
+                        audio: inbounds.audio,
+                      })
+                    }
+                  })
                 }
-              })
-              camTransceiver = peerConnection?.addTransceiver(video.getTracks()[0], {
-                direction: 'sendonly',
-              });
-              if (camTransceiver) {
-                store.dispatch(setLocalStream(video));
               }
             }
-            await negotiate()
-          }, 1000)
-        };
+          })
+          store.dispatch(setUserStreams(presence))
 
-        offerChannel.onmessage = (event: MessageEvent) => {
-          if (event.data === 'leaving') {
-            store.dispatch(setRemoteStreams([]));
-          }
-          const json = JSON.parse(event.data);
-          if (json.type === 'offer') {
-            store.dispatch({ type: 'HANDLE_REMOTE_OFFER', payload: json });
-          } else if (json.type === 'answer') {
-            callback?.(event.data)
-          }
-        };
-        offer = await peerConnection.createOffer();
-        await peerConnection.setLocalDescription(offer);
-        response = await fetch(path, {
-          method: 'POST',
-          headers: {
-            'Content-type': 'application/json',
-          },
-          body: JSON.stringify(offer),
+          const users = currentPresence
+            .list()
+            .map((user) => {
+              if (!user.metas[0].user.watcher) {
+                return {
+                  id: user.metas[0].user.id,
+                  username: user.metas[0].user.username,
+                  expiresAt: 0,
+                  userSn: 'not used',
+                  voiceMuted: user.metas[0].user.audio < 0 ,
+                  screenSharing: false,
+                  camera: user.metas[0].user.video > 0,
+                }
+              }
+            })
+            .filter((user) => user !== undefined)
+          store.dispatch(
+            setServerPresence({
+              channelId: action.payload.channel,
+              users: users,
+            })
+          )
         })
-        server_answer = await response.json();
-        await peerConnection.setRemoteDescription(server_answer);
 
-        break;
+        currentChannel
+          .join().receive('ok', () => {
+            setTimeout(() => {
+              if (!video){
+                currentChannel?.push('device_event', {
+                  device: 'video',
+                  event: !!video,
+                  user_id: id,
+                })
+              }
+              if (!audio){
+                currentChannel?.push('device_event', {
+                  device: 'audio',
+                  event: !!audio,
+                  user_id: id,
+                })
+              }
+            }, 1000)
+        })
+          .receive('error', (resp) => {
 
-      case 'HANDLE_REMOTE_OFFER':
-        if (!peerConnection) return;
-        await peerConnection.setRemoteDescription(action.payload);
-        remoteAnswer = await peerConnection.createAnswer();
-        await peerConnection.setLocalDescription(remoteAnswer);
-        offerChannel?.send(JSON.stringify(remoteAnswer));
-        break;
+            let innerText = 'Unable to join the room'
+            if (resp === 'peer_limit_reached') {
+              innerText += ': Peer limit reached. Try again in a few minutes'
+            }
+
+            store.dispatch(setConnectionState(innerText))
+          })
+
+        break
+
+      case 'START_SCREEN':
+        if (!peerConnection) break
+        if (video === null) {
+          currentChannel?.push('device_event', {
+            device: 'video',
+            event: true,
+            user_id: id,
+          })
+        }
+        video = await navigator.mediaDevices.getDisplayMedia({
+          video: {
+          },
+        })
+        await camTransceiver.sender.replaceTrack(video.getTracks()[0])
+        store.dispatch(setLocalStream(video))
+        break
+
+      case 'STOP_SCREEN':
+        if (!peerConnection) break
+        if (video !== null) {
+          currentChannel?.push('device_event', {
+            device: 'video',
+            event: false,
+            user_id: id,
+          })
+        }
+        await camTransceiver.sender.replaceTrack(null)
+        video.getTracks().forEach((track) => track.stop())
+        video = null
+        store.dispatch(setLocalStream(null))
+        break
 
       case 'START_CAM':
-        if (!peerConnection) break;
-        try {
-          if (camTransceiver) {
-            video = await navigator.mediaDevices.getUserMedia({
+        if (!peerConnection) break
+        if (video === null) {
+          currentChannel?.push('device_event', {
+            device: 'video',
+            event: true,
+            user_id: id,
+          })
+        }
+        video = await navigator.mediaDevices.getUserMedia({
               video: {
-                width: 320,
-                height: 240,
                 deviceId: action.payload.deviceId,
-              }
+              },
             })
-            video.getTracks()[0].enabled = true;
-            await camTransceiver?.sender.replaceTrack(video.getTracks()[0]);
-            if (camTransceiver) {
-              store.dispatch(setLocalStream(video));
-            }
-          } else {
-            video = await navigator.mediaDevices.getUserMedia({
-              video: {
-                width: 320,
-                height: 240,
-                deviceId: action.payload.deviceId,
-              }
-            })
-            camTransceiver = peerConnection?.addTransceiver(video.getTracks()[0], {
-              direction: 'sendonly',
-            });
-            if (camTransceiver) {
-              store.dispatch(setLocalStream(video));
-            }
-          }
-          await negotiate()
-        } catch (error) { /* empty */ }
-        break;
+        await camTransceiver.sender.replaceTrack(video.getTracks()[0])
+        store.dispatch(setLocalStream(video))
+        break
 
       case 'STOP_CAM':
-        await camTransceiver?.sender?.replaceTrack(null);
-        store.dispatch(setLocalStream(null));
-        video?.getTracks().forEach((track) => { track.stop() });
+        if (!peerConnection) break
+        await camTransceiver.sender.replaceTrack(null)
+        video.getTracks().forEach((track) => track.stop())
         video = null
-        break;
+        // store.dispatch(setLocalStream(null))
+        currentChannel?.push('device_event', {
+          device: 'video',
+          event: false,
+          user_id: id,
+        })
+        break
 
       case 'STOP_MIC':
-        await micTransceiver?.sender?.replaceTrack(null);
-        audio?.getTracks().forEach((track) => track.stop())
+        if (!peerConnection) break
+        await micTransceiver.sender.replaceTrack(null)
+        audio.getTracks().forEach((track) => track.stop())
         audio = null
-        break;
+        currentChannel?.push('device_event', {
+          device: 'audio',
+          event: false,
+          user_id: id,
+        })
+        break
 
       case 'START_MIC':
-        if (!peerConnection) break;
-        try {
-          if (micTransceiver) {
-            audio = await navigator.mediaDevices.getUserMedia({
-              audio: {
-                deviceId: action.payload.deviceId,
-              }
-            })
-            await micTransceiver?.sender.replaceTrack(audio.getTracks()[0]);
-          } else {
-            audio = await navigator.mediaDevices.getUserMedia({
-              audio: {
-                deviceId: action.payload.deviceId,
-              }
-            })
-            micTransceiver = peerConnection?.addTransceiver(audio.getTracks()[0], {
-              direction: 'sendonly',
-            });
-          }
-          await negotiate()
-        } catch (error) { /* empty */ }
-        break;
+        if (!peerConnection) break
+        audio = await navigator.mediaDevices.getUserMedia({
+          audio: {
+            deviceId: action.payload.deviceId,
+          },
+        })
+        currentChannel?.push('device_event', {
+          device: 'audio',
+          event: true,
+          user_id: id,
+        })
+        await micTransceiver.sender.replaceTrack(audio.getTracks()[0])
+        break
 
       case 'CLOSE_WEBRTC':
-        await camTransceiver?.sender?.replaceTrack(null);
-        camTransceiver?.stop()
-        camTransceiver = undefined
-        video?.getTracks().forEach((track) => { track.stop() });
-        video = null
-        await micTransceiver?.sender?.replaceTrack(null);
-        micTransceiver?.stop()
-        micTransceiver = undefined
-        audio?.getTracks().forEach((track) => track.stop())
-        audio = null
-        peerConnection?.close()
-        peerConnection = null;
-        store.dispatch(setRemoteStreams([]));
+        try {
+          camTransceiver?.stop()
+          camTransceiver = undefined
+          micTransceiver?.stop()
+          micTransceiver = undefined
+          video?.getTracks().forEach((track) => { track.stop() });
+          video = null
+          audio?.getTracks().forEach((track) => track.stop())
+          audio = null
+        } catch (e) { /* empty */ }
+        currentChannel.leave()
+        store.dispatch(setRemoteStreams([]))
         store.dispatch(setLocalStream(null))
-        break;
+        socket = sockets.get(currentServerId)
+        for (const channel of channels) {
+          if (channel === currentChannelId) {
+            const socketChannel = socket.channel(
+              `peer:signalling-${channel}`,
+              {
+                id: id,
+                in: false,
+              }
+            )
+            const presence = new Presence(socketChannel)
+            presence.onSync(() => {
+              const users = presence
+                .list()
+                .map((user) => {
+                  if (!user.metas[0].user.watcher) {
+                    return {
+                      id: user.metas[0].user.id,
+                      username: user.metas[0].user.username,
+                      expiresAt: 0,
+                      userSn: 'not used',
+                      voiceMuted: user.metas[0].user.audio < 0,
+                      screenSharing: false,
+                      camera: user.metas[0].user.video > 0,
+                    }
+                  }
+                })
+                .filter((user) => user !== undefined)
+              store.dispatch(
+                setServerPresence({
+                  channelId: channel,
+                  users: users,
+                })
+              )
+            })
+            socketChannel
+              .join()
+              .receive('error', (resp) => {
+                socket.disconnect()
+
+                let innerText = 'Unable to join the room'
+                if (resp === 'peer_limit_reached') {
+                  innerText += ': Peer limit reached. Try again in a few minutes'
+                }
+
+                store.dispatch(setConnectionState(innerText))
+              })
+
+            watchedChannels.push({ id: currentChannelId, channel: socketChannel })
+          }
+        }
+
+        peerConnection?.close()
+        peerConnection = null
+        currentChannel = undefined
+        currentChannelId = undefined
+        break
 
       default:
-        break;
+        break
     }
-    return next(action);
-  };
-};
+    return next(action)
+  }
+}
 
-export const webRTCMiddleware = WebRTCMiddleware;
+export const webRTCMiddleware = WebRTCMiddleware

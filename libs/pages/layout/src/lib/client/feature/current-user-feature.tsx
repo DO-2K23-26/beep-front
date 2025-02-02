@@ -18,7 +18,7 @@ import CurrentUser from '../ui/current-user'
 export function CurrentUserFeature() {
   const { data: userMe } = useGetMeQuery()
   const server = useSelector((state: RootState) => state.servers.server)
-  const { isMuted, isVoiceMuted, isCamera } = useSelector(getUserState)
+  const { isScreenShared, isVoiceMuted, isCamera } = useSelector(getUserState)
   const dispatch = useDispatch()
   const { currentData: userProfilePicture } = useFetchProfilePictureQuery(
     userMe?.id ?? skipToken,
@@ -38,13 +38,28 @@ export function CurrentUserFeature() {
     }
   }
 
-  const onPhone = () => {
-    if (server) dispatch(userActions.toggleIsMuted(server.id))
+  const onScreenShare = () => {
+    if (server) {
+      dispatch(userActions.toggleIsScreenShared(server.id))
+      if (!isScreenShared) {
+        if (isCamera) {
+          dispatch(userActions.toggleIsCamera(server.id))
+          // dispatch({ type: 'STOP_CAM' })
+        }
+        dispatch({ type: 'START_SCREEN' })
+      } else {
+        dispatch({ type: 'STOP_SCREEN' })
+      }
+    }
   }
   const onCamera = () => {
     if (server) {
       dispatch(userActions.toggleIsCamera(server.id))
       if (!isCamera) {
+        if (isScreenShared) {
+          dispatch(userActions.toggleIsScreenShared(server.id))
+          // dispatch({ type: 'STOP_SCREEN' })
+        }
         dispatch({ type: 'START_CAM', payload: videoDevice })
       } else {
         dispatch({ type: 'STOP_CAM' })
@@ -94,11 +109,11 @@ export function CurrentUserFeature() {
   return (
     <CurrentUser
       user={currentUser}
-      isMuted={isMuted}
+      isScreenShared={isScreenShared}
       isVoiceMuted={isVoiceMuted}
       isCamera={isCamera}
       onMicrophone={onMicrophone}
-      onPhone={onPhone}
+      onScreenShare={onScreenShare}
       onCamera={onCamera}
       methods={methods}
     />

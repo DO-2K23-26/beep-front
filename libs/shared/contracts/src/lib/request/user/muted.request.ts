@@ -1,5 +1,5 @@
 export interface UpdateMicRequest {
-    muted: boolean
+    screenSharing: boolean
     voiceMuted: boolean
     camera: boolean
 }

@@ -31,6 +31,7 @@ import {
 } from '@beep/contracts'
 // eslint-disable-next-line @nx/enforce-module-boundaries
 
+
 const baseQuery = fetchBaseQuery({
   baseUrl: backendUrl,
   credentials: 'include',

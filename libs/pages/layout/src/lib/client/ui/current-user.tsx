@@ -23,7 +23,7 @@ import Username from './user-name'
 
 export default function CurrentUser() {
   const { t } = useTranslation()
-  const { onMicrophone, isCamera, isMuted, isVoiceMuted, onPhone, onCamera } =
+  const { onMicrophone, isCamera, isScreenShared, isVoiceMuted, onScreenShare, onCamera } =
     useCurrentUser()
   const iconSize = '!w-4 !h-4 sm:!w-4 sm:!h-4 md:!w-5 md:!h-5'
   // List of setting in the user setting modal
@@ -81,11 +81,11 @@ export default function CurrentUser() {
           </Button>
           <Button
             style={ButtonStyle.NONE}
-            onClick={onPhone}
+            onClick={onScreenShare}
             className="cursor-pointer"
           >
             <Icon
-              name={isMuted ? 'lucide:volume-x' : 'lucide:volume-2'}
+              name={isScreenShared ? 'lucide:screen-share-off' : 'lucide:screen-share'}
               className={iconSize}
             />
           </Button>

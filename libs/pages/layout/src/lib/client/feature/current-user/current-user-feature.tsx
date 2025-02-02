@@ -17,11 +17,11 @@ function CurrentUserContainer() {
     isLoadingProfilePicture,
     isSuccessProfilePicture,
     isErrorProfilePicture,
-    isMuted,
+    isScreenShared,
     isVoiceMuted,
     isCamera,
     onMicrophone,
-    onPhone,
+    onScreenShare,
     onCamera,
   } = useCurrentUser()
 
@@ -33,11 +33,11 @@ function CurrentUserContainer() {
       isLoadingProfilePicture={isLoadingProfilePicture}
       isErrorProfilePicture={isErrorProfilePicture}
       isSuccessProfilePicture={isSuccessProfilePicture}
-      isMuted={isMuted}
+      isScreenShared={isScreenShared}
       isVoiceMuted={isVoiceMuted}
       isCamera={isCamera}
       onMicrophone={onMicrophone}
-      onPhone={onPhone}
+      onScreenShare={onScreenShare}
       onCamera={onCamera}
     >
       <CurrentUser />

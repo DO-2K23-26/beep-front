@@ -19,6 +19,12 @@ module.exports = {
       transitionProperty: {
         rounded: 'border-radius',
       },
+      aspectRatio: {
+        video: "16 / 9",
+      },
+      gridTemplateColumns: {
+        "auto-fit": "repeat(auto-fit, minmax(200px, 1fr))",
+      },
     },
   },
   plugins: [],

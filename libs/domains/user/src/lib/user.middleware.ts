@@ -2,12 +2,12 @@
 import { RootState } from '@beep/store'
 import { createListenerMiddleware } from '@reduxjs/toolkit'
 import { userApi } from './user.api'
-import { toggleIsCamera, toggleIsMuted, toggleIsVoiceMuted } from './user.slice'
+import { toggleIsCamera, toggleIsScreenShared, toggleIsVoiceMuted } from './user.slice'
 
 const toggleListenerMiddleware = createListenerMiddleware()
 
 toggleListenerMiddleware.startListening({
-  actionCreator: toggleIsMuted,
+  actionCreator: toggleIsScreenShared,
   effect: async (action, listenerApi) => {
     const newValue = listenerApi.getState() as RootState
     const serverId = action.payload
@@ -17,7 +17,7 @@ toggleListenerMiddleware.startListening({
           userApi.endpoints.updateState.initiate({
             serverId,
             payload: {
-              muted: newValue.user.isMuted,
+              screenSharing: newValue.user.isScreenShared,
               voiceMuted: newValue.user.isVoiceMuted,
               camera: newValue.user.isCamera,
             },
@@ -40,7 +40,7 @@ toggleListenerMiddleware.startListening({
           userApi.endpoints.updateState.initiate({
             serverId,
             payload: {
-              muted: newValue.user.isMuted,
+              screenSharing: newValue.user.isScreenShared,
               voiceMuted: newValue.user.isVoiceMuted,
               camera: newValue.user.isCamera,
             },
@@ -61,7 +61,7 @@ toggleListenerMiddleware.startListening({
           userApi.endpoints.updateState.initiate({
             serverId,
             payload: {
-              muted: newValue.user.isMuted,
+              screenSharing: newValue.user.isScreenShared,
               voiceMuted: newValue.user.isVoiceMuted,
               camera: newValue.user.isCamera,
             },
