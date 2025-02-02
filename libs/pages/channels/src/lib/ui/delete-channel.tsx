@@ -1,4 +1,4 @@
-import { Button, ButtonShadCn, InputText } from '@beep/ui'
+import { ButtonShadCn, InputText } from '@beep/ui'
 import { ChangeEvent } from 'react'
 import { useTranslation } from 'react-i18next'
 
