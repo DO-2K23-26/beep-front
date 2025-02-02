@@ -1,4 +1,5 @@
 import { MemberEntity, UserConnectedEntity } from '@beep/contracts'
+import { UserPopoverFeature } from '@beep/ui'
 import DisplayMemberFeature from '../feature/display-member-feature'
 
 export interface ListMembersProps {
@@ -8,11 +9,13 @@ export interface ListMembersProps {
 
 export function ListMembers({ usersConnected, members }: ListMembersProps) {
   const connectedUsers = members.filter(
-    (m: MemberEntity) => usersConnected.find((uc) => uc.id === m.userId) !== undefined
+    (m: MemberEntity) =>
+      usersConnected.find((uc) => uc.id === m.userId) !== undefined
   )
   connectedUsers.sort((a, b) => (a.nickname > b.nickname ? 1 : -1))
   const disconnectedUsers = members.filter(
-    (m: MemberEntity) => usersConnected.find((uc) => uc.id === m.userId) === undefined
+    (m: MemberEntity) =>
+      usersConnected.find((uc) => uc.id === m.userId) === undefined
   )
   disconnectedUsers.sort((a, b) => (a.nickname > b.nickname ? 1 : -1))
   const sortedUser = [...connectedUsers, ...disconnectedUsers]
@@ -20,13 +23,18 @@ export function ListMembers({ usersConnected, members }: ListMembersProps) {
   return (
     <>
       {sortedUser.map((member) => (
-        <DisplayMemberFeature
+        <UserPopoverFeature
           key={member.id}
-          member={member}
-          isConnected={
-            usersConnected.find((u) => u.id === member.userId) !== undefined
-          }
-        />
+          userId={member.userId}
+          serverId={member.serverId}
+        >
+          <DisplayMemberFeature
+            member={member}
+            isConnected={
+              usersConnected.find((u) => u.id === member.userId) !== undefined
+            }
+          />
+        </UserPopoverFeature>
       ))}
     </>
   )

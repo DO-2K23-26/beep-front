@@ -61,14 +61,16 @@ export function MessageUserDisplay() {
   return (
     <div className="flex flex-col sm:flex-row gap-0 sm:gap-4 sm:items-center items-start">
       <div className="flex flex-row gap-3 items-center overflow-hidden">
-        <img
-          className={cn(
-            'block w-9 min-w-[36px] h-9 min-h-[36px] object-cover bg-violet-50 rounded-xl',
-            { 'hidden sm:block': leftDivState }
-          )}
-          src={userProfilePicture ?? '/picture.svg'}
-          alt={userDisplayedUsername}
-        />
+        <UserPopoverFeature userId={message.ownerId} serverId={server?.id}>
+          <img
+            className={cn(
+              'block w-9 h-9 object-cover bg-violet-50 rounded-xl',
+              { 'hidden sm:block': leftDivState }
+            )}
+            src={userProfilePicture ?? '/picture.svg'}
+            alt={userDisplayedUsername}
+          />
+        </UserPopoverFeature>
         <div className="sm:flex gap-3 sm:flex-row">
           <UserPopoverFeature userId={message.ownerId} serverId={server?.id}>
             <p
