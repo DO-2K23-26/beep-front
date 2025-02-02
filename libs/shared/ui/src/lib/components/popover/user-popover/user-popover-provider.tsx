@@ -11,26 +11,33 @@ import {
   useGetMyFriendsQuery,
   useGetPrivateChannelsQuery,
 } from '@beep/friend'
-import { useGetMembersQuery } from '@beep/server'
+import {
+  useGetMembersQuery,
+  useUpdateMemberNicknameMutation,
+} from '@beep/server'
 import {
   getUserState,
   useFetchProfilePictureQuery,
   useGetUserByIdQuery,
 } from '@beep/user'
 import { skipToken } from '@reduxjs/toolkit/query'
-import { createContext, PropsWithChildren } from 'react'
+import { createContext, PropsWithChildren, useEffect } from 'react'
+import { Control, FieldValues, useForm, UseFormReset } from 'react-hook-form'
 import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router'
+import { z } from 'zod'
 
 interface UserPopoverProps {
   userId?: string
   serverId?: string
-  className?: string
 }
 
-interface IUserPopoverContext {
+interface IUserPopoverContext<NicknameFormType extends FieldValues> {
   goToPrivateConv?: () => void
   askFriend?: () => void
+  submitUpdateNickname?: () => void
+  resetNicknameForm?: UseFormReset<NicknameFormType>
+  nicknameFormControl?: Control<NicknameFormType>
   displayedUser?: UserDisplayedEntity
   myUser?: UserStatePayload
   invitation?: InvitationEntity
@@ -40,15 +47,24 @@ interface IUserPopoverContext {
   profilePicture?: string
   isSuccessAskFriend?: boolean
   isFailedAskFriend?: boolean
+  isFailedUpdateNickname?: boolean
+  isLoadingUpdateNickname?: boolean
 }
 
-export const UserPopoverContext = createContext<IUserPopoverContext>({})
+const nicknmeFormSchema = z.object({
+  nickname: z.string().min(1, {
+    message: "Nickname can't be empty",
+  }),
+})
+
+export const UserPopoverContext = createContext<
+  IUserPopoverContext<z.infer<typeof nicknmeFormSchema>>
+>({})
 
 export function UserPopoverProvider({
   children,
   userId,
   serverId,
-  className,
 }: PropsWithChildren<UserPopoverProps>) {
   const navigate = useNavigate()
   const { data: user } = useGetUserByIdQuery(
@@ -56,11 +72,30 @@ export function UserPopoverProvider({
     { skip: userId === undefined }
   )
 
+  const { member } = useGetMembersQuery(serverId ?? skipToken, {
+    skip: serverId === undefined || userId === undefined,
+    selectFromResult(state) {
+      return { member: state?.data?.find((m) => m.id === userId) }
+    },
+  })
+
+  const editRoleForm = useForm<z.infer<typeof nicknmeFormSchema>>({
+    defaultValues: { nickname: member?.nickname ?? '' },
+  })
+
   const [
     createInvitation,
     { isSuccess: isSuccessAskFriend, isError: isFailedAskFriend },
   ] = useCreateFriendsInvitationByIdMutation()
-
+  const [
+    updateMemberNicknameReq,
+    {
+      isError: isFailedUpdateNickname,
+      isSuccess: isSuccessUpdateNickname,
+      data: updateMemberNicknameData,
+      isLoading: isLoadingUpdateNickname,
+    },
+  ] = useUpdateMemberNicknameMutation()
   const { invitation } = useGetMyFriendInvitationsQuery(undefined, {
     skip: userId === undefined,
     selectFromResult(state) {
@@ -94,12 +129,7 @@ export function UserPopoverProvider({
   })
 
   const { payload: myUser } = useSelector(getUserState)
-  const { member } = useGetMembersQuery(serverId ?? skipToken, {
-    skip: serverId === undefined || userId === undefined,
-    selectFromResult(state) {
-      return { member: state?.data?.find((m) => m.id === userId) }
-    },
-  })
+
   const { data: profilePicture } = useFetchProfilePictureQuery(
     userId ?? skipToken,
     {
@@ -120,11 +150,25 @@ export function UserPopoverProvider({
     })
   }
 
+  const submitUpdateNickname = editRoleForm.handleSubmit((data) => {
+    updateMemberNicknameReq({
+      serverId: serverId ?? '',
+      memberId: member?.id ?? '',
+      nickname: data.nickname,
+    })
+  })
+
+  useEffect(() => {
+    if (isSuccessUpdateNickname && updateMemberNicknameData)
+      editRoleForm.reset({ nickname: updateMemberNicknameData.nickname })
+  }, [editRoleForm, isSuccessUpdateNickname, updateMemberNicknameData])
+
   return (
     <UserPopoverContext.Provider
       value={{
         goToPrivateConv,
         askFriend,
+        submitUpdateNickname,
         displayedUser: user,
         myUser,
         invitation,
@@ -134,6 +178,8 @@ export function UserPopoverProvider({
         profilePicture,
         isSuccessAskFriend,
         isFailedAskFriend,
+        isFailedUpdateNickname,
+        isLoadingUpdateNickname,
       }}
     >
       {children}

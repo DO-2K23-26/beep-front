@@ -26,7 +26,8 @@ import {
   ServerEntity,
   UnassignMemberToRoleRequest,
   UpdateChannelRequest,
-  UpdateRoleRequest
+  UpdateMemberRequest,
+  UpdateRoleRequest,
 } from '@beep/contracts'
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 // eslint-disable-next-line @nx/enforce-module-boundaries
@@ -418,6 +419,15 @@ export const serverApi = createApi({
         { type: 'roles', id: `LIST-${req.serverId}` },
       ],
     }),
+    updateMemberNickname: builder.mutation<MemberEntity, UpdateMemberRequest>({
+      query: ({ serverId, nickname, memberId }) => ({
+        url: `/v1/servers/${serverId}/members/${memberId}/nickname`,
+        method: 'PUT',
+        body: {
+          nickname: nickname,
+        },
+      }),
+    }),
   }),
 })
 
@@ -453,4 +463,5 @@ export const {
   useUnassignMemberFromRoleMutation,
   useCreateRoleMutation,
   useGetMyMemberQuery,
+  useUpdateMemberNicknameMutation,
 } = serverApi
