@@ -2,7 +2,7 @@ import { useDeleteServerMutation, useGetMyServersQuery } from '@beep/server'
 import { useEffect, useState } from 'react'
 import toast from 'react-hot-toast'
 import { useTranslation } from 'react-i18next'
-import DestroyServerModal from '../ui/server-settings-modal/delete-server-modal'
+import DestroyServerModal from '../ui/delete-server-modal'
 
 interface DestroyServerFeatureProps {
   serverId: string

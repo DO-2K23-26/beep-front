@@ -19,5 +19,5 @@
     "**/*.spec.jsx",
     "**/*.test.jsx"
   ],
-  "include": ["src/**/*.js", "src/**/*.jsx", "src/**/*.ts", "src/**/*.tsx"]
+  "include": ["src/**/*.js", "src/**/*.jsx", "src/**/*.ts", "src/**/*.tsx", "../channels/src/lib/ui/delete-server-modal.tsx", "../channels/src/lib/feature/destroy-server-feature.tsx", "../channels/src/lib/ui/server-picture-button.tsx", "../channels/src/lib/ui/server-dropdown.tsx", "../channels/src/lib/ui/leave-voice-channel-button.tsx", "../channels/src/lib/ui/overview-settings-server.tsx", "../channels/src/lib/ui/overview-settings-server.tsx", "../channels/src/lib/ui/server-dropdown-menu.tsx", "../channels/src/lib/ui/server-dropdown-menu.tsx"]
 }

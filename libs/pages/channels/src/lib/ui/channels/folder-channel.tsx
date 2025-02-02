@@ -1,15 +1,15 @@
 import { ChannelEntity } from "@beep/contracts"
 import { Collapsible, CollapsibleContent, CollapsibleTrigger, DialogCloseButton, Icon } from "@beep/ui"
-import { ListChannels } from "../list-channels"
 import { memo, useContext, useState } from "react";
 import { ChevronDown } from "lucide-react";
-import { FolderContext } from "../../feature/folder-context";
-import { SwappableTrigger, sortChannels } from "@beep/transmit";
+import { SwappableTrigger, sortEntity} from "@beep/transmit";
 import { ContextMenuFolderSettings } from "./settings-channel";
-import OverviewSettingsChannelFeature from "../../feature/overview-settings-channel-feature";
-import DeleteChannelFeature from "../../feature/delete-channel-feature";
 import { SettingBodyWidth, SettingsModal, SubSettings } from "@beep/settings";
 import { useTranslation } from "react-i18next";
+import { ListChannels } from "../../feature/list-channels";
+import { FolderContext } from "../../feature/folder-context";
+import DeleteChannelFeature from "../../feature/delete-channel-feature";
+import OverviewSettingsChannelFeature from "../../feature/overview-settings-channel-feature";
 
 const FolderChannel = memo(function FolderChannel({
   channel
@@ -22,7 +22,7 @@ const FolderChannel = memo(function FolderChannel({
 
   const open = isOpen ? "open" : "closed"
 
-  const childrenChannels = sortChannels(channel.childrens || [])
+  const childrenChannels = sortEntity<ChannelEntity>(channel.childrens || [])
 
   const subSetting: SubSettings = {
     subGroupSettingTitle: t('layout.display-channel.channel'),

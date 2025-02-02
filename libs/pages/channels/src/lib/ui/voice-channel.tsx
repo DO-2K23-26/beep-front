@@ -1,6 +1,6 @@
 import { ChannelEntity, UserConnectedEntity } from '@beep/contracts'
-import DisplayChannel from '../ui/display-channel'
-import { ListConnectedUsers } from '../ui/list-connected-user'
+import DisplayChannel from './display-channel'
+import { ListConnectedUsers } from './list-connected-user'
 
 interface VoiceChannelProps {
   channel: ChannelEntity

@@ -1,11 +1,11 @@
 import { useTranslation } from "react-i18next";
-import OverviewSettingsChannelFeature from "../../feature/overview-settings-channel-feature";
 import { ChannelEntity, ChannelType } from "@beep/contracts";
 import { SettingBodyWidth, SettingsModal, SubSettings } from "@beep/settings";
 import DeleteChannelFeature from "../../feature/delete-channel-feature";
 import { ContextMenu, ContextMenuContent, ContextMenuItem, ContextMenuSeparator, ContextMenuSub, ContextMenuSubContent, ContextMenuSubTrigger, ContextMenuTrigger, DialogCloseButton, Icon } from "@beep/ui";
 import { useContext } from "react";
-import { ChannelContext } from "../../feature/channels/channels-navigation-context";
+import { ChannelContext } from "../../feature/channels-navigation-context";
+import OverviewSettingsChannelFeature from "../../feature/overview-settings-channel-feature";
 
 export default function ChannelSettings({
   channel }: {

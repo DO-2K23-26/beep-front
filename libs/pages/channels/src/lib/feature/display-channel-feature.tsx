@@ -1,6 +1,6 @@
 import { ChannelEntity } from '@beep/contracts'
-import DisplayChannel from '../ui/display-channel'
 import { useParams } from 'react-router'
+import DisplayChannel from '../ui/display-channel'
 
 interface DisplayChannelFeature {
   channel: ChannelEntity

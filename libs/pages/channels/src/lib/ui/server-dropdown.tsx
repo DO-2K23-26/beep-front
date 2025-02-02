@@ -18,10 +18,10 @@ import {
 import { PropsWithChildren, ReactNode, useContext } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router'
-import DestroyServerFeature from '../feature/destroy-server-feature'
-import { OverviewSettingsServer } from './overview-settings-server'
 import { ServerContext } from '@beep/pages/channels'
 import { RolesSettingsServerFeature } from '@beep/pages/role-settings'
+import DestroyServerFeature from '../feature/destroy-server-feature'
+import { OverviewSettingsServer } from './overview-settings-server'
 
 interface ServerDropdownProps {
   server: ServerEntity
