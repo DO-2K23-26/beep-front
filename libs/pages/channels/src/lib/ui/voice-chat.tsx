@@ -1,7 +1,6 @@
-import { useMemo, useState } from 'react'
+import { useState } from 'react'
 import { useSelector } from 'react-redux';
 import { Icon } from '@beep/ui';
-import { Media } from './media';
 import { getVoiceState } from '@beep/voice'
 import { useGetMeQuery } from '@beep/user' // Adjust the import path as needed
 
@@ -10,11 +9,6 @@ const MAX_VIDEOS_PER_PAGE = 6;
 export function VoiceChat() {
   const { sortedMembers, localStream } = useSelector(getVoiceState);
   const { data: me } = useGetMeQuery();
-  const [fullScreen, setFullScreen] = useState<string | null>(null);
-
-  const expand = (userId: string) => {
-    setFullScreen((prev) => (prev === userId ? null : userId));
-  };
 
   const videos = [
     ...(localStream
