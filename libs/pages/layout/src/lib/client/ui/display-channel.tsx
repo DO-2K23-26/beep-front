@@ -9,6 +9,7 @@ import { ChannelContext } from '../feature/channels/channels-navigation-context'
 import { useContext } from 'react'
 // eslint-disable-next-line @nx/enforce-module-boundaries
 import { ServerContext } from '@beep/pages/channels'
+import { ContextMenuChannelSettings } from './channels/settings-channel'
 
 interface DisplayChannelProps {
   channel: ChannelEntity
@@ -42,39 +43,38 @@ export default function DisplayChannel({
   const canManageChannel =
     !myMember || !myMember.hasPermission(Permissions.MANAGE_CHANNELS)
   return (
-    <div
-      className="flex flex-col group w-full"
-      onClick={() => onJoinChannel && onJoinChannel(channel)}
-    >
+    <ContextMenuChannelSettings channel={channel}>
       <div
-        className={cn(
-          'flex flex-row justify-between items-center w-full px-3 py-2 hover:bg-violet-400/60 cursor-pointer rounded-xl',
-          { 'bg-violet-400/60': isSelected }
-        )}
+        className="flex flex-col group w-full"
+        onClick={() =>
+          onJoinChannel ? onJoinChannel(channel) : {}
+        }
       >
-        <div className="flex flex-row justify-center items-center gap-2">
-          {channel.type === ChannelType.voice_server ? (
-            <Icon name="lucide:volume-2" className="w-4 h-4" />
-          ) : (
-            <Icon name="lucide:hash" className="w-4 h-4" />
-          )}
-          <p className="font-semibold max-w-10 md:max-w-36 truncate">
-            {channel.name}
-          </p>
-        </div>
         <div
           className={cn(
-            'flex justify-center items-center invisible group-hover:visible',
-            { hidden: canManageChannel }
+            'flex flex-row justify-between items-center w-full px-3 py-2 opacity-60 hover:opacity-100 hover:bg-violet-400/60 cursor-pointer rounded-xl',
+            { 'bg-violet-400/60 opacity-95': isSelected }
           )}
         >
-          <DialogCloseButton
-            content={<SettingsModal settings={[subSetting]} />}
-          >
-            <Icon name="lucide:settings" className="!w-4 !h-4" />
-          </DialogCloseButton>
+          <div className="flex flex-row justify-center items-center gap-2">
+            {channel.type === ChannelType.voice_server ? (
+              <Icon name="lucide:volume-2" className="w-4 h-4" />
+            ) : (
+              <Icon name="lucide:hash" className="w-4 h-4" />
+            )}
+            <p className="font-semibold max-w-10 md:max-w-36 truncate">
+              {channel.name}
+            </p>
+          </div>
+          <div className="flex justify-center items-center invisible group-hover:visible">
+            <DialogCloseButton
+              content={<SettingsModal settings={[subSetting]} />}
+            >
+              <Icon name="lucide:settings" className="!w-4 !h-4" />
+            </DialogCloseButton>
+          </div>
         </div>
       </div>
-    </div>
+    </ContextMenuChannelSettings>
   )
 }

@@ -1,6 +1,7 @@
 import {
   AssignMemberToRoleRequest,
   backendUrl,
+  ChangeParentChannelRequest,
   ChannelEntity,
   ChannelType,
   CreateChannelRequest,
@@ -44,8 +45,6 @@ export const serverApi = createApi({
     'servers',
     'roles',
     'channel',
-    'textChannel',
-    'voiceChannel',
     'streamingUsers',
     'members',
     'publicServers',
@@ -126,6 +125,7 @@ export const serverApi = createApi({
           body: {
             name: request.name,
             type: +request.type,
+            parentId: request.parentId
           },
         })
 
@@ -180,31 +180,10 @@ export const serverApi = createApi({
         return []
       },
     }),
-    getServerChannels: builder.query<GetChannelsResponse, string>({
-      query: (serverId) => `/servers/${serverId}/channels`,
-      transformResponse: (response: ChannelEntity[]) => {
-        const voice = response.filter(
-          (channel) => ChannelType.voice_server === channel.type
-        )
-        const text = response.filter(
-          (channel) => ChannelType.text_server === channel.type
-        )
-        return { voiceChannels: voice, textChannels: text }
-      },
+    getServerChannels: builder.query<ChannelEntity[], string>({
+      query: (serverId) => `/servers/${serverId}/channels?group=true`,
       providesTags: (result, _error, serverId) =>
-        result
-          ? [
-              ...result.voiceChannels.map(({ id }) => ({
-                type: 'voiceChannel' as const,
-                id,
-              })),
-              ...result.textChannels.map(({ id }) => ({
-                type: 'textChannel' as const,
-                id,
-              })),
-              { type: 'channel', id: `LIST-${serverId}` },
-            ]
-          : [{ type: 'channel', id: `LIST-${serverId}` }],
+        [{ type: 'channel', id: `LIST-${serverId}` }]
     }),
     joinVoiceChannel: builder.mutation<
       void,
@@ -353,6 +332,24 @@ export const serverApi = createApi({
           position: request.position,
         },
       }),
+      invalidatesTags: (_result, _error, arg) => [
+        { type: 'channel', id: `LIST-${arg.serverId}` }
+      ],
+    }),
+    moveChannelToFolder: builder.mutation<
+      ChannelEntity,
+      ChangeParentChannelRequest
+    >({
+      query: (request) => ({
+        url: `/servers/${request.serverId}/channels/${request.channelId}`,
+        method: 'PUT',
+        body: {
+          parentId: request.parentId
+        },
+      }),
+      invalidatesTags: (_result, _error, arg) => [
+        { type: 'channel', id: `LIST-${arg.serverId}` }
+      ],
     }),
     getMyMember: builder.query<MemberEntity, GetMyMemberRequest>({
       query: (req) => ({
@@ -469,4 +466,5 @@ export const {
   useCreateRoleMutation,
   useGetMyMemberQuery,
   useUpdateMemberNicknameMutation,
+  useMoveChannelToFolderMutation
 } = serverApi

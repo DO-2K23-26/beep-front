@@ -14,10 +14,10 @@ export function EmptyServerPageFeature() {
   // If the user try to go to the empty page
   // he will be redirected if there are channels in the server
   useEffect(() => {
-    if (channels && channels.textChannels.length !== 0) {
-      const firstChan = channels.textChannels[0]
+    if (channels && channels.length !== 0) {
+      const firstChan = channels[0]
 
-      
+
       if (firstChan) {
         navigate(`/servers/${serverId}/channels/${firstChan.id}`)
       }

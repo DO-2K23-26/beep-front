@@ -1,87 +1,119 @@
-import { ChannelType } from '@beep/contracts'
-import { Swappable } from '@beep/utils'
-import { useContext, useEffect, useRef } from 'react'
-import { createSwapy, Swapy } from 'swapy'
+import {
+  ChannelEntity,
+  ChannelType,
+  UserConnectedEntity,
+} from '@beep/contracts'
+import { memo, useContext, useRef } from 'react'
 import { ChannelContext } from '../feature/channels/channels-navigation-context'
-import { useSelector } from 'react-redux'
-import { getVoiceState } from '@beep/voice'
 import DisplayChannelFeature from '../feature/display-channel-feature'
 import VoiceChannel from '../feature/voice-channel'
+import FolderChannel from './channels/folder-channel'
+import { FolderProvider } from '../feature/folder-context'
+import { SwapProvider, SwappableItem, SwappableTrigger } from '@beep/transmit'
+import { usePatchChannelPositionMutation } from '@beep/server'
 
-export interface ListTextChannelsProps {
-  moveChannel: (channelId: string, newPosition: number) => void
+interface ListChannelsProps {
+  channels: ChannelEntity[]
+  parent?: string
 }
 
+
+// Component to render the appropriate channel type
+const ChannelComponent = memo(function ChannelComponent({
+  channel,
+  occupiedChannel
+}: {
+  channel: ChannelEntity
+  occupiedChannel?: { users: UserConnectedEntity[] }
+}) {
+  const { server } = useContext(ChannelContext)
+
+  switch (channel.type) {
+    case ChannelType.folder:
+      return (
+        <FolderProvider channel={channel} server={server}>
+          <FolderChannel channel={channel} />
+        </FolderProvider>
+      )
+    case ChannelType.voice_server:
+      return (
+        <SwappableTrigger>
+          <VoiceChannel
+            channel={channel}
+            users={occupiedChannel?.users ?? []}
+          />
+        </SwappableTrigger>
+      )
+    default:
+      return <SwappableTrigger>
+        <DisplayChannelFeature channel={channel} />
+      </SwappableTrigger>
+  }
+}, (prevProps, nextProps) => {
+  if(prevProps.channel.type !== nextProps.channel.type) {
+    return false
+  }
+  if(prevProps.channel.childrens && nextProps.channel.childrens) {
+    if(prevProps.channel.childrens.length !== nextProps.channel.childrens.length) {
+      return false
+    }
+  }
+  if(prevProps.channel.parentId && nextProps.channel.parentId) {
+    if(prevProps.channel.parentId !== nextProps.channel.parentId) {
+      return false
+    }
+  }
+
+  if(prevProps.channel.position !== nextProps.channel.position) {
+    return false
+  }
+  return prevProps.channel.id !== nextProps.channel.id
+})
+
+// Hook to manage drag and drop functionality
+
 export function ListChannels({
-  moveChannel,
-}: ListTextChannelsProps) {
-  const { channels} = useContext(ChannelContext)
-  const { serverPresence } = useSelector(getVoiceState)
-  const swapy = useRef<Swapy | null>(null)
-  const container = useRef(null)
-  const startingPosition = useRef<
-    {
-      slot: string
-      item: string
-    }[]
-  >([])
+  channels,
+  parent
+}: ListChannelsProps) {
+  const [moveChannel] = usePatchChannelPositionMutation()
+  const { streamingUsers: occupiedChannels, server } = useContext(ChannelContext)
 
-  useEffect(() => {
-    if (container.current) {
-      swapy.current = createSwapy(container.current, {
-        dragAxis: 'y',
-      })
+  const renderChannel = (channel: ChannelEntity, index: number) => {
+    const occupiedChannel = occupiedChannels.find(
+      occupied => occupied.channelId === channel.id
+    )
 
-      swapy.current.onSwapStart((event) => {
-        startingPosition.current = event.slotItemMap.asArray
-      })
+    const channelComponent = (
+      <SwappableItem slot={`${parent}-${index}`} item={channel.id}>
+        <ChannelComponent
+          channel={channel}
+          occupiedChannel={occupiedChannel}
+        />
+      </SwappableItem>
+    )
 
-      swapy.current.onSwapEnd((event) => {
-        if (event.hasChanged) {
-          for (const { slot, item } of event.slotItemMap.asArray) {
-            moveChannel(item, parseInt(slot))
-          }
-        }
-      })
-    }
-
-    return () => {
-      swapy.current?.destroy()
-    }
-  })
+    return (
+      channelComponent
+    )
+  }
 
   return (
-    <div ref={container}>
-      {channels.map((channel, index) => {
-        const occupiedChannel = serverPresence.find((occupiedChannel) => {
-          return occupiedChannel.channelId === channel.id
-        })
-        switch (channel.type) {
-          case ChannelType.text_server:
-            return (
-              <Swappable
-                key={channel.id}
-                slot={index.toString()}
-                item={channel.id}
-              >
-                <DisplayChannelFeature channel={channel} />
-              </Swappable>
-            )
-          default:
-            return (
-              <Swappable
-                key={channel.id}
-                slot={index.toString()}
-                item={channel.id}
-              >
-                <VoiceChannel
-                  channel={channel}
-                  users={occupiedChannel ? occupiedChannel.users : []}
-                />
-              </Swappable>
-            )
-        }
-      })}
-    </div>
+    //<SwapProvider handleSwapStart={(event) => {
+    //  return
+    //}} handleSwapEnd={(event) => {
+    //  event.slotItemMap.asArray.forEach(({ slot, item }) => {
+    //    const splitted =  slot.split('-')
+    //    const newPosition = parseInt(splitted[splitted.length - 1]) // extract the position from the slot
+    //    moveChannel({
+    //      position: newPosition,
+    //      channelId: item,
+    //      serverId: server.id ?? '',
+    //    })
+    //  })
+    //  return
+    //}}>
+      channels.map((channel, index) => renderChannel(channel, index))
+    //</SwapProvider>
   )
 }

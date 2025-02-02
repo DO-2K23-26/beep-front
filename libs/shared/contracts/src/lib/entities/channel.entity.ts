@@ -9,6 +9,8 @@ export interface ChannelEntity {
   position: number
   type: ChannelType
   users: UserDisplayedEntity[]
+  parentId?: string
+  childrens?: ChannelEntity[]
   createdAt?: string
   updatedAt?: string
 }

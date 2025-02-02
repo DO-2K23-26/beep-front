@@ -226,6 +226,7 @@
       "required_name": "Please enter a name.",
       "text": "Text",
       "voice": "Voice",
+      "folder": "Folder",
       "cancel": "Cancel",
       "create": "Create"
     },
