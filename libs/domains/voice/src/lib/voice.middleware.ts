@@ -532,6 +532,7 @@ export const WebRTCMiddleware: Middleware = (store) => {
         peerConnection?.close()
         peerConnection = null
         currentChannel = undefined
+        currentChannelId = undefined
         break
 
       default:
