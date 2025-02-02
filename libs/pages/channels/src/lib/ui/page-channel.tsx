@@ -3,6 +3,7 @@ import { DynamicSelector, DynamicSelectorProps, Icon } from '@beep/ui'
 import { UseFormReturn } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { InputChannelArea } from './input-channel-area'
+// eslint-disable-next-line @nx/enforce-module-boundaries
 import { ListMessagesFeature } from '@beep/messages'
 import { Permissions } from '@beep/contracts'
 
