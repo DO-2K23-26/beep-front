@@ -1,8 +1,8 @@
-import { ChannelEntity } from "@beep/contracts"
+import { ChannelEntity, Permissions } from "@beep/contracts"
 import { Collapsible, CollapsibleContent, CollapsibleTrigger, DialogCloseButton, Icon } from "@beep/ui"
 import { memo, useContext, useState } from "react";
 import { ChevronDown } from "lucide-react";
-import { SwappableTrigger, sortEntity} from "@beep/transmit";
+import { SwappableTrigger, cn, sortEntity} from "@beep/transmit";
 import { ContextMenuFolderSettings } from "./settings-channel";
 import { SettingBodyWidth, SettingsModal, SubSettings } from "@beep/settings";
 import { useTranslation } from "react-i18next";
@@ -10,6 +10,7 @@ import { ListChannels } from "../../feature/list-channels";
 import { FolderContext } from "../../feature/folder-context";
 import DeleteChannelFeature from "../../feature/delete-channel-feature";
 import OverviewSettingsChannelFeature from "../../feature/overview-settings-channel-feature";
+import { ServerContext } from "../../feature/page-server-feature";
 
 const FolderChannel = memo(function FolderChannel({
   channel
@@ -19,7 +20,10 @@ const FolderChannel = memo(function FolderChannel({
   const { openCreateChannelModal } = useContext(FolderContext);
   const [isOpen, setIsOpen] = useState(true)
   const { t } = useTranslation()
+  const { myMember } = useContext(ServerContext)
 
+  const canManageChannel =
+    !myMember || !myMember.hasPermission(Permissions.MANAGE_CHANNELS)
   const open = isOpen ? "open" : "closed"
 
   const childrenChannels = sortEntity<ChannelEntity>(channel.childrens || [])
@@ -57,7 +61,11 @@ const FolderChannel = memo(function FolderChannel({
                 {channel.name}
               </p>
             </CollapsibleTrigger>
-            <div className="flex justify-center items-center gap-2">
+            <div className={
+                cn("flex justify-center items-center gap-2", {
+                  hidden: canManageChannel
+                })
+              }>
               <DialogCloseButton
                 content={<SettingsModal settings={[subSetting]} />}
               >
