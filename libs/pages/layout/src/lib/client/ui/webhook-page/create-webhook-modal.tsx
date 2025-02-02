@@ -19,14 +19,19 @@ import { Controller } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { CreateWebhookSettingsContext } from '../../feature/create-webhook-feature'
 
+interface CreateWebhookModalProps {
+  children: React.ReactNode
+}
+
 export default function CreateWebhookModal({
   children,
-}: PropsWithChildren<never>) {
+}: PropsWithChildren<CreateWebhookModalProps>) {
   const { t } = useTranslation()
   const { methodsAddWebhook, serverId, control, onCreateWebhook } = useContext(
     CreateWebhookSettingsContext
   )
-  const { data: channelsResponse } = useGetServerChannelsQuery(serverId!)
+  // In this context, serverId is always defined
+  const { data: channelsResponse } = useGetServerChannelsQuery(serverId ?? '')
 
   const textChannelOptions =
     channelsResponse?.textChannels.map((channel) => ({
@@ -126,8 +131,7 @@ export default function CreateWebhookModal({
                 className="btn--no-min-w"
                 style={ButtonStyle.BASIC}
                 onClick={() => {
-                    onCreateWebhook()
-                  
+                  onCreateWebhook()
                 }}
               >
                 {t('layout.new-webhook-modal.create_modal.create')}
