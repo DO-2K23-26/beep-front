@@ -40,9 +40,13 @@ export function SwappableTrigger({
 }: {
   children: ReactNode
 }) {
-  const { activate, deactivate, active } = useSwappable()
+  const { activate, deactivate, active, swapping } = useSwappable()
   return (
-    <div onMouseOver={activate} onMouseLeave={deactivate} >
+    <div onMouseOver={activate} onMouseOut={() => {
+      if (!swapping) {
+        deactivate()
+      }
+    }} className={active ? "bg-red-200" : "bg-blue-200"}>
       {children}
     </div>
   )
@@ -52,7 +56,8 @@ export function SwappableTrigger({
 interface SwappableContextContent {
   activate: () => void
   deactivate: () => void,
-  active: boolean
+  active: boolean,
+  swapping: boolean
 }
 
 const defaultContext: SwappableContextContent = {
@@ -62,7 +67,8 @@ const defaultContext: SwappableContextContent = {
   deactivate: () => {
     return
   },
-  active: false
+  active: false,
+  swapping: false
 }
 
 
@@ -84,7 +90,7 @@ export function SwapProvider({
   const [swappable, setSwappable] = useState(false)
   const [swapping, setSwapping] = useState(false)
 
-  const onSwapStart = useCallback((event: { slotItemMap: { asArray: SwapPosition[] } }) => {
+  const onSwapStart = useCallback((_event: { slotItemMap: { asArray: SwapPosition[] } }) => {
     setSwapping(true)
   }, [])
 
@@ -93,35 +99,26 @@ export function SwapProvider({
       handleSwapEnd(event)
     }
     setSwapping(false)
-  }, [])
+  }, [handleSwapEnd])
 
-  useEffect(() => {
+
+  const activate = useCallback(() => {
     if (container.current) {
+      setSwappable(true)
       swapy.current = createSwapy(container.current, {
-        dragAxis: 'y'
+        dragAxis: 'y',
+        manualSwap:false,
       })
       swapy.current.onSwapStart(onSwapStart)
       swapy.current.onSwapEnd(onSwapEnd)
     }
-    return () => {
-      if (swapy.current) {
-        swapy.current.destroy()
-        swapy.current = null
-      }
-    }
-  }, [])
-
-  const activate = useCallback(() => {
-    if (container.current && swapy.current) {
-      swapy.current.enable(true)
-      setSwappable(true)
-    }
-  }, [container, onSwapStart, onSwapEnd, swapping])
+  }, [container, onSwapStart, onSwapEnd])
 
   const deactivate = useCallback(() => {
     if (swapping) return
     if (swapy.current) {
-      swapy.current.enable(false)
+      swapy.current.destroy()
+      swapy.current = null
       setSwappable(false)
     }
   }, [swapping])
@@ -131,10 +128,11 @@ export function SwapProvider({
     <SwappableContext.Provider value={{
       activate,
       deactivate,
-      active: swappable
+      active: swappable,
+      swapping: swapping
     }}
     >
-      <div ref={container} className={cn("overflow")}>
+      <div ref={container} className={cn("overflow", swappable ? "bg-gray-100" : "")}>
         {children}
       </div>
     </SwappableContext.Provider>

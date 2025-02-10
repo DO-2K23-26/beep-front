@@ -3,12 +3,10 @@ import {
   ChannelType,
   UserConnectedEntity,
 } from '@beep/contracts'
-import { memo, useContext, useRef } from 'react'
+import { memo, useContext } from 'react'
 import { ChannelContext } from './channels-navigation-context'
 import FolderChannel from '../ui/channels/folder-channel'
 import { FolderProvider } from './folder-context'
-import { SwappableItem, SwappableTrigger } from '@beep/transmit'
-import { usePatchChannelPositionMutation } from '@beep/server'
 import VoiceChannel from '../ui/voice-channel'
 import DisplayChannelFeature from './display-channel-feature'
 
@@ -37,47 +35,40 @@ const ChannelComponent = memo(function ChannelComponent({
       )
     case ChannelType.voice_server:
       return (
-        <SwappableTrigger>
           <VoiceChannel
             channel={channel}
             users={occupiedChannel?.users ?? []}
           />
-        </SwappableTrigger>
       )
     default:
-      return <SwappableTrigger>
-        <DisplayChannelFeature channel={channel} />
-      </SwappableTrigger>
+      return <DisplayChannelFeature channel={channel} />
   }
 }, (prevProps, nextProps) => {
-  if(prevProps.channel.type !== nextProps.channel.type) {
+  if (prevProps.channel.type !== nextProps.channel.type) {
     return false
   }
-  if(prevProps.channel.childrens && nextProps.channel.childrens) {
-    if(prevProps.channel.childrens.length !== nextProps.channel.childrens.length) {
+  if (prevProps.channel.childrens && nextProps.channel.childrens) {
+    if (prevProps.channel.childrens.length !== nextProps.channel.childrens.length) {
       return false
     }
   }
-  if(prevProps.channel.parentId && nextProps.channel.parentId) {
-    if(prevProps.channel.parentId !== nextProps.channel.parentId) {
+  if (prevProps.channel.parentId && nextProps.channel.parentId) {
+    if (prevProps.channel.parentId !== nextProps.channel.parentId) {
       return false
     }
   }
 
-  if(prevProps.channel.position !== nextProps.channel.position) {
+  if (prevProps.channel.position !== nextProps.channel.position) {
     return false
   }
   return prevProps.channel.id !== nextProps.channel.id
 })
 
-// Hook to manage drag and drop functionality
-
 export function ListChannels({
   channels,
   parent
 }: ListChannelsProps) {
-  const [moveChannel] = usePatchChannelPositionMutation()
-  const { streamingUsers: occupiedChannels, server } = useContext(ChannelContext)
+  const { streamingUsers: occupiedChannels } = useContext(ChannelContext)
 
   const renderChannel = (channel: ChannelEntity, index: number) => {
     const occupiedChannel = occupiedChannels.find(
@@ -85,12 +76,11 @@ export function ListChannels({
     )
 
     const channelComponent = (
-      <SwappableItem slot={`${parent}-${index}`} item={channel.id}>
         <ChannelComponent
+          key={channel.id}
           channel={channel}
           occupiedChannel={occupiedChannel}
         />
-      </SwappableItem>
     )
 
     return (
@@ -99,21 +89,6 @@ export function ListChannels({
   }
 
   return (
-    //<SwapProvider handleSwapStart={(event) => {
-    //  return
-    //}} handleSwapEnd={(event) => {
-    //  event.slotItemMap.asArray.forEach(({ slot, item }) => {
-    //    const splitted =  slot.split('-')
-    //    const newPosition = parseInt(splitted[splitted.length - 1]) // extract the position from the slot
-    //    moveChannel({
-    //      position: newPosition,
-    //      channelId: item,
-    //      serverId: server.id ?? '',
-    //    })
-    //  })
-    //  return
-    //}}>
-      channels.map((channel, index) => renderChannel(channel, index))
-    //</SwapProvider>
+        channels.map((channel, index) => renderChannel(channel, index))
   )
 }
