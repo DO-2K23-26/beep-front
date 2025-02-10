@@ -127,10 +127,6 @@ function ChannelsProvider({
     server?.id ?? skipToken
   )
 
-  console.log(streamingUsers)
-
-
-
   const [createChannel, resultCreatedChannel] =
     useCreateChannelInServerMutation()
   const [deleteChannel, resultDeleteChannel] =

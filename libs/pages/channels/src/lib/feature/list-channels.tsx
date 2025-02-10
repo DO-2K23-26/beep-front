@@ -3,12 +3,14 @@ import {
   ChannelType,
   UserConnectedEntity,
 } from '@beep/contracts'
-import { memo, useContext } from 'react'
+import { memo, useCallback, useContext } from 'react'
 import { ChannelContext } from './channels-navigation-context'
 import FolderChannel from '../ui/channels/folder-channel'
 import { FolderProvider } from './folder-context'
 import VoiceChannel from '../ui/voice-channel'
 import DisplayChannelFeature from './display-channel-feature'
+import { useSelector } from 'react-redux'
+import { getVoiceState } from '@beep/voice'
 
 interface ListChannelsProps {
   channels: ChannelEntity[]
@@ -68,13 +70,12 @@ export function ListChannels({
   channels,
   parent
 }: ListChannelsProps) {
-  const { streamingUsers: occupiedChannels } = useContext(ChannelContext)
+  const { serverPresence } = useSelector(getVoiceState)
 
-  const renderChannel = (channel: ChannelEntity, index: number) => {
-    const occupiedChannel = occupiedChannels.find(
-      occupied => occupied.channelId === channel.id
-    )
-
+  const renderChannel = useCallback((channel: ChannelEntity, index: number) => {
+    const occupiedChannel = serverPresence.find((occupiedChannel) => {
+      return occupiedChannel.channelId === channel.id
+    })
     const channelComponent = (
         <ChannelComponent
           key={channel.id}
@@ -86,7 +87,7 @@ export function ListChannels({
     return (
       channelComponent
     )
-  }
+  }, [serverPresence])
 
   return (
         channels.map((channel, index) => renderChannel(channel, index))

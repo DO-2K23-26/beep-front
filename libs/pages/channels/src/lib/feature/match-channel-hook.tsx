@@ -42,7 +42,18 @@ export function useVoiceChannels({
   )
 
   useEffect(() => {
-    const voiceChannels = channels?.filter((channel) => channel.type === ChannelType.voice_server)
+    const voiceChannels: ChannelEntity[] = []
+    const getVoiceChannel = (channelsLevel: ChannelEntity[]) => {
+      for (const channel of channelsLevel) {
+        if (channel.type === ChannelType.voice_server) {
+          voiceChannels.push(channel)
+        } else if (channel.type === ChannelType.folder) {
+          getVoiceChannel(channel.childrens ? channel.childrens : [])
+        }
+      }
+    }
+
+    getVoiceChannel(channels ? channels : [])
     if (server && voiceChannels && me?.id) {
       dispatch({
         type: 'INITIALIZE_PRESENCE',
@@ -70,7 +81,8 @@ export function useVoiceChannels({
           isCamera: isCamera,
           username: me.username,
         },
-      })    }
+      })
+    }
   }, [needConnection, dispatch, audioInputDevice, videoDevice, currentChannelId, server?.id, me?.id, me?.username, isVoiceMuted, isCamera])
 
   const onJoinVoiceChannel = async (channel: ChannelEntity) => {
