@@ -1,6 +1,6 @@
 import { voiceChannelActions } from "@beep/channel"
 import { getUserState, useGetMeQuery } from "@beep/user"
-import { ChannelEntity, OccupiedChannelEntity, ServerEntity } from "@beep/contracts"
+import { ChannelEntity, ChannelType, OccupiedChannelEntity, ServerEntity } from "@beep/contracts"
 import { useGetServerChannelsQuery } from '@beep/server'
 import { AppDispatch } from "@beep/store"
 import {
@@ -42,17 +42,18 @@ export function useVoiceChannels({
   )
 
   useEffect(() => {
-    if (server && channels?.voiceChannels && me?.id) {
+    const voiceChannels = channels?.filter((channel) => channel.type === ChannelType.voice_server)
+    if (server && voiceChannels && me?.id) {
       dispatch({
         type: 'INITIALIZE_PRESENCE',
         payload: {
-          channels: channels?.voiceChannels.map((channel) => channel.id),
+          channels: voiceChannels.map((channel) => channel.id),
           server: server?.id,
           id: me?.id,
         },
       })
     }
-  }, [server, channels?.voiceChannels, dispatch, me?.id])
+  }, [server, channels, dispatch, me?.id])
 
   useEffect(() => {
     if (server && me && currentChannelId && needConnection && (videoDevice || audioInputDevice)) {
