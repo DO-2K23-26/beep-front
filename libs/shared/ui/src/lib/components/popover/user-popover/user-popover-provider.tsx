@@ -2,9 +2,8 @@ import {
   ChannelEntity,
   InvitationEntity,
   MemberEntity,
-  Permissions,
   UserDisplayedEntity,
-  UserStatePayload,
+  UserStatePayload
 } from '@beep/contracts'
 import {
   useCreateFriendsInvitationByIdMutation,
@@ -13,7 +12,6 @@ import {
   useGetPrivateChannelsQuery,
 } from '@beep/friend'
 // eslint-disable-next-line @nx/enforce-module-boundaries
-import { ServerContext } from '@beep/pages/channels'
 import {
   useGetMembersQuery,
   useUpdateMemberNicknameMutation,
@@ -27,9 +25,7 @@ import { skipToken } from '@reduxjs/toolkit/query'
 import {
   createContext,
   PropsWithChildren,
-  useContext,
-  useEffect,
-  useMemo,
+  useEffect
 } from 'react'
 import { Control, FieldValues, useForm, UseFormReset } from 'react-hook-form'
 import { useSelector } from 'react-redux'
@@ -39,6 +35,7 @@ import { z } from 'zod'
 interface UserPopoverProps {
   userId?: string
   serverId?: string
+  isNicknameEditable?: boolean
 }
 
 interface IUserPopoverContext<NicknameFormType extends FieldValues> {
@@ -75,8 +72,8 @@ export function UserPopoverProvider({
   children,
   userId,
   serverId,
+  isNicknameEditable
 }: PropsWithChildren<UserPopoverProps>) {
-  const { myMember } = useContext(ServerContext)
   const navigate = useNavigate()
   const { data: user } = useGetUserByIdQuery(
     { id: userId ?? '' },
@@ -181,14 +178,7 @@ export function UserPopoverProvider({
     resetNicknameReq,
     updateMemberNicknameData,
   ])
-  const isNicknameEditable = useMemo(() => {
-    if (myMember?.hasOnePermissions([Permissions.MANAGE_NICKNAMES])) {
-      return true
-    } else if (myUser?.sub === member?.userId && myMember) {
-      return myMember.hasOnePermissions([Permissions.CHANGE_NICKNAME])
-    }
-    return false
-  }, [myMember, myUser?.sub, member?.userId])
+
   return (
     <UserPopoverContext.Provider
       value={{

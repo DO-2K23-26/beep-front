@@ -1,17 +1,22 @@
 import { leftPaneState } from '@beep/responsive'
 import { useGetMemberQuery } from '@beep/server'
+// eslint-disable-next-line @nx/enforce-module-boundaries
 import { UserPopoverFeature } from '@beep/ui'
-import { useFetchProfilePictureQuery, useGetMeQuery } from '@beep/user'
+import {
+  getUserState,
+  useFetchProfilePictureQuery,
+  useGetMeQuery,
+} from '@beep/user'
 import { cn } from '@beep/utils'
 import { skipToken } from '@reduxjs/toolkit/query'
 import { DateTime } from 'luxon'
-import { useContext } from 'react'
+import { useContext, useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useSelector } from 'react-redux'
 import { MessageContext } from '../feature/message-feature'
 // eslint-disable-next-line @nx/enforce-module-boundaries
 import { ServerContext } from '@beep/pages/channels'
-
+import { Permissions } from '@beep/contracts'
 /**
  * Component to display a message user information.
  *
@@ -21,7 +26,9 @@ import { ServerContext } from '@beep/pages/channels'
  *
  */
 export function MessageUserDisplay() {
+  const { myMember } = useContext(ServerContext)
   const { message } = useContext(MessageContext)
+  const { payload } = useSelector(getUserState)
   const leftDivState = useSelector(leftPaneState)
 
   const { t } = useTranslation()
@@ -58,10 +65,22 @@ export function MessageUserDisplay() {
       return date.toFormat('dd/MM/yyyy HH:mm')
     }
   }
+  const isNicknameEditable = useMemo(() => {
+    if (myMember?.hasOnePermissions([Permissions.MANAGE_NICKNAMES])) {
+      return true
+    } else if (payload?.sub === member?.userId && myMember) {
+      return myMember.hasOnePermissions([Permissions.CHANGE_NICKNAME])
+    }
+    return false
+  }, [myMember, payload?.sub, member?.userId])
   return (
     <div className="flex flex-col sm:flex-row gap-0 sm:gap-4 sm:items-center items-start">
       <div className="flex flex-row gap-3 items-center overflow-hidden">
-        <UserPopoverFeature userId={message.ownerId} serverId={server?.id}>
+        <UserPopoverFeature
+          userId={message.ownerId}
+          serverId={server?.id}
+          isNicknameEditable={isNicknameEditable}
+        >
           <img
             className={cn(
               'block w-9 h-9 object-cover bg-violet-50 rounded-xl',
@@ -72,7 +91,11 @@ export function MessageUserDisplay() {
           />
         </UserPopoverFeature>
         <div className="sm:flex gap-3 sm:flex-row">
-          <UserPopoverFeature userId={message.ownerId} serverId={server?.id}>
+          <UserPopoverFeature
+            userId={message.ownerId}
+            serverId={server?.id}
+            isNicknameEditable={isNicknameEditable}
+          >
             <p
               className={cn(
                 'font-semibold text-xs max-w-20 sm:max-w-30 md:max-w-40 lg:max-w-60 hover:underline truncate'
