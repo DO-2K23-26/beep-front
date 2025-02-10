@@ -38,28 +38,27 @@ export function InputImageSettings({
   const [updateBanner] = useUpdateBannerMutation()
   const [updateWebhookPicture] = useUpdateWebhookPictureMutation()
 
-  const updateImage = async (file: File) => {
-    const formData = new FormData()
-    formData.append('attachment', file)
-
-    if (type === 'webhookpicture') {
-      if (!channelId || !webhookId) {
-        return
-      }
-      await updateWebhookPicture({
-        serverId,
-        channelId,
-        webhookId: webhookId,
-        formData,
-      })
-    } else if (type === 'banner') {
-      await updateBanner({ serverId, formData })
-    } else {
-      await updatePicture({ serverId, formData })
-    }
-  }
-
   useEffect(() => {
+    const updateImage = async (file: File) => {
+      const formData = new FormData()
+      formData.append('attachment', file)
+      if (type === 'webhookpicture') {
+
+        if (!channelId || !webhookId) {
+          return
+        }
+        await updateWebhookPicture({
+          serverId,
+          channelId,
+          webhookId: webhookId,
+          formData,
+        })
+      } else if (type === 'banner') {
+        await updateBanner({ serverId, formData })
+      } else {
+        await updatePicture({ serverId, formData })
+      }
+    }
     if (inputRef.current) {
       inputRef.current.addEventListener('change', () => {
         if (inputRef.current?.files) {

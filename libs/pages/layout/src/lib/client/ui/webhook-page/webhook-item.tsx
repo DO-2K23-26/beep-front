@@ -39,6 +39,8 @@ export default function WebhookItem() {
           label={t('layout.webhook-item.upload_picture')}
           name="webhook"
           serverId={webhook.serverId}
+          channelId={webhook.channelId}
+          webhookId={webhook.id}
           initialImage={icon}
         />
       </div>
