@@ -67,7 +67,7 @@ export function OverviewSettingsServer({
             type="picture"
             label={t('layout.overview-settings-server.upload_picture')}
             name="profile"
-            serverId={server?.id}
+            serverId={server?.id ?? ''}
             initialImage={icon}
             disabled={!canEditServer}
           />
@@ -78,7 +78,7 @@ export function OverviewSettingsServer({
             type="banner"
             label={t('layout.overview-settings-server.upload_banner')}
             name="banner"
-            serverId={server?.id}
+            serverId={server?.id ?? ''}
             initialImage={banner}
           />
         </div>

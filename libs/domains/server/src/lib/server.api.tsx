@@ -53,6 +53,7 @@ export const serverApi = createApi({
     'publicServers',
     'transmitPicture',
     'transmitBanner',
+    'transmitWebhookPicture',
     'webhooks',
   ],
   endpoints: (builder) => ({
@@ -447,7 +448,7 @@ export const serverApi = createApi({
         },
       }),
       providesTags: (_result, _error, id) => [
-        { type: 'transmitPicture', id: id.webhookId },
+        { type: 'transmitWebhookPicture', id: id.webhookId },
       ],
     }),
     updateMemberNickname: builder.mutation<MemberEntity, UpdateMemberRequest>({
@@ -477,7 +478,6 @@ export const serverApi = createApi({
         method: 'POST',
         body: {
           name: request.name,
-          profilePicture: request.profilePicture,
         },
       }),
       invalidatesTags: ['webhooks'],
@@ -493,6 +493,7 @@ export const serverApi = createApi({
         body: request.updatedWebhook,
       }),
     }),
+    
     updateProfilePicture: builder.mutation<
       void,
       { serverId: string; formData: FormData }
