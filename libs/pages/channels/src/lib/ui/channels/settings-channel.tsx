@@ -80,7 +80,9 @@ export function ContextMenuChannelSettings({
       <ContextMenuContent className="w-64">
         <ContextMenuSub>
           <ContextMenuSubTrigger inset>
-            Move to folder
+            {
+              t("channels.context-menu.move-to-folder")
+            }
           </ContextMenuSubTrigger>
           <ContextMenuSubContent className="w-48">
             {
@@ -101,11 +103,11 @@ export function ContextMenuChannelSettings({
           </ContextMenuSubContent>
         </ContextMenuSub>
         <ContextMenuItem className="hover:cursor-pointer" onClick={() => moveToFolder(channel.id, null)}>
-          Ungroup
+          {t("channels.context-menu.ungroup")}
         </ContextMenuItem>
         <ContextMenuSeparator />
         <ContextMenuItem className="text-red-500 hover:cursor-pointer" onClick={() => openDeleteChannelModal(channel)}>
-          Delete channel
+          {t("channels.context-menu.delete-channel")}
         </ContextMenuItem>
       </ContextMenuContent>
     </ContextMenu>

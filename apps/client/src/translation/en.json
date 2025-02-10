@@ -101,6 +101,11 @@
     }
   },
   "channels": {
+    "context-menu": {
+      "move-to-folder": "Move to folder",
+      "ungroup": "Ungroup",
+      "delete-channel": "Delete channel"
+    },
     "delete-message-modal": {
       "title": "Delete Message",
       "description": "Are you sure you want to delete this message?",

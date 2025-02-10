@@ -1,5 +1,6 @@
 import { ChannelEntity } from "@beep/contracts"
 import { Button, ButtonStyle } from "@beep/ui"
+import { useTranslation } from "react-i18next"
 
 interface DeleteChannelModalProps {
   closeModal: () => void
@@ -12,13 +13,14 @@ export function DeleteChannelModal({
   onDeleteChannel,
   channel,
 }: DeleteChannelModalProps) {
+  const { t } = useTranslation()
   return (
     <div className="p-6">
       <h3 className=" text-slate-700 font-bold mb-2 max-w-sm">
         Delete channel
       </h3>
       <div className="text-slate-500 text-sm mb-4">
-        Are you sure you want to delete
+        {t("channels.delete-message-modal.description")}
         <strong className="text-red-600"> {channel.name}</strong> ?
       </div>
       <div className="flex flex-row justify-end gap-2">
@@ -26,7 +28,7 @@ export function DeleteChannelModal({
           style={ButtonStyle.STROKED}
           onClick={() => closeModal()}
         >
-          Cancel
+          {t("channels.delete-message-modal.cancel")}
         </Button>
         <Button
           style={ButtonStyle.ERROR}
@@ -36,7 +38,7 @@ export function DeleteChannelModal({
             )
           }}
         >
-          Delete
+          {t("channels.delete-message-modal.delete")}
         </Button>
       </div>
     </div>
