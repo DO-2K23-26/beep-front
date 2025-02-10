@@ -1,6 +1,5 @@
 // eslint-disable-next-line @nx/enforce-module-boundaries
 import {
-  ChannelsNavigationFeature,
   MembersNavigationFeature,
 } from '@beep/layout'
 import { leftPaneState, rightPaneState } from '@beep/responsive'
@@ -8,6 +7,7 @@ import { cn } from '@beep/utils'
 import { useSelector } from 'react-redux'
 import { Outlet, useParams } from 'react-router'
 import { SoundManager } from './sound-manager'
+import { ChannelsNavigationFeature } from '../feature/channels-navigation-feature'
 
 export function PageServer() {
   const rightDivState = useSelector(rightPaneState)

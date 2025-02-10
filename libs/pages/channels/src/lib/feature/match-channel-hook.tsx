@@ -1,6 +1,6 @@
 import { voiceChannelActions } from "@beep/channel"
 import { getUserState, useGetMeQuery } from "@beep/user"
-import { ChannelEntity, OccupiedChannelEntity, ServerEntity } from "@beep/contracts"
+import { ChannelEntity, ChannelType, OccupiedChannelEntity, ServerEntity } from "@beep/contracts"
 import { useGetServerChannelsQuery } from '@beep/server'
 import { AppDispatch } from "@beep/store"
 import {
@@ -42,17 +42,29 @@ export function useVoiceChannels({
   )
 
   useEffect(() => {
-    if (server && channels?.voiceChannels && me?.id) {
+    const voiceChannels: ChannelEntity[] = []
+    const getVoiceChannel = (channelsLevel: ChannelEntity[]) => {
+      for (const channel of channelsLevel) {
+        if (channel.type === ChannelType.voice_server) {
+          voiceChannels.push(channel)
+        } else if (channel.type === ChannelType.folder) {
+          getVoiceChannel(channel.childrens ? channel.childrens : [])
+        }
+      }
+    }
+
+    getVoiceChannel(channels ? channels : [])
+    if (server && voiceChannels && me?.id) {
       dispatch({
         type: 'INITIALIZE_PRESENCE',
         payload: {
-          channels: channels?.voiceChannels.map((channel) => channel.id),
+          channels: voiceChannels.map((channel) => channel.id),
           server: server?.id,
           id: me?.id,
         },
       })
     }
-  }, [server, channels?.voiceChannels, dispatch, me?.id])
+  }, [server, channels, dispatch, me?.id])
 
   useEffect(() => {
     if (server && me && currentChannelId && needConnection && (videoDevice || audioInputDevice)) {
@@ -69,7 +81,8 @@ export function useVoiceChannels({
           isCamera: isCamera,
           username: me.username,
         },
-      })    }
+      })
+    }
   }, [needConnection, dispatch, audioInputDevice, videoDevice, currentChannelId, server?.id, me?.id, me?.username, isVoiceMuted, isCamera])
 
   const onJoinVoiceChannel = async (channel: ChannelEntity) => {

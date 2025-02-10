@@ -16,8 +16,8 @@ import {
   Icon,
 } from '@beep/ui'
 import { useState } from 'react'
-import { OverviewSettingsServer } from './overview-settings-server'
 import { useTranslation } from 'react-i18next'
+import { OverviewSettingsServer } from './overview-settings-server'
 
 interface ServerDropDownMenuProps {
   server?: ServerEntity
@@ -34,7 +34,7 @@ export function ServerDropdownMenu({ server }: ServerDropDownMenuProps) {
         title: t('layout.server-dropdown-menu.overview'),
         id: 'overview',
         settingComponent: (
-          <OverviewSettingsServer server={server} isAdmin={true} />
+          <OverviewSettingsServer server={server} />
         ),
       },
     ],

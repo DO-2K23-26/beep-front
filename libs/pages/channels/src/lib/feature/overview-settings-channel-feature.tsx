@@ -3,8 +3,8 @@ import { useUpdateChannelInServerMutation } from '@beep/server'
 import { useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import toast from 'react-hot-toast'
-import { OverviewSettingsChannel } from '../ui/overview-settings-channel'
 import { useTranslation } from 'react-i18next'
+import { OverviewSettingsChannel } from '../ui/overview-settings-channel'
 
 interface OverviewSettingsChannelFeatureProps {
   channel: ChannelEntity

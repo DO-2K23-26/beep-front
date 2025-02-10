@@ -1,5 +1,5 @@
-import { Icon } from '@beep/ui'
-import { useFetchProfilePictureQuery } from '@beep/user'
+import { Icon } from "@beep/ui"
+import { useFetchProfilePictureQuery } from "@beep/user"
 
 interface ConnectedUserRowProps {
   userId: string

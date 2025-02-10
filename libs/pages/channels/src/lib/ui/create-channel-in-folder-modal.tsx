@@ -6,21 +6,24 @@ import { useTranslation } from 'react-i18next'
 interface CreateChannelModalProps {
   closeModal: () => void
   onCreateChannel: () => void
-  methodsAddChannel: UseFormReturn<{ name: string; type: ChannelType }>
+  methodsAddChannel: UseFormReturn<{ name: string; type: ChannelType, parentId: string }>
+  parentName: string
 }
 
-export function CreateChannelModal({
+export function CreateChannelInFolderModal({
   closeModal,
   onCreateChannel,
   methodsAddChannel,
+  parentName
 }: CreateChannelModalProps) {
   const { t } = useTranslation()
+
   const { control } = useFormContext()
 
   return (
     <div className="p-6">
       <h3 className=" text-slate-700 font-bold mb-2 max-w-sm">
-        {t('layout.create-channel-modal.create_channel')}
+        {t('layout.create-channel-modal.create_channel')} - {parentName}
       </h3>
       <div className="text-slate-500 text-sm mb-4">
         {t('layout.create-channel-modal.choose_name')}

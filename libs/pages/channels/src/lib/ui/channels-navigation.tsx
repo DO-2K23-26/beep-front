@@ -10,20 +10,20 @@ import {
 } from '@beep/ui'
 import { useContext } from 'react'
 import { useSelector } from 'react-redux'
-import { ConnectedChannelRow } from './connect-channel-row'
-import { ListChannels } from './list-channels'
+import { ListChannels } from '../feature/list-channels'
 
 import { usePatchChannelPositionMutation } from '@beep/server'
 import { cn } from '@beep/utils'
 import { getVoiceState } from '@beep/voice'
 import { useTranslation } from 'react-i18next'
-import { ChannelContext } from '../feature/channels/channels-navigation-context'
-import { CurrentUserFeature } from '../feature/current-user/current-user-feature'
+import { ChannelContext } from '../feature/channels-navigation-context'
+import { Permissions } from '@beep/contracts'
+import { ServerContext } from '../feature/page-server-feature'
+import { ConnectedChannelRow } from './connected-channel-row'
+// eslint-disable-next-line @nx/enforce-module-boundaries
+import { CurrentUserFeature } from '@beep/layout'
 import { ServerDropdown } from './server-dropdown'
 import { ServerPictureButton } from './server-picture-button'
-import { Permissions } from '@beep/contracts'
-// eslint-disable-next-line @nx/enforce-module-boundaries
-import { ServerContext } from '@beep/pages/channels'
 
 export interface ChannelsNavigationProps {
   banner?: string
@@ -46,6 +46,7 @@ export default function ChannelsNavigation({
     onLeaveVoiceChannel,
     server,
     onClickId,
+    channels,
   } = useContext(ChannelContext)
 
   const { myMember } = useContext(ServerContext)
@@ -112,15 +113,9 @@ export default function ChannelsNavigation({
 
           <div className="flex flex-col gap-2 overflow-y-scroll scroll-smooth scroll-bar h-full">
             {myMember?.hasPermission(Permissions.VIEW_CHANNELS) || !myMember ? (
-              <ListChannels
-                moveChannel={(channelId: string, newPosition: number) => {
-                  moveChannel({
-                    position: newPosition,
-                    channelId,
-                    serverId: server?.id ?? '',
-                  })
-                }}
-              />
+            <ListChannels
+              channels={channels}
+            />
             ) : (
               <div className="flex justify-center w-full">
                 <p className="text-xs md:text-sm  text-center text-violet-900 ">

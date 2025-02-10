@@ -7,26 +7,23 @@ import {
 } from '@beep/contracts'
 import {
   useCreateChannelInServerMutation,
+  useDeleteChannelInServerMutation,
   useGetCurrentStreamingUsersQuery,
   useGetServerChannelsQuery,
+  useMoveChannelToFolderMutation,
 } from '@beep/server'
-import { sortChannels } from '@beep/transmit'
-import { UseModalProps, useModal } from '@beep/ui'
-import { skipToken } from '@reduxjs/toolkit/query'
-import {
-  BaseSyntheticEvent,
-  PropsWithChildren,
-  createContext,
-  useEffect,
-  useRef,
-} from 'react'
-import { FormProvider, useForm } from 'react-hook-form'
-import toast from 'react-hot-toast'
-import { useTranslation } from 'react-i18next'
-import { useNavigate } from 'react-router'
-import { CreateChannelModal } from '../../ui/create-channel-modal'
-import { useHandleChangeChannel } from './handle-change-channel-hook'
-import { useVoiceChannels } from './match-channel-hook'
+import { sortEntity } from '@beep/transmit'
+import { useModal, UseModalProps } from "@beep/ui"
+import { skipToken } from "@reduxjs/toolkit/query"
+import { BaseSyntheticEvent, createContext, PropsWithChildren, ReactNode, useEffect } from "react"
+import { FormProvider, useForm } from "react-hook-form"
+import toast from "react-hot-toast"
+import { useTranslation } from "react-i18next"
+import { useNavigate } from "react-router"
+import { useHandleChangeChannel } from "./handle-change-channel-hook"
+import { useVoiceChannels } from "./match-channel-hook"
+import { CreateChannelModal } from '../ui/create-channel-modal'
+import { DeleteChannelModal } from '../ui/channels/delete-channel-modal'
 
 interface ChannelContextInterface {
   streamingUsers: OccupiedChannelEntity[]
@@ -39,6 +36,8 @@ interface ChannelContextInterface {
   onLeaveVoiceChannel: () => void
   closeModal: () => void
   openCreateChannelModal: () => void
+  openDeleteChannelModal: (channel: ChannelEntity) => void
+  moveToFolder: (channelId: string, folderId: string | null) => void
   openModal: React.Dispatch<React.SetStateAction<UseModalProps | undefined>>
   server?: ServerEntity
 }
@@ -46,6 +45,9 @@ interface ChannelContextInterface {
 const defaultChannelContext: ChannelContextInterface = {
   streamingUsers: [],
   channels: [],
+  moveToFolder: (channelId: string, folderId: string | null) => {
+    return
+  },
   createChannel: () => {
     return
   },
@@ -67,6 +69,15 @@ const defaultChannelContext: ChannelContextInterface = {
   openModal: () => {
     return
   },
+  openDeleteChannelModal: () => {
+    return
+  },
+  server: {
+    id: "",
+    name: "",
+    ownerId: "",
+    visibility: "private",
+  }
 }
 
 const ChannelContext = createContext<ChannelContextInterface>(
@@ -97,13 +108,41 @@ function ChannelsProvider({
       ),
     })
   }
+
+  const openDeleteChannelModal = (channel: ChannelEntity) => {
+    openModal({
+      content: (
+        <DeleteChannelModal
+          closeModal={closeModal}
+          onDeleteChannel={onDeleteChannel}
+          channel={channel}
+        />
+      ),
+    })
+  }
+
   const { openModal, closeModal } = useModal() //channel creation modal
   const { t } = useTranslation()
   const { data: streamingUsers } = useGetCurrentStreamingUsersQuery(
     server?.id ?? skipToken
   )
+
   const [createChannel, resultCreatedChannel] =
     useCreateChannelInServerMutation()
+  const [deleteChannel, resultDeleteChannel] =
+    useDeleteChannelInServerMutation()
+
+  const [apiMoveChannelToFolder] = useMoveChannelToFolderMutation()
+
+  const moveToFolder = (channelId: string, folderId: string | null) => {
+    apiMoveChannelToFolder({
+      serverId: server?.id ?? '',
+      channelId: channelId,
+      parentId: folderId
+    })
+  }
+
+
   const methodsAddChannel = useForm({
     mode: 'onChange',
     defaultValues: {
@@ -125,7 +164,7 @@ function ChannelsProvider({
     server?.id ?? skipToken
   )
 
-  const channels: ChannelEntity[] = sortChannels(channelsResponse)
+  const channels: ChannelEntity[] = channelsResponse ? sortEntity<ChannelEntity>(channelsResponse) : []
   const navigate = useNavigate()
 
   useEffect(() => {
@@ -149,6 +188,14 @@ function ChannelsProvider({
     closeModal()
   })
 
+  const onDeleteChannel = (channelId: string) => {
+    deleteChannel({
+      serverId: server?.id ?? '',
+      channelId: channelId,
+    })
+    closeModal()
+  }
+
   const onJoinTextChannel = (channel: ChannelEntity) => {
     navigate(`/servers/${server?.id}/channels/${channel.id}`)
   }
@@ -164,23 +211,26 @@ function ChannelsProvider({
   }
 
   return (
-    <ChannelContext.Provider
-      value={{
-        streamingUsers: streamingUsers ?? [],
-        channels,
-        onClickId,
-        closeModal,
-        openCreateChannelModal,
-        onJoinChannel,
-        createChannel: onCreateChannel,
-        onLeaveVoiceChannel,
-        openModal,
-        server,
-      }}
-    >
-      {children}
+    <ChannelContext.Provider value={{
+      streamingUsers: streamingUsers ?? [],
+      channels,
+      onClickId,
+      closeModal,
+      openCreateChannelModal,
+      onJoinChannel,
+      createChannel: onCreateChannel,
+      onLeaveVoiceChannel,
+      openModal,
+      openDeleteChannelModal,
+      server,
+      moveToFolder
+    }}>
+      {
+        children
+      }
     </ChannelContext.Provider>
   )
 }
 
 export { ChannelContext, ChannelsProvider }
+
