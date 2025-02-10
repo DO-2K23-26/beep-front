@@ -9,19 +9,22 @@ export interface UserState {
     refreshToken?: string | null
     accessToken?: string | null
   }
-  payload?: {
-    audited_account: boolean
-    sub: string
-    exp: number
-    resource_access: {
-      roles: string[]
-    }
-    username: string
-    firstName: string
-    lastName: string
-    email: string
-  }
+  payload?: UserStatePayload
+  isMuted: boolean
   isScreenShared: boolean
   isVoiceMuted: boolean
   isCamera: boolean
+}
+
+export interface UserStatePayload {
+  audited_account: boolean
+  sub: string
+  exp: number
+  resource_access: {
+    roles: string[]
+  }
+  username: string
+  firstName: string
+  lastName: string
+  email: string
 }

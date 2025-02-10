@@ -459,15 +459,15 @@
         "action_button": "Confirm"
       },
       "modify-password-setting": {
-        "title" : "Update Password",
-        "modify" : "Modify Password",
-        "current_password_rule" : "Enter your current password",
-        "current_password_label" : "Current Password",
-        "new_password_rule" : "Password is required",
+        "title": "Update Password",
+        "modify": "Modify Password",
+        "current_password_rule": "Enter your current password",
+        "current_password_label": "Current Password",
+        "new_password_rule": "Password is required",
         "new_password_message": "Password must be at least 8 characters long and contain at least one uppercase letter, one digit, and one special character",
-        "new_password_label" : "New Password",
+        "new_password_label": "New Password",
         "verify_password_rule": "Verify your new password",
-        "verify_password_validate" : "Passwords do not match",
+        "verify_password_validate": "Passwords do not match",
         "verify_password_label": "Verify New Password",
         "action_button": "Confirm"
       }
@@ -488,10 +488,10 @@
       "language": "Language"
     },
     "modify-password-feature": {
-      "title" : "Password & Authentification",
-      "success" : "Update successful !",
-      "error-mismatch" : "The current password is wrong",
-      "error" : "Something whent wrong, please try again"
+      "title": "Password & Authentification",
+      "success": "Update successful !",
+      "error-mismatch": "The current password is wrong",
+      "error": "Something whent wrong, please try again"
     }
   },
   "friends": {
@@ -634,5 +634,14 @@
   "cancel": "Cancel",
   "add": "Add",
   "remove": "Remove",
-  "delete": "Delete"
+  "delete": "Delete",
+  "component": {
+    "user-popover": {
+      "success-ask-friend": "Friend request sent successfully",
+      "failed-ask-friend": "Friend request failed",
+      "add-friend": "Add friend",
+      "private-conv": "Private message",
+      "invitation-sent": "Invitation sent"
+    }
+  }
 }

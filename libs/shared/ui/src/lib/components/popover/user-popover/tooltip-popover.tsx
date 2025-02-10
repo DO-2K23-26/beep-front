@@ -1,7 +1,6 @@
 import { PropsWithChildren, useState } from 'react'
 import { Tooltip, TooltipContent, TooltipTrigger } from '../../tooltip/tooltip'
 
-// eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface UserPopoverProps {
   content: string
 }

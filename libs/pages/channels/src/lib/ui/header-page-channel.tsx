@@ -1,4 +1,5 @@
 import { ChannelEntity } from '@beep/contracts'
+// eslint-disable-next-line @nx/enforce-module-boundaries
 import { DisplayPinned } from '@beep/messages'
 import { leftPaneState } from '@beep/responsive'
 import { ButtonShadCn, Icon } from '@beep/ui'

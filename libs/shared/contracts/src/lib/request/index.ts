@@ -40,6 +40,7 @@ export * from './invitation/create-friend-invitation.request'
 
 export * from './member/get-member.request'
 export * from './member/get-my-member.request'
+export * from './member/update-member.request'
 
 export * from './friends/delete-friend.request'
 

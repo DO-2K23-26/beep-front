@@ -33,7 +33,7 @@ export default function MembersNavigation({
   return (
     <div
       className={cn(
-        'bg-violet-300 p-6 rounded-r-3xl flex flex-col sm:hidden transition-all gap-4',
+        'bg-violet-300 p-6 rounded-r-3xl flex flex-col sm:hidden transition-all gap-4 max-w-72',
         {
           'w-fit hidden sm:flex': showRightPane,
           'sm:w-fit hidden xl:flex': !showRightPane,

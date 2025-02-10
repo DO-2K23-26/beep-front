@@ -1,16 +1,22 @@
 import { leftPaneState } from '@beep/responsive'
 import { useGetMemberQuery } from '@beep/server'
-import { useFetchProfilePictureQuery, useGetMeQuery } from '@beep/user'
+// eslint-disable-next-line @nx/enforce-module-boundaries
+import { UserPopoverFeature } from '@beep/ui'
+import {
+  getUserState,
+  useFetchProfilePictureQuery,
+  useGetMeQuery,
+} from '@beep/user'
 import { cn } from '@beep/utils'
 import { skipToken } from '@reduxjs/toolkit/query'
 import { DateTime } from 'luxon'
-import { useContext } from 'react'
+import { useContext, useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useSelector } from 'react-redux'
-import { useParams } from 'react-router'
 import { MessageContext } from '../feature/message-feature'
-import { UserPopover } from '@beep/ui'
-
+// eslint-disable-next-line @nx/enforce-module-boundaries
+import { ServerContext } from '@beep/pages/channels'
+import { Permissions } from '@beep/contracts'
 /**
  * Component to display a message user information.
  *
@@ -20,15 +26,17 @@ import { UserPopover } from '@beep/ui'
  *
  */
 export function MessageUserDisplay() {
+  const { myMember } = useContext(ServerContext)
   const { message } = useContext(MessageContext)
+  const { payload } = useSelector(getUserState)
   const leftDivState = useSelector(leftPaneState)
 
   const { t } = useTranslation()
-  const { serverId } = useParams<{ serverId: string }>()
+  const { server } = useContext(ServerContext)
   const { data: userMe } = useGetMeQuery()
   const { data: member } = useGetMemberQuery(
-    { serverId: serverId ?? '', userId: message.ownerId },
-    { skip: serverId === undefined }
+    { serverId: server?.id ?? '', userId: message.ownerId },
+    { skip: server?.id === undefined }
   )
   const userDisplayedUsername = member?.nickname ?? message.owner?.username
   const userDisplayedId = member?.userId ?? message.owner?.id
@@ -57,19 +65,37 @@ export function MessageUserDisplay() {
       return date.toFormat('dd/MM/yyyy HH:mm')
     }
   }
+  const isNicknameEditable = useMemo(() => {
+    if (myMember?.hasOnePermissions([Permissions.MANAGE_NICKNAMES])) {
+      return true
+    } else if (payload?.sub === member?.userId && myMember) {
+      return myMember.hasOnePermissions([Permissions.CHANGE_NICKNAME])
+    }
+    return false
+  }, [myMember, payload?.sub, member?.userId])
   return (
     <div className="flex flex-col sm:flex-row gap-0 sm:gap-4 sm:items-center items-start">
       <div className="flex flex-row gap-3 items-center overflow-hidden">
-        <img
-          className={cn(
-            'block w-9 min-w-[36px] h-9 min-h-[36px] object-cover bg-violet-50 rounded-xl',
-            { 'hidden sm:block': leftDivState }
-          )}
-          src={userProfilePicture ?? '/picture.svg'}
-          alt={userDisplayedUsername}
-        />
+        <UserPopoverFeature
+          userId={message.ownerId}
+          serverId={server?.id}
+          isNicknameEditable={isNicknameEditable}
+        >
+          <img
+            className={cn(
+              'block w-9 h-9 object-cover bg-violet-50 rounded-xl',
+              { 'hidden sm:block': leftDivState }
+            )}
+            src={userProfilePicture ?? '/picture.svg'}
+            alt={userDisplayedUsername}
+          />
+        </UserPopoverFeature>
         <div className="sm:flex gap-3 sm:flex-row">
-          <UserPopover userId={message.ownerId}>
+          <UserPopoverFeature
+            userId={message.ownerId}
+            serverId={server?.id}
+            isNicknameEditable={isNicknameEditable}
+          >
             <p
               className={cn(
                 'font-semibold text-xs max-w-20 sm:max-w-30 md:max-w-40 lg:max-w-60 hover:underline truncate'
@@ -77,7 +103,7 @@ export function MessageUserDisplay() {
             >
               {message.request ? userMe?.username : userDisplayedUsername}
             </p>
-          </UserPopover>
+          </UserPopoverFeature>
           <p className={cn('font-normal text-[10px] sm:text-xs truncate')}>
             {formatDate(message.createdAt ?? '')}
           </p>

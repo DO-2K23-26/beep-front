@@ -635,5 +635,14 @@
   "cancel": "Annuler",
   "add": "Ajouter",
   "remove": "Supprimer",
-  "delete": "Supprimer"
+  "delete": "Supprimer",
+  "components": {
+    "user-popover": {
+      "success-ask-friend": "Demande d'ami envoyée avec succès",
+      "failed-ask-friend": "La demande d'ami a échoué",
+      "add-friend": "Ajouter en ami",
+      "private-conv": "Message privé",
+      "invitation-sent": "Invitation envoyée"
+    }
+  }
 }
