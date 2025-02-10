@@ -2,6 +2,7 @@ import {
   ChannelEntity,
   InvitationEntity,
   MemberEntity,
+  Permissions,
   UserDisplayedEntity,
   UserStatePayload,
 } from '@beep/contracts'
@@ -11,6 +12,8 @@ import {
   useGetMyFriendsQuery,
   useGetPrivateChannelsQuery,
 } from '@beep/friend'
+// eslint-disable-next-line @nx/enforce-module-boundaries
+import { ServerContext } from '@beep/pages/channels'
 import {
   useGetMembersQuery,
   useUpdateMemberNicknameMutation,
@@ -21,7 +24,13 @@ import {
   useGetUserByIdQuery,
 } from '@beep/user'
 import { skipToken } from '@reduxjs/toolkit/query'
-import { createContext, PropsWithChildren, useEffect } from 'react'
+import {
+  createContext,
+  PropsWithChildren,
+  useContext,
+  useEffect,
+  useMemo,
+} from 'react'
 import { Control, FieldValues, useForm, UseFormReset } from 'react-hook-form'
 import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router'
@@ -49,6 +58,7 @@ interface IUserPopoverContext<NicknameFormType extends FieldValues> {
   isFailedAskFriend?: boolean
   isFailedUpdateNickname?: boolean
   isLoadingUpdateNickname?: boolean
+  isNicknameEditable?: boolean
 }
 
 const nicknameFormSchema = z.object({
@@ -66,6 +76,7 @@ export function UserPopoverProvider({
   userId,
   serverId,
 }: PropsWithChildren<UserPopoverProps>) {
+  const { myMember } = useContext(ServerContext)
   const navigate = useNavigate()
   const { data: user } = useGetUserByIdQuery(
     { id: userId ?? '' },
@@ -170,6 +181,14 @@ export function UserPopoverProvider({
     resetNicknameReq,
     updateMemberNicknameData,
   ])
+  const isNicknameEditable = useMemo(() => {
+    if (myMember?.hasOnePermissions([Permissions.MANAGE_NICKNAMES])) {
+      return true
+    } else if (myUser?.sub === member?.userId && myMember) {
+      return myMember.hasOnePermissions([Permissions.CHANGE_NICKNAME])
+    }
+    return false
+  }, [myMember, myUser?.sub, member?.userId])
   return (
     <UserPopoverContext.Provider
       value={{
@@ -188,6 +207,7 @@ export function UserPopoverProvider({
         isFailedAskFriend,
         isFailedUpdateNickname,
         isLoadingUpdateNickname,
+        isNicknameEditable,
       }}
     >
       {children}

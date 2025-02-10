@@ -37,7 +37,7 @@ export function UpdatableDisplay({
         <p className="truncate">{displayedString}</p>
       )}
       <UpdatableDisplayActionButton
-        hidden={isEditable}
+        hidden={!isEditable}
         displayIsEditing={isEditing}
         onClickEditButton={() => {
           setIsEditing(true)

@@ -9,7 +9,9 @@ export function UserPopoverUpdatableDisplay() {
     nicknameFormControl,
     submitUpdateNickname,
     isLoadingUpdateNickname,
+    isNicknameEditable,
   } = useContext(UserPopoverContext)
+
   return (
     <Controller
       name="nickname"
@@ -23,6 +25,7 @@ export function UserPopoverUpdatableDisplay() {
             formValue={field.value}
             onChangeField={field.onChange}
             error={fieldState.error?.message}
+            isEditable={isNicknameEditable}
           />
         )
       }}
