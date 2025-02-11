@@ -69,7 +69,7 @@ export function VoiceChat() {
               }
               autoPlay
               playsInline
-              className="w-full h-full object-cover"
+              className="w-full h-full object-contain  bg-violet-500/50"
             />
             <div className="absolute bottom-2 left-2 bg-black bg-opacity-50 text-white px-2 py-1 text-xs rounded">
               {expandedStream.username}
@@ -98,7 +98,7 @@ export function VoiceChat() {
                 </div>
                 <button
                   onClick={() =>
-                    setExpandedStream({ id, username, stream: localStream })
+                    setExpandedStream({ id, username, stream })
                   }
                   className="absolute top-2 right-2 bg-black bg-opacity-50 text-white p-2 rounded opacity-0 group-hover:opacity-100 transition-opacity"
                 >
