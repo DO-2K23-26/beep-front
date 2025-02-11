@@ -181,7 +181,7 @@ export const serverApi = createApi({
       },
     }),
     getServerChannels: builder.query<ChannelEntity[], string>({
-      query: (serverId) => `/servers/${serverId}/channels`,
+      query: (serverId) => `/servers/${serverId}/channels?group=true`,
       providesTags: (result, _error, serverId) =>
         [{ type: 'channel', id: `LIST-${serverId}` }]
     }),
