@@ -1,5 +1,7 @@
 /* eslint-disable @nx/enforce-module-boundaries */
 import { Permissions, ServerEntity } from '@beep/contracts'
+import { ServerContext } from '@beep/pages/channels'
+import { RolesSettingsServerFeature } from '@beep/pages/role-settings'
 import { SettingBodyWidth, SettingsModal, SubSettings } from '@beep/settings'
 import {
   DialogDescription,
@@ -15,15 +17,12 @@ import {
   Icon,
   UseModalProps,
 } from '@beep/ui'
-import { PropsWithChildren, ReactNode, useContext } from 'react'
+import { PropsWithChildren, useContext } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router'
-import { ServerContext } from '@beep/pages/channels'
-import { RolesSettingsServerFeature } from '@beep/pages/role-settings'
 import DestroyServerFeature from '../feature/destroy-server-feature'
 import { OverviewSettingsServer } from './overview-settings-server'
-import { WebHookSettingsServer } from './webhook-settings-server'
-
+import { WebHookSettingsServer } from '@beep/layout'
 interface ServerDropdownProps {
   server: ServerEntity
   onClickId: (id: string) => void
