@@ -10,6 +10,7 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
+  InputImageSettings,
   InputPicture,
   InputSelect,
   InputText,
@@ -32,9 +33,8 @@ export default function CreateWebhookModal({
   )
   // In this context, serverId is always defined
   const { data: channelsResponse } = useGetServerChannelsQuery(serverId ?? '')
-
   const textChannelOptions =
-    channelsResponse?.textChannels.map((channel) => ({
+    channelsResponse?.map((channel) => ({
       value: channel.id,
       label: channel.name,
     })) || []
@@ -52,19 +52,6 @@ export default function CreateWebhookModal({
           </DialogDescription>
         </DialogHeader>
         <form onSubmit={onCreateWebhook} className="flex flex-col gap-4">
-          <span className="flex items-center justify-center">
-            <Controller
-              name="profilePicture"
-              control={control}
-              render={({ field }) => (
-                <InputPicture
-                  value={field.value}
-                  onChange={(e) => field.onChange(e.target.files[0])}
-                  label={t('layout.add-server.create-server-modal.add_picture')}
-                />
-              )}
-            />
-          </span>
           <Controller
             name="name"
             rules={{
