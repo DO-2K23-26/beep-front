@@ -1,20 +1,30 @@
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { Icon } from '@beep/ui'
 import { getVoiceState } from '@beep/voice'
 import { useGetMeQuery } from '@beep/user' // Adjust the import path as needed
+import { cn } from '@beep/transmit'
 
-const MAX_VIDEOS_PER_PAGE = 12
+const MAX_VIDEOS_PER_PAGE_MIN_VIEW = 20
+const MAX_VIDEOS_PER_PAGE_EXPANDED = 6
 
 export function VoiceChat() {
   const { sortedMembers, localStream } = useSelector(getVoiceState)
   const { data: me } = useGetMeQuery()
-
   const videos = [
-    ...Array.from({ length: 13 }, (_, i) => ({
-      id: `user${i + 1}`,
-      stream: localStream,
-      username: `User ${i + 1}`,
+    ...(localStream
+      ? [
+          {
+            id: me?.id || 'local',
+            stream: localStream,
+            username: 'me',
+          },
+        ]
+      : []),
+    ...(sortedMembers || []).map((entity) => ({
+      id: entity.user.id,
+      stream: new MediaStream(entity.stream.getVideoTracks()),
+      username: entity.user.username,
     })),
   ]
 
@@ -25,16 +35,21 @@ export function VoiceChat() {
     username: string
   } | null>(null)
 
+  const max_video_per_page = useMemo(() => {
+    return expandedStream
+      ? MAX_VIDEOS_PER_PAGE_EXPANDED
+      : MAX_VIDEOS_PER_PAGE_MIN_VIEW
+  }, [expandedStream])
   const filteredVideos = expandedStream
     ? videos.filter((video) => video.id !== expandedStream.id)
     : videos
 
   const paginatedStreams = filteredVideos.slice(
-    page * MAX_VIDEOS_PER_PAGE,
-    (page + 1) * MAX_VIDEOS_PER_PAGE
+    page * max_video_per_page,
+    (page + 1) * max_video_per_page
   )
 
-  const totalPages = Math.ceil(filteredVideos.length / MAX_VIDEOS_PER_PAGE)
+  const totalPages = Math.ceil(filteredVideos.length / max_video_per_page)
   const videoCount = paginatedStreams.length
   const gridSize =
     videoCount <= 2
@@ -83,7 +98,7 @@ export function VoiceChat() {
                 </div>
                 <button
                   onClick={() =>
-                    setExpandedStream({ id, username, localStream })
+                    setExpandedStream({ id, username, stream: localStream })
                   }
                   className="absolute top-2 right-2 bg-black bg-opacity-50 text-white p-2 rounded opacity-0 group-hover:opacity-100 transition-opacity"
                 >
@@ -94,7 +109,14 @@ export function VoiceChat() {
           </div>
         </>
       ) : (
-        <div className="grid grid-cols-4 gap-2 h-fit">
+        <div
+          className={cn('grid gap-2', {
+            'grid-rows-2 py-12 h-5/6': videoCount <= 2,
+            'grid-cols-2 px-6 h-5/6': 2 < videoCount && videoCount <= 6,
+            'grid-cols-3 px-4': 6 < videoCount && videoCount <= 12,
+            'grid-cols-4 px-2 gap-2 py-4': 12 < videoCount && videoCount <= 20,
+          })}
+        >
           {paginatedStreams.map(({ username, id, stream }) => (
             <div
               key={id}
