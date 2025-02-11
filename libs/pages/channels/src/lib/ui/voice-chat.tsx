@@ -113,8 +113,9 @@ export function VoiceChat() {
           className={cn('grid gap-2', {
             'grid-rows-2 py-12 h-5/6': videoCount <= 2,
             'grid-cols-2 px-6 h-5/6': 2 < videoCount && videoCount <= 6,
-            'grid-cols-3 px-4': 6 < videoCount && videoCount <= 12,
-            'grid-cols-4 px-2 gap-2 py-4': 12 < videoCount && videoCount <= 20,
+            'grid-cols-3 px-4 h-5/6': 6 < videoCount && videoCount <= 12,
+            'grid-cols-4 px-2 gap-2 py-4 h-5/6':
+              12 < videoCount && videoCount <= 20,
           })}
         >
           {paginatedStreams.map(({ username, id, stream }) => (
