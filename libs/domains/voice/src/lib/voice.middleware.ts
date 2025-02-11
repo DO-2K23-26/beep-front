@@ -241,6 +241,7 @@ export const WebRTCMiddleware: Middleware = (store) => {
         id = action.payload.token
         currentChannelId = action.payload.channel
         currentChannel.onError(() => {
+          currentChannelId = undefined
           store.dispatch({
             type: 'INITIALIZE_WEBRTC',
             payload: {
