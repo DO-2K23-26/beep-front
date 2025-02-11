@@ -36,10 +36,10 @@ export default function ConnectedUserRow({
           name={voiceMuted ? 'lucide:mic-off' : 'lucide:mic'}
           className="h-4 w-4"
         />
-        <Icon
-          name={screenSharing ? 'lucide:screen-share' : 'lucide:screen-share-off'}
-          className="h-4 w-4"
-        />
+        {/*<Icon*/}
+        {/*  name={screenSharing ? 'lucide:screen-share' : 'lucide:screen-share-off'}*/}
+        {/*  className="h-4 w-4"*/}
+        {/*/> TODO : remettre lorsque ce sera implemente*/}
         {camera && <Icon name="lucide:video" className="h-4 w-4" />}
       </div>
     </div>
