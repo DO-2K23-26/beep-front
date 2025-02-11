@@ -181,16 +181,20 @@ export const serverApi = createApi({
       },
     }),
     getServerChannels: builder.query<ChannelEntity[], string>({
-      query: (serverId) => `/servers/${serverId}/channels?group=true`,
+      query: (serverId) => `/servers/${serverId}/channels`,
       providesTags: (result, _error, serverId) =>
         [{ type: 'channel', id: `LIST-${serverId}` }]
     }),
     joinVoiceChannel: builder.mutation<
-      void,
+      { token: string },
       {
         serverId: string
         channelId: string
-        userState: { screenSharing: boolean; voiceMuted: boolean; camera: boolean }
+        userState: {
+          muted: boolean
+          voiceMuted: boolean
+          camera: boolean
+        }
       }
     >({
       query: ({ serverId, channelId, userState }) => ({
