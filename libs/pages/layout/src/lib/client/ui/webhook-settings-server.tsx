@@ -3,13 +3,11 @@ import { useTranslation } from 'react-i18next'
 import CreateWebhookFeature from '../feature/create-webhook-feature'
 import WebhookListFeature from '../feature/webhook-list-feature'
 
-export interface WebhookSettingsServerProps {
+interface WebhookSettingsServerProps {
   server: ServerEntity
 }
 
-export default function WebHookSettingsServer({
-  server,
-}: WebhookSettingsServerProps) {
+export function WebHookSettingsServer({ server }: WebhookSettingsServerProps) {
   const { t } = useTranslation()
 
   return (
