@@ -43,7 +43,6 @@ export function useVoiceChannels({
   )
 
   const presence = async (serverId: string, id: string, channels: ChannelEntity[]) => {
-    console.log('Joining voice channel', data)
     await join({
       serverId: serverId,
       channelId: channels && channels.length > 0 ? channels[0].id : 'null',
