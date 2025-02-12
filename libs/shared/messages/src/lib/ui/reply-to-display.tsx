@@ -18,7 +18,7 @@ export function ReplyToDisplay() {
         <Icon name="lucide:corner-up-right" className="w-4 h-4 mr-2" />
         <div className="reply-to bg-violet-100 p-2 rounded">
           <span className="text-sm text-gray-600">
-            <strong>{message.owner?.username}</strong> :{' '}
+            <strong>{message.parentMessage.owner?.username}</strong> :{' '}
             <i>{renderedReplyedMessage}</i>
           </span>
         </div>
