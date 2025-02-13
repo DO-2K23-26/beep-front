@@ -186,7 +186,7 @@ export const serverApi = createApi({
         [{ type: 'channel', id: `LIST-${serverId}` }]
     }),
     joinVoiceChannel: builder.mutation<
-      { token: string },
+      { token: string, pcconfig: RTCConfiguration },
       {
         serverId: string
         channelId: string

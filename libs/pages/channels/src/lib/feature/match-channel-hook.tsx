@@ -72,6 +72,7 @@ export function useVoiceChannels({
             server: server?.id,
             id: me?.id,
             token: data.data?.token,
+            pcConfig: data.data?.pcconfig
           },
         })
       }

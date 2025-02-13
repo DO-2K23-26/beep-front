@@ -26,16 +26,14 @@ export const WebRTCMiddleware: Middleware = (store) => {
   let socket = null
   let currentPresenceServerId = null
   let currentServerId = null
-  const pcConfig: RTCConfiguration = endpoint.startsWith("wss") ? {
-    iceServers: [{ urls: 'turns:stunner.beep.ovh?transport=tcp', username: 'user-1', credential: 'pass-1'}],
-    iceTransportPolicy: "relay",
-  } : {};
+  let pcConfig: RTCConfiguration = {}
   let channels = []
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   return (next) => async (action: any) => {
     switch (action.type) {
       case 'INITIALIZE_PRESENCE':
+        pcConfig = action.payload.pcConfig
         sockets.set(action.payload.server, new Socket(
           endpoint + '/socket/' + action.payload.server,
           { params: { user: action.payload.id, server: action.payload.server, token: action.payload.token || "CACA" } }))
