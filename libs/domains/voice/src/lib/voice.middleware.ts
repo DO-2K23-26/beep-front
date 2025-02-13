@@ -27,7 +27,7 @@ export const WebRTCMiddleware: Middleware = (store) => {
   let currentPresenceServerId = null
   let currentServerId = null
   const pcConfig: RTCConfiguration = endpoint.startsWith("wss") ? {
-    iceServers: [{ urls: 'turn:162.38.112.211:33436?transport=udp', username: 'user-1', credential: 'pass-1'}],
+    iceServers: [{ urls: 'turns:stunner.beep.ovh?transport=tcp', username: 'user-1', credential: 'pass-1'}],
     iceTransportPolicy: "relay",
   } : {};
   let channels = []
