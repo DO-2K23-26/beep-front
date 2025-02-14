@@ -393,6 +393,49 @@
       "no_video_inputs": "No video input device found",
       "permission_to_use": "Ask for input device permission",
       "access_blocked": "Permission denied. Access to video and audio input devices is blocked."
+    },
+    "webhooks-settings-server": {
+      "webhooks": "WEBHOOKS",
+      "new_webhook": "New webhook"
+    },
+    "new-webhook-modal": {
+      "success_create": "Webhook created successfully!",
+      "error_create": "Failed to create the webhook.",
+      "error_name_exists": "A webhook with this name already exists.",
+      "create_modal": {
+        "title": "Create a New Webhook",
+        "subtitle": "Fill in the details below to create your webhook.",
+        "name_label": "Webhook Name",
+        "name_placeholder": "Enter the webhook name",
+        "name_required": "Webhook name is required.",
+        "channel_label": "Channel",
+        "channel_required": "Please select a channel.",
+        "cancel": "Cancel",
+        "create": "Create"
+      }
+    },
+    "webhook-list": {
+      "no_webhooks": "No webhooks found.",
+      "loading": "Loading webhooks...",
+      "error": "Error"
+    },
+    "webhook-item": {
+      "upload_picture": "Upload picture",
+      "name_required": "Name is required",
+      "name_label": "Webhook Name",
+      "channel_label": "Channel",
+      "copy_webhook": "Copy Webhook URL",
+      "delete_webhook": "Delete Webhook",
+      "error_delete": "Failed to delete webhook",
+      "save": "Save",
+      "error_missing_webhook": "Webhook not found",
+      "success_update": "Webhook updated successfully",
+      "error_update": "Failed to update webhook",
+      "webhook_missing": "Webhook not found",
+      "success_delete": "Webhook deleted successfully",
+      "copy_success": "Webhook URL copied to clipboard",
+      "copy_error": "Failed to copy webhook URL",
+      "token_missing": "Webhook token not found"
     }
   },
   "settings": {
@@ -648,6 +691,11 @@
       "add-friend": "Add friend",
       "private-conv": "Private message",
       "invitation-sent": "Invitation sent"
+    }
+  },
+  "shared": {
+    "input-select": {
+      "no_options": "No result for this search"
     }
   }
 }

@@ -398,6 +398,49 @@
       "no_video_inputs": "Aucune entrée vidéo trouvée",
       "permission_to_use": "Demander l'autorisation d'utiliser les médias",
       "access_blocked": "Permission d'accès aux médias bloquée"
+    },
+    "webhooks-settings-server": {
+      "webhooks": "Webhooks",
+      "new_webhook": "Nouveau webhook"
+    },
+    "new-webhook-modal": {
+      "success_create": "Le webhook a bien été créé!",
+      "error_create": "Erreur dans la création du webhook.",
+      "error_name_exists": "Un webhook avec ce nom à déjà été créé.",
+      "create_modal": {
+        "title": "Créer un nouveau Webhook",
+        "subtitle": "Remplir les détails suivant pour créer votre webhook.",
+        "name_label": "Nom du Webhook",
+        "name_placeholder": "Entrer le nom du webhook",
+        "name_required": "Le nom du webhook est requis.",
+        "channel_label": "Salon de discussion",
+        "channel_required": "Sélectionner le salon de discussion.",
+        "cancel": "Annuler",
+        "create": "Créer"
+      }
+    },
+    "webhook-list": {
+      "no_webhooks": "Aucun webhook trouvé.",
+      "loading": "Chargement des webhooks...",
+      "error": "Erreur"
+    },
+    "webhook-item": {
+      "upload_picture": "Télécharger la photo de profil",
+      "name_required": "Le nom du webhook est requis.",
+      "name_label": "Nom du Webhook",
+      "channel_label": "Salon de discussion",
+      "copy_webhook": "Copier l'URL du webhook ",
+      "delete_webhook": "Supprimer le webhook",
+      "error_delete": "Erreur dans la suppression du webhook.",
+      "save": "Sauvegarder",
+      "error_missing_webhook": "Webhook manquant.",
+      "success_update": "Webhook mis à jour.",
+      "error_update": "Erreur dans la mise à jour du webhook.",
+      "webhook_missing": "Webhook manquant.",
+      "success_delete": "Webhook supprimé.",
+      "copy_success": "URL du webhook copiée.",
+      "copy_error": "Erreur dans la copie de l'URL du webhook.",
+      "token_missing": "Token manquant"
     }
   },
   "settings": {
@@ -649,6 +692,11 @@
       "add-friend": "Ajouter en ami",
       "private-conv": "Message privé",
       "invitation-sent": "Invitation envoyée"
+    }
+  },
+  "shared": {
+    "input-select": {
+      "no_options": "Aucun résultat pour cette recherche"
     }
   }
 }

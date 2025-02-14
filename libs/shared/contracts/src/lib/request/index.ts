@@ -50,3 +50,6 @@ export * from './role/delete-role.request'
 export * from './role/get-role-members.request'
 export * from './role/assign-member-to-role.request'
 export * from './role/unassign-member-from-role.request'
+
+export * from './webhook/create-webhook.request'
+export * from './webhook/update-webhook-picture.request'

@@ -1,4 +1,8 @@
-import { useUpdateBannerMutation, useUpdatePictureMutation } from '@beep/server'
+import {
+  useUpdateBannerMutation,
+  useUpdatePictureMutation,
+  useUpdateWebhookPictureMutation,
+} from '@beep/server'
 import { cn } from '@beep/utils'
 import { useEffect, useRef, useState } from 'react'
 import { Icon } from '../icons/icon'
@@ -6,9 +10,11 @@ import { Icon } from '../icons/icon'
 interface InputImageSettingsProps {
   label: string
   name: string
-  serverId: string | undefined
+  serverId: string
+  webhookId?: string
+  channelId?: string
   initialImage?: string
-  type: 'banner' | 'picture'
+  type: 'banner' | 'picture' | 'webhookpicture'
   disabled?: boolean
 }
 
@@ -16,6 +22,8 @@ export function InputImageSettings({
   label,
   name,
   serverId,
+  webhookId,
+  channelId,
   initialImage,
   type,
   disabled,
@@ -28,12 +36,31 @@ export function InputImageSettings({
 
   const [updatePicture] = useUpdatePictureMutation()
   const [updateBanner] = useUpdateBannerMutation()
-
-  const updateImage = type === 'banner' ? updateBanner : updatePicture
+  const [updateWebhookPicture] = useUpdateWebhookPictureMutation()
 
   useEffect(() => {
+    const updateImage = async (file: File) => {
+      const formData = new FormData()
+      formData.append('attachment', file)
+      if (type === 'webhookpicture') {
+
+        if (!channelId || !webhookId) {
+          return
+        }
+        await updateWebhookPicture({
+          serverId,
+          channelId,
+          webhookId: webhookId,
+          formData,
+        })
+      } else if (type === 'banner') {
+        await updateBanner({ serverId, formData })
+      } else {
+        await updatePicture({ serverId, formData })
+      }
+    }
     if (inputRef.current) {
-      inputRef.current.addEventListener('change', async () => {
+      inputRef.current.addEventListener('change', () => {
         if (inputRef.current?.files) {
           const file = inputRef.current.files[0]
           const reader = new FileReader()
@@ -44,13 +71,11 @@ export function InputImageSettings({
             }
           }
           reader.readAsDataURL(file)
-          const formData = new FormData()
-          formData.append('attachment', file)
-          updateImage({ serverId: serverId ?? '' , formData })
+          updateImage(file)
         }
       })
     }
-  }, [serverId, updateImage])
+  }, [serverId, channelId, webhookId, type])
 
   useEffect(() => {
     if (initialImage) {

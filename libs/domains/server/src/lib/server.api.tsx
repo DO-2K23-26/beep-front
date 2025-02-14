@@ -29,6 +29,9 @@ import {
   UpdateChannelRequest,
   UpdateMemberRequest,
   UpdateRoleRequest,
+  WebhookEntity,
+  CreateWebhookRequest,
+  UpdateWebhookPictureRequest,
 } from '@beep/contracts'
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 // eslint-disable-next-line @nx/enforce-module-boundaries
@@ -50,6 +53,8 @@ export const serverApi = createApi({
     'publicServers',
     'transmitPicture',
     'transmitBanner',
+    'transmitWebhookPicture',
+    'webhooks',
   ],
   endpoints: (builder) => ({
     getMyServers: builder.query<ServerEntity[], void>({
@@ -125,7 +130,7 @@ export const serverApi = createApi({
           body: {
             name: request.name,
             type: +request.type,
-            parentId: request.parentId
+            parentId: request.parentId,
           },
         })
 
@@ -316,6 +321,15 @@ export const serverApi = createApi({
       invalidatesTags: ['servers'],
     }),
 
+    updateWebhookPicture: builder.mutation<void, UpdateWebhookPictureRequest>({
+      query: ({ serverId, channelId, webhookId, formData }) => ({
+        url: `/servers/${serverId}/channels/${channelId}/webhook/${webhookId}/webhookPicture`,
+        method: 'PUT',
+        body: formData,
+      }),
+      invalidatesTags: ['servers'],
+    }),
+
     transmitBanner: builder.query<string, string>({
       query: (serverId) => ({
         url: `/servers/${serverId}/banner`,
@@ -337,7 +351,7 @@ export const serverApi = createApi({
         },
       }),
       invalidatesTags: (_result, _error, arg) => [
-        { type: 'channel', id: `LIST-${arg.serverId}` }
+        { type: 'channel', id: `LIST-${arg.serverId}` },
       ],
     }),
     moveChannelToFolder: builder.mutation<
@@ -348,11 +362,11 @@ export const serverApi = createApi({
         url: `/servers/${request.serverId}/channels/${request.channelId}`,
         method: 'PUT',
         body: {
-          parentId: request.parentId
+          parentId: request.parentId,
         },
       }),
       invalidatesTags: (_result, _error, arg) => [
-        { type: 'channel', id: `LIST-${arg.serverId}` }
+        { type: 'channel', id: `LIST-${arg.serverId}` },
       ],
     }),
     getMyMember: builder.query<MemberEntity, GetMyMemberRequest>({
@@ -421,6 +435,22 @@ export const serverApi = createApi({
         { type: 'roles', id: `LIST-${req.serverId}` },
       ],
     }),
+
+    transmitWebhookPicture: builder.query<
+      string,
+      { webhookId: string; serverId: string; channelId: string }
+    >({
+      query: (request) => ({
+        url: `/servers/${request.serverId}/channels/${request.channelId}/webhook/${request.webhookId}/webhookPicture`,
+        responseHandler: async (response) => {
+          const blob = await response.blob()
+          return URL.createObjectURL(blob)
+        },
+      }),
+      providesTags: (_result, _error, id) => [
+        { type: 'transmitWebhookPicture', id: id.webhookId },
+      ],
+    }),
     updateMemberNickname: builder.mutation<MemberEntity, UpdateMemberRequest>({
       query: ({ serverId, nickname, memberId }) => ({
         url: `/v1/servers/${serverId}/members/${memberId}/nickname`,
@@ -434,9 +464,79 @@ export const serverApi = createApi({
         { type: 'members', id: `${req.serverId}:${req.memberId}` },
       ],
     }),
+    createWebHook: builder.mutation<
+      void,
+      {
+        serverId: string
+        channelId: string
+        name: string
+        profilePicture: File
+      }
+    >({
+      query: (request) => ({
+        url: `/servers/${request.serverId}/channels/${request.channelId}/webhook`,
+        method: 'POST',
+        body: {
+          name: request.name,
+        },
+      }),
+      invalidatesTags: ['webhooks'],
+    }),
+
+    updateWebHook: builder.mutation<
+      WebhookEntity,
+      { updatedWebhook: Partial<WebhookEntity>; webhookId: string }
+    >({
+      query: (request) => ({
+        url: `/servers/${request.updatedWebhook.serverId}/channels/${request.updatedWebhook.channelId}/webhook/${request.webhookId}`,
+        method: 'PUT',
+        body: request.updatedWebhook,
+      }),
+    }),
+    
+    updateProfilePicture: builder.mutation<
+      void,
+      { serverId: string; formData: FormData }
+    >({
+      query: ({ serverId, formData }) => ({
+        url: `/servers/${serverId}/picture`,
+        method: 'PUT',
+        body: formData,
+      }),
+      invalidatesTags: ['servers'],
+    }),
+    transmitProfilePicture: builder.query<string, string>({
+      query: (serverId) => ({
+        url: `/servers/${serverId}/picture`,
+        responseHandler: async (response) => {
+          const blob = await response.blob()
+          return URL.createObjectURL(blob)
+        },
+      }),
+      providesTags: (_result, _error, id) => [
+        { type: 'transmitPicture', id: id },
+      ],
+    }),
+
+    deleteWebHook: builder.mutation<
+      void,
+      { webhookId: string; serverId: string; channelId: string }
+    >({
+      query: (request) => ({
+        url: `/servers/${request.serverId}/channels/${request.channelId}/webhook/${request.webhookId}`,
+        method: 'DELETE',
+      }),
+      invalidatesTags: ['webhooks'],
+    }),
+
+    getWebHooksServer: builder.query<WebhookEntity[], string>({
+      query: (serverId) => `/servers/${serverId}/webhooks`,
+      providesTags: (result, _error, serverId) => [
+        { type: 'webhooks', id: serverId },
+      ],
+    }),
   }),
 })
-
 export const {
   useGetMyServersQuery,
   useGetMembersQuery,
@@ -461,6 +561,7 @@ export const {
   useUpdatePictureMutation,
   useTransmitBannerQuery,
   useTransmitPictureQuery,
+  useTransmitWebhookPictureQuery,
   useDeleteServerMutation,
   useDiscoverServersQuery,
   usePatchChannelPositionMutation,
@@ -470,5 +571,10 @@ export const {
   useCreateRoleMutation,
   useGetMyMemberQuery,
   useUpdateMemberNicknameMutation,
-  useMoveChannelToFolderMutation
+  useMoveChannelToFolderMutation,
+  useCreateWebHookMutation,
+  useUpdateWebHookMutation,
+  useDeleteWebHookMutation,
+  useGetWebHooksServerQuery,
+  useUpdateWebhookPictureMutation,
 } = serverApi
